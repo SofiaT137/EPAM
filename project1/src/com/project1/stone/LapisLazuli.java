@@ -1,8 +1,8 @@
-package com.project1.stones;
+package com.project1.stone;
 
 public class LapisLazuli extends Stone {
 
-    private float discount = 0.15f;
+    private static final float DISCOUNT = 0.15f;
 
     public LapisLazuli(float weight, int transparency) {
         super(weight, transparency);
@@ -12,6 +12,6 @@ public class LapisLazuli extends Stone {
 
     @Override
     public int getPrice() {
-        return (int) (discount * pricePerCarat * weight);
+        return (int) (DISCOUNT * pricePerCarat * weight);
     }
 }

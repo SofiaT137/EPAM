@@ -1,10 +1,10 @@
 package com.project1.gui;
 
-import com.project1.necklace.*;
-import com.project1.stones.LapisLazuli;
-import com.project1.stones.Sapphire;
-import com.project1.stones.Stone;
-import com.project1.stones.Tanzanite;
+import com.project1.necklace.Necklace;
+import com.project1.stone.LapisLazuli;
+import com.project1.stone.Sapphire;
+import com.project1.stone.Stone;
+import com.project1.stone.Tanzanite;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,8 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Gui {
-    public static void main(String[] args) throws IOException {
 
+    public static void main(String[] args) throws IOException {
+        Gui gui = new Gui();
+        gui.show();
+    }
+
+    public void show() throws IOException {
         System.out.println("Hello, let's get together a lovely necklace for you...");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -46,11 +51,7 @@ public class Gui {
             }
 
             System.out.println("Enter the desirable degree of transparency (from 1 to 10)");
-            int transparency = validateParseInt(reader);
-            while (!(checkTransparency(transparency))) {
-                System.out.println("Enter the correct integer number between  from 1 to 10");
-                transparency = validateParseInt(reader);
-            }
+            int transparency = getTransparency(reader);
 
             switch (name) {
                 case 1:
@@ -75,21 +76,36 @@ public class Gui {
 
         for (Stone stone :
                 stones) {
-            System.out.println("Name of the stone: " + stone.getClass().getSimpleName() + " weight: " + stone.getWeightInCarat());
+            System.out.println("Name of the stone: " + stone.getClass().getSimpleName() + " value: " + stone.getPrice()+ " $.");
         }
 
+        System.out.println("Do you want to find some special stone in your necklace: 'y' or 'n'?");
+        String result = reader.readLine();
+
+        if (!(result.equals("y"))){
+            System.out.println("Ok,thank you, have a nice day!");
+        }
+        else{
+            System.out.println("Enter the minimal value of transparency");
+            int minTransparency = getTransparency(reader);
+
+            System.out.println("Enter the maximal value of transparency");
+            int maxTransparency = getTransparency(reader);
+
+            findInNecklace(minTransparency,maxTransparency,stones);
+        }
         reader.close();
     }
 
 
-    public static boolean checkAmount(int amount) {
+    private boolean checkAmount(int amount) {
         if (amount <= 0) {
             return false;
         }
         return true;
     }
 
-    public static boolean checkName(int name) {
+    private boolean checkName(int name) {
         if (name < 1 || name > 3) {
             return false;
         } else {
@@ -97,21 +113,30 @@ public class Gui {
         }
     }
 
-    public static boolean checkWeight(float weight) {
+    private boolean checkWeight(float weight) {
         if (weight <= 0) {
             return false;
         }
         return true;
     }
 
-    public static boolean checkTransparency(int transparency) {
+    private int getTransparency(BufferedReader reader){
+        int transparency = validateParseInt(reader);
+        while (!(checkTransparency(transparency))){
+            System.out.println("Enter the correct integer number between  from 1 to 10");
+            transparency = validateParseInt(reader);
+        }
+        return transparency;
+    }
+
+    private boolean checkTransparency(int transparency) {
         if (transparency < 1 || transparency > 10) {
             return false;
         }
         return true;
     }
 
-    public static int validateParseInt(BufferedReader reader) {
+    private int validateParseInt(BufferedReader reader) {
         while (true) {
             try {
                 int value = Integer.parseInt(reader.readLine());
@@ -122,13 +147,20 @@ public class Gui {
         }
     }
 
-    public static float validateParseFloat(BufferedReader reader) {
+    private float validateParseFloat(BufferedReader reader) {
         while (true) {
             try {
                 float value = Float.parseFloat(reader.readLine());
                 return value;
             } catch (Exception e) {
                 System.out.println("It is mistake! Please, enter the correct float");
+            }
+        }
+    }
+    private void findInNecklace(int min,int max,List<Stone> list){
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getTransparency() >= min && list.get(i).getTransparency() <= max){
+                System.out.println(list.get(i));
             }
         }
     }

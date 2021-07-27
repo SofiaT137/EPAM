@@ -1,5 +1,5 @@
 package com.project1.necklace;
-import com.project1.stones.*;
+import com.project1.stone.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,8 +8,8 @@ import java.util.List;
 public class Necklace {
 
     private List<Stone> stones = new ArrayList<>(5);
-    private int weight;
-    private int price;
+    private static int weight;
+    private static int price;
 
     public Necklace(List<Stone> list) {
         this.stones = list;

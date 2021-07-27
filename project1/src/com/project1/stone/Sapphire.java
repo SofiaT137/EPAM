@@ -1,8 +1,8 @@
-package com.project1.stones;
+package com.project1.stone;
 
 public class Sapphire extends Stone {
 
-    private int tax = 14;
+    private static final int tax = 14;
 
     public Sapphire(float weight, int transparency) {
         super(weight, transparency);
@@ -12,6 +12,6 @@ public class Sapphire extends Stone {
 
     @Override
     public int getPrice() {
-        return (int) (tax * pricePerCarat * weight * transparency / 10);
+        return (int) (tax * pricePerCarat * weight * transparency / transparencyMax);
     }
 }

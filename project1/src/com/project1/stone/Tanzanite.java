@@ -1,4 +1,4 @@
-package com.project1.stones;
+package com.project1.stone;
 
 public class Tanzanite extends Stone{
 
@@ -10,6 +10,6 @@ public class Tanzanite extends Stone{
 
     @Override
     public int getPrice() {
-        return (int) (pricePerCarat * weight * transparency / 10);
+        return (int) (pricePerCarat * weight * transparency / transparencyMax);
     }
 }
