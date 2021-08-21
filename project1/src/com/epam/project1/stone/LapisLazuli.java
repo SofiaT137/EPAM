@@ -1,4 +1,4 @@
-package com.project1.stone;
+package com.epam.project1.stone;
 
 public class LapisLazuli extends Stone {
 
@@ -14,4 +14,5 @@ public class LapisLazuli extends Stone {
     public int getPrice() {
         return (int) (DISCOUNT * pricePerCarat * weight);
     }
+
 }

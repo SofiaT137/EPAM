@@ -1,4 +1,4 @@
-package com.project1.stone;
+package com.epam.project1.stone;
 
 public class Tanzanite extends Stone{
 

@@ -1,5 +1,6 @@
-package com.project1.necklace;
-import com.project1.stone.*;
+package com.epam.project1.necklace;
+import com.epam.project1.stone.Stone;
+
 
 import java.util.ArrayList;
 import java.util.Collections;

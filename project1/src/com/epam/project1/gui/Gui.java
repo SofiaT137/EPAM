@@ -1,10 +1,10 @@
-package com.project1.gui;
+package com.epam.project1.gui;
 
-import com.project1.necklace.Necklace;
-import com.project1.stone.LapisLazuli;
-import com.project1.stone.Sapphire;
-import com.project1.stone.Stone;
-import com.project1.stone.Tanzanite;
+import com.epam.project1.stone.Sapphire;
+import com.epam.project1.stone.Stone;
+import com.epam.project1.necklace.Necklace;
+import com.epam.project1.stone.LapisLazuli;
+import com.epam.project1.stone.Tanzanite;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,6 +43,17 @@ public class Gui {
                 name = validateParseInt(reader);
             }
 
+            int countryOfOrigin = 0;
+
+            if(name == 1){
+                System.out.println("Enter the county of origin Russia(1),USA(2),India(3),China(4)");
+                countryOfOrigin = validateParseInt(reader);
+                while (!checkCountry(countryOfOrigin)){
+                    System.out.println("Enter the correct integer between 1 and 4");
+                    countryOfOrigin = validateParseInt(reader);
+                }
+            }
+
             System.out.println("Enter the stones weight in karate");
             float weight = validateParseFloat(reader);
             while (!checkWeight(weight)) {
@@ -54,15 +65,9 @@ public class Gui {
             int transparency = getTransparency(reader);
 
             switch (name) {
-                case 1:
-                    stones.add(new Sapphire(weight, transparency));
-                    break;
-                case 2:
-                    stones.add(new Tanzanite(weight, transparency));
-                    break;
-                case 3:
-                    stones.add(new LapisLazuli(weight, transparency));
-                    break;
+                case 1 -> stones.add(new Sapphire(weight, transparency, countryOfOrigin));
+                case 2 -> stones.add(new Tanzanite(weight, transparency));
+                case 3 -> stones.add(new LapisLazuli(weight, transparency));
             }
         }
 
@@ -99,25 +104,15 @@ public class Gui {
 
 
     private boolean checkAmount(int amount) {
-        if (amount <= 0) {
-            return false;
-        }
-        return true;
+        return amount > 0;
     }
 
     private boolean checkName(int name) {
-        if (name < 1 || name > 3) {
-            return false;
-        } else {
-            return true;
-        }
+        return name >= 1 && name <= 3;
     }
 
     private boolean checkWeight(float weight) {
-        if (weight <= 0) {
-            return false;
-        }
-        return true;
+        return weight > 0;
     }
 
     private int getTransparency(BufferedReader reader){
@@ -130,17 +125,13 @@ public class Gui {
     }
 
     private boolean checkTransparency(int transparency) {
-        if (transparency < 1 || transparency > 10) {
-            return false;
-        }
-        return true;
+        return transparency >= 1 && transparency <= 10;
     }
 
     private int validateParseInt(BufferedReader reader) {
         while (true) {
             try {
-                int value = Integer.parseInt(reader.readLine());
-                return value;
+                return Integer.parseInt(reader.readLine());
             } catch (Exception e) {
                 System.out.println("It is mistake! Please, enter the correct integer");
             }
@@ -150,18 +141,21 @@ public class Gui {
     private float validateParseFloat(BufferedReader reader) {
         while (true) {
             try {
-                float value = Float.parseFloat(reader.readLine());
-                return value;
+                return Float.parseFloat(reader.readLine());
             } catch (Exception e) {
                 System.out.println("It is mistake! Please, enter the correct float");
             }
         }
     }
     private void findInNecklace(int min,int max,List<Stone> list){
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getTransparency() >= min && list.get(i).getTransparency() <= max){
-                System.out.println(list.get(i));
+        for (Stone stone : list) {
+            if (stone.getTransparency() >= min && stone.getTransparency() <= max) {
+                System.out.println(stone);
             }
         }
+    }
+
+    private boolean checkCountry(int country) {
+        return country >= 1 && country <= 4;
     }
 }
