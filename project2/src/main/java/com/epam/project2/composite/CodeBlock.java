@@ -7,7 +7,7 @@ public class CodeBlock extends Composite{
 
        public CodeBlock(){
            this.list = new ArrayList<Composite>();
-           this.type = Parts.CODE;
+           this.type = Parts.CODEBLOCK;
        }
 
     @Override

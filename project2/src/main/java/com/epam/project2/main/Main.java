@@ -1,7 +1,8 @@
 package com.epam.project2.main;
 
+import com.epam.project2.composite.Composite;
 import com.epam.project2.composite.Text;
-import com.epam.project2.parser.TextParser;
+import com.epam.project2.parser.*;
 import com.epam.project2.utils.Reader;
 
 import java.io.BufferedReader;
@@ -19,8 +20,12 @@ public class Main {
 
         List<String> list = Reader.getTextLine(file);
 
-        TextParser textParser = new TextParser(list);
-        Text text = textParser.textSeparation();
+        ParseSentence parseSentence = new ParseSentence(null);
+        ParseTextBlock parseTextBlock = new ParseTextBlock(parseSentence);
+        ParseCodeBlock parseCodeBlock = new ParseCodeBlock(parseTextBlock);
+        ParseText parseText = new ParseText(parseCodeBlock);
+
+        Text text = (Text) parseText.parse(list, Composite.Parts.TEXT);
 
         System.out.println(text);
 

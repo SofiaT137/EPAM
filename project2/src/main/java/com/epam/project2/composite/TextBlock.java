@@ -7,7 +7,7 @@ public class TextBlock extends Composite{
 
     public TextBlock(){
         this.list = new ArrayList<Composite>();
-        this.type = Parts.TEXT;
+        this.type = Parts.TEXTBLOCK;
     }
 
     @Override

@@ -8,13 +8,13 @@ public class Composite {
     protected List<Composite> list;
 
     public enum Parts{
-        WORD,
-        PUNCTUATION,
-        SPACE,
-        TEXT,
+       TEXT,
+        CODEBLOCK,
+        CODELINE,
+        TEXTBLOCK,
         SENTENCE,
-        CODE,
-        CODELINE
+        WORD,
+        PUNCTUATION
     }
 
     public List<Composite> getList(){
