@@ -3,6 +3,7 @@ package com.epam.project2.parser;
 import com.epam.project2.composite.CodeBlock;
 import com.epam.project2.composite.Composite;
 import com.epam.project2.composite.Text;
+import com.epam.project2.utils.MyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ParseText extends ParseHandler {
     }
 
     @Override
-    public Composite parse(List<String> data, Composite.Parts type) {
+    public Composite parse(List<String> data, Composite.Parts type) throws MyException {
         if (type == Composite.Parts.TEXT) {
             Text text = new Text();
             List<String> block = null;
@@ -23,7 +24,6 @@ public class ParseText extends ParseHandler {
             CodeBlock codeBlock = null;
 
             for (String s : data) {
-
                 if (s.contains("{")) {
                     if (count == 0) {
                         isCode = true;
@@ -34,7 +34,6 @@ public class ParseText extends ParseHandler {
                 if (s.contains("}")) {
                     count--;
                 }
-
                 if (!isCode) {
                     block = new ArrayList<>();
                     block.add(s);
@@ -52,7 +51,6 @@ public class ParseText extends ParseHandler {
         }else if(this.nextParse != null){
             return this.nextParse.parse(data,type);
         }
-        //TODO throw my exception and it add in log
-        return null;
+        throw new MyException("I can't parse text with type  = " + type);
     }
 }

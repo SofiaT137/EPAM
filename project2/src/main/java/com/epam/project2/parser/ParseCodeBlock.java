@@ -3,6 +3,7 @@ package com.epam.project2.parser;
 import com.epam.project2.composite.CodeBlock;
 import com.epam.project2.composite.CodeLine;
 import com.epam.project2.composite.Composite;
+import com.epam.project2.utils.MyException;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class ParseCodeBlock extends ParseHandler{
     }
 
     @Override
-    public Composite parse(List<String> data, Composite.Parts type) {
+    public Composite parse(List<String> data, Composite.Parts type) throws MyException {
         if (type == Composite.Parts.CODEBLOCK) {
             CodeBlock codeBlock = new CodeBlock();
             for (String s :
@@ -25,7 +26,7 @@ public class ParseCodeBlock extends ParseHandler{
         }else if(this.nextParse != null){
             return this.nextParse.parse(data,type);
         }
-        //TODO throw my exception and it add in log
-        return null;
+
+        throw new MyException("I can't parse code block with type  = " + type);
     }
 }

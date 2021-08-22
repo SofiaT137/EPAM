@@ -1,6 +1,7 @@
 package com.epam.project2.parser;
 
 import com.epam.project2.composite.*;
+import com.epam.project2.utils.MyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ParseSentence extends ParseHandler {
     public static final String PUNCTUATION = "[._^%$#?!~@+,-:;]";
 
     @Override
-    public Composite parse(List<String> data, Composite.Parts type) {
+    public Composite parse(List<String> data, Composite.Parts type) throws MyException {
         if(type == Composite.Parts.SENTENCE){
             Sentence sentence = new Sentence();
             String line = data.get(0);
@@ -37,7 +38,7 @@ public class ParseSentence extends ParseHandler {
         }else if(this.nextParse != null){
             return this.nextParse.parse(data,type);
         }
-        //TODO throw my exception and it add in log
-        return null;
+
+        throw new MyException("I can't parse sentence with type  = " + type);
     }
 }

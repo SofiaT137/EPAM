@@ -25,6 +25,10 @@ public class TextBlock extends Composite{
         for (Composite composite : list) {
             sb.append(composite).append(" ");
         }
-        return sb.deleteCharAt(sb.length() - 1).toString();
+        if(sb.length()>0) {
+            return sb.deleteCharAt(sb.length() - 1).toString();
+        } else {
+            return "";
+        }
     }
 }

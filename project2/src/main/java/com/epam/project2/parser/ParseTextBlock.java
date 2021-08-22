@@ -2,6 +2,7 @@ package com.epam.project2.parser;
 
 import com.epam.project2.composite.Composite;
 import com.epam.project2.composite.TextBlock;
+import com.epam.project2.utils.MyException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class ParseTextBlock extends ParseHandler{
     public static final String SENTENCE = "((?<=[.!?]))";
 
     @Override
-    public Composite parse(List<String> data, Composite.Parts type) {
+    public Composite parse(List<String> data, Composite.Parts type) throws MyException {
         if(type == Composite.Parts.TEXTBLOCK){
             TextBlock textBlock = new TextBlock();
             List<String> sentence = new ArrayList<>();
@@ -32,8 +33,7 @@ public class ParseTextBlock extends ParseHandler{
         }else if(this.nextParse != null){
             return this.nextParse.parse(data,type);
         }
-        //TODO throw my exception and it add in log
-        return null;
+        throw new MyException("I can't parse text block with type  = " + type);
     }
 
 }
