@@ -13,4 +13,8 @@ public class Word extends Composite {
     public String toString() {
         return word;
     }
+
+    public String getWord() {
+        return word;
+    }
 }
