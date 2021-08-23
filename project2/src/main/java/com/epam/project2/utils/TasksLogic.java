@@ -1,6 +1,7 @@
 package com.epam.project2.utils;
 
 import com.epam.project2.composite.Composite;
+import com.epam.project2.composite.Sentence;
 import com.epam.project2.composite.Text;
 import com.epam.project2.composite.Word;
 
@@ -41,6 +42,21 @@ public class TasksLogic {
             count = Math.max(count,stringIntegerEntry.getValue());
         }
         return count;
+    }
+
+    public void secondTaskLogic(){
+        List<Sentence> sorted= new ArrayList<>();
+        for (Composite block: text.getList()) {
+            if (block.getType() == Composite.Parts.TEXTBLOCK) {
+                for (Composite sentence : block.getList()) {
+                    sorted.add((Sentence)sentence);
+                }
+            }
+        }
+        Collections.sort(sorted);
+        for (Sentence sentence : sorted) {
+            System.out.println(sentence);
+        }
     }
 
 

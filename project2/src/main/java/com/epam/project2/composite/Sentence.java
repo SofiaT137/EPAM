@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Sentence extends Composite {
+public class Sentence extends Composite implements Comparable<Sentence> {
+
+    private int countWords;
 
     public Sentence() {
         this.list = new ArrayList<Composite>();
         this.type = Parts.SENTENCE;
+        countWords = 0;
     }
 
     @Override
@@ -18,6 +21,10 @@ public class Sentence extends Composite {
 
     public void add(Composite composite) {
         list.add(composite);
+        if (composite.getType() == Parts.WORD){
+           this.countWords++;
+        }
+
     }
 
     @Override
@@ -35,5 +42,10 @@ public class Sentence extends Composite {
             sb.append(list.get(i));
         }
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Sentence o) {
+        return this.countWords - o.countWords;
     }
 }
