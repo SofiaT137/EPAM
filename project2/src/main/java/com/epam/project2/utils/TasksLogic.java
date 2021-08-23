@@ -14,17 +14,17 @@ public class TasksLogic {
 
     public int firstTaskLogic(){
         List<Composite> listOfBlocks = text.getList();
-        HashMap<String,Integer> mapOfWords = new HashMap<>();
+        HashMap<Word, Integer> mapOfWords = new HashMap<>();
         for (Composite block: listOfBlocks) {
             if (block.getType() == Composite.Parts.TEXTBLOCK){
                 for (Composite sentence : block.getList()) {
-                    HashSet<String> setOfWords = new HashSet<>();
+                    HashSet<Word> setOfWords = new HashSet<>();
                     for (Composite part : sentence.getList()) {
                       if (part.getType() == Composite.Parts.WORD){
-                          setOfWords.add(((Word)part).getWord());
+                          setOfWords.add((Word)part);
                       }
                     }
-                    for (String word : setOfWords) {
+                    for (Word word : setOfWords) {
                         if (mapOfWords.containsKey(word)){
                             mapOfWords.put(word,mapOfWords.get(word)+1);
                         } else {
@@ -35,7 +35,7 @@ public class TasksLogic {
             }
         }
         int count = 0;
-        for (Map.Entry<String, Integer> stringIntegerEntry : mapOfWords.entrySet()) {
+        for (Map.Entry<Word, Integer> stringIntegerEntry : mapOfWords.entrySet()) {
             count = Math.max(count,stringIntegerEntry.getValue());
         }
         return count;
@@ -57,7 +57,7 @@ public class TasksLogic {
     }
 
     public void forthTaskLogic(int length) {
-        HashSet<String> setOfWords = new HashSet<>();
+        HashSet<Word> setOfWords = new HashSet<>();
         for (Composite block : text.getList()) {
             if (block.getType() != Composite.Parts.TEXTBLOCK) {
                 continue;
@@ -73,14 +73,14 @@ public class TasksLogic {
                     if (lastChar.getItem().equals("?")) {
                         for (Composite part : sentencePart) {
                             if (part.getType() == Composite.Parts.WORD && ((Word) part).getWord().length() == length) {
-                                setOfWords.add(((Word) part).getWord());
+                                setOfWords.add((Word) part);
                             }
                         }
                     }
                 }
             }
         }
-        for (String setOfWord : setOfWords) {
+        for (Word setOfWord : setOfWords) {
             System.out.println(setOfWord);
         }
     }

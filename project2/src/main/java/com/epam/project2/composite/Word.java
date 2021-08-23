@@ -20,4 +20,16 @@ public class Word extends Composite {
         return word;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Word)) return false;
+        Word word1 = (Word) o;
+        return getWord().equals(word1.getWord());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getWord());
+    }
 }

@@ -24,7 +24,7 @@ public class Main {
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("Please, enter the path of file (D:\\example1.txt)");
+            System.out.println("Please, enter the path of input file (example, D:\\example1.txt)");
             File file = new File(reader.readLine());
             List<String> list = Reader.getTextLine(file);
 
@@ -34,7 +34,7 @@ public class Main {
             ParseText parseText = new ParseText(parseCodeBlock);
 
             Text text = (Text) parseText.parse(list, Composite.Parts.TEXT);
-            System.out.println("Please, enter the path of file (D:\\example2.txt)");
+            System.out.println("Please, enter the path of output file (example, D:\\example2.txt)");
             File outFile = new File(reader.readLine());
             Writer.writeTextLine(text, outFile);
 
@@ -44,7 +44,9 @@ public class Main {
             System.out.println("Second task: ");
             tasksLogic.secondTaskLogic();
             System.out.println("Forth task: ");
-            tasksLogic.forthTaskLogic(5);
+            System.out.println("Please, enter the wished number of letters: ");
+            int number = Integer.parseInt(reader.readLine());
+            tasksLogic.forthTaskLogic(number);
         }
         catch (IOException e){
             logger.fatal(e.getMessage());
