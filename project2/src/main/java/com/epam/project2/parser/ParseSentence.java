@@ -5,6 +5,7 @@ import com.epam.project2.composite.Composite;
 import com.epam.project2.composite.Punctuation;
 import com.epam.project2.composite.Sentence;
 import com.epam.project2.composite.Word;
+import com.epam.project2.exception.MyException;
 
 import java.util.List;
 

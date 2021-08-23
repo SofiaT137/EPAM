@@ -2,6 +2,7 @@ package com.epam.project2.parser;
 
 import com.epam.project2.composite.Composite;
 import com.epam.project2.composite.TextBlock;
+import com.epam.project2.exception.MyException;
 
 import java.util.ArrayList;
 import java.util.List;

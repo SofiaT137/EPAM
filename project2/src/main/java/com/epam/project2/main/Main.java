@@ -6,7 +6,7 @@ import com.epam.project2.parser.ParseCodeBlock;
 import com.epam.project2.parser.ParseSentence;
 import com.epam.project2.parser.ParseText;
 import com.epam.project2.parser.ParseTextBlock;
-import com.epam.project2.parser.MyException;
+import com.epam.project2.exception.MyException;
 import com.epam.project2.reader.Reader;
 import com.epam.project2.logic.TasksLogic;
 import com.epam.project2.writer.Writer;
@@ -57,6 +57,5 @@ public class Main {
         } catch (MyException e){
             logger.error("My exception: " + e.getMessage());
         }
-
     }
 }

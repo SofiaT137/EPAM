@@ -1,4 +1,4 @@
-package com.epam.project2.parser;
+package com.epam.project2.exception;
 
 public class MyException extends Exception {
     public MyException(String message) {
