@@ -1,8 +1,18 @@
 package com.epam.project2.utils;
 
-import com.epam.project2.composite.*;
 
-import java.util.*;
+import com.epam.project2.composite.Composite;
+import com.epam.project2.composite.Sentence;
+import com.epam.project2.composite.Text;
+import com.epam.project2.composite.Word;
+import com.epam.project2.composite.Punctuation;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 public class TasksLogic {
 

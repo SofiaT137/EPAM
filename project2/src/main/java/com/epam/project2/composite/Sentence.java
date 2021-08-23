@@ -1,7 +1,6 @@
 package com.epam.project2.composite;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Sentence extends Composite implements Comparable<Sentence> {

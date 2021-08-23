@@ -1,9 +1,12 @@
 package com.epam.project2.parser;
 
-import com.epam.project2.composite.*;
+
+import com.epam.project2.composite.Composite;
+import com.epam.project2.composite.Punctuation;
+import com.epam.project2.composite.Sentence;
+import com.epam.project2.composite.Word;
 import com.epam.project2.utils.MyException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ParseSentence extends ParseHandler {
