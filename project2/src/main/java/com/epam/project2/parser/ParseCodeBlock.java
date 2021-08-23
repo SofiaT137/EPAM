@@ -3,7 +3,6 @@ package com.epam.project2.parser;
 import com.epam.project2.composite.CodeBlock;
 import com.epam.project2.composite.CodeLine;
 import com.epam.project2.composite.Composite;
-import com.epam.project2.utils.MyException;
 
 import java.util.List;
 

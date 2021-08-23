@@ -1,4 +1,4 @@
-package com.epam.project2.utils;
+package com.epam.project2.logic;
 
 
 import com.epam.project2.composite.Composite;

@@ -6,10 +6,10 @@ import com.epam.project2.parser.ParseCodeBlock;
 import com.epam.project2.parser.ParseSentence;
 import com.epam.project2.parser.ParseText;
 import com.epam.project2.parser.ParseTextBlock;
-import com.epam.project2.utils.MyException;
-import com.epam.project2.utils.Reader;
-import com.epam.project2.utils.TasksLogic;
-import com.epam.project2.utils.Writer;
+import com.epam.project2.parser.MyException;
+import com.epam.project2.reader.Reader;
+import com.epam.project2.logic.TasksLogic;
+import com.epam.project2.writer.Writer;
 
 
 import java.io.BufferedReader;

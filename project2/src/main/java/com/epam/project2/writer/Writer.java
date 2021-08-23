@@ -1,6 +1,7 @@
-package com.epam.project2.utils;
+package com.epam.project2.writer;
 
 import com.epam.project2.composite.Text;
+import com.epam.project2.reader.Reader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
