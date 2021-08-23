@@ -1,9 +1,6 @@
 package com.epam.project2.utils;
 
-import com.epam.project2.composite.Composite;
-import com.epam.project2.composite.Sentence;
-import com.epam.project2.composite.Text;
-import com.epam.project2.composite.Word;
+import com.epam.project2.composite.*;
 
 import java.util.*;
 
@@ -59,5 +56,32 @@ public class TasksLogic {
         }
     }
 
-
+    public void forthTaskLogic(int length) {
+        HashSet<String> setOfWords = new HashSet<>();
+        for (Composite block : text.getList()) {
+            if (block.getType() != Composite.Parts.TEXTBLOCK) {
+                continue;
+            }
+            for (Composite sentence : block.getList()) {
+                List<Composite> sentencePart = sentence.getList();
+                if (sentence.getList().size() <= 1) {
+                    continue;
+                }
+                Composite lastPart = sentencePart.get(sentencePart.size() - 1);
+                if (lastPart.getType() == Composite.Parts.PUNCTUATION) {
+                    Punctuation lastChar = (Punctuation) lastPart;
+                    if (lastChar.getItem().equals("?")) {
+                        for (Composite part : sentencePart) {
+                            if (part.getType() == Composite.Parts.WORD && ((Word) part).getWord().length() == length) {
+                                setOfWords.add(((Word) part).getWord());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (String setOfWord : setOfWords) {
+            System.out.println(setOfWord);
+        }
+    }
 }

@@ -1,5 +1,7 @@
 package com.epam.project2.composite;
 
+import java.util.Objects;
+
 public class Word extends Composite {
 
     private String word;
@@ -17,4 +19,5 @@ public class Word extends Composite {
     public String getWord() {
         return word;
     }
+
 }

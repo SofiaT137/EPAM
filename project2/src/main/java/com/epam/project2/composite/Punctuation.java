@@ -14,4 +14,7 @@ public class Punctuation extends Composite {
         return item;
     }
 
+    public String getItem() {
+        return item;
+    }
 }
