@@ -2,6 +2,8 @@
 .idea/
 out/
 */logs/
+project1/
+project2/
 
 # Compiled class file
 *.class
