@@ -5,17 +5,18 @@ import java.util.Objects;
 public class Book {
 
     private String name;
+    private String author;
     private int yearOfPublishing;
     private int pageCount;
     private boolean isAvailableToTakeHome;
     private boolean isTaken;
 
-    public Book(String name, int yearOfPublishing, int pageCount, boolean isAvailableToTakeHome, boolean isTaken) {
+    public Book(String name,String author, int yearOfPublishing, int pageCount, boolean isAvailableToTakeHome) {
         this.name = name;
+        this.author = author;
         this.yearOfPublishing = yearOfPublishing;
         this.pageCount = pageCount;
         this.isAvailableToTakeHome = isAvailableToTakeHome;
-        this.isTaken = isTaken;
     }
 
     public String getName() {
@@ -24,6 +25,14 @@ public class Book {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public int getYearOfPublishing() {
