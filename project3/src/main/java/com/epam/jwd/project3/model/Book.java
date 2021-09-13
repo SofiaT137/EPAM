@@ -2,9 +2,8 @@ package com.epam.jwd.project3.model;
 
 import java.util.Objects;
 
-public class Book {
+public class Book extends Composite{
 
-    private String name;
     private String author;
     private int yearOfPublishing;
     private int pageCount;
@@ -17,6 +16,7 @@ public class Book {
         this.yearOfPublishing = yearOfPublishing;
         this.pageCount = pageCount;
         this.isAvailableToTakeHome = isAvailableToTakeHome;
+        this.isTaken = false;
     }
 
     public String getName() {
@@ -78,5 +78,17 @@ public class Book {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getYearOfPublishing(), getPageCount(), isAvailableToTakeHome());
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", yearOfPublishing=" + yearOfPublishing +
+                ", pageCount=" + pageCount +
+                ", isAvailableToTakeHome=" + isAvailableToTakeHome +
+                ", isTaken=" + isTaken +
+                '}';
     }
 }
