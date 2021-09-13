@@ -1,6 +1,7 @@
 # ignore folders
 .idea/
 out/
+*/logs/
 
 # Compiled class file
 *.class
