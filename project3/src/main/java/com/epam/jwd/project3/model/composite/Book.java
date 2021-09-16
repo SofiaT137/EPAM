@@ -1,9 +1,10 @@
-package com.epam.jwd.project3.model;
+package com.epam.jwd.project3.model.composite;
 
 import java.util.Objects;
 
-public class Book extends Composite{
+public class Book extends Composite {
 
+    private String name;
     private String author;
     private int yearOfPublishing;
     private int pageCount;
@@ -72,18 +73,17 @@ public class Book extends Composite{
         if (this == o) return true;
         if (!(o instanceof Book)) return false;
         Book book = (Book) o;
-        return getYearOfPublishing() == book.getYearOfPublishing() && getPageCount() == book.getPageCount() && isAvailableToTakeHome() == book.isAvailableToTakeHome() && getName().equals(book.getName());
+        return getYearOfPublishing() == book.getYearOfPublishing() && getPageCount() == book.getPageCount() && isAvailableToTakeHome() == book.isAvailableToTakeHome() && isTaken() == book.isTaken() && getName().equals(book.getName()) && getAuthor().equals(book.getAuthor());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getYearOfPublishing(), getPageCount(), isAvailableToTakeHome());
+        return Objects.hash(getName(), getAuthor(), getYearOfPublishing(), getPageCount(), isAvailableToTakeHome(), isTaken());
     }
 
     @Override
     public String toString() {
-        return "Book{" +
-                "name='" + name + '\'' +
+        return   "name='" + name + '\'' +
                 ", author='" + author + '\'' +
                 ", yearOfPublishing=" + yearOfPublishing +
                 ", pageCount=" + pageCount +

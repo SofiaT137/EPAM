@@ -1,5 +1,10 @@
 package com.epam.jwd.project3.service.api;
 
+import com.epam.jwd.project3.model.composite.Book;
+
+/**
+ *
+ */
 public interface BookService {
 
     void createGoBooksList();
@@ -8,5 +13,7 @@ public interface BookService {
     void createPythonBooksList();
     void createRubyBooksList();
 
-    void print();
+    void printLibrary();
+    void printHall();
+    Book getBookFromLibrary(int shellIndex, int bookIndex);
 }

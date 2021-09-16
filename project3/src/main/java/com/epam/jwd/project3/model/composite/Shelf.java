@@ -1,12 +1,14 @@
-package com.epam.jwd.project3.model;
+package com.epam.jwd.project3.model.composite;
+
+import com.epam.jwd.project3.model.composite.Composite;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Shell extends Composite{
+public class Shelf extends Composite {
 
-    public Shell(String shellName){
-        this.name = shellName;
+    public Shelf(String shelfName){
+        this.name = shelfName;
         this.list = new ArrayList<>();
     }
 
@@ -19,15 +21,15 @@ public class Shell extends Composite{
         list.add(composite);
     }
 
-    public void setShellName(String shellName) {
-        this.name = shellName;
+    public void setShellName(String shelfName) {
+        this.name = shelfName;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Composite composite : list) {
-            sb.append(composite).append(" ");
+            sb.append(composite).append("\n");
         }
 
         return sb.toString();

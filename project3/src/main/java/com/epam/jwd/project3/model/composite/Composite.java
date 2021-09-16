@@ -1,4 +1,4 @@
-package com.epam.jwd.project3.model;
+package com.epam.jwd.project3.model.composite;
 
 import java.util.List;
 
@@ -9,5 +9,9 @@ public class Composite {
 
     public List<Composite> getList() {
         return null;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -1,7 +1,7 @@
 package com.epam.jwd.project3.service.book_factory;
 
-import com.epam.jwd.project3.model.Book;
-import com.epam.jwd.project3.model.Composite;
+import com.epam.jwd.project3.model.composite.Book;
+import com.epam.jwd.project3.model.composite.Composite;
 import com.epam.jwd.project3.service.api.BookFactory;
 
 public class RubyBookFactory implements BookFactory {

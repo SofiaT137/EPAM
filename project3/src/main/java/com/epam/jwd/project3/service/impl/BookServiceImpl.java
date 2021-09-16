@@ -1,14 +1,13 @@
 package com.epam.jwd.project3.service.impl;
 
-import com.epam.jwd.project3.model.Book;
-import com.epam.jwd.project3.model.Composite;
-import com.epam.jwd.project3.model.Library;
-import com.epam.jwd.project3.model.Shell;
+import com.epam.jwd.project3.model.composite.Book;
+import com.epam.jwd.project3.model.composite.Composite;
+import com.epam.jwd.project3.model.composite.Library;
+import com.epam.jwd.project3.model.composite.Shelf;
 import com.epam.jwd.project3.service.api.BookFactory;
 import com.epam.jwd.project3.service.api.BookService;
 import com.epam.jwd.project3.service.book_factory.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
@@ -47,22 +46,53 @@ public class BookServiceImpl implements BookService {
         fillLibrary(getListOfBooks(rubyFactory,"Ruby"));
     }
 
-    @Override
-    public void print() {
-        System.out.println(library);
+    public void printLibrary() {
+        System.out.println(library.getName());
+        List<Composite> shelf_list = library.getList();
+        for (int i = 0; i < shelf_list.size(); i++) {
+            Composite shelf = shelf_list.get(i);
+            System.out.println("#" + i + " "+shelf.getName());
+            List<Composite> books = shelf.getList();
+            for (int j = 0; j < books.size(); j++) {
+                Book book = (Book) books.get(j);
+                if (!book.isTaken()){
+                    System.out.println("---#" + j +" "+ book);
+                }
+            }
+        }
+    }
+
+    public void printHall() {
+        List<Composite> shelf_list = library.getList();
+        for (int i = 0; i < shelf_list.size(); i++) {
+            Composite shelf = shelf_list.get(i);
+            List<Composite> books = shelf.getList();
+            for (int j = 0; j < books.size(); j++) {
+                Book book = (Book) books.get(j);
+                if (!book.isAvailableToTakeHome() && book.isTaken()){
+                    System.out.println("---#" + j +" "+ book);
+                }
+            }
+        }
     }
 
 
-    private void fillLibrary(Composite shell) {
-        library.add(shell);
+    private void fillLibrary(Composite shelf) {
+        library.add(shelf);
     }
 
 
-    private Composite getListOfBooks(BookFactory bookFactory,String shellName) {
-        Shell shell = new Shell(shellName);
-        shell.add(bookFactory.createReadingRoomBook());
-        shell.add(bookFactory.createTakingHomeBook());
-        return shell;
+    private Composite getListOfBooks(BookFactory bookFactory,String shelfName) {
+        Shelf shelf = new Shelf(shelfName);
+        shelf.add(bookFactory.createReadingRoomBook());
+        shelf.add(bookFactory.createTakingHomeBook());
+        return shelf;
+    }
+
+    public Book getBookFromLibrary(int shellIndex, int bookIndex){
+        Book book = (Book) library.getList().get(shellIndex).getList().get(bookIndex);
+        book.setTaken(true);
+        return book;
     }
 
 
