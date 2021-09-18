@@ -7,13 +7,13 @@ import com.epam.jwd.project3.model.user.User;
 import com.epam.jwd.project3.repository.impl.UserRepositoryImpl;
 import com.epam.jwd.project3.service.api.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class UserServiceImpl implements UserService {
 
     private User user;
-    private Library library;
     private UserRepositoryImpl userRepository;
 
     public UserServiceImpl(UserRepositoryImpl userRepository) {
@@ -22,23 +22,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registration(User user) {
+        this.user = user;
         userRepository.save(user);
     }
 
     @Override
     public User signIn(String userName) {
-       return userRepository.findByUserName(userName);
+       this.user = userRepository.findByUserName(userName);
+        return this.user;
     }
 
     @Override
-    public void exchangeBooksWithAnotherUser(User other,Book requestBook) {
+    public void exchangeBooksWithAnotherUser(User anotherUser,Book usersBook,Book requestBook) {
         List<Book> readerShelf = user.getReaderShelf();
-        for (Book book : readerShelf) {
-            if (book == requestBook && !(book.isAvailableToTakeHome())){
-                readerShelf.remove(requestBook);
-                other.getReaderShelf().add(requestBook);//можно ли ему добавить книгу
-            }
-        }
+        List<Book> anotherReaderShelf = anotherUser.getReaderShelf();
+        readerShelf.remove(usersBook);
+        readerShelf.add(requestBook);
+        anotherReaderShelf.remove(requestBook);
+        anotherReaderShelf.add(usersBook);
     }
 
     @Override
@@ -56,13 +57,37 @@ public class UserServiceImpl implements UserService {
             throw new NoSuchElementException();
         }
         user.getReaderShelf().remove(book);
-        List<Composite> shelf = library.getList();
-        for (Composite books : shelf) {
-            if (books.equals(book)) {
-                Book currentBook = (Book) books;
-                currentBook.setTaken(false);
+    }
+
+
+    public List<Book> getBooksAvailableToExchange(){
+      List<Book> readersBooks = user.getReaderShelf();
+      List<Book> booksAvailableToExchange = new ArrayList<>();
+        for (int i = 0; i < readersBooks.size(); i++) {
+            if (!readersBooks.get(i).isAvailableToTakeHome()){
+                booksAvailableToExchange.add(readersBooks.get(i));
             }
         }
+        return booksAvailableToExchange;
+    }
+
+    public void printBooksAvailableToExchange(List<Book> booksAvailableToExchange){
+        for (int i = 0; i < booksAvailableToExchange.size(); i++) {
+            System.out.println("---#" + i + " " + booksAvailableToExchange.get(i));
+        }
+    }
+
+    public User getUserForExchanging(Book book){
+        List<User> listOfAllUser = userRepository.getUserStorage();
+        for (User user : listOfAllUser) {
+            List<Book> books = user.getReaderShelf();
+            for (Book existBook : books) {
+                if (existBook == book){
+                    return user;
+                }
+            }
+        }
+        throw new NoSuchElementException(" I can't find this user");
     }
 
     @Override

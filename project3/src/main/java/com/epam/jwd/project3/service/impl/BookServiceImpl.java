@@ -8,6 +8,7 @@ import com.epam.jwd.project3.service.api.BookFactory;
 import com.epam.jwd.project3.service.api.BookService;
 import com.epam.jwd.project3.service.book_factory.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
@@ -62,7 +63,8 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    public void printHall() {
+    public List<Book> getReadingHall(){
+        List<Book> readingHall = new ArrayList<>();
         List<Composite> shelf_list = library.getList();
         for (int i = 0; i < shelf_list.size(); i++) {
             Composite shelf = shelf_list.get(i);
@@ -70,12 +72,27 @@ public class BookServiceImpl implements BookService {
             for (int j = 0; j < books.size(); j++) {
                 Book book = (Book) books.get(j);
                 if (!book.isAvailableToTakeHome() && book.isTaken()){
-                    System.out.println("---#" + j +" "+ book);
+                    readingHall.add(book);
+                }
+            }
+        }
+
+        return readingHall;
+    }
+
+    public void printHall(List<Book> getReadingHall,List<Book> getUsersBooks) {
+        for (int i = 0; i < getReadingHall.size(); i++) {
+            for (int j = 0; j < getUsersBooks.size(); j++) {
+                if (!getReadingHall.get(i).equals(getUsersBooks.get(j))){
+                    System.out.println("---#" + i +" "+ getReadingHall.get(i));
                 }
             }
         }
     }
 
+    public Book getBookFromReadingHall(List<Book> getReadingHall,int requiredNumber){
+        return getReadingHall.get(requiredNumber);
+    }
 
     private void fillLibrary(Composite shelf) {
         library.add(shelf);
@@ -95,6 +112,17 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
-
+    public void returnBookToLibrary(Book bookToReturn){
+        List<Composite> libraryList = library.getList();
+        for (Composite shelf : libraryList) {
+            List<Composite> books_list = shelf.getList();
+            for (Composite composite : books_list) {
+                Book book = (Book) composite;
+                if (book == bookToReturn){
+                    book.setTaken(false);
+                }
+            }
+        }
+    }
 
 }

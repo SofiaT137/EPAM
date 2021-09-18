@@ -37,6 +37,7 @@ public class User {
     public List<Book> getReaderShelf() {
         return readerShelf;
     }
+
     public int getReaderShelfSize() {
         return readerShelf.size();
     }
@@ -73,7 +74,7 @@ public class User {
         }
         for (int i = 0; i < readerShelf.size(); i++) {
             Book book = readerShelf.get(i);
-            System.out.println(i + book.toString());
+            System.out.println("---#"+ i + " " + book.toString());
         }
     }
 }

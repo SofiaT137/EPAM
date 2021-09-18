@@ -14,6 +14,7 @@ public class UserMenu {
             1.Take the book
             2.Go to the Reading Hall
             3.Return the book
+            4.Sign out;
             """;
 
     public static void getStartMenu() {

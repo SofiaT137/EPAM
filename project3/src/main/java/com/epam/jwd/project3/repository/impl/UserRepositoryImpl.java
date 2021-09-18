@@ -15,6 +15,10 @@ public class UserRepositoryImpl implements UserRepository {
         userStorage.add(user);
     }
 
+    public List<User> getUserStorage() {
+        return userStorage;
+    }
+
     @Override
     public User findByUserName(String userName) {
         for (User user : userStorage) {
