@@ -34,6 +34,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void exchangeBooksWithAnotherUser(User anotherUser,Book usersBook,Book requestBook) {
+        if (usersBook == requestBook){
+            return;
+        }
         List<Book> readerShelf = user.getReaderShelf();
         List<Book> anotherReaderShelf = anotherUser.getReaderShelf();
         readerShelf.remove(usersBook);

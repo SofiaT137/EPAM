@@ -29,7 +29,7 @@ public class Controller {
 
         UserRepositoryImpl userRepository = new UserRepositoryImpl();
         UserService userService = new UserServiceImpl(userRepository);
-        UserMenu userMenu = new UserMenuValidator(new UserMenuImpl(),userRepository);
+        UserMenu userMenu = new UserMenuValidator(new UserMenuImpl(),userRepository,bookService);
 
         while (true) {
 
@@ -37,10 +37,13 @@ public class Controller {
             int userChoice = userMenu.getRequiredNumber();
 
             if (userChoice == 1) {
-                String name = userMenu.getUniqueName();
+                String name = userMenu.getUniqueForEntranceName();
+                if (name.isEmpty()){
+                    continue;
+                }
                 currentUser = userService.signIn(name);
             } else if (userChoice == 2) {
-                String name = userMenu.getUniqueName();
+                String name = userMenu.getUniqueForRegistrationName();
                 currentUser = new User(name, false);
                 userService.registration(currentUser);
             } else {
@@ -51,6 +54,7 @@ public class Controller {
             System.out.println(UserMenuImpl.BOOK_BALANCE + currentUserBookShelfSize);
             currentUser.showUserShelf();
             System.out.println(UserMenuImpl.CAN_TAKE + (2 - currentUserBookShelfSize) + UserMenuImpl.BOOKS);
+
 
             while (true) {
 
@@ -67,6 +71,10 @@ public class Controller {
                 } else if (userMainMenuChoice == 2) {
                     System.out.println(UserMenuImpl.BOOKS_FROM_READING_HALL);
                     List<Book> available = userService.getBooksAvailableToExchange();
+                    if (available.size() == 0){
+                        System.out.println(UserMenuImpl.WHAT_ARE_DOING);
+                        continue;
+                    }
                     userService.printBooksAvailableToExchange(available);
                     int requiredNumberBookUser = userMenu.getNumberBookForExchange();
                     Book bookToExchange = currentUser.getReaderShelf().get(requiredNumberBookUser);

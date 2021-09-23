@@ -23,12 +23,7 @@ public class UserMenuImpl implements UserMenu {
             4.Sign out;
             """;
 
-    public void getStartMenu() {
-        System.out.println(MENU_FOR_START);
-    }
-    public void getMainLogicMenu() {
-        System.out.println(MENU_FOR_MAIN_LOGIC);
-    }
+
     public static String SELECT_THE_NUMBER = "Please, enter the action from menu:";
     public static String ENTER_THE_UNIQUE_NAME = "Enter the unique user name";
     public static String BOOK_BALANCE = "Your book balance : ";
@@ -40,15 +35,27 @@ public class UserMenuImpl implements UserMenu {
     public static String NUMBER_BOOK_FOR_EXCHANGE = "\nPlease, enter the number of required book for exchange:";
     public static String NUMBER_BOOK_EXCHANGE_HALL = "\nPlease, enter the number of required book from reading hall:";
     public static String YOUR_BOOKS = "Your books: ";
+    public static String WHAT_ARE_DOING = "What are you doing here?, you have no book from reading hall. Please,take some books";
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+    public void getStartMenu() {
+        System.out.println(MENU_FOR_START);
+    }
+    public void getMainLogicMenu() {
+        System.out.println(MENU_FOR_MAIN_LOGIC);
+    }
 
     public int getRequiredNumber() throws IOException {
         System.out.println(SELECT_THE_NUMBER);
        return Integer.parseInt(reader.readLine());
     }
+    public String getUniqueForRegistrationName() throws IOException {
+        System.out.println(ENTER_THE_UNIQUE_NAME);
+        return reader.readLine();
+    }
 
-    public String getUniqueName() throws IOException {
+    public String getUniqueForEntranceName() throws IOException {
         System.out.println(ENTER_THE_UNIQUE_NAME);
         return reader.readLine();
     }

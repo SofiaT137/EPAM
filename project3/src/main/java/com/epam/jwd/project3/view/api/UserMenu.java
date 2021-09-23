@@ -9,7 +9,8 @@ public interface UserMenu {
     public void getStartMenu();
     public void getMainLogicMenu();
     public int getRequiredNumber() throws IOException;
-    public String getUniqueName() throws IOException;
+    public String getUniqueForRegistrationName() throws IOException;
+    public String getUniqueForEntranceName() throws  IOException;
     public int getRequiredMainMenuNumber() throws IOException;
     public int getShelfNumber() throws IOException;
     public int getBookNumber() throws IOException;
