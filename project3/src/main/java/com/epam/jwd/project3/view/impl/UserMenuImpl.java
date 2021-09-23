@@ -1,10 +1,12 @@
-package com.epam.jwd.project3.view;
+package com.epam.jwd.project3.view.impl;
+
+import com.epam.jwd.project3.view.api.UserMenu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class UserMenu {
+public class UserMenuImpl implements UserMenu {
 
     private static final String MENU_FOR_START = """
             Select:
@@ -74,9 +76,5 @@ public class UserMenu {
         System.out.println(NUMBER_BOOK_EXCHANGE_HALL);
         return Integer.parseInt(reader.readLine());
     }
-
-    
-    
-    
 
 }
