@@ -8,7 +8,9 @@ import com.epam.jwd.project3.service.api.BookService;
 import com.epam.jwd.project3.service.api.UserService;
 import com.epam.jwd.project3.service.impl.BookServiceImpl;
 import com.epam.jwd.project3.service.impl.UserServiceImpl;
+import com.epam.jwd.project3.view.api.UserMenu;
 import com.epam.jwd.project3.view.impl.UserMenuImpl;
+import com.epam.jwd.project3.view.validator.UserMenuValidator;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,19 +27,20 @@ public class Controller {
         bookService.createRubyBooksList();
         bookService.createPythonBooksList();
 
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl());
-        UserMenuImpl userMenuImpl = new UserMenuImpl();
+        UserRepositoryImpl userRepository = new UserRepositoryImpl();
+        UserService userService = new UserServiceImpl(userRepository);
+        UserMenu userMenu = new UserMenuValidator(new UserMenuImpl(),userRepository);
 
         while (true) {
 
-            userMenuImpl.getStartMenu();
-            int userChoice = userMenuImpl.getRequiredNumber();
+            userMenu.getStartMenu();
+            int userChoice = userMenu.getRequiredNumber();
 
             if (userChoice == 1) {
-                String name = userMenuImpl.getUniqueName();
+                String name = userMenu.getUniqueName();
                 currentUser = userService.signIn(name);
             } else if (userChoice == 2) {
-                String name = userMenuImpl.getUniqueName();
+                String name = userMenu.getUniqueName();
                 currentUser = new User(name, false);
                 userService.registration(currentUser);
             } else {
@@ -51,26 +54,26 @@ public class Controller {
 
             while (true) {
 
-                userMenuImpl.getMainLogicMenu();
+                userMenu.getMainLogicMenu();
 
-                int userMainMenuChoice= userMenuImpl.getRequiredMainMenuNumber();
+                int userMainMenuChoice= userMenu.getRequiredMainMenuNumber();
 
                 if (userMainMenuChoice == 1) {
                     bookService.printLibrary();
-                    int requiredNumberShelf = userMenuImpl.getShelfNumber();
-                    int requiredNumberBook = userMenuImpl.getBookNumber();
+                    int requiredNumberShelf = userMenu.getShelfNumber();
+                    int requiredNumberBook = userMenu.getBookNumber();
                     Book book = bookService.getBookFromLibrary(requiredNumberShelf, requiredNumberBook);
                     userService.takeTheBook(book);
                 } else if (userMainMenuChoice == 2) {
                     System.out.println(UserMenuImpl.BOOKS_FROM_READING_HALL);
                     List<Book> available = userService.getBooksAvailableToExchange();
                     userService.printBooksAvailableToExchange(available);
-                    int requiredNumberBookUser = userMenuImpl.getNumberBookForExchange();
+                    int requiredNumberBookUser = userMenu.getNumberBookForExchange();
                     Book bookToExchange = currentUser.getReaderShelf().get(requiredNumberBookUser);
                     if (!bookToExchange.isAvailableToTakeHome()) {
                         List<Book> booksReadingHall = bookService.getReadingHall();
                         bookService.printHall(booksReadingHall, available);
-                        int requiredNumberBookHall = userMenuImpl.getNumberBookHallForExchange();
+                        int requiredNumberBookHall = userMenu.getNumberBookHallForExchange();
                         Book bookFromAnotherUser = bookService.getBookFromReadingHall(booksReadingHall, requiredNumberBookHall);
                         User userForExchanging = userService.getUserForExchanging(bookFromAnotherUser);
                         userService.exchangeBooksWithAnotherUser(userForExchanging, bookToExchange, bookFromAnotherUser);
@@ -78,7 +81,7 @@ public class Controller {
                 } else if (userMainMenuChoice == 3) {
                     System.out.println(UserMenuImpl.YOUR_BOOKS);
                     currentUser.showUserShelf();
-                    int requiredNumberBookUser = userMenuImpl.getBookNumber();
+                    int requiredNumberBookUser = userMenu.getBookNumber();
                     Book bookToReturn = currentUser.getReaderShelf().get(requiredNumberBookUser);
                     userService.returnTheBook(bookToReturn);
                     bookService.returnBookToLibrary(bookToReturn);
