@@ -70,6 +70,7 @@ public class User {
 
     public void showUserShelf(){
         if (readerShelf.size() == 0){
+            System.out.println("You have no books! \uD83D\uDC81");
             return;
         }
         for (int i = 0; i < readerShelf.size(); i++) {
