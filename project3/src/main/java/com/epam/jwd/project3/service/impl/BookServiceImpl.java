@@ -31,12 +31,14 @@ public class BookServiceImpl implements BookService {
         fillLibrary(getListOfBooks(javaFactory,"Java"));
     }
 
+    @Override
     public void createJavaScriptBooksList() {
         BookFactory javaScriptFactory = new JavaScriptBookFactory();
         fillLibrary(getListOfBooks(javaScriptFactory,"JavaScript"));
     }
 
-    public void createPythonBooksList() {
+    @Override
+        public void createPythonBooksList() {
         BookFactory pythonFactory = new PythonBookFactory();
         fillLibrary(getListOfBooks(pythonFactory,"Python"));
     }
@@ -47,6 +49,7 @@ public class BookServiceImpl implements BookService {
         fillLibrary(getListOfBooks(rubyFactory,"Ruby"));
     }
 
+    @Override
     public void printLibrary() {
         System.out.println(library.getName());
         List<Composite> shelf_list = library.getList();
@@ -63,6 +66,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
     public List<Book> getReadingHall(){
         List<Book> readingHall = new ArrayList<>();
         List<Composite> shelf_list = library.getList();
@@ -79,7 +83,7 @@ public class BookServiceImpl implements BookService {
         return readingHall;
     }
 
-    public void printHall(List<Book> getReadingHall,List<Book> getUsersBooks) {
+    public synchronized void printHall(List<Book> getReadingHall,List<Book> getUsersBooks) {
         for (int i = 0; i < getReadingHall.size(); i++) {
             for (int j = 0; j < getUsersBooks.size(); j++) {
                 if (!getReadingHall.get(i).equals(getUsersBooks.get(j))){
@@ -105,12 +109,14 @@ public class BookServiceImpl implements BookService {
         return shelf;
     }
 
+    @Override
     public Book getBookFromLibrary(int shellIndex, int bookIndex){
         Book book = (Book) library.getList().get(shellIndex).getList().get(bookIndex);
         book.setTaken(true);
         return book;
     }
 
+    @Override
     public void returnBookToLibrary(Book bookToReturn){
         List<Composite> libraryList = library.getList();
         for (Composite shelf : libraryList) {
@@ -123,5 +129,4 @@ public class BookServiceImpl implements BookService {
             }
         }
     }
-
 }
