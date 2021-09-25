@@ -21,7 +21,7 @@ public class UserMenuValidator implements UserMenu {
     private final static String CORRECT_BOOK_NEEDED = "Enter the correct book number(0,1): ";
     private final static String HALL_IS_EMPTY = "The Reading Hall is empty ";
     private final static String CORRECT_NUMBER_HALL_NEEDED = "Enter the correct book number from Reading hall: ";
-    private final static String CANNOT_FIND_THIS_NAME = "Cannot find this name in the library";
+    private final static String CORRECT_SECONDS_NEEDED = "Enter the positive number!";
 
     public UserMenuValidator(UserMenu userMenu, UserRepository userRepository, BookService service) {
         this.userMenu = userMenu;
@@ -142,5 +142,15 @@ public class UserMenuValidator implements UserMenu {
             }
             return bookForExchangeHall;
         }
+    }
+
+    @Override
+    public long getTime() throws IOException {
+       long seconds = this.userMenu.getTime();
+       if (seconds < 0){
+           System.out.println(CORRECT_SECONDS_NEEDED);
+           seconds = this.userMenu.getTime();
+       }
+       return seconds;
     }
 }

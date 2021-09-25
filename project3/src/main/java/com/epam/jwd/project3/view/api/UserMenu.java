@@ -16,4 +16,5 @@ public interface UserMenu {
     public int getBookNumber() throws IOException;
     public int getNumberBookForExchange() throws IOException;
     public int getNumberBookHallForExchange() throws IOException;
+    public long getTime() throws IOException;
 }

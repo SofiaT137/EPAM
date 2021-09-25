@@ -6,30 +6,37 @@ import com.epam.jwd.project3.model.composite.Library;
 import com.epam.jwd.project3.model.user.User;
 import com.epam.jwd.project3.repository.impl.UserRepositoryImpl;
 import com.epam.jwd.project3.service.api.UserService;
+import com.epam.jwd.project3.service.exception.FullReaderShelfException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Semaphore;
 
 public class UserServiceImpl implements UserService {
 
     private User user;
     private UserRepositoryImpl userRepository;
+    private Semaphore semaphore;
 
-    public UserServiceImpl(UserRepositoryImpl userRepository) {
+    private final String FULL_READER_SHELF = "No place to take another book. Please,return some books back!";
+
+    public UserServiceImpl(UserRepositoryImpl userRepository, Semaphore semaphore) {
+
         this.userRepository = userRepository;
+        this.semaphore = semaphore;
     }
 
     @Override
     public void registration(User user) {
-        this.user = user;
         userRepository.save(user);
     }
 
     @Override
-    public User signIn(String userName) {
+    public User signIn(String userName) throws InterruptedException {
+        semaphore.acquire();
        this.user = userRepository.findByUserName(userName);
-        return this.user;
+       return this.user;
     }
 
     @Override
@@ -46,10 +53,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void takeTheBook(Book book) {
+    public void takeTheBook(Book book) throws FullReaderShelfException {
         if(user.getReaderShelf().size() >= 2){
-//            throw new FullReaderShelfException("No place to take another book. Please,return some books back!");
-            return;
+            throw new FullReaderShelfException("No place to take another book. Please,return some books back!");
         }
         user.getReaderShelf().add(book);
     }
@@ -96,5 +102,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void signOut() {
         user.setActive(false);
+        semaphore.release();
     }
+
+
 }

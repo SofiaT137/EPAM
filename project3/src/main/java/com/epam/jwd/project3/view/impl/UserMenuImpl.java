@@ -36,6 +36,7 @@ public class UserMenuImpl implements UserMenu {
     public static String NUMBER_BOOK_EXCHANGE_HALL = "\nPlease, enter the number of required book from reading hall:";
     public static String YOUR_BOOKS = "Your books: ";
     public static String WHAT_ARE_DOING = "What are you doing here?, you have no book from reading hall. Please,take some books";
+    public static String HOW_MUCH_SECONDS = "Enter the number of seconds after which you will return the book";
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -82,6 +83,11 @@ public class UserMenuImpl implements UserMenu {
     public int getNumberBookHallForExchange() throws IOException {
         System.out.println(NUMBER_BOOK_EXCHANGE_HALL);
         return Integer.parseInt(reader.readLine());
+    }
+
+    public long getTime() throws IOException {
+        System.out.println(HOW_MUCH_SECONDS);
+        return Long.parseLong(reader.readLine());
     }
 
 }

@@ -6,6 +6,7 @@ import com.epam.jwd.project3.model.user.User;
 import com.epam.jwd.project3.repository.impl.UserRepositoryImpl;
 import com.epam.jwd.project3.service.api.BookService;
 import com.epam.jwd.project3.service.api.UserService;
+import com.epam.jwd.project3.service.exception.FullReaderShelfException;
 import com.epam.jwd.project3.service.impl.BookServiceImpl;
 import com.epam.jwd.project3.service.impl.UserServiceImpl;
 import com.epam.jwd.project3.view.api.UserMenu;
@@ -14,10 +15,11 @@ import com.epam.jwd.project3.view.validator.UserMenuValidator;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 public class Controller {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         BookService bookService = new BookServiceImpl(new Library("Sofia's library"));
         User currentUser = null;
 
@@ -27,9 +29,11 @@ public class Controller {
         bookService.createRubyBooksList();
         bookService.createPythonBooksList();
 
+        Semaphore semaphore = new Semaphore(1);
         UserRepositoryImpl userRepository = new UserRepositoryImpl();
-        UserService userService = new UserServiceImpl(userRepository);
+        UserService userService = new UserServiceImpl(userRepository,semaphore);
         UserMenu userMenu = new UserMenuValidator(new UserMenuImpl(),userRepository,bookService);
+
 
         while (true) {
 
@@ -46,6 +50,7 @@ public class Controller {
                 String name = userMenu.getUniqueForRegistrationName();
                 currentUser = new User(name, false);
                 userService.registration(currentUser);
+                currentUser = userService.signIn(name);
             } else {
                 break;
             }
@@ -54,7 +59,6 @@ public class Controller {
             System.out.println(UserMenuImpl.BOOK_BALANCE + currentUserBookShelfSize);
             currentUser.showUserShelf();
             System.out.println(UserMenuImpl.CAN_TAKE + (2 - currentUserBookShelfSize) + UserMenuImpl.BOOKS);
-
 
             while (true) {
 
@@ -67,7 +71,17 @@ public class Controller {
                     int requiredNumberShelf = userMenu.getShelfNumber();
                     int requiredNumberBook = userMenu.getBookNumber();
                     Book book = bookService.getBookFromLibrary(requiredNumberShelf, requiredNumberBook);
-                    userService.takeTheBook(book);
+                    try {
+                        userService.takeTheBook(book);
+                    }catch (FullReaderShelfException exception){
+                        System.out.println(exception.getMessage());
+                        bookService.returnBookToLibrary(book);
+//                        logger.error(exception.getMessage());
+                        continue;
+                    }
+                    long seconds = userMenu.getTime();
+                    ReturnBookController returnBookController = new ReturnBookController(currentUser.getName(),book,userService,bookService,seconds);
+                    new Thread(returnBookController).start();
                 } else if (userMainMenuChoice == 2) {
                     System.out.println(UserMenuImpl.BOOKS_FROM_READING_HALL);
                     List<Book> available = userService.getBooksAvailableToExchange();
