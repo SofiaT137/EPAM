@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.Semaphore;
 
 public class Controller {
@@ -40,10 +41,10 @@ public class Controller {
         logger.info(LIBRARY_CREATED);
 
         Semaphore semaphore = new Semaphore(1);
+        Exchanger<Book> exchanger = new Exchanger<>();
         UserRepositoryImpl userRepository = new UserRepositoryImpl();
         UserService userService = new UserServiceImpl(userRepository,semaphore);
         UserMenu userMenu = new UserMenuValidator(new UserMenuImpl(),userRepository,bookService);
-
 
         while (true) {
 
@@ -104,11 +105,16 @@ public class Controller {
                     Book bookToExchange = currentUser.getReaderShelf().get(requiredNumberBookUser);
                     if (!bookToExchange.isAvailableToTakeHome()) {
                         List<Book> booksReadingHall = bookService.getReadingHall();
+                        if (booksReadingHall.size() <= available.size()){
+                            System.out.println(UserMenuImpl.NOTHING_TO_EXCHANGE);
+                            continue;
+                        }
                         bookService.printHall(booksReadingHall, available);
                         int requiredNumberBookHall = userMenu.getNumberBookHallForExchange();
                         Book bookFromAnotherUser = bookService.getBookFromReadingHall(booksReadingHall, requiredNumberBookHall);
                         User userForExchanging = userService.getUserForExchanging(bookFromAnotherUser);
-                        userService.exchangeBooksWithAnotherUser(userForExchanging, bookToExchange, bookFromAnotherUser);
+                        new Thread(new ExchangeBookController(exchanger,bookToExchange,currentUser)).start();
+                        new Thread( new ExchangeBookController(exchanger,bookFromAnotherUser,userForExchanging)).start();
                     }
                 } else if (userMainMenuChoice == 3) {
                     System.out.println(UserMenuImpl.YOUR_BOOKS);

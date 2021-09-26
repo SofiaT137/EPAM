@@ -12,8 +12,6 @@ public interface UserService {
 
     User signIn(String userName) throws InterruptedException;
 
-    void exchangeBooksWithAnotherUser(User anotherUser,Book usersBook,Book requestBook);
-
     List<Book> getBooksAvailableToExchange();
 
     void printBooksAvailableToExchange(List<Book> booksAvailableToExchange);

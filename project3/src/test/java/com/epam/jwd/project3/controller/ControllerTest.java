@@ -15,6 +15,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.concurrent.Exchanger;
 import java.util.concurrent.Semaphore;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,6 +28,7 @@ class ControllerTest {
     private UserService userService;
 
     private static final Logger logger = LogManager.getLogger(ControllerTest.class.getName());
+
 
 
     @BeforeEach
@@ -101,9 +104,9 @@ class ControllerTest {
         }
 
         assertEquals(has_exception, true);
+
         assertEquals(2,user.getReaderShelfSize());
         userService.signOut();
-
 
         user = userService.signIn(user.getName());
         Book book = user.getReaderShelf().get(0);
@@ -126,6 +129,50 @@ class ControllerTest {
         user = userService.signIn(user.getName());
         assertEquals(0,user.getReaderShelfSize());
         userService.signOut();
+    }
+
+    @Test
+    void exchangeBooks() throws InterruptedException, FullReaderShelfException {
+        Exchanger<Book> exchanger = new Exchanger<>();
+        User user1 = new User("Sofia", false);
+        userService.registration(user1);
+        user1 = userService.signIn(user1.getName());
+
+        Book book1 = bookService.getBookFromLibrary(0, 0);
+        userService.takeTheBook(book1);
+
+        Book book2 = bookService.getBookFromLibrary(0, 1);
+        userService.takeTheBook(book2);
+
+        userService.signOut();
+
+        User user2 = new User("Alex", false);
+        userService.registration(user2);
+        user2 = userService.signIn(user2.getName());
+
+        Book book3 = bookService.getBookFromLibrary(4, 0);
+        userService.takeTheBook(book3);
+
+        Book book4 = bookService.getBookFromLibrary(4, 1);
+        userService.takeTheBook(book4);
+
+        userService.signOut();
+
+        new Thread( new ExchangeBookController(exchanger,book1,user1)).start();
+        new Thread(new ExchangeBookController(exchanger,book3,user2)).start();
+
+        synchronized (this) {
+            // TODO add protection for shared memory
+            wait(5000);
+        }
+        userService.signIn(user1.getName());
+
+        List<Book> books = user1.getReaderShelf();
+
+        assertEquals(book3,books.get(1));
+
+        userService.signOut();
+
     }
 
     @AfterEach

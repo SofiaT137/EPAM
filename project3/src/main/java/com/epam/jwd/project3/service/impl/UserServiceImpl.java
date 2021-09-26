@@ -39,19 +39,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void exchangeBooksWithAnotherUser(User anotherUser,Book usersBook,Book requestBook) {
-        if (usersBook == requestBook){
-            return;
-        }
-        List<Book> readerShelf = user.getReaderShelf();
-        List<Book> anotherReaderShelf = anotherUser.getReaderShelf();
-        readerShelf.remove(usersBook);
-        readerShelf.add(requestBook);
-        anotherReaderShelf.remove(requestBook);
-        anotherReaderShelf.add(usersBook);
-    }
-
-    @Override
     public void takeTheBook(Book book) throws FullReaderShelfException {
         if(user.getReaderShelf().size() >= 2){
             throw new FullReaderShelfException("No place to take another book. Please,return some books back!");

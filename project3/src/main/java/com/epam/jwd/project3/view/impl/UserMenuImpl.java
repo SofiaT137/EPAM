@@ -36,7 +36,9 @@ public class UserMenuImpl implements UserMenu {
     public static String NUMBER_BOOK_EXCHANGE_HALL = "\nPlease, enter the number of required book from reading hall:";
     public static String YOUR_BOOKS = "Your books: ";
     public static String WHAT_ARE_DOING = "What are you doing here?, you have no book from reading hall. Please,take some books";
+    public static String NOTHING_TO_EXCHANGE = "Sorry, nothing to exchange. Try again later.";
     public static String HOW_MUCH_SECONDS = "Enter the number of seconds after which you will return the book";
+    public static String ENTER_THE_NUMBER = "Enter the NUMBER";
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -47,9 +49,16 @@ public class UserMenuImpl implements UserMenu {
         System.out.println(MENU_FOR_MAIN_LOGIC);
     }
 
-    public int getRequiredNumber() throws IOException {
+    public int getRequiredNumber() {
         System.out.println(SELECT_THE_NUMBER);
-       return Integer.parseInt(reader.readLine());
+        int value = 0;
+        try {
+            value = Integer.parseInt(reader.readLine());
+        }catch (IOException e){
+            System.out.println(ENTER_THE_NUMBER);
+            value = getRequiredNumber();
+        }
+       return value;
     }
     public String getUniqueForRegistrationName() throws IOException {
         System.out.println(ENTER_THE_UNIQUE_NAME);
