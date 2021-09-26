@@ -1,8 +1,6 @@
 package com.epam.jwd.project3.service.impl;
 
 import com.epam.jwd.project3.model.composite.Book;
-import com.epam.jwd.project3.model.composite.Composite;
-import com.epam.jwd.project3.model.composite.Library;
 import com.epam.jwd.project3.model.user.User;
 import com.epam.jwd.project3.repository.impl.UserRepositoryImpl;
 import com.epam.jwd.project3.service.api.UserService;
@@ -25,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository = userRepository;
         this.semaphore = semaphore;
+        this.user = null;
     }
 
     @Override
@@ -34,8 +33,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User signIn(String userName) throws InterruptedException {
-        semaphore.acquire();
        this.user = userRepository.findByUserName(userName);
+       semaphore.acquire();
        return this.user;
     }
 
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void returnTheBook(Book book) {
         if (!(user.getReaderShelf().contains(book))){
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("There is no book named: " + book.getName());
         }
         user.getReaderShelf().remove(book);
     }
@@ -96,12 +95,13 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
-        throw new NoSuchElementException(" I can't find this user");
+        throw new NoSuchElementException("I can't find user named: " + user.getName());
     }
 
     @Override
     public void signOut() {
-        user.setActive(false);
+        this.user.setActive(false);
+        this.user = null;
         semaphore.release();
     }
 

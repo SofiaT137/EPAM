@@ -12,6 +12,8 @@ import com.epam.jwd.project3.service.impl.UserServiceImpl;
 import com.epam.jwd.project3.view.api.UserMenu;
 import com.epam.jwd.project3.view.impl.UserMenuImpl;
 import com.epam.jwd.project3.view.validator.UserMenuValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,8 +21,14 @@ import java.util.concurrent.Semaphore;
 
 public class Controller {
 
+    private static final Logger logger = LogManager.getLogger(ReturnBookController.class.getName());
+    private static final String LIBRARY_NAME = "Sofia's library";
+    private static final String LIBRARY_CREATED = "The library has been created.";
+
     public static void main(String[] args) throws IOException, InterruptedException {
-        BookService bookService = new BookServiceImpl(new Library("Sofia's library"));
+        logger.info("The main thread is started");
+        BookService bookService = new BookServiceImpl(new Library(LIBRARY_NAME));
+        logger.info(LIBRARY_NAME);
         User currentUser = null;
 
         bookService.createGoBooksList();
@@ -28,6 +36,8 @@ public class Controller {
         bookService.createJavaScriptBooksList();
         bookService.createRubyBooksList();
         bookService.createPythonBooksList();
+
+        logger.info(LIBRARY_CREATED);
 
         Semaphore semaphore = new Semaphore(1);
         UserRepositoryImpl userRepository = new UserRepositoryImpl();
@@ -76,7 +86,7 @@ public class Controller {
                     }catch (FullReaderShelfException exception){
                         System.out.println(exception.getMessage());
                         bookService.returnBookToLibrary(book);
-//                        logger.error(exception.getMessage());
+                        logger.error(exception.getMessage());
                         continue;
                     }
                     long seconds = userMenu.getTime();
@@ -115,5 +125,6 @@ public class Controller {
                 }
             }
         }
+        logger.info("The main thread is ended");
     }
 }

@@ -1,17 +1,21 @@
 package com.epam.jwd.project3.view.validator;
 
+import com.epam.jwd.project3.controller.ReturnBookController;
 import com.epam.jwd.project3.repository.api.UserRepository;
 import com.epam.jwd.project3.service.api.BookService;
 import com.epam.jwd.project3.view.api.UserMenu;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 public class UserMenuValidator implements UserMenu {
 
     private UserMenu userMenu;
     private UserRepository userRepository;
     private BookService bookService;
+
+    private static final Logger logger = LogManager.getLogger(UserMenuValidator.class.getName());
 
     private final static String CORRECT_NUMBER_NEEDED = "Enter the correct menu number(1,2,3) : ";
     private final static String CORRECT_NUMBER_MAIN_NEEDED = "Enter the correct menu number(1,2,3,4): ";
@@ -58,7 +62,6 @@ public class UserMenuValidator implements UserMenu {
             try {
                 userRepository.findByUserName(name);
             } catch (NullPointerException exception) {
-                //TODO logger
                 break;
             }
             System.out.println(CORRECT_UNIQUE_NAME_NEEDED);
@@ -77,8 +80,7 @@ public class UserMenuValidator implements UserMenu {
         try {
             userRepository.findByUserName(name);
         } catch (NullPointerException exception) {
-            //TODO logger
-            System.out.println();
+            logger.error(exception.getMessage());
             return "";
         }
         return name;
