@@ -49,16 +49,20 @@ public class UserMenuImpl implements UserMenu {
         System.out.println(MENU_FOR_MAIN_LOGIC);
     }
 
-    public int getRequiredNumber() {
-        System.out.println(SELECT_THE_NUMBER);
+    private int getNumber() throws IOException {
         int value = 0;
         try {
             value = Integer.parseInt(reader.readLine());
-        }catch (IOException e){
+        }catch (NumberFormatException | IOException e){
             System.out.println(ENTER_THE_NUMBER);
-            value = getRequiredNumber();
+           value = getNumber();
         }
-       return value;
+        return value;
+    }
+
+    public int getRequiredNumber() throws IOException {
+        System.out.println(SELECT_THE_NUMBER);
+        return getNumber();
     }
     public String getUniqueForRegistrationName() throws IOException {
         System.out.println(ENTER_THE_UNIQUE_NAME);
@@ -72,31 +76,31 @@ public class UserMenuImpl implements UserMenu {
 
     public int getRequiredMainMenuNumber() throws IOException {
         System.out.println(SELECT_THE_NUMBER);
-        return Integer.parseInt(reader.readLine());
+        return getNumber();
     }
 
     public int getShelfNumber() throws IOException {
         System.out.println(SHELF_NUMBER);
-        return Integer.parseInt(reader.readLine());
+        return getNumber();
     }
 
     public int getBookNumber() throws IOException {
         System.out.println(BOOK_NUMBER);
-        return Integer.parseInt(reader.readLine());
+        return getNumber();
     }
     public int getNumberBookForExchange() throws IOException {
         System.out.println(NUMBER_BOOK_FOR_EXCHANGE);
-        return Integer.parseInt(reader.readLine());
+        return getNumber();
     }
 
     public int getNumberBookHallForExchange() throws IOException {
         System.out.println(NUMBER_BOOK_EXCHANGE_HALL);
-        return Integer.parseInt(reader.readLine());
+        return getNumber();
     }
 
     public long getTime() throws IOException {
         System.out.println(HOW_MUCH_SECONDS);
-        return Long.parseLong(reader.readLine());
+        return (long) getNumber();
     }
 
 }
