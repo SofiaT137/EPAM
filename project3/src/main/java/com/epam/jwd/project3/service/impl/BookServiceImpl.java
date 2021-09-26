@@ -6,7 +6,11 @@ import com.epam.jwd.project3.model.composite.Library;
 import com.epam.jwd.project3.model.composite.Shelf;
 import com.epam.jwd.project3.service.api.BookFactory;
 import com.epam.jwd.project3.service.api.BookService;
-import com.epam.jwd.project3.service.book_factory.*;
+import com.epam.jwd.project3.service.book_factory.GoBookFactory;
+import com.epam.jwd.project3.service.book_factory.JavaBookFactory;
+import com.epam.jwd.project3.service.book_factory.JavaScriptBookFactory;
+import com.epam.jwd.project3.service.book_factory.RubyBookFactory;
+import com.epam.jwd.project3.service.book_factory.PythonBookFactory;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.concurrent.Exchanger;
 import java.util.concurrent.Semaphore;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ControllerTest {
 
@@ -28,7 +28,6 @@ class ControllerTest {
     private UserService userService;
 
     private static final Logger logger = LogManager.getLogger(ControllerTest.class.getName());
-
 
 
     @BeforeEach
