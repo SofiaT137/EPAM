@@ -1,11 +1,11 @@
-package com.epam.jwd.repository.connection_pool;
+package com.epam.jwd.repository.connection_pool.api;
 
 import java.sql.Connection;
 
 public interface ConnectionPool {
 
-    boolean init();
+    boolean initialize();
     boolean shutDown();
-    Connection takeConnection();
+    Connection takeConnection() throws InterruptedException;
     void returnConnection(Connection connection);
 }
