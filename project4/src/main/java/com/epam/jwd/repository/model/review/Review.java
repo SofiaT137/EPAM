@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.model.review;
 
 import com.epam.jwd.repository.model.AbstractEntity;
-import com.epam.jwd.repository.model.account.User;
+import com.epam.jwd.repository.model.user.User;
 import com.epam.jwd.repository.model.course.Course;
 
 import java.util.Objects;

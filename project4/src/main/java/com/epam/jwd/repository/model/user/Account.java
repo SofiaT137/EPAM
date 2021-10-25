@@ -1,4 +1,4 @@
-package com.epam.jwd.repository.model.account;
+package com.epam.jwd.repository.model.user;
 
 import com.epam.jwd.repository.model.AbstractEntity;
 
