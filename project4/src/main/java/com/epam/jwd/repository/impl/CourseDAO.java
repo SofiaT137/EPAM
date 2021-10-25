@@ -29,14 +29,10 @@ public class CourseDAO implements DAO<Course,Integer> {
     @Override
     public Course save(Course course) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement statement;
         ResultSet resultSet;
         try{
+            connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(SQL_SAVE_COURSE);
             int courseId = statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
@@ -47,7 +43,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             statement.setDate(3, (Date) course.getStartCourse());
             statement.setDate(4, (Date) course.getEndCourse());
 
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
         }finally {
             connectionPool.returnConnection(connection);
@@ -59,14 +55,10 @@ public class CourseDAO implements DAO<Course,Integer> {
     @Override
     public Boolean update(Course course) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement statement = null;
         ResultSet resultSet;
         try {
+            connection = connectionPool.takeConnection();
             assert connection != null;
             connection.prepareStatement(SQL_UPDATE_COURSE_BY_ID);
             statement.setInt(1,course.getId());
@@ -74,7 +66,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             statement.setDate(3, (Date) course.getStartCourse());
             statement.setDate(4, (Date) course.getEndCourse());
             return Objects.equals(statement.executeUpdate(),1);
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             //log
             return false;
         }finally {
@@ -84,18 +76,14 @@ public class CourseDAO implements DAO<Course,Integer> {
     @Override
     public Boolean delete(Course course) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            //log here
-        }
         PreparedStatement preparedStatement;
         try {
+            connection = connectionPool.takeConnection();
             assert connection != null;
             preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_BY_ID);
             preparedStatement.setInt(1, course.getId());
             return Objects.equals(preparedStatement.executeUpdate(), 1);
-        } catch (SQLException exception) {
+        } catch (SQLException | InterruptedException exception) {
             //log
             return false;
         } finally {
@@ -106,15 +94,11 @@ public class CourseDAO implements DAO<Course,Integer> {
     @Override
     public List<Course> findAll() {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            //log here
-        }
         List<Course> courses = new ArrayList<>();
         Statement statement;
         ResultSet resultSet;
         try {
+            connection = connectionPool.takeConnection();
             assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(SQL_FIND_ALL_COURSE); {
@@ -122,7 +106,7 @@ public class CourseDAO implements DAO<Course,Integer> {
                     courses.add(returnCourse(resultSet));
                 }
             }
-        }catch (SQLException e) {
+        }catch (SQLException | InterruptedException e) {
             //todo implement logger and custom exception
         } finally {
             connectionPool.returnConnection(connection);
@@ -133,22 +117,18 @@ public class CourseDAO implements DAO<Course,Integer> {
     @Override
     public Course findById(Integer id) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         try{
+            connection = connectionPool.takeConnection();
             assert connection != null;
-            preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE);
+            preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID);
             preparedStatement.setInt(1,id);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return returnCourse(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             //  logger
         }
         finally {

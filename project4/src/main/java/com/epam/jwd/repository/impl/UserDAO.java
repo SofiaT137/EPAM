@@ -29,19 +29,15 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE account SET role_id = ?, password = ?, login = ? WHERE account = ?";
 
 
-    private ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
     @Override
     public User save(User user) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement statement;
         ResultSet resultSet;
         try{
+            connection = connectionPool.takeConnection();
             statement = connection.prepareStatement(SQL_SAVE_USER);
             int userId = statement.executeUpdate();
             resultSet = statement.getGeneratedKeys();
@@ -54,7 +50,7 @@ public class UserDAO implements DAO<User,Integer> {
             statement.setString(5,user.getLastName());
             saveAccount(connection, user.getAccount());
 
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
         }finally {
             connectionPool.returnConnection(connection);
@@ -65,14 +61,10 @@ public class UserDAO implements DAO<User,Integer> {
     @Override
     public Boolean update(User user) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement statement = null;
         ResultSet resultSet;
         try {
+            connection = connectionPool.takeConnection();
             connection.prepareStatement(SQL_UPDATE_USER_BY_ID);
             statement.setInt(1,user.getId());
             statement.setObject(2,user.getAccount());
@@ -81,7 +73,7 @@ public class UserDAO implements DAO<User,Integer> {
             statement.setString(5,user.getLastName());
             return Objects.equals(statement.executeUpdate(),1)
                     && updateAccountById(connection,user.getAccount());
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             //log
             return false;
         }finally {
@@ -92,19 +84,15 @@ public class UserDAO implements DAO<User,Integer> {
     @Override
     public Boolean delete(User user) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            //log here
-        }
         PreparedStatement preparedStatement;
         try {
+            connection = connectionPool.takeConnection();
             assert connection != null;
             preparedStatement = connection.prepareStatement(SQL_DELETE_USER_BY_ID);
             preparedStatement.setInt(1, user.getId());
             return Objects.equals(preparedStatement.executeUpdate(), 1)
                     && deleteAccountById(connection, user.getId());
-        } catch (SQLException exception) {
+        } catch (SQLException | InterruptedException exception) {
                 //log
             return false;
         } finally {
@@ -115,15 +103,11 @@ public class UserDAO implements DAO<User,Integer> {
     @Override
     public List<User> findAll() {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            //log here
-        }
         List<User> users = new ArrayList<>();
         Statement statement;
         ResultSet resultSet;
         try {
+            connection = connectionPool.takeConnection();
             assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(SQL_FIND_ALL_USERS); {
@@ -131,7 +115,7 @@ public class UserDAO implements DAO<User,Integer> {
                     users.add(returnUser(resultSet));
                 }
             }
-        }catch (SQLException e) {
+        }catch (SQLException | InterruptedException e) {
             //todo implement logger and custom exception
          } finally {
             connectionPool.returnConnection(connection);
@@ -142,14 +126,10 @@ public class UserDAO implements DAO<User,Integer> {
         @Override
     public User findById(Integer id) {
         Connection connection = null;
-        try {
-            connection = connectionPool.takeConnection();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         try{
+            connection = connectionPool.takeConnection();
             assert connection != null;
             preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ID);
             preparedStatement.setInt(1,id);
@@ -157,13 +137,12 @@ public class UserDAO implements DAO<User,Integer> {
             if (resultSet.next()) {
                 return returnUser(resultSet);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | InterruptedException e) {
             //  logger
         }
         finally {
             connectionPool.returnConnection(connection);
         }
-
         return null;
     }
 
