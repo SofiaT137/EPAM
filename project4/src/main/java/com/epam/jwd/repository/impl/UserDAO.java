@@ -87,7 +87,6 @@ public class UserDAO implements DAO<User,Integer> {
         }finally {
             connectionPool.returnConnection(connection);
         }
-
     }
 
     @Override
