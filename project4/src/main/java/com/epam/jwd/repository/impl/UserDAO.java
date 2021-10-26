@@ -14,13 +14,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class UserDAO implements DAO<User,Integer> {
 
     private static final String SQL_SAVE_USER = "INSERT INTO user (user_id, account, group, first_name, last_name) VALUES (?, ?, ?, ?, ?)";
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (account_id, role, password, login) VALUES (?, ?, ?, ?)";
-    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user;";
+    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
     private static final String SQL_DELETE_USER_BY_ID = "DELETE FROM user WHERE user_id = ?";
@@ -71,7 +70,7 @@ public class UserDAO implements DAO<User,Integer> {
             statement.setObject(3,user.getGroup());
             statement.setString(4,user.getFirstname());
             statement.setString(5,user.getLastName());
-            return Objects.equals(statement.executeUpdate(),1)
+            return statement.executeUpdate() > 0
                     && updateAccountById(connection,user.getAccount());
         } catch (SQLException | InterruptedException e) {
             //log
@@ -90,7 +89,7 @@ public class UserDAO implements DAO<User,Integer> {
             assert connection != null;
             preparedStatement = connection.prepareStatement(SQL_DELETE_USER_BY_ID);
             preparedStatement.setInt(1, user.getId());
-            return Objects.equals(preparedStatement.executeUpdate(), 1)
+            return preparedStatement.executeUpdate() > 0
                     && deleteAccountById(connection, user.getId());
         } catch (SQLException | InterruptedException exception) {
                 //log
@@ -190,7 +189,7 @@ public class UserDAO implements DAO<User,Integer> {
     private Boolean deleteAccountById(Connection connection, Integer user_id) throws SQLException{
         PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT_BY_ID);
         preparedStatement.setInt(1, user_id);
-        return Objects.equals(preparedStatement.executeUpdate(), 1);
+        return preparedStatement.executeUpdate() > 0;
     }
 
     private Boolean updateAccountById(Connection connection , Account account) throws SQLException{
@@ -199,7 +198,7 @@ public class UserDAO implements DAO<User,Integer> {
         preparedStatement.setString(2,account.getLogin());
         preparedStatement.setString(3,account.getPassword());
         preparedStatement.setInt(4,account.getId());
-        return Objects.equals(preparedStatement.executeUpdate(),1);
+        return preparedStatement.executeUpdate() > 0 ;
     }
 
     private Account findAccountByUserId(Connection connection, int account_id) throws SQLException {
