@@ -1,56 +1,49 @@
 package com.epam.jwd.repository.model.review;
 
 import com.epam.jwd.repository.model.AbstractEntity;
-import com.epam.jwd.repository.model.user.User;
-import com.epam.jwd.repository.model.course.Course;
 
 import java.util.Objects;
 
+
 public class Review extends AbstractEntity<Integer> {
 
-    private User user;
-    private Course course;
+    private int user_id;
+    private int course_id;
     private int grade;
     private String review;
-
-    public Review(User user, Course course, int grade, String review) {
-        this.user = user;
-        this.course = course;
-        this.grade = grade;
-        this.review = review;
-    }
-
-    public Review(Integer id, User user, Course course, int grade, String review) {
-        super(id);
-        this.user = user;
-        this.course = course;
-        this.grade = grade;
-        this.review = review;
-    }
-
-    public Review(User user, Course course, int grade) {
-        this.user = user;
-        this.course = course;
-        this.grade = grade;
-    }
 
     public Review() {
     }
 
-    public User getUser() {
-        return user;
+    public Review(Integer id, int user_id, int course_id, int grade, String review) {
+        super(id);
+        this.user_id = user_id;
+        this.course_id = course_id;
+        this.grade = grade;
+        this.review = review;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Review(int user_id, int course_id, int grade, String review) {
+        this.user_id = user_id;
+        this.course_id = course_id;
+        this.grade = grade;
+        this.review = review;
     }
 
-    public Course getCourse() {
-        return course;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
+
+    public int getCourse_id() {
+        return course_id;
+    }
+
+    public void setCourse_id(int course_id) {
+        this.course_id = course_id;
     }
 
     public int getGrade() {
@@ -73,25 +66,27 @@ public class Review extends AbstractEntity<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
-        Review review = (Review) o;
-        return getGrade() == review.getGrade()
-                && Objects.equals(user, review.getUser())
-                && Objects.equals(course, review.getCourse())
-                && Objects.equals(id,review.getId());
+        Review review1 = (Review) o;
+        return user_id == review1.getUser_id()
+                && course_id == review1.getCourse_id()
+                && grade == review1.getGrade()
+                && Objects.equals(review, review1.getReview())
+                && Objects.equals(id,review1.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, course, grade, id);
+        return Objects.hash(user_id, course_id, grade, review,id);
     }
 
     @Override
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", user=" + user +
-                ", course=" + course +
+                ", user_id=" + user_id +
+                ", course_id=" + course_id +
                 ", grade=" + grade +
+                ", review='" + review + '\'' +
                 '}';
     }
 }

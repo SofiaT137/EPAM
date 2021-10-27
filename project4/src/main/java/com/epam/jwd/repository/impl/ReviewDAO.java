@@ -3,9 +3,8 @@ package com.epam.jwd.repository.impl;
 import com.epam.jwd.repository.api.DAO;
 import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
-import com.epam.jwd.repository.model.course.Course;
 import com.epam.jwd.repository.model.review.Review;
-import com.epam.jwd.repository.model.user.User;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,8 +15,8 @@ import java.util.List;
 
 public class ReviewDAO implements DAO<Review, Integer> {
 
-    private static final String SQL_SAVE_REVIEW = "INSERT INTO review (user, course, grade, review) VALUES (?, ?, ?, ?)";
-    private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE review SET user = ?, course = ?, grade = ? review = ? WHERE review_id = ?";
+    private static final String SQL_SAVE_REVIEW = "INSERT INTO review (user_id, course_id, grade, review) VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE review SET user_id = ?, course_id = ?, grade = ? review = ? WHERE review_id = ?";
     private static final String SQL_DELETE_REVIEW_BY_ID = "DELETE FROM review WHERE id = ?";
     private static final String SQL_FIND_ALL_REVIEW = "SELECT * FROM review";
     private static final String SQL_FIND_REVIEW_BY_ID = "SELECT * FROM review WHERE review_id =  ?";
@@ -28,8 +27,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
     public Review save(Review review) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_REVIEW);
-            preparedStatement.setObject(1,review.getUser());
-            preparedStatement.setObject(2,review.getCourse());
+            preparedStatement.setInt(1,review.getUser_id());
+            preparedStatement.setInt(2,review.getCourse_id());
             preparedStatement.setInt(3,review.getGrade());
             preparedStatement.setString(4,review.getReview());
             preparedStatement.executeUpdate();
@@ -50,8 +49,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
     public Boolean update(Review review) {
         try(Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REVIEW_BY_ID);
-            preparedStatement.setObject(1,review.getUser());
-            preparedStatement.setObject(2,review.getCourse());
+            preparedStatement.setInt(1,review.getUser_id());
+            preparedStatement.setInt(2,review.getCourse_id());
             preparedStatement.setInt(3,review.getGrade());
             preparedStatement.setString(4,review.getReview());
             preparedStatement.setInt(5,review.getId());
@@ -96,20 +95,6 @@ public class ReviewDAO implements DAO<Review, Integer> {
         }
     }
 
-    private Review returnReview(ResultSet resultSet) {
-        Review review = new Review();
-        try {
-            review.setId(resultSet.getInt(1));
-            review.setUser((User) resultSet.getObject(2));
-            review.setCourse((Course) resultSet.getObject(3));
-            review.setGrade(resultSet.getInt(4));
-            review.setReview(resultSet.getString(5));
-        } catch (SQLException e) {
-            //TODO log and throw exception;
-        }
-        return review;
-    }
-
     @Override
     public Review findById(Integer id) {
         Review review = null;
@@ -125,6 +110,21 @@ public class ReviewDAO implements DAO<Review, Integer> {
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
             return null;
+        }
+        return review;
+    }
+
+
+    private Review returnReview(ResultSet resultSet) {
+        Review review = new Review();
+        try {
+            review.setId(resultSet.getInt(1));
+            review.setUser_id(resultSet.getInt(2));
+            review.setCourse_id(resultSet.getInt(3));
+            review.setGrade(resultSet.getInt(4));
+            review.setReview(resultSet.getString(5));
+        } catch (SQLException e) {
+            //TODO log and throw exception;
         }
         return review;
     }
