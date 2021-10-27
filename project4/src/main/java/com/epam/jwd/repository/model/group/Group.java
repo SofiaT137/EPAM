@@ -29,6 +29,14 @@ public class Group extends AbstractEntity<Integer> {
                 && Objects.equals(id,group.id);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(name,id);
