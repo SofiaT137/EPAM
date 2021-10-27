@@ -4,6 +4,7 @@ import com.epam.jwd.repository.api.DAO;
 import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.course.Course;
+import com.epam.jwd.repository.model.user.User;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -49,6 +50,10 @@ public class CourseDAO implements DAO<Course,Integer> {
             connectionPool.returnConnection(connection);
         }
         return course;
+    }
+
+    public User addUser(){
+        // в таблицу User has course добавить запить, кот.будет связывать 2 таблицы
     }
 
 
