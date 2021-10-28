@@ -6,41 +6,35 @@ import java.util.Objects;
 
 public class User extends AbstractEntity<Integer> {
 
-    private int role_id;
+    private int account_id;
     private int group_id;
     private String first_name;
     private String last_name;
-    private String login;
-    private String password;
-
-    public User(Integer id, int role_id, int group_id, String first_name, String last_name, String login, String password) {
-        super(id);
-        this.role_id = role_id;
-        this.group_id = group_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.login = login;
-        this.password = password;
-    }
-
-    public User(int role_id, int group_id, String first_name, String last_name, String login, String password) {
-        this.role_id = role_id;
-        this.group_id = group_id;
-        this.first_name = first_name;
-        this.last_name = last_name;
-        this.login = login;
-        this.password = password;
-    }
 
     public User() {
     }
 
-    public int getRole_id() {
-        return role_id;
+    public User(int account_id, int group_id, String first_name, String last_name) {
+        this.account_id = account_id;
+        this.group_id = group_id;
+        this.first_name = first_name;
+        this.last_name = last_name;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public User(Integer id, int account_id, int group_id, String first_name, String last_name) {
+        super(id);
+        this.account_id = account_id;
+        this.group_id = group_id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+    }
+
+    public int getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(int account_id) {
+        this.account_id = account_id;
     }
 
     public int getGroup_id() {
@@ -67,38 +61,20 @@ public class User extends AbstractEntity<Integer> {
         this.last_name = last_name;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return role_id == user.getRole_id()
+        return account_id == user.getAccount_id()
                 && group_id == user.getGroup_id()
                 && Objects.equals(first_name, user.getFirst_name())
                 && Objects.equals(last_name, user.getLast_name())
-                && Objects.equals(login, user.getLogin())
-                && Objects.equals(password, user.getPassword())
                 && Objects.equals(id,user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,role_id, group_id, first_name, last_name, login, password);
+        return Objects.hash(account_id, group_id, first_name, last_name);
     }
 }
