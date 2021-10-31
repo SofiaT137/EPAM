@@ -6,11 +6,13 @@ import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.course.Course;
 import com.epam.jwd.repository.model.user.User;
 
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,15 +23,20 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_UPDATE_COURSE_BY_ID = "UPDATE course SET name = ?, start_date = ?, end_date = ? WHERE course_id = ?";
     private static final String SQL_FIND_ALL_COURSE = "SELECT * FROM course";
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT * FROM course WHERE course_id =  ?";
+    private static final String SQL_FIND_COURSE_BY_NAME = "SELECT * FROM course WHERE name = ?;";
     private static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE course_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
+    public Course createCourse(String name,Date startDate,Date endDate){
+        return new Course(name,startDate,endDate);
+    }
+
     @Override
     public Integer save(Course course) {
         try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,course.getName());
             preparedStatement.setDate(2, (Date) course.getStartCourse());
             preparedStatement.setDate(3,(Date) course.getEndCourse());
@@ -47,11 +54,14 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
     }
 
-    public Boolean addUserIntoCourse(Course course, User user){
+    public Boolean addUserIntoCourse(String course_name, String first_name,String last_name){
         try(Connection connection = connectionPool.takeConnection()){
+            Course course = filterCourse(course_name).get(0);
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.filterUser(first_name,last_name).get(0);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE);
-            preparedStatement.setInt(1,course.getId());
-            preparedStatement.setInt(2,user.getId());
+            preparedStatement.setInt(1,user.getId());
+            preparedStatement.setInt(2,course.getId());
             Boolean result = preparedStatement.executeUpdate() > 0;
             preparedStatement.close();
             return result;
@@ -98,9 +108,7 @@ public class CourseDAO implements DAO<Course,Integer> {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                courses.add(returnCourse(resultSet));
-            }
+            courses = returnCourseList(resultSet);
             preparedStatement.close();
             resultSet.close();
             return courses;
@@ -118,7 +126,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                course=  returnCourse(resultSet);
+                course = returnCourseList(resultSet).get(0);
             }
             preparedStatement.close();
             resultSet.close();
@@ -129,16 +137,36 @@ public class CourseDAO implements DAO<Course,Integer> {
         return course;
     }
 
-    private Course returnCourse(ResultSet resultSet) {
-        Course course = new Course();
-        try {
-            course.setId(resultSet.getInt(1));
-            course.setName(resultSet.getString(2));
-            course.setStartCourse(resultSet.getDate(3));
-            course.setEndCourse(resultSet.getDate(4));
-        } catch (SQLException e) {
-            //logger
+    public List<Course> filterCourse(String name){
+        List<Course> courseList;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME);
+            preparedStatement.setString(1,name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            courseList = returnCourseList(resultSet);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
         }
-        return course;
+        return courseList;
+    }
+
+    private List<Course> returnCourseList (ResultSet resultSet){
+        List<Course> courseList = new ArrayList<>();
+        try {
+            if (resultSet.next()) {
+                Course course = new Course();
+                course.setId(resultSet.getInt("course_id"));
+                course.setName(resultSet.getString("name"));
+                course.setStartCourse(resultSet.getDate("start_date"));
+                course.setEndCourse(resultSet.getDate("end_date"));
+                courseList.add(course);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return courseList;
     }
 }

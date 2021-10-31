@@ -1,11 +1,9 @@
 package com.epam.jwd.repository.connection_pool.main;
 
 
-import com.epam.jwd.repository.impl.AccountDAO;
-import com.epam.jwd.repository.impl.GroupDAO;
-import com.epam.jwd.repository.impl.RoleDAO;
-import com.epam.jwd.repository.impl.UserDAO;
+import com.epam.jwd.repository.impl.*;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class Main {
@@ -23,6 +21,13 @@ public class Main {
 
 //         UserDAO userDAO = new UserDAO();
 //         userDAO.save(userDAO.createUser("Headman1","A","Vasya","Pupkin"));
+
+//        CourseDAO courseDAO = new CourseDAO();
+//        Date start_date = new Date(2021,8,14);
+//        Date end_date = new Date(2021,10,14);
+//        courseDAO.save(courseDAO.createCourse("Spanish",start_date,end_date));
+//
+//       courseDAO.addUserIntoCourse("Spanish","Vasya","Pupkin");
 
 
     }

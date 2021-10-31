@@ -21,7 +21,7 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
-    private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? last_name = ?";
+    private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? and last_name = ?";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
