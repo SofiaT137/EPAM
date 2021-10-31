@@ -19,7 +19,7 @@ public class GroupDAO implements DAO<Group,Integer> {
     private static final String SQL_SAVE_GROUP = "INSERT INTO university_group (name) VALUES (?)";
     private static final String SQL_FIND_ALL_GROUP = "SELECT * FROM university_group";
     private static final String SQL_FIND_GROUP_BY_ID = "SELECT * FROM university_group WHERE university_group_id =  ?";
-    private static final String SQL_FIND_GROUP_BY_NAME = "SELECT * FROM university_group WHERE name = ?;";
+    private static final String SQL_FIND_GROUP_BY_NAME = "SELECT * FROM university_group WHERE name = ?";
     private static final String SQL_DELETE_GROUP_BY_NAME = "DELETE from university_group WHERE name = ?";
     private static final String SQL_UPDATE_GROUP_BY_ID = "UPDATE university_group SET name = ? WHERE university_group_id = ?";
 

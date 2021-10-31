@@ -21,7 +21,7 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
-
+    private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? last_name = ?";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -85,9 +85,7 @@ public class UserDAO implements DAO<User,Integer> {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                users.add(returnUser(resultSet));
-            }
+            users = returnUserList(resultSet);
             preparedStatement.close();
             resultSet.close();
             return users;
@@ -105,7 +103,7 @@ public class UserDAO implements DAO<User,Integer> {
                 preparedStatement.setInt(1,id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    user =  returnUser(resultSet);
+                    user =  returnUserList(resultSet).get(0);
                 }
                 preparedStatement.close();
                 resultSet.close();
@@ -116,19 +114,38 @@ public class UserDAO implements DAO<User,Integer> {
             return user;
         }
 
-    private User returnUser(ResultSet resultSet) {
-        User user = new User();
-        try {
-            user.setId(resultSet.getInt(1));
-            user.setAccount_id(resultSet.getInt(2));
-            user.setGroup_id(resultSet.getInt(3));
-            user.setFirst_name(resultSet.getString(4));
-            user.setLast_name(resultSet.getString(5));
-
-        } catch (SQLException e) {
-            //logger
+    public List<User> filterUser(String first_name,String last_name){
+        List<User> userList;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME);
+            preparedStatement.setString(1,first_name);
+            preparedStatement.setString(2,last_name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            userList = returnUserList(resultSet);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
         }
-        return user;
+        return userList;
     }
 
+    private List<User> returnUserList (ResultSet resultSet){
+        List<User> userList = new ArrayList<>();
+        try {
+            if (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt("user_id"));
+                user.setAccount_id(resultSet.getInt("account_id"));
+                user.setGroup_id(resultSet.getInt("university_group_id"));
+                user.setFirst_name(resultSet.getString("first_name"));
+                user.setFirst_name(resultSet.getString("last_name"));
+                userList.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
  }
