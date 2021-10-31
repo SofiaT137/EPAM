@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.impl;
 
 import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
+import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.user.User;
 
@@ -15,18 +15,21 @@ import java.util.List;
 public class UserDAO implements DAO<User,Integer> {
 
     private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
-    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
+     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
+
+
     @Override
-    public User save(User user) {
+    public Integer save(User user) {
             try(Connection connection = connectionPool.takeConnection()){
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER);
                 ResultSet resultSet;
+                connection.setAutoCommit(false);
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER);
                 preparedStatement.setInt(1,user.getAccount_id());
                 preparedStatement.setInt(2,user.getGroup_id());
                 preparedStatement.setString(3,user.getFirst_name());
@@ -38,7 +41,7 @@ public class UserDAO implements DAO<User,Integer> {
                 user.setId(user_id);
                 preparedStatement.close();
                 resultSet.close();
-                return user;
+                return user_id;
             } catch (SQLException | InterruptedException exception) {
                 //TODO log and throw exception;
                 return null;

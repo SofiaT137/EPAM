@@ -1,4 +1,4 @@
-package com.epam.jwd.repository.connection_pool;
+package com.epam.jwd.repository.connection_pool.impl;
 
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 

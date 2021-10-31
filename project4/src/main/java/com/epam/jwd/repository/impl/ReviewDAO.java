@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.impl;
 
 import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
+import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.review.Review;
 
@@ -24,7 +24,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
     @Override
-    public Review save(Review review) {
+    public Integer save(Review review) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_REVIEW);
             preparedStatement.setInt(1,review.getUser_id());
@@ -38,7 +38,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
             review.setId(review_id);
             preparedStatement.close();
             resultSet.close();
-            return review;
+            return review_id;
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
             return null;

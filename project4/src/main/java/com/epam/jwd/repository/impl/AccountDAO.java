@@ -1,47 +1,52 @@
 package com.epam.jwd.repository.impl;
 
 import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
+import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
-import com.epam.jwd.repository.model.course.Course;
 import com.epam.jwd.repository.model.user.Account;
+import com.epam.jwd.repository.model.user.Role;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDAO implements DAO<Account,Integer> {
+public class AccountDAO implements DAO<Account, Integer>  {
 
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password) VALUES (?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
+    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ?;";
     private static final String SQL_DELETE_ACCOUNT_BY_ID = "DELETE FROM account WHERE account_id = ?";
     private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE user SET role_id, login = ?, password = ? WHERE account_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
+    public Account createAccount(String roleName, String login,String password){
+       RoleDAO roleDAO = new RoleDAO();
+       Role role = roleDAO.filterRole(roleName).get(0);
+       return new Account(role.getId(),login,password);
+    }
+
     @Override
-    public Account save(Account account) {
+    public Integer save(Account account) {
         try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT);
-            preparedStatement.setInt(1, account.getRole_id());
+            ResultSet resultSet;
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1,account.getRole_id());
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             int account_id = resultSet.getInt(1);
             account.setId(account_id);
             preparedStatement.close();
             resultSet.close();
-            return account;
+            return account_id;
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
-            return null;
+            return -1;
         }
     }
 
@@ -78,13 +83,11 @@ public class AccountDAO implements DAO<Account,Integer> {
 
     @Override
     public List<Account> findAll() {
-        List<Account> accounts = new ArrayList<>();
+        List<Account> accounts;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_ACCOUNTS);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                accounts.add(returnAccount(resultSet));
-            }
+            accounts = returnAccountList(resultSet);
             preparedStatement.close();
             resultSet.close();
             return accounts;
@@ -94,37 +97,55 @@ public class AccountDAO implements DAO<Account,Integer> {
         }
     }
 
-        @Override
-        public Account findById (Integer id){
-            Account account = null;
-            try(Connection connection = connectionPool.takeConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNT_BY_ID);
-                preparedStatement.setInt(1,id);
-                ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    account = returnAccount(resultSet);
-                }
-                preparedStatement.close();
-                resultSet.close();
-            } catch (SQLException | InterruptedException exception) {
-                //TODO log and throw exception;
-                return null;
-            }
-            return account;
+    @Override
+    public Account findById (Integer id){
+        Account account;
+        try(Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNT_BY_ID);
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            account = returnAccountList(resultSet).get(0);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
         }
-
-        private Account returnAccount (ResultSet resultSet){
-            Account account = new Account();
-            try {
-                account.setId(resultSet.getInt(1));
-                account.setRole_id(resultSet.getInt(2));
-                account.setLogin(resultSet.getString(3));
-                account.setPassword(resultSet.getString(4));
-            } catch (SQLException e) {
-                //logger
-            }
-            return account;
-        }
+        return account;
     }
+
+    public List<Account> filterAccount(String login){
+        List<Account> accountList;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN);
+            preparedStatement.setString(1,login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            accountList = returnAccountList(resultSet);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return accountList;
+    }
+
+    private List<Account> returnAccountList (ResultSet resultSet){
+        List<Account> accountList = new ArrayList<>();
+        try {
+            if (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getInt("account_id"));
+                account.setRole_id(resultSet.getInt("role_id"));
+                account.setLogin(resultSet.getString("login"));
+                account.setPassword(resultSet.getString("password"));
+                accountList.add(account);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return accountList;
+    }
+}
 
 

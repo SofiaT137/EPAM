@@ -1,4 +1,4 @@
-package com.epam.jwd.repository.connection_pool;
+package com.epam.jwd.repository.connection_pool.exception;
 
 public class ConnectionPoolException extends Exception{
     public ConnectionPoolException() {

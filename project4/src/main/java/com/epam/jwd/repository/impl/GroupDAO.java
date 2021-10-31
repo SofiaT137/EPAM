@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.impl;
 
 import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
+import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.group.Group;
 
@@ -22,7 +22,7 @@ public class GroupDAO implements DAO<Group,Integer> {
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
     @Override
-    public Group save(Group group) {
+    public Integer save(Group group) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_GROUP);
             preparedStatement.setString(1,group.getName());
@@ -33,7 +33,7 @@ public class GroupDAO implements DAO<Group,Integer> {
             group.setId(group_id);
             preparedStatement.close();
             resultSet.close();
-            return group;
+            return group_id;
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
             return null;

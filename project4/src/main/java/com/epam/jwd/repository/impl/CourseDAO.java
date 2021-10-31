@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.impl;
 
 import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.connection_pool.ConnectionPollImpl;
+import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
 import com.epam.jwd.repository.model.course.Course;
 import com.epam.jwd.repository.model.user.User;
@@ -27,7 +27,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
     @Override
-    public Course save(Course course) {
+    public Integer save(Course course) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE);
             preparedStatement.setString(1,course.getName());
@@ -40,10 +40,10 @@ public class CourseDAO implements DAO<Course,Integer> {
             course.setId(course_id);
             preparedStatement.close();
             resultSet.close();
-            return course;
+            return course_id;
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
-            return null;
+            return -1;
         }
     }
 

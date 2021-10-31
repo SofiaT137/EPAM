@@ -1,27 +1,51 @@
 package com.epam.jwd.repository.model.user;
 
-import java.util.Arrays;
+import com.epam.jwd.repository.model.AbstractEntity;
 
-public enum Role{
-    ADMIN(1),
-    STUDENT(2),
-    TEACHER(3),
-    HEADMAN(4);
+import java.util.Objects;
 
-    private int id;
+public class Role extends AbstractEntity<Integer> {
 
-    Role(int id) {
-        this.id = id;
+    private String name;
+
+    public Role(String name) {
+        this.name = name;
     }
 
-    public int getId() {
-        return id;
+    public Role() {
     }
 
-    public static Role getById(int id) {
-        return Arrays.stream(Role.values())
-                .filter(role -> role.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public Role(Integer id, String name) {
+        super(id);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Role)) return false;
+        Role role = (Role) o;
+        return Objects.equals(name, role.getName()) && Objects.equals(id,role.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name,id);
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
