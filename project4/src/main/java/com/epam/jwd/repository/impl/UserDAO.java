@@ -3,33 +3,41 @@ package com.epam.jwd.repository.impl;
 import com.epam.jwd.repository.api.DAO;
 import com.epam.jwd.repository.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
+import com.epam.jwd.repository.model.group.Group;
+import com.epam.jwd.repository.model.user.Account;
 import com.epam.jwd.repository.model.user.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO implements DAO<User,Integer> {
 
-    private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
-     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
+    private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, university_group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
+    private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
-    private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
+    private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-
+    public User createUser(String accountLogin, String groupName, String firstName,String lastName){
+        AccountDAO accountDAO = new AccountDAO();
+        Account account = accountDAO.filterAccount(accountLogin).get(0);
+        GroupDAO groupDAO =  new GroupDAO();
+        Group group = groupDAO.filterGroup(groupName).get(0);
+        return new User(account.getId(),group.getId(),firstName,lastName);
+    }
 
     @Override
     public Integer save(User user) {
             try(Connection connection = connectionPool.takeConnection()){
                 ResultSet resultSet;
-                connection.setAutoCommit(false);
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER);
+                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setInt(1,user.getAccount_id());
                 preparedStatement.setInt(2,user.getGroup_id());
                 preparedStatement.setString(3,user.getFirst_name());
