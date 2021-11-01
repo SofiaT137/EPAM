@@ -24,6 +24,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_FIND_ALL_COURSE = "SELECT * FROM course";
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT * FROM course WHERE course_id =  ?";
     private static final String SQL_FIND_COURSE_BY_NAME = "SELECT * FROM course WHERE name = ?;";
+    private static final String SQL_FIND_AVAILABLE_USER_COURSES = "SELECT * FROM user_has_course WHERE user_id =  ?";
     private static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE course_id = ?";
 
 
@@ -71,6 +72,25 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
     }
 
+    public List<Course> getUserAvailableCourses(String first_name,String last_name ){
+        List<Course> courses = new ArrayList<>();
+        try(Connection connection = connectionPool.takeConnection()){
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.filterUser(first_name,last_name).get(0);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES);
+            preparedStatement.setInt(1,user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                courses.add(findById(resultSet.getInt("course_id")));
+            }
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return courses;
+    }
 
     @Override
     public Boolean update(Course course) {
@@ -125,9 +145,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                course = returnCourseList(resultSet).get(0);
-            }
+            course = returnCourseList(resultSet).get(0);
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
