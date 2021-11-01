@@ -13,14 +13,14 @@ public class Main {
 //        RoleDAO roleDAO = new RoleDAO();
 //        roleDAO.save(roleDAO.createRole("HEADMAN"));
 
-//        AccountDAO accountDAO = new AccountDAO();
-//        accountDAO.save(accountDAO.createAccount("HEADMAN","Headman1","1111"));
+        AccountDAO accountDAO = new AccountDAO();
+        accountDAO.save(accountDAO.createAccount("HEADMAN","Headman5","1115"));
 
 //        GroupDAO groupDAO = new GroupDAO();
 //        groupDAO.save(groupDAO.createGroup("A"));
 
 //         UserDAO userDAO = new UserDAO();
-//         userDAO.save(userDAO.createUser("Headman1","A","Vasya","Pupkin"));
+//         userDAO.save(userDAO.createUser("Headman3","A","Vasya","Yorimov"));
 
 //        CourseDAO courseDAO = new CourseDAO();
 //        Date start_date = new Date(2021,8,14);

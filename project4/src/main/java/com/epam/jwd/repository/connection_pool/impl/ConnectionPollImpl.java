@@ -1,7 +1,7 @@
 package com.epam.jwd.repository.connection_pool.impl;
 
 import com.epam.jwd.repository.connection_pool.api.ConnectionPool;
-import com.epam.jwd.repository.connection_pool.exception.ConnectionPoolException;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,13 +16,12 @@ public class ConnectionPollImpl implements ConnectionPool {
     public static final String USER = "root";
     public static final String PASSWORD = "13041993Sofia";
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static int INITIAL_POOL_SIZE = 4;
-    private static int MAX_POOL_SIZE = 5;
+    private final static int INITIAL_POOL_SIZE = 5;
 
     private boolean initialized = false;
 
-    private BlockingQueue<ProxyConnection> availableConnections = new LinkedBlockingDeque<>();
-    private BlockingQueue<ProxyConnection> givenAwayConnections = new LinkedBlockingDeque<>();
+    private final BlockingQueue<ProxyConnection> availableConnections = new LinkedBlockingDeque<>();
+    private final BlockingQueue<ProxyConnection> givenAwayConnections = new LinkedBlockingDeque<>();
 
     private static ConnectionPool INSTANCE;
 
@@ -38,27 +37,27 @@ public class ConnectionPollImpl implements ConnectionPool {
     }
 
     @Override
-    public void initialize() {
+    public synchronized void initialize() {
         if (!initialized){
             try{
                 Class.forName(DRIVER);
             } catch (ClassNotFoundException e) {
-//                logger
+                //logger
             }
             try{
                 for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
                     createConnection();
                 }
                 initialized = true;
+                //log info connections was created
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                // logger
             }
         }
-
     }
 
     @Override
-    public void shutDown() {
+    public synchronized void shutDown() {
         closeConnections();
         initialized = false;
         availableConnections.clear();
@@ -66,43 +65,22 @@ public class ConnectionPollImpl implements ConnectionPool {
     }
 
     @Override
-    public Connection takeConnection() throws InterruptedException {
-        if (!availableConnections.isEmpty()) {
-            availableConnections.poll();
-        } else if (availableConnections.size() < MAX_POOL_SIZE) {
-            try {
-                createConnection();
-            } catch (SQLException exception) {
-                //logger
-            }
+    public synchronized Connection takeConnection() throws InterruptedException {
+        while(availableConnections.isEmpty()) {
+            this.wait();
         }
-        while (availableConnections.isEmpty()) {
-            try {
-                this.wait();
-            } catch (InterruptedException exception) {
-                Thread.currentThread().interrupt();
-                //log.error();
-            }
-        }
-        return availableConnections.poll();
+        final ProxyConnection connection = availableConnections.poll();
+        givenAwayConnections.add(connection);
+        return connection;
     }
 
+
     @Override
-    public void returnConnection(Connection connection) {
-        if (givenAwayConnections.contains(connection)) {
-            givenAwayConnections.remove((ProxyConnection) connection);
-            try {
-                connection.rollback();
-                connection.setAutoCommit(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if (availableConnections.size() + givenAwayConnections.size() < INITIAL_POOL_SIZE
-                ||availableConnections.isEmpty()){
+    public synchronized void returnConnection(Connection connection) {
+        if (connection != null) {
+            if (givenAwayConnections.remove((ProxyConnection) connection)) {
                 availableConnections.add((ProxyConnection) connection);
-            }
-            else {
-                closeConnection((ProxyConnection) connection);
+                notifyAll();
             }
         }
     }
