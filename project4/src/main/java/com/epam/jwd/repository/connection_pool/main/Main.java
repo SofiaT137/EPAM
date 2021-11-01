@@ -29,6 +29,9 @@ public class Main {
 //
 //       courseDAO.addUserIntoCourse("Spanish","Vasya","Pupkin");
 
+//        ReviewDAO reviewDAO = new ReviewDAO();
+//        reviewDAO.save(reviewDAO.createReview("Vasya","Pupkin","Spanish",10,"Great result!"));
+
 
     }
 
