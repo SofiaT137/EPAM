@@ -84,14 +84,12 @@ public class RoleDAO implements DAO<Role, Integer> {
 
     @Override
     public Role findById(Integer id) {
-        Role role = null;
+        Role role;
         try(Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                role =  returnRoleList(resultSet).get(0);
-            }
+            role =  returnRoleList(resultSet).get(0);
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {

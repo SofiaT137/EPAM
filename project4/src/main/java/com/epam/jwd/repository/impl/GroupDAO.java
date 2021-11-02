@@ -95,14 +95,12 @@ public class GroupDAO implements DAO<Group,Integer> {
 
     @Override
     public Group findById(Integer id) {
-        Group group = null;
+        Group group;
         try(Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                group =  returnGroupList(resultSet).get(0);
-            }
+            group =  returnGroupList(resultSet).get(0);
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {

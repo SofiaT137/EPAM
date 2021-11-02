@@ -97,14 +97,12 @@ public class UserDAO implements DAO<User,Integer> {
 
         @Override
     public User findById(Integer id) {
-            User user = null;
+            User user;
             try(Connection connection = connectionPool.takeConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ID);
                 preparedStatement.setInt(1,id);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-                    user =  returnUserList(resultSet).get(0);
-                }
+                user =  returnUserList(resultSet).get(0);
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException | InterruptedException exception) {
@@ -140,7 +138,7 @@ public class UserDAO implements DAO<User,Integer> {
                 user.setAccount_id(resultSet.getInt("account_id"));
                 user.setGroup_id(resultSet.getInt("university_group_id"));
                 user.setFirst_name(resultSet.getString("first_name"));
-                user.setFirst_name(resultSet.getString("last_name"));
+                user.setLast_name(resultSet.getString("last_name"));
                 userList.add(user);
             }
         } catch (SQLException e) {

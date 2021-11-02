@@ -2,9 +2,11 @@ package com.epam.jwd.repository.connection_pool.main;
 
 
 import com.epam.jwd.repository.impl.*;
+import com.epam.jwd.repository.model.user.User;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
 
@@ -20,14 +22,22 @@ public class Main {
 //        groupDAO.save(groupDAO.createGroup("A"));
 
 //         UserDAO userDAO = new UserDAO();
+//         User user = userDAO.findById(3);
+//        System.out.println(user.getFirst_name());
+//        System.out.println(user.getLast_name());
 //         userDAO.save(userDAO.createUser("Headman3","A","Vasya","Yorimov"));
 
         CourseDAO courseDAO = new CourseDAO();
-//        Date start_date = new Date(2021,8,14);
-//        Date end_date = new Date(2021,10,14);
-//        courseDAO.save(courseDAO.createCourse("Spanish",start_date,end_date));
-//
-        System.out.println(courseDAO.getUserAvailableCourses("Vasya","Pupkin"));
+        courseDAO.addUserIntoCourse("Spanish","Vasya","Yorimov");
+//        courseDAO.deleteUserFromCourse("Spanish","Vasya","Yorimov");
+//        List<User> userList = courseDAO.getAllUserAtCourse("Spanish");
+//        for (User user : userList) {
+//            System.out.println(user.getFirst_name() + " " + user.getLast_name());
+//        }
+////        Date start_date = new Date(2021,8,14);
+////        Date end_date = new Date(2021,10,14);
+////        courseDAO.save(courseDAO.createCourse("Spanish",start_date,end_date));
+////
 
 //        ReviewDAO reviewDAO = new ReviewDAO();
 //        reviewDAO.save(reviewDAO.createReview("Vasya","Pupkin","Spanish",10,"Great result!"));

@@ -25,7 +25,9 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT * FROM course WHERE course_id =  ?";
     private static final String SQL_FIND_COURSE_BY_NAME = "SELECT * FROM course WHERE name = ?;";
     private static final String SQL_FIND_AVAILABLE_USER_COURSES = "SELECT * FROM user_has_course WHERE user_id =  ?";
+    private static final String SQL_FIND_ALL_USERS_AT_COURSE = "SELECT * FROM user_has_course WHERE course_id =  ?";
     private static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE course_id = ?";
+    private static final String SQL_DELETE_USER_FROM_COURSE = "DELETE FROM user_has_course WHERE user_id = ? and course_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
@@ -72,7 +74,7 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
     }
 
-    public List<Course> getUserAvailableCourses(String first_name,String last_name ){
+    public List<Course> getUserAvailableCourses(String first_name,String last_name){
         List<Course> courses = new ArrayList<>();
         try(Connection connection = connectionPool.takeConnection()){
             UserDAO userDAO = new UserDAO();
@@ -91,6 +93,45 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
         return courses;
     }
+
+    public List<User> getAllUserAtCourse(String course_name){
+        List<User> users = new ArrayList<>();
+        try(Connection connection = connectionPool.takeConnection()){
+            CourseDAO courseDAO = new CourseDAO();
+            UserDAO userDAO = new UserDAO();
+            Course course = courseDAO.filterCourse(course_name).get(0);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE);
+            preparedStatement.setInt(1,course.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                users.add(userDAO.findById(resultSet.getInt("user_id")));
+            }
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return users;
+    }
+
+    public Boolean deleteUserFromCourse(String course_name, String first_name,String last_name){
+        try(Connection connection = connectionPool.takeConnection()){
+            Course course = filterCourse(course_name).get(0);
+            UserDAO userDAO = new UserDAO();
+            User user = userDAO.filterUser(first_name,last_name).get(0);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE);
+            preparedStatement.setInt(1,user.getId());
+            preparedStatement.setInt(2,course.getId());
+            Boolean result = preparedStatement.executeUpdate() > 0;
+            preparedStatement.close();
+            return result;
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return false;
+        }
+    }
+
 
     @Override
     public Boolean update(Course course) {
