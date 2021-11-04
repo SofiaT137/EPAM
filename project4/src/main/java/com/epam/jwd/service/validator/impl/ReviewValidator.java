@@ -16,7 +16,8 @@ public class ReviewValidator implements Validator<ReviewDto> {
 
     @Override
     public boolean validate(ReviewDto dto) throws ServerException {
-        return false;
+        return validateGrade(dto.getGrade())
+                && validateReview(dto.getReview());
     }
 
     private boolean validateGrade(final Integer grade) throws ServerException {

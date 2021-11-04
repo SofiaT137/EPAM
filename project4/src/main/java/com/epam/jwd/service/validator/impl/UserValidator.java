@@ -14,7 +14,7 @@ public class UserValidator implements Validator<UserDto> {
     private final static Integer MIN_NAME_LENGTH = 2;
     private final static Integer MAX_NAME_LENGTH = 20;
 
-    private static final String NAME_LENGTH_EXCEPTION = "The length must be from 2 to 20 characters";
+    private static final String NAME_LENGTH_EXCEPTION = "The name length must be from 2 to 20 characters";
 
     @Override
     public boolean validate(UserDto dto) throws ServerException {
