@@ -1,10 +1,13 @@
 package com.epam.jwd.service.validator.impl;
 
+import com.epam.jwd.service.dto.userdto.AccountDto;
+import com.epam.jwd.service.validator.api.Validator;
+
 import java.rmi.ServerException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccountValidator {
+public class AccountValidator implements Validator<AccountDto> {
 
     private static String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$)$";
     private static String LOGIN_REGEX  = "\\b[a-zA-Z][a-zA-Z0-9\\-._]\\b";
@@ -16,7 +19,7 @@ public class AccountValidator {
     private static final String LOGIN_LENGTH_EXCEPTION = "The length must be more than 4 character";
 
     @Override
-    public boolean validate(AccountDTO dto) throws ServerException {
+    public boolean validate(AccountDto dto) throws ServerException {
         return validatePassword(dto.getPassword())
                 && validateLogin(dto.getLogin());
     }

@@ -6,7 +6,7 @@ import java.rmi.ServerException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class UserValidator implements Validator {
+public class UserValidator implements Validator<UserDto> {
 
     private static String FIRST_AND_LAST_NAME_REGEX = "^[a-zA-Z '.-]*$";
 
