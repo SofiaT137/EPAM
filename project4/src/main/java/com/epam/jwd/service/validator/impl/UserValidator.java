@@ -1,5 +1,6 @@
 package com.epam.jwd.service.validator.impl;
 
+import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.validator.api.Validator;
 
 import java.rmi.ServerException;
@@ -16,9 +17,9 @@ public class UserValidator implements Validator<UserDto> {
     private static final String NAME_LENGTH_EXCEPTION = "The length must be from 2 to 20 characters";
 
     @Override
-    public boolean validate(UserDTO dto) throws ServerException {
-        return validateName(dto.getFirstName())
-                && validateName(dto.getLastName());
+    public boolean validate(UserDto dto) throws ServerException {
+        return validateName(dto.getFirst_name())
+                && validateName(dto.getLast_name());
     }
 
     private boolean validateName(final String name) throws ServerException {
