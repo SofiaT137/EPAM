@@ -27,8 +27,8 @@ public class Main {
 //        System.out.println(user.getLast_name());
 //         userDAO.save(userDAO.createUser("Headman3","A","Vasya","Yorimov"));
 
-        CourseDAO courseDAO = new CourseDAO();
-        courseDAO.addUserIntoCourse("Spanish","Vasya","Yorimov");
+//        CourseDAO courseDAO = new CourseDAO();
+//        courseDAO.addUserIntoCourse("Spanish","Vasya","Yorimov");
 //        courseDAO.deleteUserFromCourse("Spanish","Vasya","Yorimov");
 //        List<User> userList = courseDAO.getAllUserAtCourse("Spanish");
 //        for (User user : userList) {
