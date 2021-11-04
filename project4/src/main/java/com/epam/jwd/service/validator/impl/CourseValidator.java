@@ -15,8 +15,8 @@ public class CourseValidator implements Validator<CourseDto> {
     private final static Integer MIN_NAME_LENGTH = 2;
     private final static Integer MAX_NAME_LENGTH = 30;
 
-    private static final String NAME_LENGTH_EXCEPTION = "The name length must be from 2 to 30 characters";
-    private static final String DATE_SUBTRACTION_EXCEPTION = "The name length must be from 2 to 30 characters";
+    private static final String NAME_LENGTH_EXCEPTION = "The name length must be from 2 to 30 characters.";
+    private static final String DATE_SUBTRACTION_EXCEPTION = "The course's end date must be greater than start date.";
 
 
     @Override
@@ -35,7 +35,7 @@ public class CourseValidator implements Validator<CourseDto> {
     }
 
     private boolean validateDate(final Date start_date,final Date end_date) throws ServerException {
-        if (!(start_date.after(end_date))){
+        if (start_date.after(end_date)){
             throw new ServerException(DATE_SUBTRACTION_EXCEPTION);
         }
         return true;
