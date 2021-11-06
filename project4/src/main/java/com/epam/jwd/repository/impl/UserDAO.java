@@ -95,7 +95,7 @@ public class UserDAO implements DAO<User,Integer> {
         }
     }
 
-        @Override
+    @Override
     public User findById(Integer id) {
             User user;
             try(Connection connection = connectionPool.takeConnection()) {

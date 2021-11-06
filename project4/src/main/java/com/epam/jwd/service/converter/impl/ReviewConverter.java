@@ -1,10 +1,10 @@
-package com.epam.jwd.service.conventer.impl;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.repository.model.review.Review;
-import com.epam.jwd.service.conventer.api.Conventer;
+import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 
-public class ReviewConventer implements Conventer<Review, ReviewDto,Integer> {
+public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
     @Override
     public Review convert(ReviewDto reviewDto) {
         return new Review(reviewDto.getId(),reviewDto.getUser_id(),reviewDto.getGrade(),reviewDto.getReview());

@@ -1,10 +1,10 @@
-package com.epam.jwd.service.conventer.impl;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.repository.model.course.Course;
-import com.epam.jwd.service.conventer.api.Conventer;
+import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 
-public class CourseConventer implements Conventer<Course, CourseDto,Integer> {
+public class CourseConverter implements Converter<Course, CourseDto,Integer> {
     @Override
     public Course convert(CourseDto courseDto) {
         return new Course(courseDto.getId(),courseDto.getName(),courseDto.getStartCourse(),courseDto.getEndCourse());

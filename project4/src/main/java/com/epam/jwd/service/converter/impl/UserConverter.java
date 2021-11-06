@@ -1,10 +1,10 @@
-package com.epam.jwd.service.conventer.impl;
+package com.epam.jwd.service.converter.impl;
 
 import com.epam.jwd.repository.model.user.User;
-import com.epam.jwd.service.conventer.api.Conventer;
+import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
-public class UserConventer implements Conventer<User, UserDto,Integer> {
+public class UserConverter implements Converter<User, UserDto,Integer> {
 
 
     @Override

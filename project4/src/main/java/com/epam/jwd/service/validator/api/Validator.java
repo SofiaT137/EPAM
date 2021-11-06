@@ -1,7 +1,8 @@
 package com.epam.jwd.service.validator.api;
 
-import java.rmi.ServerException;
+import com.epam.jwd.service.exception.ServiceException;
+
 
 public interface Validator <T>{
-    boolean validate(T dto) throws ServerException;
+    void validate(T dto) throws ServiceException;
 }
