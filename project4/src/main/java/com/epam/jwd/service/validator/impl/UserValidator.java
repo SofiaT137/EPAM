@@ -16,6 +16,7 @@ public class UserValidator implements Validator<UserDto> {
     private final static Integer MAX_NAME_LENGTH = 20;
 
     private static final String NAME_LENGTH_EXCEPTION = "The name length must be from 2 to 20 characters";
+    private static final String USER_NAME_EXCEPTION = "I can't accept this user, some field(s) are wrong.";
 
     @Override
     public void validate(UserDto dto) throws ServiceException {
@@ -30,7 +31,7 @@ public class UserValidator implements Validator<UserDto> {
         Pattern namePattern = Pattern.compile(FIRST_AND_LAST_NAME_REGEX);
         Matcher matcher = namePattern.matcher(name);
         if(!matcher.find()){
-            throw new ServiceException("I can't update this user, some field(s) are wrong.");
+            throw new ServiceException(USER_NAME_EXCEPTION);
         }
     }
 }
