@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class CourseValidator implements Validator<CourseDto> {
 
-    private static String COURSE_NAME_REGEX = "^[a-zA-Z '+.-]*$";
+    private static final String COURSE_NAME_REGEX = "^[a-zA-Z '+.-]*$";
 
     private final static Integer MIN_NAME_LENGTH = 2;
     private final static Integer MAX_NAME_LENGTH = 30;
