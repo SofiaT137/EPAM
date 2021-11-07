@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.repository.api.DAO;
-import com.epam.jwd.repository.impl.UserDAO;
-import com.epam.jwd.repository.model.user.User;
+import com.epam.jwd.DAO.api.DAO;
+import com.epam.jwd.DAO.impl.UserDAO;
+import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
@@ -21,6 +21,11 @@ public class UserService implements Service<UserDto,Integer> {
     private final DAO<User,Integer> userDAO = new UserDAO();
     private final Validator<UserDto> userValidator = new UserValidator();
     private final Converter<User, UserDto, Integer> userConverter = new UserConverter();
+
+    private static final String ID_IS_NULL_EXCEPTION = "This id is null";
+    private static final String USER_NOT_FOUND_EXCEPTION = "This user is not found!";
+    private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any user.";
+    private static final String CANNOT_FIND_USER_EXCEPTION = "I can't find this user by its first name and last name";
 
 
     @Override
@@ -46,11 +51,11 @@ public class UserService implements Service<UserDto,Integer> {
     @Override
     public UserDto getById(Integer id) throws ServiceException {
         if (id == null) {
-           throw new ServiceException("This id is null");
+           throw new ServiceException(ID_IS_NULL_EXCEPTION);
        }
        User user = userDAO.findById(id);
        if (user == null){
-           throw new ServiceException("This user is not found!");
+           throw new ServiceException(USER_NOT_FOUND_EXCEPTION);
        }
        return userConverter.convert(user);
    }
@@ -61,7 +66,7 @@ public class UserService implements Service<UserDto,Integer> {
         List<User> daoGetAll = userDAO.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
-            throw new ServiceException("Repository is empty. I can't find any user.");
+            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
         }
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
         return userDtoList;
@@ -71,7 +76,7 @@ public class UserService implements Service<UserDto,Integer> {
         List<User> daoGetAll = ((UserDAO)userDAO).filterUser(first_name,last_name);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
-            throw new ServiceException("I can't find this user by his first name and last name");
+            throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
         }
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
         return userDtoList;

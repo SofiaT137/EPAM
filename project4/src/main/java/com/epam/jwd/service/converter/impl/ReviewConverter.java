@@ -1,6 +1,6 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.repository.model.review.Review;
+import com.epam.jwd.DAO.model.review.Review;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 

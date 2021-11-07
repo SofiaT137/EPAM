@@ -1,6 +1,6 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.repository.model.course.Course;
+import com.epam.jwd.DAO.model.course.Course;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 

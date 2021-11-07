@@ -1,6 +1,6 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.repository.model.user.Account;
+import com.epam.jwd.DAO.model.user.Account;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 
