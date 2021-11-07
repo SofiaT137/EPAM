@@ -6,12 +6,12 @@
 
   <servlet>
     <servlet-name>Servlet</servlet-name>
-    <servlet-class>com.epam.jwd.controller.impl.Controller</servlet-class>
+    <servlet-class>com.example.jwd.db.Servlet</servlet-class>
   </servlet>
 
-  <servlet-mapping>
-      <servlet-name>Servlet</servlet-name>
-       <url-pattern>/elective</url-pattern>
-    </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>Servlet</servlet-name>-->
+<!--    <url-pattern>servlet/aaa</url-pattern>-->
+<!--  </servlet-mapping>-->
 
 </web-app>
