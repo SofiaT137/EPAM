@@ -1,25 +1,24 @@
-package com.epam.jwd.controller.command.student;
-
-import com.epam.jwd.controller.command.api.Command;
+package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
+import com.epam.jwd.controller.command.api.Command;
 
-public enum CommandStudent {
+public enum Commands {
     DEFAULT(DefaultCommand.getInstance()),
-    CREATE_STUDENT_ACCOUNT(CreateStudentAccount.getInstance());
+    GET_ALL_COURSE(GetAllCourseCommand.getInstance()),
+    GET_ALL_USER(GetAllUserCommand.getInstance());
 
     private Command command;
 
-    CommandStudent(Command command){
+    Commands(Command command) {
         this.command = command;
     }
 
-    public static Command getCommand(String name){
-        return Arrays.stream(CommandStudent.values())
+    public static Command getCommand(String name) {
+        return Arrays.stream(Commands.values())
                 .filter(command -> command.name().equalsIgnoreCase(name))
                 .map(command -> command.command)
                 .findFirst()
                 .orElse(DefaultCommand.getInstance());
     }
-
 }

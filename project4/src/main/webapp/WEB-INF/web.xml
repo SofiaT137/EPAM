@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app.xsd"
          version="3.0">
 
-  <servlet>
-    <servlet-name>Servlet</servlet-name>
-    <servlet-class>com.epam.jwd.controller.impl.Controller</servlet-class>
-  </servlet>
+<!--  <servlet>-->
+<!--    <servlet-name>Servlet</servlet-name>-->
+<!--    <servlet-class>com.epam.jwd.controller.context.Controller</servlet-class>-->
+<!--  </servlet>-->
 
-  <servlet-mapping>
-      <servlet-name>Servlet</servlet-name>
-       <url-pattern>/elective</url-pattern>
-    </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--      <servlet-name>Servlet</servlet-name>-->
+<!--       <url-pattern>/controller</url-pattern>-->
+<!--    </servlet-mapping>-->
 
 </web-app>
