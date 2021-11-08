@@ -1,5 +1,5 @@
 <html>
 <body>
-<a href=/elective > click me </a>
+<jsp:forward page = "/controller"/>
 </body>
 </html>
