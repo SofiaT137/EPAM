@@ -1,13 +1,28 @@
 package com.epam.jwd.controller.custom_tag;
 
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
-public class HelloTag extends SimpleTagSupport {
+
+public class HelloTag extends TagSupport {
+
+    private Object userName;
+    private static final String TAG_EXCEPTION = "Something wrong with start tag!";
+
+    public void setUserName(String userName) {
+        userName = userName;
+    }
 
     @Override
-    public void doTag() throws JspException, IOException {
-        super.doTag();
+    public int doStartTag() throws JspException {
+        try {
+            pageContext.getOut().write("Hello, " + userName);
+        } catch (IOException e) {
+            //logger
+            throw new JspException(TAG_EXCEPTION);
+        }
+        return SKIP_BODY;
     }
 }
+

@@ -7,7 +7,7 @@
    <head>
         <title>Elective</title>
        <h1>University elective web-site</h1>
-   </head>
+        </head>
     <body>
     <form>
       <label>
