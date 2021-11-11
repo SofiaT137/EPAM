@@ -28,6 +28,7 @@
       <button type="submit" class="registerbtn">Register</button>
       <button type="submit" class="loginbtn">Log in</button>
     </form>
+    <a id="reviews-page-link" href ="/controller?command=GET_ALL_REVIEW">Reviews page</a>
     <a id="users-page-link" href ="/controller?command=GET_ALL_USER">Users page</a>
     <a id="courses-page-link" href ="/controller?command=GET_ALL_COURSE">Courses page</a>
     <footer class="bg-light text-center text-lg-start">

@@ -6,7 +6,8 @@ import com.epam.jwd.controller.command.api.Command;
 public enum Commands {
     DEFAULT(DefaultCommand.getInstance()),
     GET_ALL_COURSE(GetAllCourseCommand.getInstance()),
-    GET_ALL_USER(GetAllUserCommand.getInstance());
+    GET_ALL_USER(GetAllUserCommand.getInstance()),
+    GET_ALL_REVIEW(GetAllReviewCommand.getInstance());
 
     private Command command;
 
