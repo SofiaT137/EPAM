@@ -1,5 +1,4 @@
-package com.epam.jwd.controller.context;
-
+package com.epam.jwd.controller;
 
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.ResponseContext;
