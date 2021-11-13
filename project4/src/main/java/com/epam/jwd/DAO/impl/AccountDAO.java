@@ -26,6 +26,8 @@ public class AccountDAO implements DAO<Account, Integer>  {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
+    private final RoleDAO roleDAO = new RoleDAO();
+
     public Account createAccount(Role role, String login,String password){
         return new Account(role,login,password);
     }
@@ -35,7 +37,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
         try (Connection connection = connectionPool.takeConnection()) {
             ResultSet resultSet;
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setObject(1,account.getRole());
+            preparedStatement.setObject(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.executeUpdate();
@@ -47,7 +49,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             resultSet.close();
             return account_id;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            //log and Rethrow exception
             return -1;
         }
     }
@@ -138,7 +140,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             if (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getInt("account_id"));
-                account.setRole((Role) resultSet.getObject("role"));
+                account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));
                 account.setLogin(resultSet.getString("login"));
                 account.setPassword(resultSet.getString("password"));
                 accountList.add(account);

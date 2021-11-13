@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 public class AccountValidator implements Validator<AccountDto> {
 
-    private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$)$";
-    private static final String LOGIN_REGEX  = "\\b[a-zA-Z][a-zA-Z0-9\\-._]\\b";
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$";
+    private static final String LOGIN_REGEX  = "^[A-Za-z0-9,.'-]+$";
 
     private final static Integer MIN_PASSWORD_LENGTH = 8;
     private final static Integer MIN_LOGIN_LENGTH = 4;

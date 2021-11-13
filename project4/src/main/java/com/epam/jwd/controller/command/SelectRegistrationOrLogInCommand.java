@@ -7,6 +7,9 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.impl.AccountService;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 
 public class SelectRegistrationOrLogInCommand implements Command {
 
@@ -58,27 +61,34 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String role = requestContext.getParameterFromJSP("Role:");
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
-        //get accoutDTO
+
+        List<AccountDto> accountDtoList = ((AccountService) service).filterAccount(login);
+
+        AccountDto accountDto = new AccountDto();
+        accountDto.setRole(role);
+        accountDto.setLogin(login);
+        accountDto.setPassword(password);
+
         if (btnRegister != null) {
-            // проверить аккаунт на уникальность
 
-            //если все плохо:
-            // вывести алерт
-            // return DefaultCommand.getInstance().execute(requestContext);
+            if (accountDtoList.size() != 0) {
+                return DefaultCommand.getInstance().execute(requestContext);
+            }
+            service.create(accountDto);
 
-            // сохранить в базу новый аккаунт
-
-            //если все плохо:
-            // вывести алерт
-            // return DefaultCommand.getInstance().execute(requestContext);
-
-            // перейти на страницу сохнанения юзера
-//            requestContext.addAttributeToSession(REGISTER_USER_JSP_COLLECTION_ATTRIBUTE,accountDTO);
+            requestContext.addAttributeToSession(REGISTER_USER_JSP_COLLECTION_ATTRIBUTE, accountDto);
 
             return REGISTER_USER_CONTEXT;
+        } else if (btnLogIn != null) {
+            if (accountDtoList.size() != 0) {
+                accountDto = accountDtoList.get(0);
+                requestContext.addAttributeToSession(USER_PAGE_JSP_COLLECTION_ATTRIBUTE, accountDto);
+            } else {
+                return DefaultCommand.getInstance().execute(requestContext);
+            }
+            return USER_PAGE_CONTEXT;
         }
-        // найти такой аккаунт в базе
-        // если он нашелся,
-        return USER_PAGE_CONTEXT;
+        return DefaultCommand.getInstance().execute(requestContext);
     }
 }
+

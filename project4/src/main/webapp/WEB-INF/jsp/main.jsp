@@ -17,7 +17,7 @@
           <p></p>
               <div class="form-group">
             <label>Password</label>
-            <input name="lblPassword" type="password" placeholder="Enter your password">
+            <input name="lblPassword" type="password" placeholder="Enter your password" >
           </div>
           <p></p>
           Select who you are: <SELECT NAME="Role:">
