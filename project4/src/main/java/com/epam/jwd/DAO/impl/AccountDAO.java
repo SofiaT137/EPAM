@@ -26,10 +26,8 @@ public class AccountDAO implements DAO<Account, Integer>  {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-    public Account createAccount(String roleName, String login,String password){
-       RoleDAO roleDAO = new RoleDAO();
-       Role role = roleDAO.filterRole(roleName).get(0);
-       return new Account(role.getId(),login,password);
+    public Account createAccount(Role role, String login,String password){
+        return new Account(role,login,password);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
         try (Connection connection = connectionPool.takeConnection()) {
             ResultSet resultSet;
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1,account.getRole_id());
+            preparedStatement.setObject(1,account.getRole());
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.executeUpdate();
@@ -58,7 +56,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
     public Boolean update(Account account) {
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_BY_ID);
-            preparedStatement.setInt(1, account.getRole_id());
+            preparedStatement.setObject(1, account.getRole());
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.setInt(5, account.getId());
@@ -140,7 +138,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             if (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getInt("account_id"));
-                account.setRole_id(resultSet.getInt("role_id"));
+                account.setRole((Role) resultSet.getObject("role"));
                 account.setLogin(resultSet.getString("login"));
                 account.setPassword(resultSet.getString("password"));
                 accountList.add(account);

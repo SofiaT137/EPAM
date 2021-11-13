@@ -13,25 +13,25 @@ public class Account extends AbstractEntity<Integer> {
     public Account() {
     }
 
-    public Account(Integer id, int role_id, String login, String password) {
+    public Account(Integer id, Role role, String login, String password) {
         super(id);
-        this.role_id = role_id;
+        this.role = role;
         this.login = login;
         this.password = password;
     }
 
-    public Account(int role_id, String login, String password) {
-        this.role_id = role_id;
+    public Account(Role role, String login, String password) {
+        this.role = role;
         this.login = login;
         this.password = password;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getLogin() {
@@ -55,22 +55,22 @@ public class Account extends AbstractEntity<Integer> {
         if (this == o) return true;
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
-        return role_id == account.getRole_id()
-                && Objects.equals(login, account.getLogin())
-                && Objects.equals(password, account.getPassword())
-                && Objects.equals(id,account.getId());
+        return getRole() == account.getRole()
+                && Objects.equals(login, account.login)
+                && Objects.equals(password, account.password)
+                && Objects.equals(id,account.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(role_id, login, password,id);
+        return Objects.hash(id,role,login,password);
     }
 
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
-                ", role_id=" + role_id +
+                ", role=" + role +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';

@@ -6,30 +6,29 @@ import java.util.Objects;
 
 public class AccountDto extends AbstractDto<Integer> {
 
-    private int role_id;
+    private String role;
     private String login;
     private String password;
 
-
-    public AccountDto(Integer id, int role_id, String login, String password) {
+    public AccountDto(Integer id, String roleName, String login, String password) {
         this.id = id;
-        this.role_id = role_id;
+        this.role = roleName;
         this.login = login;
         this.password = password;
     }
 
-    public AccountDto(int role_id, String login, String password) {
-        this.role_id = role_id;
+    public AccountDto(String roleName, String login, String password) {
+        this.role = roleName;
         this.login = login;
         this.password = password;
     }
 
-    public int getRole_id() {
-        return role_id;
+    public String getRole() {
+        return role;
     }
 
-    public void setRole_id(int role_id) {
-        this.role_id = role_id;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getLogin() {
@@ -51,23 +50,24 @@ public class AccountDto extends AbstractDto<Integer> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AccountDto accountDTO = (AccountDto) o;
-        return Objects.equals(role_id, accountDTO.getRole_id())
-                && Objects.equals(login, accountDTO.getLogin())
-                && Objects.equals(password, accountDTO.getPassword())
-                && Objects.equals(id, accountDTO.getId());
+        if (!(o instanceof AccountDto)) return false;
+        AccountDto accountDto = (AccountDto) o;
+        return Objects.equals(role, accountDto.getRole())
+                && Objects.equals(login, accountDto.getLogin())
+                && Objects.equals(password, accountDto.getPassword())
+                && Objects.equals(id,accountDto.id);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(role_id,login,password,id);
+        return Objects.hash(id, role, login, password);
     }
 
     @Override
     public String toString() {
         return "AccountDto{" +
                 "id=" + id +
-                ", role_id=" + role_id +
+                ", role='" + role + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';

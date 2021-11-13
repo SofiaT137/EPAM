@@ -1,27 +1,25 @@
 package com.epam.jwd.DAO.model.user;
 
-
 import java.util.Arrays;
 
-
 public enum Role {
-    ADMINISTRATOR(1),
-    TEACHER(2),
-    STUDENT(3);
+    ADMINISTRATOR("Admin"),
+    TEACHER("Teacher"),
+    STUDENT("Student");
 
-    private final Integer id;
+    private final String name;
 
-    Role(int id) {
-        this.id = id;
+    Role(String name) {
+        this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public static Role getById(int id) {
+    public static Role getByName(String name) {
         return Arrays.stream(Role.values())
-                .filter(role -> role.getId() == id)
+                .filter(role -> role.getName().equals(name))
                 .findFirst()
                 .orElse(null);
     }
