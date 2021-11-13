@@ -1,7 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:set var="language" value="${not empty language ? language : pageContext.request.locale}" scope="session"/>
-<fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="resources.locale" var="loc"/>
 
 <html>
    <head>
@@ -28,9 +25,6 @@
             <input type="submit" name="btnRegister" value="Register" />
             <input type="submit" name="btnLogIn" value="LogIn" />
         </form>
-    <a id="reviews-page-link" href ="/controller?command=GET_ALL_REVIEW">Reviews page</a>
-    <a id="users-page-link" href ="/controller?command=GET_ALL_USER">Users page</a>
-    <a id="courses-page-link" href ="/controller?command=GET_ALL_COURSE">Courses page</a>
     <footer class="bg-light text-center text-lg-start">
         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
          © 2021 Copyright: Made by Sofia Tkachenia

@@ -81,4 +81,9 @@ public class UserService implements Service<UserDto,Integer> {
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
         return userDtoList;
     }
+
+    public UserDto findUserByAccountId(int account_id){
+        User user = ((UserDAO)userDAO).findUserByAccountId(account_id);
+        return userConverter.convert(user);
+    }
 }

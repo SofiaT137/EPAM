@@ -8,7 +8,8 @@ public enum Commands {
     GET_ALL_COURSE(GetAllCourseCommand.getInstance()),
     GET_ALL_USER(GetAllUserCommand.getInstance()),
     GET_ALL_REVIEW(GetAllReviewCommand.getInstance()),
-    SELECT_REGISTRATION_OR_LOG_IN(SelectRegistrationOrLogInCommand.getInstance());
+    SELECT_REGISTRATION_OR_LOG_IN(SelectRegistrationOrLogInCommand.getInstance()),
+    GET_CURRENT_USER_PAGE();
 
     private Command command;
 

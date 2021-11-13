@@ -22,6 +22,7 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
     private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? and last_name = ?";
+    private static final String SQL_FIND_USER_BY_ACCOUNT_ID = "SELECT * FROM user WHERE account_id = ?";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -127,6 +128,22 @@ public class UserDAO implements DAO<User,Integer> {
             return null;
         }
         return userList;
+    }
+
+    public User findUserByAccountId(int account_id){
+        User user;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ACCOUNT_ID);
+            preparedStatement.setInt(1,account_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            user = returnUserList(resultSet).get(0);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return user;
     }
 
     private List<User> returnUserList (ResultSet resultSet){

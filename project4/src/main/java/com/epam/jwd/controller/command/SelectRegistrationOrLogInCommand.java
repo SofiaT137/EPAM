@@ -4,12 +4,14 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
+import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
+import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.AccountService;
+import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.UserService;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-
 
 public class SelectRegistrationOrLogInCommand implements Command {
 
@@ -17,8 +19,11 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String REGISTER_USER_JSP = "/WEB-INF/jsp/register_user.jsp";
     private static final String USER_PAGE_JSP = "/WEB-INF/jsp/user_page.jsp";
     private final Service<AccountDto, Integer> service = new AccountService();
-    private static final String REGISTER_USER_JSP_COLLECTION_ATTRIBUTE = "register_user";
+    private final Service<UserDto, Integer> serviceUser = new UserService();
+    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private static final String REGISTER_ACCOUNT_JSP_COLLECTION_ATTRIBUTE = "register_account";
     private static final String USER_PAGE_JSP_COLLECTION_ATTRIBUTE = "get_user_page";
+    private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
 
     private static final ResponseContext REGISTER_USER_CONTEXT = new ResponseContext() {
 
@@ -76,7 +81,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             }
             service.create(accountDto);
 
-            requestContext.addAttributeToSession(REGISTER_USER_JSP_COLLECTION_ATTRIBUTE, accountDto);
+            requestContext.addAttributeToSession(REGISTER_ACCOUNT_JSP_COLLECTION_ATTRIBUTE, accountDto);
 
             return REGISTER_USER_CONTEXT;
         } else if (btnLogIn != null) {
@@ -86,6 +91,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
             } else {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
+            UserDto user = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
+            List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(user.getFirst_name(),user.getLast_name());
+            requestContext.addAttributeToSession(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
+
             return USER_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
