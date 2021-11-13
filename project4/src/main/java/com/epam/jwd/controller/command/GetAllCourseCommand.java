@@ -7,6 +7,7 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.impl.CourseService;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class GetAllCourseCommand implements Command {

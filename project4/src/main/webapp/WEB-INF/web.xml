@@ -10,4 +10,14 @@
             <taglib-location>/WEB-INF/tld/hello_tag.tld</taglib-location>
         </taglib>
     </jsp-config>
-</web-app>
+
+        <servlet>
+            <servlet-name>Controller</servlet-name>
+            <servlet-class>com.epam.jwd.controller</servlet-class>
+        </servlet>
+
+        <servlet-mapping>
+            <servlet-name>Controller</servlet-name>
+            <url-pattern>*.html</url-pattern>
+        </servlet-mapping>
+   </web-app>

@@ -38,6 +38,9 @@ public class GetAllUserCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        String button1 = requestContext.getParameterFromJSP("btnRegister");
+        String button2 = requestContext.getParameterFromJSP("LogIn");
+        String login = requestContext.getParameterFromJSP("login");
         List<UserDto> userDtoList = service.getAll();
         requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE,userDtoList);
         return GET_USERS_CONTEXT;

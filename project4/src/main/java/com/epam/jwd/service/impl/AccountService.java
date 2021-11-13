@@ -73,9 +73,6 @@ public class AccountService implements Service<AccountDto,Integer> {
     public List<AccountDto> filterAccount(String login){
         List<Account> daoGetAll = ((AccountDAO)accountDAO).filterAccount(login);
         List<AccountDto> accountDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            throw new ServiceException(CANNOT_FIND_ACCOUNT_EXCEPTION);
-        }
         daoGetAll.forEach(account -> accountDtoList.add(accountConverter.convert(account)));
         return accountDtoList;
     }

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Account extends AbstractEntity<Integer> {
 
-    private int role_id;
+    private Role role;
     private String login;
     private String password;
 
