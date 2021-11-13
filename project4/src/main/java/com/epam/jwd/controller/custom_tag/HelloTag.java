@@ -11,13 +11,13 @@ public class HelloTag extends TagSupport {
     private static final String TAG_EXCEPTION = "Something wrong with start tag!";
 
     public void setUserName(String userName) {
-        userName = userName;
+        this.userName = userName;
     }
 
     @Override
     public int doStartTag() throws JspException {
         try {
-            pageContext.getOut().write("Hello, " + userName);
+            pageContext.getOut().write("Hello, " + this.userName);
         } catch (IOException e) {
             //logger
             throw new JspException(TAG_EXCEPTION);

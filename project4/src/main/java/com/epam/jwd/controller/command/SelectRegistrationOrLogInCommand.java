@@ -24,6 +24,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String REGISTER_ACCOUNT_JSP_COLLECTION_ATTRIBUTE = "register_account";
     private static final String USER_PAGE_JSP_COLLECTION_ATTRIBUTE = "get_user_page";
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
+    private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
 
     private static final ResponseContext REGISTER_USER_CONTEXT = new ResponseContext() {
 
@@ -92,8 +93,9 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
             UserDto user = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
+            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, user);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(user.getFirst_name(),user.getLast_name());
-            requestContext.addAttributeToSession(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
+            requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
 
             return USER_PAGE_CONTEXT;
         }
