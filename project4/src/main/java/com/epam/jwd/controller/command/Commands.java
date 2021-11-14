@@ -9,6 +9,7 @@ public enum Commands {
     GET_ALL_USER(GetAllUserCommand.getInstance()),
     GET_ALL_REVIEW(GetAllReviewCommand.getInstance()),
     SELECT_REGISTRATION_OR_LOG_IN(SelectRegistrationOrLogInCommand.getInstance()),
+    USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance());
 
 
