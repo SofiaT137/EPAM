@@ -22,8 +22,8 @@ public class CourseDto extends AbstractDto<Integer> {
         this.name = name;
         this.startCourse = startCourse;
         this.endCourse = endCourse;
-    }
 
+    }
 
     public String getName() {
         return name;

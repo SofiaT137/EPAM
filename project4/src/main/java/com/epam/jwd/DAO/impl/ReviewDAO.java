@@ -24,6 +24,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
     private static final String SQL_FIND_ALL_REVIEW = "SELECT * FROM review";
     private static final String SQL_FIND_REVIEW_BY_ID = "SELECT * FROM review WHERE review_id =  ?";
     private static final String SQL_FIND_ACCOUNTS_BY_USER_ID = "SELECT * FROM review WHERE user_id = ?;";
+    private static final String SQL_FIND_COURSE_BY_REVIEW_ID_COURSE_ID = "SELECT * FROM review WHERE user_id = ? AND course_id = ? ;";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -155,5 +156,22 @@ public class ReviewDAO implements DAO<Review, Integer> {
 //            e.printStackTrace();
         }
         return reviewList;
+    }
+
+    public Review findReviewByCourseIdAndUserId(int course_id,int user_id){
+        Review review;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_REVIEW_ID_COURSE_ID);
+            preparedStatement.setInt(1,user_id);
+            preparedStatement.setInt(2,course_id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            review = returnReviewList(resultSet).get(0);
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return review;
     }
 }

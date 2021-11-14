@@ -1,16 +1,20 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.DAO.impl.ReviewDAO;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
+import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectRegistrationOrLogInCommand implements Command {
@@ -21,10 +25,13 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private static final String REGISTER_ACCOUNT_JSP_COLLECTION_ATTRIBUTE = "register_account";
     private static final String USER_PAGE_JSP_COLLECTION_ATTRIBUTE = "get_user_page";
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
     private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
+    private static final String USER_REVIEW_JSP_COLLECTION_ATTRIBUTE = "user_review";
+
 
     private static final ResponseContext REGISTER_USER_CONTEXT = new ResponseContext() {
 
@@ -96,10 +103,20 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, user);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(user.getFirst_name(),user.getLast_name());
             requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
-
+            List<ReviewDto> reviewDtoList = getAllUserReview(user.getId(),user_courses);
+            requestContext.addAttributeToJSP(USER_REVIEW_JSP_COLLECTION_ATTRIBUTE, reviewDtoList);
             return USER_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
+    }
+
+    private List<ReviewDto> getAllUserReview(int user_id, List<CourseDto> listOfCourses){
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        for (CourseDto courseDto:
+            listOfCourses ) {
+            reviewDtoList.add(((ReviewService) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),user_id));
+        }
+        return reviewDtoList;
     }
 }
 

@@ -7,11 +7,11 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
     @Override
     public Review convert(ReviewDto reviewDto) {
-        return new Review(reviewDto.getId(),reviewDto.getUser_id(),reviewDto.getGrade(),reviewDto.getReview());
+        return new Review(reviewDto.getId(),reviewDto.getCourse_id(),reviewDto.getUser_id(),reviewDto.getGrade(),reviewDto.getReview());
     }
 
     @Override
     public ReviewDto convert(Review review) {
-        return new ReviewDto(review.getId(),review.getUser_id(),review.getGrade(),review.getReview());
+        return new ReviewDto(review.getId(),review.getCourse_id(),review.getUser_id(),review.getGrade(),review.getReview());
     }
 }
