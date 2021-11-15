@@ -55,6 +55,11 @@ public class CourseService implements Service<CourseDto,Integer> {
        return ((CourseDAO)courseDAO).deleteUserFromCourse(courseDto.getName(),userDto.getFirst_name(),userDto.getLast_name());
     }
 
+    public Boolean addUserIntoCourse(CourseDto courseDto, UserDto userDto) {
+        courseValidator.validate(courseDto);
+        userDtoValidator.validate(userDto);
+        return ((CourseDAO)courseDAO).addUserIntoCourse(courseDto.getName(),userDto.getFirst_name(),userDto.getLast_name());
+    }
 
     @Override
     public Boolean update(CourseDto value) throws ServiceException {

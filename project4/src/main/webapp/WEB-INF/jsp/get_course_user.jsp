@@ -27,7 +27,7 @@
       </c:forEach>
   </table>
   <p></p>
-   <form action="/controller?command=SIGN_UP_TO_COURSE_COURSE_COMMAND" method="post">
+   <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
            <div class="form-group">
                        <label>Sign up to course #</label>
                        <input name="lblGet" type="text" placeholder="Enter the course number">
