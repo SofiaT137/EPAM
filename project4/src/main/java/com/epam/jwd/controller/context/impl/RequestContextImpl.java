@@ -34,4 +34,9 @@ public class RequestContextImpl implements RequestContext{
         return this.session.getAttribute(name);
     }
 
+    @Override
+    public void invalidateCurrentSession() {
+        request.getSession().invalidate();
+    }
+
 }

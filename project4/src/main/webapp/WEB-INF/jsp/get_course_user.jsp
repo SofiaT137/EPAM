@@ -35,8 +35,9 @@
                      <p></p>
                    <input type="submit" name="btnGetCourse" value="Get course" />
                    <input type="submit" name="btnGetBack" value="Get Back" />
-                   <input type="submit" name="btnLogOut" value="Log out" />
-               </form>
+                   </form>
+                   <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+                    <p></p>
     <footer class="bg-light text-center text-lg-start">
                     <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
                      © 2021 Copyright: Made by Sofia Tkachenia

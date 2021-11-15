@@ -39,7 +39,6 @@ public class GetBackOrLogOutCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
-        String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
         if (btnGetBack !=null){
             UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");

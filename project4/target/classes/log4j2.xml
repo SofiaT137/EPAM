@@ -19,12 +19,10 @@
             </Policies>
         </RollingFile>
     </Appenders>
-
     <Loggers>
         <Root level="INFO">
-            STDOUT
-            <AppenderRef ref="rollingFileSize" />
             <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="rollingFileSize" />
         </Root>
     </Loggers>
 

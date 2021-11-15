@@ -27,8 +27,9 @@
    <p></p>
          <form action="/controller?command=GET_BACK_OR_LOG_OUT_COMMAND" method="post">
                   <input type="submit" name="btnGetBack" value="Get Back" />
-                  <input type="submit" name="btnLogOut" value="Log out" />
-              </form>
+                </form>
+                <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+          <p></p>
       <p></p>
     <footer class="bg-light text-center text-lg-start">
         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">

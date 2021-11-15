@@ -13,7 +13,8 @@ public enum Commands {
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
     GET_BACK_OR_LOG_OUT_COMMAND(GetBackOrLogOutCommand.getInstance()),
     DELETE_USER_COURSE_COMMAND(DeleteUserCourseCommand.getInstance()),
-    SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance());
+    SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance()),
+    LOG_OUT_COMMAND(LogOutCommand.getInstance());
 
 
     private final Command command;

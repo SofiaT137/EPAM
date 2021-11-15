@@ -5,4 +5,5 @@ public interface RequestContext {
     String getParameterFromJSP(String name);
     void addAttributeToSession(String name,Object attribute);
     Object getAttributeFromSession(String name);
+    void invalidateCurrentSession();
 }
