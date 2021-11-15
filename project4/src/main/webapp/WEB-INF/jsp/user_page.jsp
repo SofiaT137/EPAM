@@ -8,16 +8,16 @@
     <body>
     <h2>Your courses:</h2>
    <table border="1">
+    <thead>
+              <tr>
+                <th>Course number</th>
+                <th>Course name</th>
+                <th>Course start date</th>
+                <th>Course end date</th>
+              </tr>
+            </thead>
        <c:forEach items="${ requestScope.user_course}" var="course">
-         <thead>
-           <tr>
-             <th>Course number</th>
-             <th>Course name</th>
-             <th>Course start date</th>
-             <th>Course end date</th>
-           </tr>
-         </thead>
-         <tbody>
+          <tbody>
            <tr>
                <td><c:out value="${course.id}" /></td>
                <td><c:out value="${course.name}" /></td>

@@ -2,9 +2,7 @@ package com.epam.jwd.service.impl;
 
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.impl.CourseDAO;
-import com.epam.jwd.DAO.impl.UserDAO;
 import com.epam.jwd.DAO.model.course.Course;
-import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.CourseConverter;
@@ -13,11 +11,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.CourseValidator;
+import com.epam.jwd.service.validator.impl.UserValidator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +21,7 @@ public class CourseService implements Service<CourseDto,Integer> {
 
     private final DAO<Course,Integer> courseDAO = new CourseDAO();
     private final Validator<CourseDto> courseValidator = new CourseValidator();
+    private final Validator<UserDto> userDtoValidator = new UserValidator();
     private final Converter<Course, CourseDto, Integer> courseConverter = new CourseConverter();
 
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
@@ -51,6 +48,13 @@ public class CourseService implements Service<CourseDto,Integer> {
         courseList.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }
+
+    public Boolean deleteUserFromCourse(CourseDto courseDto, UserDto userDto){
+        courseValidator.validate(courseDto);
+        userDtoValidator.validate(userDto);
+       return ((CourseDAO)courseDAO).deleteUserFromCourse(courseDto.getName(),userDto.getFirst_name(),userDto.getLast_name());
+    }
+
 
     @Override
     public Boolean update(CourseDto value) throws ServiceException {
@@ -86,6 +90,7 @@ public class CourseService implements Service<CourseDto,Integer> {
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }
+
 
     public List<CourseDto> filterCourse(String course_name){
         List<Course> daoGetAll = ((CourseDAO)courseDAO).filterCourse(course_name);

@@ -20,6 +20,7 @@ public class UserPageCommand implements Command {
     private static final String DELETE_COURSE_JSP = "/WEB-INF/jsp/delete_course_user.jsp";
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private static final String USER_REVIEW_JSP_COLLECTION_ATTRIBUTE = "user_review";
+    private static final String CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
 
 
     public static Command getInstance() {
@@ -76,9 +77,10 @@ public class UserPageCommand implements Command {
         String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
         String btnLogOut = requestContext.getParameterFromJSP("btnLogOut");
 
+        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
+        List<CourseDto> courseDtoList = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+
         if (btnSeeResults != null){
-            UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-            List<CourseDto> courseDtoList = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
             List<ReviewDto> reviewDtoList = getAllUserReview(userDto.getId(),courseDtoList);
             requestContext.addAttributeToJSP(USER_REVIEW_JSP_COLLECTION_ATTRIBUTE, reviewDtoList);
             return SEE_USER_RESULT_CONTEXT;
@@ -86,7 +88,7 @@ public class UserPageCommand implements Command {
             //get all possible courses without user's courses
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
-            //get all user's courses and send it on next JSP
+            requestContext.addAttributeToJSP(CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE, courseDtoList);
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);
