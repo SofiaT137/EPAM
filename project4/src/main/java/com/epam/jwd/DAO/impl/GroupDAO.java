@@ -129,7 +129,7 @@ public class GroupDAO implements DAO<Group,Integer> {
     private List<Group> returnGroupList (ResultSet resultSet){
         List<Group> groupList = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Group group = new Group();
                 group.setId(resultSet.getInt("university_group_id"));
                 group.setName(resultSet.getString("name"));

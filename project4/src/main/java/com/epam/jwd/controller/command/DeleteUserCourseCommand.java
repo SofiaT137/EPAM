@@ -60,7 +60,6 @@ public class DeleteUserCourseCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
-        String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
         List<CourseDto> courseDtoList = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");

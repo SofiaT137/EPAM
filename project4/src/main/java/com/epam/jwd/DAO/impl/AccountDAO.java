@@ -137,7 +137,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
     private List<Account> returnAccountList (ResultSet resultSet){
         List<Account> accountList = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getInt("account_id"));
                 account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));

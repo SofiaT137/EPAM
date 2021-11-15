@@ -215,7 +215,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     private List<Course> returnCourseList (ResultSet resultSet){
         List<Course> courseList = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Course course = new Course();
                 course.setId(resultSet.getInt("course_id"));
                 course.setName(resultSet.getString("name"));

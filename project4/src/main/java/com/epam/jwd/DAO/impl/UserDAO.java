@@ -149,7 +149,7 @@ public class UserDAO implements DAO<User,Integer> {
     private List<User> returnUserList (ResultSet resultSet){
         List<User> userList = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("user_id"));
                 user.setAccount_id(resultSet.getInt("account_id"));

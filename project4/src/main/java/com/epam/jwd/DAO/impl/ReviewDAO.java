@@ -143,7 +143,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
     private List<Review> returnReviewList (ResultSet resultSet){
         List<Review> reviewList = new ArrayList<>();
         try {
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Review review = new Review();
                 review.setId(resultSet.getInt("review_id"));
                 review.setUser_id(resultSet.getInt("user_id"));
