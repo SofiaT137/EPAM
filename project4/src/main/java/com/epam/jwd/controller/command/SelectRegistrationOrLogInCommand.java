@@ -67,9 +67,9 @@ public class SelectRegistrationOrLogInCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         String login = requestContext.getParameterFromJSP("lblLogin");
         String password = requestContext.getParameterFromJSP("lblPassword");
-        String role = requestContext.getParameterFromJSP("Role:");
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
+        String role = "Student";
 
         List<AccountDto> accountDtoList = ((AccountService) service).filterAccount(login);
 

@@ -17,11 +17,6 @@
             <input name="lblPassword" type="password" placeholder="Enter your password" >
           </div>
           <p></p>
-          Select who you are: <SELECT NAME="Role:">
-          <OPTION VALUE="Student">Student
-          <OPTION VALUE="Teacher">Teacher
-          </SELECT>
-          <br></br>
             <input type="submit" name="btnRegister" value="Register" />
             <input type="submit" name="btnLogIn" value="LogIn" />
         </form>
