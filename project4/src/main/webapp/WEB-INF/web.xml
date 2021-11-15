@@ -10,14 +10,15 @@
             <taglib-location>/WEB-INF/tld/hello_tag.tld</taglib-location>
         </taglib>
     </jsp-config>
-
         <servlet>
             <servlet-name>Controller</servlet-name>
             <servlet-class>com.epam.jwd.controller</servlet-class>
         </servlet>
-
         <servlet-mapping>
             <servlet-name>Controller</servlet-name>
             <url-pattern>*.html</url-pattern>
         </servlet-mapping>
+        <listener>
+            <listener-class>com.epam.jwd.controller.listener.SessionListener</listener-class>
+        </listener>
    </web-app>

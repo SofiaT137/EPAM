@@ -84,7 +84,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
             service.create(accountDto);
-
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
 
             return REGISTER_USER_CONTEXT;

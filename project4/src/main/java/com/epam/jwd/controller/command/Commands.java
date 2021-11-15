@@ -16,7 +16,7 @@ public enum Commands {
     SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance());
 
 
-    private Command command;
+    private final Command command;
 
     Commands(Command command) {
         this.command = command;
