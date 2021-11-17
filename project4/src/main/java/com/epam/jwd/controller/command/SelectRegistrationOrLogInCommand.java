@@ -46,12 +46,12 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         @Override
         public String getPage() {
-            return USER_PAGE_JSP;
+            return "/controller?command=SHOW_USER_PAGE_COMMAND";
         }
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
@@ -85,8 +85,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
             }
             service.create(accountDto);
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
-
             return REGISTER_USER_CONTEXT;
+
         } else if (btnLogIn != null) {
             if (accountDtoList.size() != 0) {
                 accountDto = accountDtoList.get(0);

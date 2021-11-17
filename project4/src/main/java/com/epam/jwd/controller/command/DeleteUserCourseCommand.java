@@ -52,7 +52,7 @@ public class DeleteUserCourseCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
