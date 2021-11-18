@@ -7,9 +7,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
-public class ShowCurrentUserCoursesCommand implements Command {
+public class ShowPossiblerCoursesCommand implements Command {
 
-    private static final Command INSTANCE = new ShowCurrentUserCoursesCommand();
+    private static final Command INSTANCE = new ShowPossiblerCoursesCommand();
 
     private static final String REFRESH_COURSE_JSP = "/WEB-INF/jsp/get_course_user.jsp";
     private static final String POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE = "possible_courses";
@@ -31,7 +31,7 @@ public class ShowCurrentUserCoursesCommand implements Command {
         return INSTANCE;
     }
 
-    private ShowCurrentUserCoursesCommand() {
+    private ShowPossiblerCoursesCommand() {
 
     }
 
