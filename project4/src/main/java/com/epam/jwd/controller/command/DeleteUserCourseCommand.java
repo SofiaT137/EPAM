@@ -16,7 +16,7 @@ public class DeleteUserCourseCommand implements Command {
     private static final Command INSTANCE = new DeleteUserCourseCommand();
     private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
     private static final String CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
-    private static final String USER_RESULT_JSP = "/WEB-INF/jsp/user_page.jsp";
+    private static final String USER_RESULT_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String DELETE_COURSE_JSP = "/WEB-INF/jsp/delete_course_user.jsp";
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
@@ -52,7 +52,7 @@ public class DeleteUserCourseCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
@@ -84,8 +84,6 @@ public class DeleteUserCourseCommand implements Command {
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             return REFRESH_PAGE_CONTEXT;
         }else if(btnGetBack !=null){
-            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
-            requestContext.addAttributeToJSP(CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE, courseDtoList);
             return USER_RESULT_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);

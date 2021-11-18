@@ -16,9 +16,8 @@ public class SignUpToCourseCommand implements Command {
     private static final Command INSTANCE = new SignUpToCourseCommand();
 
     private static final String GET_COURSE_JSP = "/WEB-INF/jsp/get_course_user.jsp";
-    private static final String USER_RESULT_JSP = "/WEB-INF/jsp/user_page.jsp";
+    private static final String USER_RESULT_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private final Service<CourseDto, Integer> courseService = new CourseService();
-    private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
@@ -45,7 +44,7 @@ public class SignUpToCourseCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
@@ -88,9 +87,6 @@ public class SignUpToCourseCommand implements Command {
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, courseList);
             return REFRESH_PAGE_CONTEXT;
         }else if (btnGetBack != null){
-            List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
-            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
-            requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
             return USER_RESULT_CONTEXT;
         }
         else {

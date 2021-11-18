@@ -25,7 +25,7 @@
        </c:forEach>
    </table>
    <p></p>
-         <form action="/controller?command=GET_BACK_OR_LOG_OUT_COMMAND" method="post">
+         <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
                   <input type="submit" name="btnGetBack" value="Get Back" />
                 </form>
                 <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

@@ -8,10 +8,10 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
-public class GetBackOrLogOutCommand implements Command {
+public class GetBackUserMenuCommand implements Command {
 
-    private static final Command INSTANCE = new GetBackOrLogOutCommand();
-    private static final String USER_PAGE_JSP = "/WEB-INF/jsp/user_page.jsp";
+    private static final Command INSTANCE = new GetBackUserMenuCommand();
+    private static final String USER_PAGE_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
     private static final String CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
 
@@ -24,7 +24,7 @@ public class GetBackOrLogOutCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
@@ -32,7 +32,7 @@ public class GetBackOrLogOutCommand implements Command {
         return INSTANCE;
     }
 
-    private GetBackOrLogOutCommand() {
+    private GetBackUserMenuCommand() {
 
     }
 
