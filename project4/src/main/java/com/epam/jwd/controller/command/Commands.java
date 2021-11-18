@@ -2,10 +2,7 @@ package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
 
-import com.epam.jwd.controller.command.ShowPageCommand.ShowDeletePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowPossibleCoursePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowReviewPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowUserPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.*;
 import com.epam.jwd.controller.command.api.Command;
 
 public enum Commands {
@@ -18,6 +15,7 @@ public enum Commands {
     SHOW_POSSIBLE_PAGE_COMMAND(ShowPossibleCoursePageCommand.getInstance()),
     SHOW_DELETE_PAGE_COMMAND(ShowDeletePageCommand.getInstance()),
     SHOW_REVIEW_PAGE_COMMAND(ShowReviewPageCommand.getInstance()),
+    SHOW_CURRENT_USER_COURSES_COMMAND(ShowCurrentUserCoursesCommand.getInstance()),
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
     GET_BACK_COMMAND(GetBackUserMenuCommand.getInstance()),
