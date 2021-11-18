@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ReviewDAO implements DAO<Review, Integer> {
 
@@ -113,7 +114,9 @@ public class ReviewDAO implements DAO<Review, Integer> {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_REVIEW_BY_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            review = returnReviewList(resultSet).get(0);
+            if (returnReviewList(resultSet).size() == 0){
+                throw new NoSuchElementException("No such review by it's id");
+            }
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
@@ -160,14 +163,18 @@ public class ReviewDAO implements DAO<Review, Integer> {
 
     public Review findReviewByCourseIdAndUserId(int course_id,int user_id){
         Review review;
+        List<Review> list;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_REVIEW_ID_COURSE_ID);
             preparedStatement.setInt(1,user_id);
             preparedStatement.setInt(2,course_id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            review = returnReviewList(resultSet).get(0);
+            list = (returnReviewList(resultSet));
+            if (list.size() == 0){
+                throw new NoSuchElementException("No review for this course");
+            }
+            review = list.get(0);
             preparedStatement.close();
-            resultSet.close();
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
             return null;

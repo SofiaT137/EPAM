@@ -17,7 +17,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
     private static final String REGISTER_USER_JSP = "/WEB-INF/jsp/register_user.jsp";
-    private static final String USER_PAGE_JSP = "/WEB-INF/jsp/user_page.jsp";
+    private static final String USER_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
@@ -46,7 +46,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         @Override
         public String getPage() {
-            return "/controller?command=SHOW_USER_PAGE_COMMAND";
+            return USER_PAGE_COMMAND;
         }
 
         @Override

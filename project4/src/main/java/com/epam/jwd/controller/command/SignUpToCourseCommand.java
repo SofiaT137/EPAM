@@ -19,7 +19,6 @@ public class SignUpToCourseCommand implements Command {
     private static final String USER_RESULT_JSP = "/WEB-INF/jsp/user_page.jsp";
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
-    private static final String POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE = "possible_courses";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";

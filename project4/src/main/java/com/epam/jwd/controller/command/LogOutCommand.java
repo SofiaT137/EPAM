@@ -12,7 +12,7 @@ public class LogOutCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger(LogOutCommand.class);
 
     private static final Command INSTANCE = new LogOutCommand();
-    private static final String MAIN_JSP = "/WEB-INF/jsp/main.jsp";
+    private static final String MAIN_JSP = "/index.jsp";
 
     public static Command getInstance(){
         return INSTANCE;
@@ -31,7 +31,7 @@ public class LogOutCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 

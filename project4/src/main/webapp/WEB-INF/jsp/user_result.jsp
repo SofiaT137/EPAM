@@ -7,7 +7,7 @@
         </head>
     <body>
    <table border="1">
-       <c:forEach items="${ requestScope.user_review}" var="review">
+       <c:forEach items="${requestScope.user_review}" var="review">
          <thead>
            <tr>
              <th>Course name</th>
