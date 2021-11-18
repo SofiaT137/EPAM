@@ -2,7 +2,9 @@ package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
 
+import com.epam.jwd.controller.command.ShowPageCommand.ShowDeletePageCommand;
 import com.epam.jwd.controller.command.ShowPageCommand.ShowPossibleCoursePageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowReviewPageCommand;
 import com.epam.jwd.controller.command.ShowPageCommand.ShowUserPageCommand;
 import com.epam.jwd.controller.command.api.Command;
 
@@ -14,6 +16,8 @@ public enum Commands {
     SELECT_REGISTRATION_OR_LOG_IN(SelectRegistrationOrLogInCommand.getInstance()),
     SHOW_USER_PAGE_COMMAND(ShowUserPageCommand.getInstance()),
     SHOW_POSSIBLE_PAGE_COMMAND(ShowPossibleCoursePageCommand.getInstance()),
+    SHOW_DELETE_PAGE_COMMAND(ShowDeletePageCommand.getInstance()),
+    SHOW_REVIEW_PAGE_COMMAND(ShowReviewPageCommand.getInstance()),
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
     GET_BACK_OR_LOG_OUT_COMMAND(GetBackOrLogOutCommand.getInstance()),

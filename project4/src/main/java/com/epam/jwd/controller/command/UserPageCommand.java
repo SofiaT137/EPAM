@@ -19,11 +19,11 @@ public class UserPageCommand implements Command {
     private static final Command INSTANCE = new UserPageCommand();
     private static final String SEE_USER_RESULT_JSP = "/WEB-INF/jsp/user_result.jsp";
     private static final String GET_COURSE_COMMAND = "/controller?command=SHOW_POSSIBLE_PAGE_COMMAND";
-    private static final String DELETE_COURSE_JSP = "/WEB-INF/jsp/delete_course_user.jsp";
+    private static final String DELETE_COURSE_JSP = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String USER_REVIEW_JSP_COLLECTION_ATTRIBUTE = "user_review";
-    private static final String CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
+    private static final String CURRENT_USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "user_course";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
 
 
@@ -93,7 +93,7 @@ public class UserPageCommand implements Command {
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, courseList);
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
-            requestContext.addAttributeToJSP(CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE, userCourse);
+//            requestContext.addAttributeToSession(CURRENT_USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourse);
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);
