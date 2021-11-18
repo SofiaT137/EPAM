@@ -15,7 +15,7 @@
                 <th>Course end date</th>
               </tr>
             </thead>
-             <c:forEach items="${ requestScope.user_course}" var="course">
+             <c:forEach items="${requestScope.user_course}" var="course">
             <tbody>
               <tr>
                   <td><c:out value="${course.id}" /></td>
@@ -33,7 +33,7 @@
                                <input name="lblDelete" type="text" placeholder="Enter the course number">
                              </div>
                              <p></p>
-                           <input type="submit" name="btnDeleteCourse" value="Delete course" />
+                           <input type="submit" name="btnDeleteCourse" value="Delete course"/>
                            <input type="submit" name="btnGetBack" value="Get Back" />
                            </form>
                         <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

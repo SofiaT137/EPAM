@@ -7,8 +7,13 @@
         </head>
     <body>
     <h2>Your courses:</h2>
-   <table border="1">
-    <thead>
+    <c:choose>
+        <c:when test="${user_course.size() eq 0}">
+        <p>Your course list is empty! For select a course, press the button "Get course"</p>
+            </c:when>
+            <c:otherwise>
+           <table border="1">
+            <thead>
               <tr>
                 <th>Course number</th>
                 <th>Course name</th>
@@ -27,6 +32,8 @@
          </tbody>
        </c:forEach>
    </table>
+       </c:otherwise>
+       </c:choose>
       <p></p>
          <form action="/controller?command=USER_PAGE_COMMAND" method="post">
                   <input type="submit" name="btnSeeResults" value="Your results" />

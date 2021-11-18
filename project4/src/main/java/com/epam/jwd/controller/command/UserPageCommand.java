@@ -75,12 +75,12 @@ public class UserPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+
         String btnSeeResults = requestContext.getParameterFromJSP("btnSeeResults");
         String btnGetCourse = requestContext.getParameterFromJSP("btnGetCourse");
         String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
-
-        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
 
         if (btnSeeResults != null){
             List<ReviewDto> reviewDtoList = getAllUserReview(userDto.getId(),userCourse);

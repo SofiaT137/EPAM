@@ -95,10 +95,9 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
-            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
+//            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
-            requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             return USER_PAGE_CONTEXT;
         }

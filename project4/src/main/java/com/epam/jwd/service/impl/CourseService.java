@@ -42,9 +42,9 @@ public class CourseService implements Service<CourseDto,Integer> {
     public List<CourseDto> getUserAvailableCourses(String first_name,String last_name){
         List<Course> courseList = ((CourseDAO) courseDAO).getUserAvailableCourses(first_name,last_name);
         List<CourseDto> courseDtoList = new ArrayList<>();
-        if (courseList.isEmpty()){
-            throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
-        }
+//        if (courseList.isEmpty()){
+//            throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
+//        }
         courseList.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }
