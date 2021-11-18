@@ -14,10 +14,8 @@ import java.util.NoSuchElementException;
 public class DeleteUserCourseCommand implements Command {
 
     private static final Command INSTANCE = new DeleteUserCourseCommand();
-    private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
-    private static final String CURRENT_USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
     private static final String USER_RESULT_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
-    private static final String DELETE_COURSE_JSP = "/WEB-INF/jsp/delete_course_user.jsp";
+    private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
@@ -34,12 +32,12 @@ public class DeleteUserCourseCommand implements Command {
 
         @Override
         public String getPage() {
-            return DELETE_COURSE_JSP;
+            return DELETE_COURSE_COMMAND;
         }
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
