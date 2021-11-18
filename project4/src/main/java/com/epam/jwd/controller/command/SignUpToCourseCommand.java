@@ -19,8 +19,9 @@ public class SignUpToCourseCommand implements Command {
     private static final String USER_RESULT_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
+    private static final String POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE = "possible_courses";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
-    private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
+
 
     private static final ResponseContext REFRESH_PAGE_CONTEXT = new ResponseContext() {
 
@@ -82,9 +83,9 @@ public class SignUpToCourseCommand implements Command {
             List<CourseDto> courseList = courseService.getAll();
             courseList.remove(courseForAdding);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
-            requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, user_courses);
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, courseList);
+            requestContext.addAttributeToJSP(POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE, courseList);
             return REFRESH_PAGE_CONTEXT;
         }else if (btnGetBack != null){
             return USER_RESULT_CONTEXT;
