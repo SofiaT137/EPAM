@@ -5,7 +5,12 @@
    <head>
        <h2>Your results:</h2>
         </head>
-    <body>
+       <body>
+       <c:choose>
+           <c:when test="${user_review.size() eq 0}">
+           <p>You have not any reviews!</p>
+           </c:when>
+        <c:otherwise>
    <table border="1">
        <c:forEach items="${requestScope.user_review}" var="review">
          <thead>
@@ -24,6 +29,8 @@
          </tbody>
        </c:forEach>
    </table>
+          </c:otherwise>
+          </c:choose>
    <p></p>
          <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
                   <input type="submit" name="btnGetBack" value="Get Back" />

@@ -5,8 +5,14 @@
    <head>
         <h2>Delete Course Page</h2>
    </head>
-   <h2>Your courses </h2>
-    <table border="1">
+   <body>
+   <h2>Your courses: </h2>
+   <c:choose>
+           <c:when test="${user_course.size() eq 0}">
+           <p>You have not any courses!</p>
+               </c:when>
+               <c:otherwise>
+       <table border="1">
             <thead>
               <tr>
                 <th>Course number</th>
@@ -26,15 +32,17 @@
             </tbody>
           </c:forEach>
       </table>
+         </c:otherwise>
+         </c:choose>
          <p></p>
            <form action="/controller?command=DELETE_USER_COURSE_COMMAND" method="post">
                    <div class="form-group">
                                <label>Delete</label>
-                               <input name="lblDelete" type="text" placeholder="Enter the course number">
-                             </div>
+                               <input name="lblDelete" type="text" placeholder="Enter the course number" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                              <p></p>
-                           <input type="submit" name="btnDeleteCourse" value="Delete course"/>
+                           <input type="submit" name="btnDeleteCourse" value="Delete course" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                            <input type="submit" name="btnGetBack" value="Get Back" />
+                           </div>
                            </form>
                         <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
                         <p></p>

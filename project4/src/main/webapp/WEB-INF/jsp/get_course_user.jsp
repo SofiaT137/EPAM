@@ -5,6 +5,12 @@
    <head>
         <h2>Course registration page</h2>
    </head>
+   <body>
+    <c:choose>
+              <c:when test="${possible_courses.size() eq 0}">
+              <p>You have not any possible to registration courses!</p>
+              </c:when>
+           <c:otherwise>
    <h3>Possible to registration courses:</h3>
     <table border="1">
             <thead>
@@ -26,15 +32,17 @@
         </tbody>
       </c:forEach>
   </table>
+         </c:otherwise>
+         </c:choose>
   <p></p>
    <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
            <div class="form-group">
                        <label>Sign up to course #</label>
-                       <input name="lblGet" type="text" placeholder="Enter the course number">
-                     </div>
+                       <input name="lblGet" type="text" placeholder="Enter the course number" <c:if test="${possible_courses.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                      <p></p>
-                   <input type="submit" name="btnGetCourse" value="Get course" />
+                   <input type="submit" name="btnGetCourse" value="Get course" <c:if test="${possible_courses.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                    <input type="submit" name="btnGetBack" value="Get Back" />
+                   </div>
                    </form>
                    <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
                     <p></p>

@@ -17,7 +17,6 @@ public enum Commands {
     SHOW_REVIEW_PAGE_COMMAND(ShowReviewPageCommand.getInstance()),
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
-    GET_BACK_COMMAND(GetBackUserMenuCommand.getInstance()),
     DELETE_USER_COURSE_COMMAND(DeleteUserCourseCommand.getInstance()),
     SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance()),
     LOG_OUT_COMMAND(LogOutCommand.getInstance());
