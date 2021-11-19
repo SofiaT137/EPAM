@@ -21,7 +21,8 @@ public class RequestContextImpl implements RequestContext{
 
     @Override
     public String getParameterFromJSP(String name) {
-       return request.getParameter(name);
+
+        return request.getParameter(name);
     }
 
     @Override
@@ -38,5 +39,6 @@ public class RequestContextImpl implements RequestContext{
     public void invalidateCurrentSession() {
         request.getSession().invalidate();
     }
+
 
 }

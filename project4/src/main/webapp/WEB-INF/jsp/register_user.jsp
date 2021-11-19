@@ -1,30 +1,28 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
    <head>
-        <title>Elective</title>
+          <title>Elective</title>
        <h2>Let`s finish registration:</h2>
         </head>
     <body>
-    <form action="/controller?command=REGISTER_USER_COMMAND" method="post">
+        <form action="/controller?command=REGISTER_USER_COMMAND" method="post">
      <div class="form-group">
             <label>First Name</label>
-            <input name="lblFirstName" type="text" placeholder="Enter your first name">
+            <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern= "^[a-zA-Z '.-]{2,20}*$"/>
           </div>
           <p></p>
               <div class="form-group">
             <label>Last Name</label>
-            <input name="lblLastName" type="text" placeholder="Enter your last name" >
-          </div>
+            <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern= "^[a-zA-Z '.-]{2,20}*$" />
+             </div>
           <p></p>
            <label>Group</label>
-          <input name="lblGroup" type="text" placeholder="Enter your group number" >
-        </div>
+          <input name="lblGroup" type="text" placeholder="${GroupLabel}" required pattern="^[0-9]{2,7}*$" />
+          </div>
         <p></p>
-            <input type="submit" name="btnRegister" value="Register" >
-                <c:if test="${lblFirstName.size() == 0}">
-                    <c:out value="disabled='disabled'"/>
-                </c:if>
-            </input>
+            <input type="submit" name="btnRegister" value="Register"/>
             </form>
             <p></p>
             <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

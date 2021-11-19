@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class UserValidator implements Validator<UserDto> {
 
-    private static final String FIRST_AND_LAST_NAME_REGEX = "^[a-zA-Z '.-]*$";
+    private static final String FIRST_AND_LAST_NAME_REGEX = "^[a-zA-Zа-яА-Я '.-]*$";
 
     private final static Integer MIN_NAME_LENGTH = 2;
     private final static Integer MAX_NAME_LENGTH = 20;
