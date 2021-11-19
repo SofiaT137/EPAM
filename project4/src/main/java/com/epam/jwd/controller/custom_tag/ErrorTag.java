@@ -4,20 +4,19 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 
+public class ErrorTag extends TagSupport {
 
-public class HelloTag extends TagSupport {
+    private Object errorName;
+    private static final String TAG_EXCEPTION = "Something wrong with error start tag!";
 
-    private Object userName;
-    private static final String TAG_EXCEPTION = "Something wrong with hello start tag!";
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setErrorName(String userName) {
+        this.errorName = userName;
     }
 
     @Override
     public int doStartTag() throws JspException {
         try {
-            pageContext.getOut().write("Hello, " + this.userName);
+            pageContext.getOut().write("You have some trouble: " + this.errorName);
         } catch (IOException e) {
             //logger
             throw new JspException(TAG_EXCEPTION);
@@ -25,4 +24,3 @@ public class HelloTag extends TagSupport {
         return SKIP_BODY;
     }
 }
-

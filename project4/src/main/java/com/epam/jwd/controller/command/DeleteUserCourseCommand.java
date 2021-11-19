@@ -14,11 +14,14 @@ import java.util.NoSuchElementException;
 public class DeleteUserCourseCommand implements Command {
 
     private static final Command INSTANCE = new DeleteUserCourseCommand();
-    private static final String USER_RESULT_JSP = "/controller?command=SHOW_USER_PAGE_COMMAND";
+    private static final String USER_RESULT_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
+    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
+    private static final String CANNOT_FIND_COURSE_MESSAGE = "I can't find this course";
 
     public static Command getInstance() {
         return INSTANCE;
@@ -45,7 +48,19 @@ public class DeleteUserCourseCommand implements Command {
 
         @Override
         public String getPage() {
-            return USER_RESULT_JSP;
+            return USER_RESULT_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return ERROR_COURSE_COMMAND;
         }
 
         @Override
@@ -66,12 +81,14 @@ public class DeleteUserCourseCommand implements Command {
             //TODO validator for id
             String id = requestContext.getParameterFromJSP("lblDelete");
             int course_id = Integer.parseInt(id);
-            CourseDto courseDtoForDelete = courseDtoList.stream()
-                    .filter(courseDto -> courseDto.equals(((CourseService)courseService).getById(course_id)))
-                    .findFirst()
-                    .orElse(null);
+//            if (courseDtoList.size() < course_id){
+//                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
+//                return ERROR_PAGE_CONTEXT;
+//            }
+            CourseDto courseDtoForDelete = courseService.getById(course_id);
             if (courseDtoForDelete == null){
-                throw new NoSuchElementException("I can't find this course");
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
+                return ERROR_PAGE_CONTEXT;
             }
             Boolean result = ((CourseService) courseService).deleteUserFromCourse(courseDtoForDelete,userDto);
             if (!result){

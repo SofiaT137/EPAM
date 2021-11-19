@@ -114,9 +114,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_REVIEW_BY_ID);
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (returnReviewList(resultSet).size() == 0){
-                throw new NoSuchElementException("No such review by it's id");
-            }
+            review = returnReviewList(resultSet).get(0);
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
