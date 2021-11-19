@@ -39,7 +39,9 @@ public class LogOutCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-        LOGGER.info(userDto.getFirst_name() + " " + userDto.getLast_name() + " is logged out.");
+        if (userDto != null) {
+            LOGGER.info(userDto.getFirst_name() + " " + userDto.getLast_name() + " is logged out.");
+        }
         requestContext.invalidateCurrentSession();
         return MAIN_PAGE_CONTEXT;
     }

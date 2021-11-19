@@ -69,14 +69,16 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
         String role = "Student";
 
-        List<AccountDto> accountDtoList = ((AccountService) service).filterAccount(login);
+        List<AccountDto> accountDtoList = ((AccountService) service).filterAccount(login,password);
 
-        AccountDto accountDto = new AccountDto();
-        accountDto.setRole(role);
-        accountDto.setLogin(login);
-        accountDto.setPassword(password);
+        AccountDto accountDto;
 
         if (btnRegister != null) {
+
+            accountDto = new AccountDto();
+            accountDto.setRole(role);
+            accountDto.setLogin(login);
+            accountDto.setPassword(password);
 
             if (accountDtoList.size() != 0) {
                 return DefaultCommand.getInstance().execute(requestContext);
@@ -96,7 +98,12 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
-            return USER_PAGE_CONTEXT;
+            String userRole = accountDto.getRole();
+            if (userRole.equals("Teacher")){
+                return USER_PAGE_CONTEXT;
+            }else {
+                return USER_PAGE_CONTEXT;
+            }
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }

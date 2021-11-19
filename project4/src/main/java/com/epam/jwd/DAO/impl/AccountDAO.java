@@ -19,7 +19,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password) VALUES (?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
-    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ?;";
+    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ? and password = ?;";
     private static final String SQL_DELETE_ACCOUNT_BY_ID = "DELETE FROM account WHERE account_id = ?";
     private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE user SET role_id, login = ?, password = ? WHERE account_id = ?";
 
@@ -115,11 +115,12 @@ public class AccountDAO implements DAO<Account, Integer>  {
         return account;
     }
 
-    public List<Account> filterAccount(String login){
+    public List<Account> filterAccount(String login,String password){
         List<Account> accountList;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN);
             preparedStatement.setString(1,login);
+            preparedStatement.setString(2,password);
             ResultSet resultSet = preparedStatement.executeQuery();
             accountList = returnAccountList(resultSet);
             preparedStatement.close();
