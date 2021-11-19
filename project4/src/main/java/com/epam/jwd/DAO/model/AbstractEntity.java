@@ -12,7 +12,7 @@ public abstract class AbstractEntity<T> {
     }
 
     public T getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(T id) {

@@ -29,14 +29,6 @@ public class ReviewDAO implements DAO<Review, Integer> {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-    public Review createReview(String userFirstName,String userLastName,String courseName,int grade,String review){
-        UserDAO userDAO = new UserDAO();
-        User user = userDAO.filterUser(userFirstName,userLastName).get(0);
-        CourseDAO courseDAO = new CourseDAO();
-        Course course = courseDAO.filterCourse(courseName).get(0);
-        return new Review(user.getId(),course.getId(),grade,review);
-    }
-
     @Override
     public Integer save(Review review) {
         try(Connection connection = connectionPool.takeConnection()){

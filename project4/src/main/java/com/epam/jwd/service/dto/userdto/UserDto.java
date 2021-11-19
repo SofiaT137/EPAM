@@ -26,6 +26,9 @@ public class UserDto extends AbstractDto<Integer> {
         this.last_name = last_name;
     }
 
+    public UserDto() {
+    }
+
     public int getAccount_id() {
         return account_id;
     }

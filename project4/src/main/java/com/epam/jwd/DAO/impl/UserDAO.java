@@ -26,14 +26,6 @@ public class UserDAO implements DAO<User,Integer> {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-    public User createUser(String accountLogin, String groupName, String firstName,String lastName){
-        AccountDAO accountDAO = new AccountDAO();
-        Account account = accountDAO.filterAccount(accountLogin).get(0);
-        GroupDAO groupDAO =  new GroupDAO();
-        Group group = groupDAO.filterGroup(groupName).get(0);
-        return new User(account.getId(),group.getId(),firstName,lastName);
-    }
-
     @Override
     public Integer save(User user) {
             try(Connection connection = connectionPool.takeConnection()){

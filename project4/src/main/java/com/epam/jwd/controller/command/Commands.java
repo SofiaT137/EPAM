@@ -16,6 +16,7 @@ public enum Commands {
     SHOW_DELETE_PAGE_COMMAND(ShowDeletePageCommand.getInstance()),
     SHOW_REVIEW_PAGE_COMMAND(ShowReviewPageCommand.getInstance()),
     SHOW_ERROR_PAGE_COMMAND(ShowErrorPageCommand.getInstance()),
+    SHOW_REGISTER_PAGE_COMMAND(ShowRegisterPageCommand.getInstance()),
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
     DELETE_USER_COURSE_COMMAND(DeleteUserCourseCommand.getInstance()),

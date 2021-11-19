@@ -18,11 +18,6 @@ public class AccountDto extends AbstractDto<Integer> {
         this.password = password;
     }
 
-    public AccountDto(String roleName, String login, String password) {
-        this.role = roleName;
-        this.login = login;
-        this.password = password;
-    }
     public AccountDto(){
 
     }

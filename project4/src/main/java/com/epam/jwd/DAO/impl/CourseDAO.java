@@ -33,10 +33,6 @@ public class CourseDAO implements DAO<Course,Integer> {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-    public Course createCourse(String name,Date startDate,Date endDate){
-        return new Course(name,startDate,endDate);
-    }
-
     @Override
     public Integer save(Course course) {
         try(Connection connection = connectionPool.takeConnection()){

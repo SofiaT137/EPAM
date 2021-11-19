@@ -28,9 +28,6 @@ public class AccountDAO implements DAO<Account, Integer>  {
 
     private final RoleDAO roleDAO = new RoleDAO();
 
-    public Account createAccount(Role role, String login,String password){
-        return new Account(role,login,password);
-    }
 
     @Override
     public Integer save(Account account) {

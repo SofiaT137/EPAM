@@ -30,7 +30,7 @@ public class ShowReviewPageCommand implements Command {
         return INSTANCE;
     }
 
-    private ShowReviewPageCommand() {
+    ShowReviewPageCommand() {
 
     }
 

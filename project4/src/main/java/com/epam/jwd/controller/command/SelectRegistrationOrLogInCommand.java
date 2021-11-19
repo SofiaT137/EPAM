@@ -16,16 +16,14 @@ import java.util.List;
 public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
-    private static final String REGISTER_USER_JSP = "/WEB-INF/jsp/register_user.jsp";
+    private static final String REGISTER_USER_JSP = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
     private static final String USER_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
     private static final String USER_PAGE_SESSION_COLLECTION_ATTRIBUTE = "getUserPage";
-    private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
-    private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
 
 
@@ -38,7 +36,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         @Override
         public boolean isRedirected() {
-            return false;
+            return true;
         }
     };
 
@@ -83,7 +81,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             if (accountDtoList.size() != 0) {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
-            service.create(accountDto);
+            accountDto = service.create(accountDto);
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             return REGISTER_USER_CONTEXT;
 
@@ -95,7 +93,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 return DefaultCommand.getInstance().execute(requestContext);
             }
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
-//            requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);

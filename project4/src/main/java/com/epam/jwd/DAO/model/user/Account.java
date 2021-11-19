@@ -14,13 +14,7 @@ public class Account extends AbstractEntity<Integer> {
     }
 
     public Account(Integer id, Role role, String login, String password) {
-        super(id);
-        this.role = role;
-        this.login = login;
-        this.password = password;
-    }
-
-    public Account(Role role, String login, String password) {
+        this.id = id;
         this.role = role;
         this.login = login;
         this.password = password;
