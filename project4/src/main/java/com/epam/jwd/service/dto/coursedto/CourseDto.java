@@ -2,7 +2,7 @@ package com.epam.jwd.service.dto.coursedto;
 
 import com.epam.jwd.service.dto.AbstractDto;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class CourseDto extends AbstractDto<Integer> {

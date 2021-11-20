@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class CourseDAO implements DAO<Course,Integer> {
 
@@ -225,4 +224,5 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
         return courseList;
     }
+
 }

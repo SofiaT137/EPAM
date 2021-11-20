@@ -27,6 +27,10 @@ public class ReviewDto extends AbstractDto<Integer> {
         this.review = review;
     }
 
+    public ReviewDto(){
+
+    }
+
     public int getUser_id() {
         return user_id;
     }

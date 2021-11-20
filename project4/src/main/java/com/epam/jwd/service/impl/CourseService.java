@@ -3,6 +3,7 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.impl.CourseDAO;
 import com.epam.jwd.DAO.model.course.Course;
+import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.CourseConverter;
@@ -106,4 +107,5 @@ public class CourseService implements Service<CourseDto,Integer> {
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }
+
 }

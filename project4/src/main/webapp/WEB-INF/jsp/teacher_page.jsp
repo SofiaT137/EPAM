@@ -10,7 +10,7 @@
     <h2>You are the mentor of the courses:</h2>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
-        <p>You are not a mentor of any course! "Get course"</p>
+        <p>You are not a mentor of any course!</p>
             </c:when>
             <c:otherwise>
            <table border="1">
@@ -39,6 +39,7 @@
          <form action="/controller?command=TEACHER_PAGE_COMMAND" method="post">
                   <input type="submit" name="btnRateStudent" value="Rate Student" />
                   <input type="submit" name="btnCreateCourse" value="Create Course" />
+                  <input type="submit" name="btnUpdateCourse" value="Update course" />
                   <input type="submit" name="btnDeleteCourse" value="Delete course" />
                   </form>
                   <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

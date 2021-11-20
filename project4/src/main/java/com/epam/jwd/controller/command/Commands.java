@@ -2,7 +2,17 @@ package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
 
-import com.epam.jwd.controller.command.ShowPageCommand.*;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowCreateCoursePageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowDeleteCoursePageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowDeleteUserPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowErrorPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowPossibleCoursePageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowRatePageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowRegisterPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowReviewPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowTeacherCourseCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowTeacherPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.ShowUserPageCommand;
 import com.epam.jwd.controller.command.api.Command;
 
 public enum Commands {
@@ -17,9 +27,13 @@ public enum Commands {
     SHOW_REVIEW_PAGE_COMMAND(ShowReviewPageCommand.getInstance()),
     SHOW_ERROR_PAGE_COMMAND(ShowErrorPageCommand.getInstance()),
     SHOW_REGISTER_PAGE_COMMAND(ShowRegisterPageCommand.getInstance()),
+    SHOW_RATE_PAGE_COMMAND(ShowRatePageCommand.getInstance()),
     SHOW_TEACHER_PAGE_COMMAND(ShowTeacherPageCommand.getInstance()),
     SHOW_CREATE_COURSE_PAGE_COMMAND(ShowCreateCoursePageCommand.getInstance()),
     SHOW_DELETE_COURSE_PAGE_COMMAND(ShowDeleteCoursePageCommand.getInstance()),
+    SHOW_TEACHER_COURSE_COMMAND(ShowTeacherCourseCommand.getInstance()),
+    TEACHER_SELECT_COURSE_COMMAND(TeacherSelectCourseCommand.getInstance()),
+    TEACHER_PAGE_COMMAND(TeacherPageCommand.getInstance()),
     CREATE_COURSE_COMMAND(CreateCourseCommand.getInstance()),
     RATE_STUDENT_COMMAND(RateStudentCommand.getInstance()),
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),

@@ -2,7 +2,7 @@ package com.epam.jwd.DAO.model.course;
 
 import com.epam.jwd.DAO.model.AbstractEntity;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.Objects;
 
 public class Course extends AbstractEntity<Integer> {

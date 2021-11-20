@@ -1,11 +1,14 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.DAO.api.DAO;
+import com.epam.jwd.DAO.impl.CourseDAO;
 import com.epam.jwd.DAO.impl.UserDAO;
+import com.epam.jwd.DAO.model.course.Course;
 import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
+import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
@@ -18,6 +21,7 @@ import java.util.List;
 
 public class UserService implements Service<UserDto,Integer> {
 
+    private final DAO<Course,Integer> courseDAO = new CourseDAO();
     private final DAO<User,Integer> userDAO = new UserDAO();
     private final Validator<UserDto> userValidator = new UserValidator();
     private final Converter<User, UserDto, Integer> userConverter = new UserConverter();
@@ -85,5 +89,12 @@ public class UserService implements Service<UserDto,Integer> {
     public UserDto findUserByAccountId(int account_id){
         User user = ((UserDAO)userDAO).findUserByAccountId(account_id);
         return userConverter.convert(user);
+    }
+
+    public List<UserDto> findALLStudentOnThisCourse(String course_name){
+        List<User> daoGetAllStudent = ((CourseDAO)courseDAO).getAllUserAtCourse(course_name);
+        List<UserDto> dtoGetAllStudent = new ArrayList<>();
+        daoGetAllStudent.forEach(student -> dtoGetAllStudent.add(userConverter.convert(student)));
+        return dtoGetAllStudent;
     }
 }
