@@ -10,7 +10,7 @@
     <h2>You are the mentor of the courses:</h2>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
-        <p>Your course list is empty! For select a course, press the button "Get course"</p>
+        <p>You are not a mentor of any course! "Get course"</p>
             </c:when>
             <c:otherwise>
            <table border="1">

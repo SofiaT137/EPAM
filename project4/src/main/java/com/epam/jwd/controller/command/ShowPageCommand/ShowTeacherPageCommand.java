@@ -20,7 +20,7 @@ public class ShowTeacherPageCommand implements Command {
 
     }
 
-    private static final String TEACHER_PAGE_JSP = "/WEB-INF/jsp/student_page.jsp";
+    private static final String TEACHER_PAGE_JSP = "/WEB-INF/jsp/teacher_page.jsp";
     private static final String CURRENT_USER_JSP_COLLECTION_ATTRIBUTE = "current_user";
     private static final String USER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";
 
