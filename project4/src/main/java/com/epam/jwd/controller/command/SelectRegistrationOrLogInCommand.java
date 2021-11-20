@@ -12,26 +12,29 @@ import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
-    private static final String REGISTER_USER_JSP = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
-    private static final String USER_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
-    private final Service<AccountDto, Integer> service = new AccountService();
-    private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private static final String REGISTER_STUDENT_JSP = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
+    private static final String STUDENT_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
+    private static final String TEACHER_PAGE_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
+    private static final String ADMIN_PAGE_COMMAND = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
     private static final String USER_PAGE_SESSION_COLLECTION_ATTRIBUTE = "getUserPage";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
+    private final Service<AccountDto, Integer> service = new AccountService();
+    private final Service<UserDto, Integer> serviceUser = new UserService();
+    private final Service<CourseDto, Integer> courseService = new CourseService();
 
 
     private static final ResponseContext REGISTER_USER_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return REGISTER_USER_JSP;
+            return REGISTER_STUDENT_JSP;
         }
 
         @Override
@@ -40,11 +43,37 @@ public class SelectRegistrationOrLogInCommand implements Command {
         }
     };
 
-    private static final ResponseContext USER_PAGE_CONTEXT = new ResponseContext() {
+    private static final ResponseContext STUDENT_PAGE_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return USER_PAGE_COMMAND;
+            return STUDENT_PAGE_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+
+    private static final ResponseContext TEACHER_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return TEACHER_PAGE_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+
+    private static final ResponseContext ADMIN_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return ADMIN_PAGE_COMMAND;
         }
 
         @Override
@@ -60,7 +89,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private SelectRegistrationOrLogInCommand() {
 
     }
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String login = requestContext.getParameterFromJSP("lblLogin");
@@ -96,14 +124,17 @@ public class SelectRegistrationOrLogInCommand implements Command {
             }
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
-            List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             String userRole = accountDto.getRole();
-            if (userRole.equals("Teacher")){
-                return USER_PAGE_CONTEXT;
-            }else {
-                return USER_PAGE_CONTEXT;
+            if (Objects.equals(userRole, "Teacher") || Objects.equals(userRole, "Student")) {
+                List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
+                requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             }
+            if (userRole.equals("Admin")){
+                return ADMIN_PAGE_CONTEXT;
+            }else if (userRole.equals("Teacher")){
+                return TEACHER_PAGE_CONTEXT;
+            }
+            return STUDENT_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }

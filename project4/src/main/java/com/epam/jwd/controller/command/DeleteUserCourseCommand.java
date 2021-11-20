@@ -81,10 +81,6 @@ public class DeleteUserCourseCommand implements Command {
             //TODO validator for id
             String id = requestContext.getParameterFromJSP("lblDelete");
             int course_id = Integer.parseInt(id);
-//            if (courseDtoList.size() < course_id){
-//                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
-//                return ERROR_PAGE_CONTEXT;
-//            }
             CourseDto courseDtoForDelete = courseService.getById(course_id);
             if (courseDtoForDelete == null){
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);

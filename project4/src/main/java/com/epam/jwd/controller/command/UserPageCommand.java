@@ -33,6 +33,7 @@ public class UserPageCommand implements Command {
     private UserPageCommand() {
 
     }
+
     private static final ResponseContext SEE_USER_RESULT_CONTEXT = new ResponseContext() {
 
         @Override

@@ -7,9 +7,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
-public class ShowDeletePageCommand implements Command {
+public class ShowDeleteUserPageCommand implements Command {
 
-    private static final Command INSTANCE = new ShowDeletePageCommand();
+    private static final Command INSTANCE = new ShowDeleteUserPageCommand();
 
     private static final String DELETE_COURSE_JSP = "/WEB-INF/jsp/delete_course_user.jsp";
     private static final String POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE = "user_course";
@@ -31,7 +31,7 @@ public class ShowDeletePageCommand implements Command {
         return INSTANCE;
     }
 
-    private ShowDeletePageCommand() {
+    private ShowDeleteUserPageCommand() {
 
     }
 
