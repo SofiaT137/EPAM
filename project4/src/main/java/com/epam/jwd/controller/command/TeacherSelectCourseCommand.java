@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
@@ -11,7 +12,9 @@ import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class TeacherSelectCourseCommand implements Command {
 
@@ -25,6 +28,7 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String CANNOT_FIND_COURSE_MESSAGE = "This course name is wrong! Or this course does not exist!";
     private final Service<UserDto, Integer> userService = new UserService();
+    private final Service<ReviewDto, Integer> revirwService = new ReviewService();
 
     private final Service<CourseDto, Integer> courseService = new CourseService();
 
@@ -81,8 +85,6 @@ public class TeacherSelectCourseCommand implements Command {
         String btnFillReview = requestContext.getParameterFromJSP("btnFillReview");
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
-
-
         if (btnFillReview != null){
             String course = requestContext.getParameterFromJSP("lblCourseName");
             List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
@@ -91,7 +93,10 @@ public class TeacherSelectCourseCommand implements Command {
                 requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE,selectedCourse);
                 List<UserDto> usersOfSelectedCourse = ((UserService) userService).findALLStudentOnThisCourse(selectedCourse.getName());
                  usersOfSelectedCourse.remove(userDto);
+                List<UserDto> list1 = findAllStudentWithReview(usersOfSelectedCourse,selectedCourse);
+                usersOfSelectedCourse.removeAll(list1);
                 requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,usersOfSelectedCourse);
+
             }
             else{
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
@@ -102,5 +107,19 @@ public class TeacherSelectCourseCommand implements Command {
             return TEACHER_RESULT_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
+    }
+
+    private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto current_course){
+        List<UserDto> result = new ArrayList<>();
+        for (UserDto userDto:
+             list) {
+            try{
+                boolean b = ((ReviewService) revirwService).findReviewByCourseIdAndUserId(current_course.getId(), userDto.getId()) != null;
+                result.add(userDto);
+            }catch (DAOException exception){
+                //log
+            }
+        }
+        return result;
     }
 }

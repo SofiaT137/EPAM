@@ -3,9 +3,8 @@ package com.epam.jwd.DAO.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
-import com.epam.jwd.DAO.model.course.Course;
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.review.Review;
-import com.epam.jwd.DAO.model.user.User;
 
 
 import java.sql.Connection;
@@ -15,7 +14,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class ReviewDAO implements DAO<Review, Integer> {
 
@@ -25,7 +23,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
     private static final String SQL_FIND_ALL_REVIEW = "SELECT * FROM review";
     private static final String SQL_FIND_REVIEW_BY_ID = "SELECT * FROM review WHERE review_id =  ?";
     private static final String SQL_FIND_ACCOUNTS_BY_USER_ID = "SELECT * FROM review WHERE user_id = ?;";
-    private static final String SQL_FIND_COURSE_BY_REVIEW_ID_COURSE_ID = "SELECT * FROM review WHERE user_id = ? AND course_id = ? ;";
+    private static final String SQL_FIND_COURSE_BY_USER_ID_COURSE_ID = "SELECT * FROM review WHERE user_id = ? AND course_id = ? ;";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -152,23 +150,21 @@ public class ReviewDAO implements DAO<Review, Integer> {
     }
 
     public Review findReviewByCourseIdAndUserId(int course_id,int user_id){
-        Review review;
         List<Review> list;
         try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_REVIEW_ID_COURSE_ID);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_USER_ID_COURSE_ID);
             preparedStatement.setInt(1,user_id);
             preparedStatement.setInt(2,course_id);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = (returnReviewList(resultSet));
-            if (list.size() == 0){
-                throw new NoSuchElementException("No review for this course");
+            if (list.size() != 0){
+                return list.get(0);
             }
-            review = list.get(0);
             preparedStatement.close();
         } catch (SQLException | InterruptedException exception) {
             //TODO log and throw exception;
             return null;
         }
-        return review;
+        throw new DAOException("I can't found this course for this person");
     }
 }
