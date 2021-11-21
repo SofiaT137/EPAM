@@ -108,4 +108,8 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseDtoList;
     }
 
+    public Boolean deleteAllCourseInUSERHAsCourse(int course_id){
+        return ((CourseDAO)courseDAO).deleteAllFieldsUserHasCourseByCourseId(course_id);
+    }
+
 }

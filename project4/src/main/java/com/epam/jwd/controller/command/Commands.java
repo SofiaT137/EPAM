@@ -2,17 +2,7 @@ package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
 
-import com.epam.jwd.controller.command.ShowPageCommand.ShowCreateCoursePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowDeleteCoursePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowDeleteUserPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowErrorPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowPossibleCoursePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowRatePageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowRegisterPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowReviewPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowTeacherCourseCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowTeacherPageCommand;
-import com.epam.jwd.controller.command.ShowPageCommand.ShowUserPageCommand;
+import com.epam.jwd.controller.command.ShowPageCommand.*;
 import com.epam.jwd.controller.command.api.Command;
 
 public enum Commands {
@@ -32,6 +22,7 @@ public enum Commands {
     SHOW_CREATE_COURSE_PAGE_COMMAND(ShowCreateCoursePageCommand.getInstance()),
     SHOW_DELETE_COURSE_PAGE_COMMAND(ShowDeleteCoursePageCommand.getInstance()),
     SHOW_TEACHER_COURSE_COMMAND(ShowTeacherCourseCommand.getInstance()),
+    SHOW_UPDATE_COURSE_COMMAND(ShowUpdateCourseCommand.getInstance()),
     TEACHER_SELECT_COURSE_COMMAND(TeacherSelectCourseCommand.getInstance()),
     TEACHER_PAGE_COMMAND(TeacherPageCommand.getInstance()),
     CREATE_COURSE_COMMAND(CreateCourseCommand.getInstance()),
@@ -39,6 +30,7 @@ public enum Commands {
     USER_PAGE_COMMAND(UserPageCommand.getInstance()),
     REGISTER_USER_COMMAND(RegisterUserCommand.getInstance()),
     DELETE_USER_COURSE_COMMAND(DeleteUserCourseCommand.getInstance()),
+    DELETE_COURSE_COMMAND(DeleteCourseCommand.getInstance()),
     SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance()),
     LOG_OUT_COMMAND(LogOutCommand.getInstance());
 

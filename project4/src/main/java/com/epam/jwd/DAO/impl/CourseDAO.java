@@ -28,6 +28,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_FIND_ALL_USERS_AT_COURSE = "SELECT * FROM user_has_course WHERE course_id =  ?";
     private static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE course_id = ?";
     private static final String SQL_DELETE_USER_FROM_COURSE = "DELETE FROM user_has_course WHERE user_id = ? and course_id = ?";
+    private static final String SQL_DELETE_COURSE_FROM_USER_HAS_COURSE = "DELETE FROM user_has_course WHERE course_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
@@ -119,6 +120,19 @@ public class CourseDAO implements DAO<Course,Integer> {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
+            Boolean result = preparedStatement.executeUpdate() > 0;
+            preparedStatement.close();
+            return result;
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return false;
+        }
+    }
+
+    public Boolean deleteAllFieldsUserHasCourseByCourseId(int course_id){
+        try(Connection connection = connectionPool.takeConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_FROM_USER_HAS_COURSE);
+            preparedStatement.setInt(1,course_id);
             Boolean result = preparedStatement.executeUpdate() > 0;
             preparedStatement.close();
             return result;
