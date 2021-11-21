@@ -23,6 +23,7 @@ public enum Commands {
     SHOW_DELETE_COURSE_PAGE_COMMAND(ShowDeleteCoursePageCommand.getInstance()),
     SHOW_TEACHER_COURSE_COMMAND(ShowTeacherCourseCommand.getInstance()),
     SHOW_UPDATE_COURSE_COMMAND(ShowUpdateCourseCommand.getInstance()),
+    UPDATE_COURSE_COMMAND(UpdateCourseCommand.getInstance()),
     TEACHER_SELECT_COURSE_COMMAND(TeacherSelectCourseCommand.getInstance()),
     TEACHER_PAGE_COMMAND(TeacherPageCommand.getInstance()),
     CREATE_COURSE_COMMAND(CreateCourseCommand.getInstance()),

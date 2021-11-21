@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
    <head>
-       <h2>Let`s create a course: </h2>
+       <h2>Let`s update a course </h2>
         </head>
          <body>
            <h2>Your current courses: </h2>
@@ -34,8 +34,13 @@
             </c:otherwise>
             </c:choose>
             <p></p>
-         <form action="/controller?command=CREATE_COURSE_COMMAND" method="post">
+         <form action="/controller?command=UPDATE_COURSE_COMMAND" method="post">
       <div class="form-group">
+            <label>Course id:</label>
+           <input name="lblCourseId" type="text" placeholder="${CourseIdLabel}" />
+                </div>
+             <p></p>
+             <h3>New course data:</h3>
              <label>Course name: name:</label>
              <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" />
            </div>
@@ -50,7 +55,7 @@
            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" />
            </div>
             <p></p>
-             <input type="submit" name="btnAddCourse" value="Add course"/>
+             <input type="submit" name="btnUpdate" value="Update course"/>
              <input type="submit" name="btnGetBack" value="Get Back" />
              </form>
               <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

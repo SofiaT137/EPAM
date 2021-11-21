@@ -19,7 +19,7 @@ public class TeacherPageCommand implements Command {
     private static final String RATE_STUDENT_COMMAND = "/controller?command=SHOW_TEACHER_COURSE_COMMAND";
     private static final String CREATE_COURSE_COMMAND = "/controller?command=SHOW_CREATE_COURSE_PAGE_COMMAND";
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_COURSE_PAGE_COMMAND";
-    private static final String UPDATE_COURSE_COMMAND = "/controller?command=SHOW_UPDATE_COURSE_PAGE_COMMAND";
+    private static final String UPDATE_COURSE_COMMAND = "/controller?command=SHOW_UPDATE_COURSE_COMMAND";
     private static final String ALL_USER_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "finishedCourse";
     private final Service<UserDto, Integer> serviceUser = new UserService();

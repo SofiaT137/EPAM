@@ -69,8 +69,6 @@ public class RegisterUserCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-//        String firstName = requestContext.getParameterFromJSP("lblFirstName");
-//        String lastName =requestContext.getParameterFromJSP("lblLastName");
         String firstName = new String(((requestContext.getParameterFromJSP("lblFirstName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
         String lastName = new String(((requestContext.getParameterFromJSP("lblLastName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
         String group = requestContext.getParameterFromJSP("lblGroup");
