@@ -7,7 +7,7 @@
    </head>
    <body>
     <c:choose>
-              <c:when test="${user_course.size() eq 0}">
+              <c:when test="${finished_course.size() eq 0}">
               <p>You are not mentor of any course!</p>
               </c:when>
            <c:otherwise>
@@ -20,7 +20,7 @@
                 <th>Course end date</th>
               </tr>
             </thead>
-        <c:forEach items="${requestScope.user_course}" var="course">
+        <c:forEach items="${requestScope.finished_course}" var="course">
         <tbody>
           <tr>
               <td><c:out value="${course.name}" /></td>
@@ -35,7 +35,7 @@
   <p></p>
    <form action="/controller?command=TEACHER_SELECT_COURSE_COMMAND" method="post">
            <div class="form-group">
-                       <label>Enter the course name #</label>
+                       <label>Enter the course name: </label>
                        <input name="lblCourseName" type="text" placeholder="Enter the course name" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                      <p></p>
                    <input type="submit" name="btnFillReview" value="Fill Review" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />

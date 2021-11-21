@@ -25,6 +25,10 @@ public class CourseDto extends AbstractDto<Integer> {
 
     }
 
+    public CourseDto(){
+
+    }
+
     public String getName() {
         return name;
     }

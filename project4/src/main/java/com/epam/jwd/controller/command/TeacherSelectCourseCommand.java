@@ -12,6 +12,7 @@ import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String CANNOT_FIND_COURSE_MESSAGE = "This course name is wrong! Or this course does not exist!";
     private final Service<UserDto, Integer> userService = new UserService();
-    private final Service<ReviewDto, Integer> revirwService = new ReviewService();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
 
     private final Service<CourseDto, Integer> courseService = new CourseService();
 
@@ -86,8 +87,8 @@ public class TeacherSelectCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         if (btnFillReview != null){
-            String course = requestContext.getParameterFromJSP("lblCourseName");
-            List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
+            String course = new String((requestContext.getParameterFromJSP("lblCourseName")).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+                List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
             if (list.size() != 0){
                 CourseDto selectedCourse = list.get(0);
                 requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE,selectedCourse);
@@ -114,7 +115,7 @@ public class TeacherSelectCourseCommand implements Command {
         for (UserDto userDto:
              list) {
             try{
-                boolean b = ((ReviewService) revirwService).findReviewByCourseIdAndUserId(current_course.getId(), userDto.getId()) != null;
+                boolean b = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(current_course.getId(), userDto.getId()) != null;
                 result.add(userDto);
             }catch (DAOException exception){
                 //log

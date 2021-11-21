@@ -12,7 +12,7 @@ public class ShowTeacherCourseCommand implements Command {
     private static final Command INSTANCE = new ShowTeacherCourseCommand();
 
     private static final String TEACHER_GET_COURSE_JSP = "/WEB-INF/jsp/get_course_teacher.jsp";
-    private static final String TEACHER_COURSES_JSP_COLLECTION_ATTRIBUTE = "user_course";
+    private static final String TEACHER_COURSE_FINISHED_JSP_COLLECTION_ATTRIBUTE = "finished_course";
 
     private static final ResponseContext TEACHER_PAGE_CONTEXT = new ResponseContext() {
 
@@ -38,8 +38,8 @@ public class ShowTeacherCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
-        requestContext.addAttributeToJSP(TEACHER_COURSES_JSP_COLLECTION_ATTRIBUTE, userCourse);
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("finishedCourse");
+        requestContext.addAttributeToJSP(TEACHER_COURSE_FINISHED_JSP_COLLECTION_ATTRIBUTE, userCourse);
         return TEACHER_PAGE_CONTEXT;
     }
 }

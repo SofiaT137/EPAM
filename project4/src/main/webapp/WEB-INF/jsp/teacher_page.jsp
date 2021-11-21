@@ -16,7 +16,6 @@
            <table border="1">
             <thead>
               <tr>
-                <th>Course number</th>
                 <th>Course name</th>
                 <th>Course start date</th>
                 <th>Course end date</th>
@@ -25,7 +24,6 @@
        <c:forEach items="${ requestScope.user_course}" var="course">
           <tbody>
            <tr>
-               <td><c:out value="${course.id}" /></td>
                <td><c:out value="${course.name}" /></td>
                <td><c:out value="${course.startCourse}" /></td>
                <td><c:out value="${course.endCourse}" /></td>
