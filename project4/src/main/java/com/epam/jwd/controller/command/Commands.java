@@ -23,6 +23,9 @@ public enum Commands {
     SHOW_DELETE_COURSE_PAGE_COMMAND(ShowDeleteCoursePageCommand.getInstance()),
     SHOW_TEACHER_COURSE_COMMAND(ShowTeacherCourseCommand.getInstance()),
     SHOW_UPDATE_COURSE_COMMAND(ShowUpdateCourseCommand.getInstance()),
+    SHOW_ADMIN_PAGE_COMMAND(ShowAdminPageCommand.getInstance()),
+    SHOW_CREATE_TEACHER_PAGE_COMMAND(ShowCreateTeacherPageCommand.getInstance()),
+    SHOW_BLOCK_USER_PAGE_COMMAND(ShowBlockUserPageCommand.getInstance()),
     UPDATE_COURSE_COMMAND(UpdateCourseCommand.getInstance()),
     TEACHER_SELECT_COURSE_COMMAND(TeacherSelectCourseCommand.getInstance()),
     TEACHER_PAGE_COMMAND(TeacherPageCommand.getInstance()),
@@ -33,6 +36,8 @@ public enum Commands {
     DELETE_USER_COURSE_COMMAND(DeleteUserCourseCommand.getInstance()),
     DELETE_COURSE_COMMAND(DeleteCourseCommand.getInstance()),
     SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance()),
+    ADMIN_PAGE_COMMAND(AdminPageCommand.getInstance()),
+    CREATE_TEACHER_COMMAND(CreateTeacherCommand.getInstance()),
     LOG_OUT_COMMAND(LogOutCommand.getInstance());
 
 

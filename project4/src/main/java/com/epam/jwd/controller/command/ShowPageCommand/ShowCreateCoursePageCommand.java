@@ -9,7 +9,6 @@ import java.util.List;
 
 public class ShowCreateCoursePageCommand implements Command {
 
-
     private static final Command INSTANCE = new ShowCreateCoursePageCommand();
     private static final String CREATE_COURSE_JSP = "/WEB-INF/jsp/create_course.jsp";
     private static final String TEACHER_COURSE_JSP_COLLECTION_ATTRIBUTE = "user_course";

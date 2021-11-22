@@ -87,7 +87,6 @@ public class TeacherPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
         List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
 
         String btnRateStudent = requestContext.getParameterFromJSP("btnRateStudent");
