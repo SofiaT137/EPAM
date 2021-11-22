@@ -3,6 +3,7 @@ package com.epam.jwd.DAO.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.user.Account;
 import com.epam.jwd.DAO.model.user.Role;
 
@@ -19,7 +20,8 @@ public class AccountDAO implements DAO<Account, Integer>  {
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password) VALUES (?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
-    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ? and password = ?;";
+    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN_AND_PASSWORD = "SELECT * FROM account WHERE login = ? and password = ? ";
+    private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ?";
     private static final String SQL_DELETE_ACCOUNT_BY_ID = "DELETE FROM account WHERE account_id = ?";
     private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE user SET role_id, login = ?, password = ? WHERE account_id = ?";
 
@@ -118,7 +120,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
     public List<Account> filterAccount(String login,String password){
         List<Account> accountList;
         try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN);
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN_AND_PASSWORD);
             preparedStatement.setString(1,login);
             preparedStatement.setString(2,password);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -147,6 +149,25 @@ public class AccountDAO implements DAO<Account, Integer>  {
             e.printStackTrace();
         }
         return accountList;
+    }
+
+    public Account findAccountByLogin(String login){
+        List<Account> accountList;
+        try (Connection connection = connectionPool.takeConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN);
+            preparedStatement.setString(1,login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            accountList = returnAccountList(resultSet);
+            if (accountList.size() == 0){
+                throw new DAOException("I cannot find this account by it's login");
+            }
+            preparedStatement.close();
+            resultSet.close();
+        } catch (SQLException | InterruptedException exception) {
+            //TODO log and throw exception;
+            return null;
+        }
+        return accountList.get(0);
     }
 }
 

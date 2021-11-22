@@ -76,4 +76,9 @@ public class AccountService implements Service<AccountDto,Integer> {
         daoGetAll.forEach(account -> accountDtoList.add(accountConverter.convert(account)));
         return accountDtoList;
     }
+
+    public AccountDto checkOriginalAccount(String login){
+        Account account = ((AccountDAO)accountDAO).findAccountByLogin(login);
+        return accountConverter.convert(account);
+    }
 }
