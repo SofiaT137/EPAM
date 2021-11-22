@@ -5,9 +5,11 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
+import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.AccountService;
+import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
 
 
@@ -23,10 +25,11 @@ public class AdminPageCommand implements Command {
     private static final String CREATE_NEW_TEACHER_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
     private static final String BLOCK_USER_COMMAND = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
+    private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
-    private static final String ALL_ACCOUNT_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allAccounts";
+    private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
     private final Service<UserDto, Integer> serviceUser = new UserService();
+    private final Service<CourseDto, Integer> serviceCourse = new CourseService();
     private final Service<AccountDto, Integer> serviceAccount = new AccountService();
 
     public static Command getInstance() {
@@ -115,6 +118,19 @@ public class AdminPageCommand implements Command {
         }
     };
 
+    private static final ResponseContext CREATE_GROUP_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return CREATE_GROUP_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
@@ -123,8 +139,11 @@ public class AdminPageCommand implements Command {
         String btnShowAllReviews = requestContext.getParameterFromJSP("btnShowAllReviews");
         String btnCreateNewTeacher = requestContext.getParameterFromJSP("btnCreateNewTeacher");
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
+        String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
         if (btnShowAllCourses != null){
+            List<CourseDto> courseDtoList = serviceCourse.getAll();
+            requestContext.addAttributeToSession(ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE,courseDtoList);
             return GET_ALL_COURSE_CONTEXT;
 
         }else if (btnShowAllUsers != null){
@@ -132,7 +151,9 @@ public class AdminPageCommand implements Command {
 
         }else if (btnShowAllReviews != null){
             return GET_ALL_REVIEW_CONTEXT;
-
+        }
+        else if (btnCreateNewGroup != null){
+            return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
             List<UserDto> allUser= serviceUser.getAll();
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
@@ -161,8 +182,7 @@ public class AdminPageCommand implements Command {
         List<AccountDto> result = new ArrayList<>();
         for (UserDto userDto : list) {
             int account_id = userDto.getAccount_id();
-            AccountDto accountDto;
-            accountDto = serviceAccount.getById(account_id);
+            AccountDto  accountDto = serviceAccount.getById(account_id);
         }
         return result;
     }

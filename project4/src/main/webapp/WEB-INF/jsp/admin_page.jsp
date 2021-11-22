@@ -13,6 +13,7 @@
                    <input type="submit" name="btnShowAllUsers" value="Show users" />
                    <input type="submit" name="btnShowAllReviews" value="Show reviews" />
                    <input type="submit" name="btnCreateNewTeacher" value="Create teacher" />
+                   <input type="submit" name="btnCreateNewGroup" value="Create group" />
                    <input type="submit" name="btnBlockUser" value="Block user" />
                    </form>
                    <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

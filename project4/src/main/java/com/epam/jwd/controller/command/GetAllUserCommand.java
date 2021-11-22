@@ -13,7 +13,7 @@ public class GetAllUserCommand implements Command {
 
     private static final Command INSTANCE = new GetAllUserCommand();
     private final Service<UserDto,Integer> service = new UserService();
-    private static final String USERS_JSP = "/WEB-INF/jsp/users.jsp";
+    private static final String USERS_JSP = "/WEB-INF/jsp/all_users.jsp";
     private static final String USERS_JSP_USERS_COLLECTION_ATTRIBUTE = "users";
 
     private static final ResponseContext GET_USERS_CONTEXT = new ResponseContext() {

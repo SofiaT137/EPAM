@@ -77,7 +77,7 @@ public class AccountService implements Service<AccountDto,Integer> {
         return accountDtoList;
     }
 
-    public AccountDto checkOriginalAccount(String login){
+    public AccountDto getAccount(String login){
         Account account = ((AccountDAO)accountDAO).findAccountByLogin(login);
         return accountConverter.convert(account);
     }

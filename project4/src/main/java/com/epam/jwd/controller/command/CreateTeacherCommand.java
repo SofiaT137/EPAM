@@ -75,8 +75,6 @@ public class CreateTeacherCommand implements Command {
         }
     };
 
-
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String btnAddTeacher = requestContext.getParameterFromJSP("btnAddTeacher");
@@ -88,15 +86,16 @@ public class CreateTeacherCommand implements Command {
             String password = requestContext.getParameterFromJSP("lblPassword");
 
             AccountDto accountDto = new AccountDto();
-            try {
+
                 try {
-                    accountDto = ((AccountService) accountService).checkOriginalAccount(login);
+                    accountDto = ((AccountService) accountService).getAccount(login);
                     //log account is not original
                     requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, "( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                     return ERROR_PAGE_CONTEXT;
                 } catch (DAOException exception) {
                     //log Account is original
                 }
+            try {
                 accountDto.setRole(role);
                 accountDto.setLogin(login);
                 accountDto.setPassword(password);

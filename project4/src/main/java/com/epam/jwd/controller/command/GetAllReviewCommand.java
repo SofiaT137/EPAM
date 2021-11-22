@@ -13,7 +13,7 @@ public class GetAllReviewCommand implements Command{
 
     private static final Command INSTANCE = new GetAllReviewCommand();
     private final Service<ReviewDto,Integer> service = new ReviewService();
-    private static final String ALL_REVIEW_JSP = "/WEB-INF/jsp/reviews.jsp";
+    private static final String ALL_REVIEW_JSP = "/WEB-INF/jsp/all_review.jsp";
     private static final String REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE = "reviews";
 
     private static final ResponseContext GET_REVIEW_CONTEXT = new ResponseContext() {

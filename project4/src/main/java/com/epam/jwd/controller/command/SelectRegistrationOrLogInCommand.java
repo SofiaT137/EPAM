@@ -123,7 +123,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         if (btnRegister != null) {
             try{
-                checkAccount = ((AccountService) service).checkOriginalAccount(login);
+                checkAccount = ((AccountService) service).getAccount(login);
                 //log account is not original
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,"( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 return ERROR_PAGE_CONTEXT;

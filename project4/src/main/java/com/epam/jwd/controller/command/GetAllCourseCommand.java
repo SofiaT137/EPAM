@@ -13,8 +13,8 @@ public class GetAllCourseCommand implements Command {
 
     private static final Command INSTANCE = new GetAllCourseCommand();
     private final Service<CourseDto,Integer> service = new CourseService();
-    private static final String COURSES_JSP = "/WEB-INF/jsp/courses.jsp";
-    private static final String COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE = "courses";
+    private static final String COURSES_JSP = "/WEB-INF/jsp/all_courses.jsp";
+    private static final String COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE = "all_courses";
 
     private static final ResponseContext GET_COURSE_CONTEXT = new ResponseContext() {
         @Override
@@ -38,8 +38,8 @@ public class GetAllCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> courseList = service.getAll();
-        requestContext.addAttributeToJSP(COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE,courseList);
+        List<CourseDto> all_course =  (List<CourseDto>) requestContext.getAttributeFromSession("allCourses");
+        requestContext.addAttributeToJSP(COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE, all_course);
         return GET_COURSE_CONTEXT;
     }
 }
