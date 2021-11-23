@@ -28,6 +28,7 @@ public class AdminPageCommand implements Command {
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
+    private static final String ALL_USERS_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
     private final Service<UserDto, Integer> serviceUser = new UserService();
@@ -156,6 +157,7 @@ public class AdminPageCommand implements Command {
             return GET_ALL_COURSE_CONTEXT;
 
         }else if (btnShowAllUsers != null){
+            requestContext.addAttributeToSession(ALL_USERS_SESSION_COLLECTION_ATTRIBUTE,allUser);
             return GET_ALL_USER_CONTEXT;
 
         }else if (btnShowAllReviews != null){
