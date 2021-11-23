@@ -9,15 +9,17 @@ public class Account extends AbstractEntity<Integer> {
     private Role role;
     private String login;
     private String password;
+    private int isActive;
 
     public Account() {
     }
 
-    public Account(Integer id, Role role, String login, String password) {
+    public Account(Integer id, Role role, String login, String password, int isActive) {
         this.id = id;
         this.role = role;
         this.login = login;
         this.password = password;
+        this.isActive = isActive;
     }
 
     public Role getRole() {
@@ -44,6 +46,14 @@ public class Account extends AbstractEntity<Integer> {
         this.password = password;
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,12 +62,13 @@ public class Account extends AbstractEntity<Integer> {
         return getRole() == account.getRole()
                 && Objects.equals(login, account.login)
                 && Objects.equals(password, account.password)
-                && Objects.equals(id,account.id);
+                && Objects.equals(id,account.id)
+                && Objects.equals(isActive,account.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,role,login,password);
+        return Objects.hash(id,role,login,password,isActive);
     }
 
     @Override
@@ -67,6 +78,7 @@ public class Account extends AbstractEntity<Integer> {
                 ", role=" + role +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", isActive=" + isActive +
                 '}';
     }
 }

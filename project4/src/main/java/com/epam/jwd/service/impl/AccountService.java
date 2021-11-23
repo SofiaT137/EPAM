@@ -70,11 +70,9 @@ public class AccountService implements Service<AccountDto,Integer> {
         return accountDtoList;
     }
 
-    public List<AccountDto> filterAccount(String login,String password){
-        List<Account> daoGetAll = ((AccountDAO)accountDAO).filterAccount(login,password);
-        List<AccountDto> accountDtoList = new ArrayList<>();
-        daoGetAll.forEach(account -> accountDtoList.add(accountConverter.convert(account)));
-        return accountDtoList;
+    public AccountDto filterAccount(String login,String password){
+        Account account = ((AccountDAO)accountDAO).filterAccount(login,password);
+        return accountConverter.convert(account);
     }
 
     public AccountDto getAccount(String login){

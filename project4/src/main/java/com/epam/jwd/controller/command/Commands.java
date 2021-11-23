@@ -38,6 +38,7 @@ public enum Commands {
     SIGN_UP_TO_COURSE_COMMAND(SignUpToCourseCommand.getInstance()),
     ADMIN_PAGE_COMMAND(AdminPageCommand.getInstance()),
     CREATE_TEACHER_COMMAND(CreateTeacherCommand.getInstance()),
+    BLOCK_USER_COMMAND(BlockUserCommand.getInstance()),
     LOG_OUT_COMMAND(LogOutCommand.getInstance());
 
 

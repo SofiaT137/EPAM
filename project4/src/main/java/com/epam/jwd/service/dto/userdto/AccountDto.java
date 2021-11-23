@@ -9,13 +9,15 @@ public class AccountDto extends AbstractDto<Integer> {
     private String role;
     private String login;
     private String password;
+    private int isActive;
 
 
-    public AccountDto(Integer id, String roleName, String login, String password) {
+    public AccountDto(Integer id, String roleName, String login, String password,int isActive) {
         this.id = id;
         this.role = roleName;
         this.login = login;
         this.password = password;
+        this.isActive = isActive;
     }
 
     public AccountDto(){
@@ -46,6 +48,14 @@ public class AccountDto extends AbstractDto<Integer> {
         this.password = password;
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,12 +64,13 @@ public class AccountDto extends AbstractDto<Integer> {
         return Objects.equals(role, accountDto.getRole())
                 && Objects.equals(login, accountDto.getLogin())
                 && Objects.equals(password, accountDto.getPassword())
-                && Objects.equals(id,accountDto.id);
+                && Objects.equals(id,accountDto.id)
+                && Objects.equals(isActive,accountDto.isActive);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, role, login, password);
+        return Objects.hash(id, role, login, password,isActive);
     }
 
     @Override
@@ -69,6 +80,7 @@ public class AccountDto extends AbstractDto<Integer> {
                 ", role='" + role + '\'' +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", isActive=" + isActive +
                 '}';
     }
 }

@@ -115,15 +115,9 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
         String role = "Student";
 
-        List<AccountDto> accountDtoList = ((AccountService) service).filterAccount(login,password);
-
-        AccountDto checkAccount;
-
-        AccountDto accountDto;
-
         if (btnRegister != null) {
             try{
-                checkAccount = ((AccountService) service).getAccount(login);
+                ((AccountService) service).getAccount(login);
                 //log account is not original
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,"( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 return ERROR_PAGE_CONTEXT;
@@ -132,20 +126,26 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 //log Account is original
             }
 
-            accountDto = new AccountDto();
+           AccountDto accountDto = new AccountDto();
             accountDto.setRole(role);
             accountDto.setLogin(login);
             accountDto.setPassword(password);
+            accountDto.setIsActive(1);
 
             accountDto = service.create(accountDto);
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             return REGISTER_USER_CONTEXT;
 
         } else if (btnLogIn != null) {
-            if (accountDtoList.size() != 0) {
-                accountDto = accountDtoList.get(0);
+            AccountDto accountDto = ((AccountService) service).filterAccount(login,password);
+            if (accountDto != null) {
                 requestContext.addAttributeToSession(USER_PAGE_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             } else {
+                //TODO ERROR PAGE
+                return DefaultCommand.getInstance().execute(requestContext);
+            }
+            if (accountDto.getIsActive() == 0){
+                //TODO ERROR PAGE
                 return DefaultCommand.getInstance().execute(requestContext);
             }
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());

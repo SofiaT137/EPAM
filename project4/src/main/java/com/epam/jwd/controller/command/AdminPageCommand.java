@@ -8,6 +8,7 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
@@ -28,6 +29,7 @@ public class AdminPageCommand implements Command {
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
     private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
+    private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> serviceCourse = new CourseService();
     private final Service<AccountDto, Integer> serviceAccount = new AccountService();
@@ -141,8 +143,15 @@ public class AdminPageCommand implements Command {
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
+        List<UserDto> allUser= serviceUser.getAll();
+        List<CourseDto> courseDtoList = new ArrayList<>();
+
         if (btnShowAllCourses != null){
-            List<CourseDto> courseDtoList = serviceCourse.getAll();
+            try{
+                courseDtoList = serviceCourse.getAll();
+            }catch (ServiceException exception){
+                //log exception.getMessage();
+            }
             requestContext.addAttributeToSession(ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE,courseDtoList);
             return GET_ALL_COURSE_CONTEXT;
 
@@ -155,11 +164,12 @@ public class AdminPageCommand implements Command {
         else if (btnCreateNewGroup != null){
             return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
-            List<UserDto> allUser= serviceUser.getAll();
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
             requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE,allTeachers);
            return CREATE_NEW_TEACHER_CONTEXT;
         }else if (btnBlockUser != null){
+            List<UserDto> blockedUser = findBlockedUser(allUser);
+            requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUser);
             return BLOCK_USER_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
@@ -178,12 +188,13 @@ public class AdminPageCommand implements Command {
         return result;
     }
 
-    private List<AccountDto> findAlLAccountTeachers(List<UserDto> list){
-        List<AccountDto> result = new ArrayList<>();
+    private List<UserDto> findBlockedUser(List<UserDto> list){
+        List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto : list) {
-            int account_id = userDto.getAccount_id();
-            AccountDto  accountDto = serviceAccount.getById(account_id);
+            if (serviceAccount.getById(userDto.getAccount_id()).getIsActive() == 0){
+                blockedUser.add(userDto);
+            }
         }
-        return result;
+        return blockedUser;
     }
 }

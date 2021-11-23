@@ -9,11 +9,11 @@ public class AccountConverter implements Converter<Account, AccountDto,Integer> 
 
     @Override
     public Account convert(AccountDto accountDto) {
-        return new Account(accountDto.getId(), Role.getByName(accountDto.getRole()),accountDto.getLogin(),accountDto.getPassword());
+        return new Account(accountDto.getId(), Role.getByName(accountDto.getRole()),accountDto.getLogin(),accountDto.getPassword(),accountDto.getIsActive());
     }
 
     @Override
     public AccountDto convert(Account account) {
-        return new AccountDto(account.getId(),account.getRole().getName(),account.getLogin(),account.getPassword());
+        return new AccountDto(account.getId(),account.getRole().getName(),account.getLogin(),account.getPassword(),account.getIsActive());
     }
 }

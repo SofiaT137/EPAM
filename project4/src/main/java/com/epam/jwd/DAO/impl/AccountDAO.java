@@ -17,13 +17,13 @@ import java.util.List;
 
 public class AccountDAO implements DAO<Account, Integer>  {
 
-    private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password) VALUES (?, ?, ?)";
+    private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password, is_active) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
     private static final String SQL_FIND_ACCOUNTS_BY_LOGIN_AND_PASSWORD = "SELECT * FROM account WHERE login = ? and password = ? ";
     private static final String SQL_FIND_ACCOUNTS_BY_LOGIN = "SELECT * FROM account WHERE login = ?";
     private static final String SQL_DELETE_ACCOUNT_BY_ID = "DELETE FROM account WHERE account_id = ?";
-    private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE user SET role_id, login = ?, password = ? WHERE account_id = ?";
+    private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE account SET role_id = ?, login = ?, password = ?, is_active = ? WHERE account_id = ?";
 
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
@@ -39,6 +39,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.setObject(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
+            preparedStatement.setInt(4, account.getIsActive());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
@@ -57,9 +58,10 @@ public class AccountDAO implements DAO<Account, Integer>  {
     public Boolean update(Account account) {
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_BY_ID);
-            preparedStatement.setObject(1, account.getRole());
+            preparedStatement.setInt(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
+            preparedStatement.setInt(4, account.getIsActive());
             preparedStatement.setInt(5, account.getId());
             Boolean result = preparedStatement.executeUpdate() > 0;
             preparedStatement.close();
@@ -117,7 +119,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
         return account;
     }
 
-    public List<Account> filterAccount(String login,String password){
+    public Account filterAccount(String login,String password){
         List<Account> accountList;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN_AND_PASSWORD);
@@ -131,7 +133,11 @@ public class AccountDAO implements DAO<Account, Integer>  {
             //TODO log and throw exception;
             return null;
         }
-        return accountList;
+        if (accountList.size() != 1){
+            //TODO log and throw exception;
+            return null;
+        }
+        return accountList.get(0);
     }
 
     private List<Account> returnAccountList (ResultSet resultSet){
@@ -143,6 +149,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
                 account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));
                 account.setLogin(resultSet.getString("login"));
                 account.setPassword(resultSet.getString("password"));
+                account.setIsActive(resultSet.getInt("is_active"));
                 accountList.add(account);
             }
         } catch (SQLException e) {

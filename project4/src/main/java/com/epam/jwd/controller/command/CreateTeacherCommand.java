@@ -99,6 +99,7 @@ public class CreateTeacherCommand implements Command {
                 accountDto.setRole(role);
                 accountDto.setLogin(login);
                 accountDto.setPassword(password);
+                accountDto.setIsActive(1);
 
                 accountDto = accountService.create(accountDto);
             } catch (Exception exception) {
