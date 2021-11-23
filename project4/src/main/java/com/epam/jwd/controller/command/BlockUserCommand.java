@@ -23,7 +23,6 @@ public class BlockUserCommand implements Command {
     private static final String BLOCK_PAGE_JSP = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
     private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<CourseDto, Integer> serviceCourse = new CourseService();
     private final Service<AccountDto, Integer> serviceAccount = new AccountService();
 
 
@@ -73,11 +72,10 @@ public class BlockUserCommand implements Command {
         String group = requestContext.getParameterFromJSP("lblGroup");
 
         List<UserDto> allUser= serviceUser.getAll();
-        List<UserDto> userDto = ((UserService)serviceUser).filterUser(firstName,lastName);
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession("blockedUsers");
 
         if (btnBlockUser != null){
-
+            List<UserDto> userDto = ((UserService)serviceUser).filterUser(firstName,lastName);
             if (userDto.size() == 0 || userDto.get(0).getGroup_id() != 2) {
                 //error page context
             }
@@ -94,9 +92,16 @@ public class BlockUserCommand implements Command {
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUser);
             return BLOCK_PAGE_CONTEXT;
         }else if (btnUnBlockUser != null){
+            List<UserDto> userDto = ((UserService)serviceUser).filterUser(firstName,lastName);
             UserDto current_user = userDto.get(0);
             AccountDto currentAccount = serviceAccount.getById(current_user.getAccount_id());
             currentAccount.setIsActive(1);
+            try {
+                serviceAccount.update(currentAccount);
+            } catch (ServerException exception) {
+                //log
+                //error page
+            }
             blockedUsers.removeAll(userDto);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUsers);
             return BLOCK_PAGE_CONTEXT;
