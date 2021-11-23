@@ -4,6 +4,7 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
+import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.impl.ReviewService;
 
@@ -12,9 +13,8 @@ import java.util.List;
 public class GetAllReviewCommand implements Command{
 
     private static final Command INSTANCE = new GetAllReviewCommand();
-    private final Service<ReviewDto,Integer> service = new ReviewService();
     private static final String ALL_REVIEW_JSP = "/WEB-INF/jsp/all_review.jsp";
-    private static final String REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE = "reviews";
+    private static final String REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE = "all_reviews";
 
     private static final ResponseContext GET_REVIEW_CONTEXT = new ResponseContext() {
         @Override
@@ -38,8 +38,8 @@ public class GetAllReviewCommand implements Command{
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<ReviewDto> reviewsList = service.getAll();
-        requestContext.addAttributeToJSP(REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE,reviewsList);
+        List<ReviewDto> all_reviews = (List<ReviewDto>) requestContext.getAttributeFromSession("allReviews");
+        requestContext.addAttributeToJSP(REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE,all_reviews);
         return GET_REVIEW_CONTEXT;
     }
 }

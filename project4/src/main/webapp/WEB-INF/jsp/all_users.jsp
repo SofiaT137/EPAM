@@ -8,7 +8,7 @@
          <body>
       <c:choose>
               <c:when test="${all_users.size() eq 0}">
-              <p>You have no courses at the university! It is strange.</p>
+              <p>You have no users at the university! It is strange.</p>
                   </c:when>
                   <c:otherwise>
           <table border="1" table style="width:450px" style="text-align:center">

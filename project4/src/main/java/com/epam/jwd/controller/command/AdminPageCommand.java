@@ -1,16 +1,19 @@
 package com.epam.jwd.controller.command;
 
 
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
+import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 
 
@@ -30,10 +33,12 @@ public class AdminPageCommand implements Command {
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
     private static final String ALL_USERS_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
+    private static final String ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE = "allReviews";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
-    private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<CourseDto, Integer> serviceCourse = new CourseService();
-    private final Service<AccountDto, Integer> serviceAccount = new AccountService();
+    private final Service<UserDto, Integer> userService = new UserService();
+    private final Service<CourseDto, Integer> course_Service = new CourseService();
+    private final Service<AccountDto, Integer> accountService = new AccountService();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -144,12 +149,12 @@ public class AdminPageCommand implements Command {
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
-        List<UserDto> allUser= serviceUser.getAll();
+        List<UserDto> allUser= userService.getAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
 
         if (btnShowAllCourses != null){
             try{
-                courseDtoList = serviceCourse.getAll();
+                courseDtoList = course_Service.getAll();
             }catch (ServiceException exception){
                 //log exception.getMessage();
             }
@@ -161,6 +166,13 @@ public class AdminPageCommand implements Command {
             return GET_ALL_USER_CONTEXT;
 
         }else if (btnShowAllReviews != null){
+            List<ReviewDto> allReviews = new ArrayList<>();
+            try {
+                allReviews = reviewService.getAll();
+            }catch (ServiceException exception){
+                //log
+            }
+            requestContext.addAttributeToSession(ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE,allReviews);
             return GET_ALL_REVIEW_CONTEXT;
         }
         else if (btnCreateNewGroup != null){
@@ -182,7 +194,7 @@ public class AdminPageCommand implements Command {
         for (UserDto userDto : list) {
             int account_id = userDto.getAccount_id();
             AccountDto accountDto;
-            accountDto = serviceAccount.getById(account_id);
+            accountDto = accountService.getById(account_id);
             if (accountDto.getRole().equals("Teacher")){
                 result.add(userDto);
             }
@@ -193,7 +205,7 @@ public class AdminPageCommand implements Command {
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto : list) {
-            if (serviceAccount.getById(userDto.getAccount_id()).getIsActive() == 0){
+            if (accountService.getById(userDto.getAccount_id()).getIsActive() == 0){
                 blockedUser.add(userDto);
             }
         }

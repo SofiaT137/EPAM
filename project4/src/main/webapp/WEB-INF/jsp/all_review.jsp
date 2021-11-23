@@ -2,18 +2,46 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
-    <head>
-    <title>Courses</title>
-    </head>
-    <body>
-    <h2>Columns</h2>
-    <ul id="reviews">
-    <c:forEach var="review" items ="${requestScope.reviews}">
-    <li id="review-user_id">${review.user_id}</li>
-    <li id="review-course_id">${review.course_id}</li>
-    <li id="review-grade">${review.grade}</li>
-    <li id="review-review">${review.review}</li>
-    </c:forEach>
-    </ul>
-    </body>
-</html>
+   <head>
+       <h2>All the university courses reviews</h2>
+        </head>
+         <body>
+      <c:choose>
+              <c:when test="${all_reviews.size() eq 0}">
+              <p>You have no courses reviews at the university!</p>
+                  </c:when>
+                  <c:otherwise>
+          <table border="1" table style="width:250px" style="text-align:center">
+               <thead>
+                <tr>
+                  <th>Review id</th>
+                  <th>User id</th>
+                  <th>Course id</th>
+                  <th>Grade</th>
+                  <th>Review </th>
+                  </tr>
+              </thead>
+            <c:forEach items="${requestScope.all_reviews}" var="review">
+           <tbody>
+             <tr>
+           <td><c:out value="${review.id}" /></td>
+           <td><c:out value="${review.user_id}" /></td>
+          <td><c:out value="${review.course_id}" /></td>
+          <td><c:out value="${review.grade}" /></td>
+          <td><c:out value="${review.review}" /></td>
+           </tr>
+           </tbody>
+               </c:forEach>
+              </table>
+                 </c:otherwise>
+                 </c:choose>
+                 <p></p>
+                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">Get Back</a>
+              </body>
+              <p></p>
+     <footer class="bg-light text-center text-lg-start">
+         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
+          © 2021 Copyright: Made by Sofia Tkachenia
+        </div>
+      </footer>
+     </html>
