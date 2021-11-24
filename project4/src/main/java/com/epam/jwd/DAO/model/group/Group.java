@@ -9,7 +9,7 @@ public class Group extends AbstractEntity<Integer> {
     private String name;
 
     public Group(Integer id, String name) {
-        super(id);
+        this.id = id;
         this.name = name;
     }
 

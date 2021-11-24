@@ -7,14 +7,12 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
+import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.ReviewService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.*;
 
 
 import java.util.ArrayList;
@@ -34,11 +32,13 @@ public class AdminPageCommand implements Command {
     private static final String ALL_USERS_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
     private static final String ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE = "allReviews";
+    private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<CourseDto, Integer> course_Service = new CourseService();
     private final Service<AccountDto, Integer> accountService = new AccountService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
+    private final Service<GroupDto, Integer> groupService = new GroupService();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -176,6 +176,8 @@ public class AdminPageCommand implements Command {
             return GET_ALL_REVIEW_CONTEXT;
         }
         else if (btnCreateNewGroup != null){
+            List<GroupDto> allGroup = groupService.getAll();
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
             return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);

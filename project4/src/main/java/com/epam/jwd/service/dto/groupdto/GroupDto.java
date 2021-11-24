@@ -17,6 +17,10 @@ public class GroupDto extends AbstractDto<Integer> {
         this.name = name;
     }
 
+    public GroupDto(){
+
+    }
+
     public String getName() {
         return name;
     }

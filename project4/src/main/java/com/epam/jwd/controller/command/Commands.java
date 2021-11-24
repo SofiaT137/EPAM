@@ -26,6 +26,8 @@ public enum Commands {
     SHOW_ADMIN_PAGE_COMMAND(ShowAdminPageCommand.getInstance()),
     SHOW_CREATE_TEACHER_PAGE_COMMAND(ShowCreateTeacherPageCommand.getInstance()),
     SHOW_BLOCK_USER_PAGE_COMMAND(ShowBlockUserPageCommand.getInstance()),
+    SHOW_CREATE_GROUP_PAGE_COMMAND(ShowCreateGroupPageCommand.getInstance()),
+    CREATE_GROUP_COMMAND(CreateGroupCommand.getInstance()),
     UPDATE_COURSE_COMMAND(UpdateCourseCommand.getInstance()),
     TEACHER_SELECT_COURSE_COMMAND(TeacherSelectCourseCommand.getInstance()),
     TEACHER_PAGE_COMMAND(TeacherPageCommand.getInstance()),
