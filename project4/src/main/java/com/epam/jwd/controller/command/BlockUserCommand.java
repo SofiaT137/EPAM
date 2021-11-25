@@ -67,8 +67,8 @@ public class BlockUserCommand implements Command {
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
-        String firstName = new String(((requestContext.getParameterFromJSP("lblFirstName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
-        String lastName = new String(((requestContext.getParameterFromJSP("lblLastName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+        String firstName = requestContext.getParameterFromJSP("lblFirstName");
+        String lastName = requestContext.getParameterFromJSP("lblLastName");
         String group = requestContext.getParameterFromJSP("lblGroup");
 
         List<UserDto> allUser= serviceUser.getAll();

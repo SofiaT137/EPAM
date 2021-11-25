@@ -80,7 +80,7 @@ public class CreateCourseCommand implements Command {
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
 
         if (btnAddCourse !=null) {
-            String courseName = new String(((requestContext.getParameterFromJSP("lblCourseName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+            String courseName = requestContext.getParameterFromJSP("lblCourseName");
             Date startDate = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
             Date endDate = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
 

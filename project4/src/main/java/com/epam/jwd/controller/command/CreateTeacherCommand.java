@@ -107,8 +107,8 @@ public class CreateTeacherCommand implements Command {
                 return ERROR_PAGE_CONTEXT;
             }
             try {
-                String lblFirstName = new String(((requestContext.getParameterFromJSP("lblFirstName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
-                String lblLastName = new String(((requestContext.getParameterFromJSP("lblLastName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+                String lblFirstName = requestContext.getParameterFromJSP("lblFirstName");
+                String lblLastName = requestContext.getParameterFromJSP("lblLastName");
                 final int group_id = 2;
 
                 UserDto userDto = new UserDto();

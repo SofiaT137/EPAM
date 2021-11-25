@@ -87,7 +87,7 @@ public class TeacherSelectCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         if (btnFillReview != null){
-            String course = new String((requestContext.getParameterFromJSP("lblCourseName")).getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+            String course = requestContext.getParameterFromJSP("lblCourseName");
                 List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
             if (list.size() != 0){
                 CourseDto selectedCourse = list.get(0);

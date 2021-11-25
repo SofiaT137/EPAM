@@ -81,11 +81,11 @@ public class RateStudentCommand implements Command {
         String btnAddReview = requestContext.getParameterFromJSP("btnAddReview");
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
-        String firstName = new String(((requestContext.getParameterFromJSP("lblFirstName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
-        String lastName = new String(((requestContext.getParameterFromJSP("lblLastName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+        String firstName = requestContext.getParameterFromJSP("lblFirstName");
+        String lastName = requestContext.getParameterFromJSP("lblLastName");
         String group = requestContext.getParameterFromJSP("lblGroup");
         String grade = requestContext.getParameterFromJSP("lblGrade");
-        String review = new String(((requestContext.getParameterFromJSP("lblReview")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+        String review = requestContext.getParameterFromJSP("lblReview");
 
         List<UserDto> allCourseUser = (List<UserDto>) requestContext.getAttributeFromSession("studentsCourse");
         CourseDto courseDto = (CourseDto) requestContext.getAttributeFromSession("selectedCourse");

@@ -81,7 +81,7 @@ public class UpdateCourseCommand implements Command {
 
         if (btnUpdate != null) {
             Integer id = Integer.parseInt(requestContext.getParameterFromJSP("lblCourseId"));
-            String course_name = new String(((requestContext.getParameterFromJSP("lblCourseName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+            String course_name = requestContext.getParameterFromJSP("lblCourseName");
             Date start_date = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
             Date end_date = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
 

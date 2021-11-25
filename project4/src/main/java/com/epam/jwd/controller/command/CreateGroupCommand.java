@@ -63,7 +63,7 @@ public class CreateGroupCommand implements Command {
         String btnAddGroup = requestContext.getParameterFromJSP("btnAddGroup");
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
-        String groupName = new String(((requestContext.getParameterFromJSP("lblGroupName")).getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+        String groupName = requestContext.getParameterFromJSP("lblGroupName");
 
         if (btnAddGroup !=null) {
 
