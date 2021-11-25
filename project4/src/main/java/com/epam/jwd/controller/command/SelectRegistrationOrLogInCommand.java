@@ -8,6 +8,7 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
@@ -29,6 +30,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
+    private static final String LOGIN_OR_PASSWORD_MISTAKE = "You made a mistake in your login or password. Try again!";
+    private static final String ACCESS_DENIED ="Access denied. Please,contact administrator!";
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
@@ -137,16 +140,18 @@ public class SelectRegistrationOrLogInCommand implements Command {
             return REGISTER_USER_CONTEXT;
 
         } else if (btnLogIn != null) {
-            AccountDto accountDto = ((AccountService) service).filterAccount(login,password);
-            if (accountDto != null) {
+            AccountDto accountDto;
+            try{
+                accountDto = ((AccountService) service).filterAccount(login,password);
                 requestContext.addAttributeToSession(USER_PAGE_SESSION_COLLECTION_ATTRIBUTE, accountDto);
-            } else {
-                //TODO ERROR PAGE
-                return DefaultCommand.getInstance().execute(requestContext);
+            }catch (Exception exception){
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,LOGIN_OR_PASSWORD_MISTAKE);
+                return ERROR_PAGE_CONTEXT;
             }
+
             if (accountDto.getIsActive() == 0){
-                //TODO ERROR PAGE
-                return DefaultCommand.getInstance().execute(requestContext);
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,ACCESS_DENIED);
+                return ERROR_PAGE_CONTEXT;
             }
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
