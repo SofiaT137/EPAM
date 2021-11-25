@@ -12,21 +12,21 @@ public class SessionListener implements HttpSessionAttributeListener {
 
     @Override
     public void attributeAdded(HttpSessionBindingEvent event) {
-        LOGGER.info("Name: " + event.getName() + " "
+        LOGGER.info("Session: " + event.getSession() + "Name: " + event.getName() + " "
                 + "value: " + event.getValue() + " "
                 + " was added.");
     }
 
     @Override
     public void attributeRemoved(HttpSessionBindingEvent event) {
-        LOGGER.info("Name: " + event.getName() + " "
+        LOGGER.info("Session: " + event.getSession() + "Name: " + event.getName() + " "
                 + "value: " + event.getValue() + " "
                 + " was removed.");
     }
 
     @Override
     public void attributeReplaced(HttpSessionBindingEvent event) {
-        LOGGER.info("Name: " + event.getName() + " "
+        LOGGER.info("Session: " + event.getSession() + "Name: " + event.getName() + " "
                 + "value: " + event.getValue() + " "
                 + " was replaced.");
     }

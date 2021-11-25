@@ -142,7 +142,8 @@ public class CreateTeacherCommand implements Command {
 
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
-        for (UserDto userDto : list) {
+        for (UserDto userDto
+                : list) {
             int account_id = userDto.getAccount_id();
             AccountDto accountDto;
             accountDto = accountService.getById(account_id);

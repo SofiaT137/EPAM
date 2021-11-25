@@ -8,7 +8,7 @@ import javax.servlet.http.HttpSession;
 public class RequestContextImpl implements RequestContext{
 
     private final HttpServletRequest request;
-    private final HttpSession session;
+    private HttpSession session;
 
     public RequestContextImpl(HttpServletRequest request) {
         this.request = request;
@@ -37,8 +37,9 @@ public class RequestContextImpl implements RequestContext{
 
     @Override
     public void invalidateCurrentSession() {
-        request.getSession().invalidate();
+        session = request.getSession(false);
+        if (session != null) {
+            request.getSession().invalidate();
+        }
     }
-
-
 }
