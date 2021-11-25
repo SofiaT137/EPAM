@@ -7,12 +7,16 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 public class UserPageCommand implements Command {
 
@@ -88,9 +92,14 @@ public class UserPageCommand implements Command {
             requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, reviewDtoList);
             return SEE_USER_RESULT_CONTEXT;
         }else if(btnGetCourse != null){
-            List<CourseDto> courseList = courseService.getAll();
-            courseList.removeAll(userCourse);
-            requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, courseList);
+            List<CourseDto> courseList = new ArrayList<>();
+            try {
+                courseList = courseService.getAll();
+            }catch (ServiceException exception){
+                //log
+            }
+            List<CourseDto> possibleCourses = findUserPossibleToSignInCourses(courseList,userCourse);
+            requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCourses);
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
             return DELETE_COURSE_CONTEXT;
@@ -110,5 +119,20 @@ public class UserPageCommand implements Command {
             }
         }
         return reviewDtoList;
+    }
+
+    private List<CourseDto> findUserPossibleToSignInCourses(List<CourseDto> allCourses, List<CourseDto> userCourses){
+        List<CourseDto> result = new ArrayList<>();
+        long millis=System.currentTimeMillis();
+        Date dateForCheck = new Date(millis);
+
+        allCourses.removeAll(userCourses);
+        if (allCourses.size() != 0){
+            result = allCourses.stream()
+                    .filter(courseDto -> courseDto.getEndCourse().after(dateForCheck))
+                    .collect(Collectors.toList());
+        }
+
+        return result;
     }
 }
