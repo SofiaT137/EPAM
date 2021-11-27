@@ -13,12 +13,14 @@ import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
 
 public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
+    private static final String UPDATE_PAGE_JSP = "/WEB-INF/jsp/main.jsp";
     private static final String REGISTER_STUDENT_JSP = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
     private static final String STUDENT_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String TEACHER_PAGE_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
@@ -27,6 +29,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
+    private static final String CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE = "language";
+    private static final String CURRENT_LANGUAGE_JSP_COLLECTION_ATTRIBUTE = "language";
+    private static final String RUSSIAN_LANGUAGE = "ru";
+    private static final String ENGLISH_LANGUAGE = "en";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
     private static final String LOGIN_OR_PASSWORD_MISTAKE = "You made a mistake in your login or password. Try again!";
@@ -101,6 +107,20 @@ public class SelectRegistrationOrLogInCommand implements Command {
         }
     };
 
+    private static final ResponseContext UPDATE_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return UPDATE_PAGE_JSP;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return false;
+        }
+    };
+
+
 
     public static Command getInstance() {
         return INSTANCE;
@@ -115,7 +135,23 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String password = requestContext.getParameterFromJSP("lblPassword");
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
+
+        String btnRussian = requestContext.getParameterFromJSP("btnRussian");
+        String btnEnglish = requestContext.getParameterFromJSP("btnEnglish");
+
         String role = "Student";
+
+        if (btnRussian != null){
+            requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, RUSSIAN_LANGUAGE);
+            requestContext.addAttributeToJSP(CURRENT_LANGUAGE_JSP_COLLECTION_ATTRIBUTE, RUSSIAN_LANGUAGE);
+            return UPDATE_PAGE_CONTEXT;
+        }
+
+        if (btnEnglish != null){
+            requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, ENGLISH_LANGUAGE);
+            requestContext.addAttributeToJSP(CURRENT_LANGUAGE_JSP_COLLECTION_ATTRIBUTE, ENGLISH_LANGUAGE);
+            return UPDATE_PAGE_CONTEXT;
+        }
 
         if (btnRegister != null) {
             try{
