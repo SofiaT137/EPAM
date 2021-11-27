@@ -8,7 +8,7 @@
         </head>
         <p></p>
         <body>
-        <img src="/img/no_meme.jpg" width="250" height="250" alt="This is an image" />
+         <img src="/img/no_meme.jpg" width="250" height="250" alt="This is an image" />
         <p></p>
          <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
         <footer class="bg-light text-center text-lg-start">

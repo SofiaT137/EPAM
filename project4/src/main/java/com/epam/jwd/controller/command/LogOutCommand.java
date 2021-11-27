@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
+
+
 public class LogOutCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(LogOutCommand.class);
@@ -14,11 +17,11 @@ public class LogOutCommand implements Command {
     private static final Command INSTANCE = new LogOutCommand();
     private static final String MAIN_JSP = "/index.jsp";
 
-    public static Command getInstance(){
+    public static Command getInstance() {
         return INSTANCE;
     }
 
-    private LogOutCommand(){
+    private LogOutCommand() {
 
     }
 
@@ -42,7 +45,9 @@ public class LogOutCommand implements Command {
         if (userDto != null) {
             LOGGER.info(userDto.getFirst_name() + " " + userDto.getLast_name() + " is logged out.");
         }
+
         requestContext.invalidateCurrentSession();
         return MAIN_PAGE_CONTEXT;
     }
+
 }

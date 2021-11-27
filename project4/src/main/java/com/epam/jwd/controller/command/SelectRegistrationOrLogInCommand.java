@@ -25,7 +25,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String ADMIN_PAGE_COMMAND = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
-    private static final String USER_PAGE_SESSION_COLLECTION_ATTRIBUTE = "getUserPage";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
@@ -143,7 +142,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             AccountDto accountDto;
             try{
                 accountDto = ((AccountService) service).filterAccount(login,password);
-                requestContext.addAttributeToSession(USER_PAGE_SESSION_COLLECTION_ATTRIBUTE, accountDto);
+                requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             }catch (Exception exception){
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,LOGIN_OR_PASSWORD_MISTAKE);
                 return ERROR_PAGE_CONTEXT;

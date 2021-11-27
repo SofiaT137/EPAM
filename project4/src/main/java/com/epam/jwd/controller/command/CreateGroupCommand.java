@@ -5,14 +5,9 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
-import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
-import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.GroupService;
 
-import java.nio.charset.StandardCharsets;
-import java.sql.Date;
 import java.util.List;
 
 public class CreateGroupCommand implements Command {
