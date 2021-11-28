@@ -20,39 +20,74 @@
 <fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
 
 <html>
-      <head>
-      <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-      <style>
+  <head>
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <style>
       <%@include file="/WEB-INF/css/main.css"%>
-      </style>
-       <title>${elective}</title>
-         <h1>${website}</h1>
-         </head>
-         <body>
-            <form action="/controller?command=SELECT_REGISTRATION_OR_LOG_IN" method="post">
-               <div class="btn-group" role="group" aria-label="Basic example">
-                 <button type="submit" class="btn btn-primary" name="btnRussian" onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=ru"'>Russian</button>
-                 <button type="submit" class="btn btn-primary" name="btnEnglish" onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=en"'>English</button>
-                </div>
-               <label>
-                <p class="label-txt">${login}</p>
-                <input name="lblLogin" type="text" class = "input" title = "${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]+$">
-                  <div class="line-box">
-                  <div class="line"></div>
-                </div>
-              </label>
-              <label>
-                <p class="label-txt">${password}</p>
-                <input name="lblPassword" type="password" class = "input" title = "${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$">
-                <div class="line-box">
-                  <div class="line"></div>
-                </div>
-              </label>
-              <button type="submit" name="btnRegister">${btnRegister}</button>
-              <button type="submit" name="btnLogIn">${btnLogIn}</button>
-             </form>
-          </body>
-          <div class="footer">
-          <%@ include file="footer/footer.jsp" %>
-          </div>
-   </html>
+    </style>
+    <title>${elective}</title>
+    <h1>${website}</h1>
+  </head>
+  <body>
+    <form
+      action="/controller?command=SELECT_REGISTRATION_OR_LOG_IN"
+      method="post"
+    >
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          name="btnRussian"
+          onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=ru"'
+        >
+          Russian
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          name="btnEnglish"
+          onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=en"'
+        >
+          English
+        </button>
+      </div>
+      <label>
+        <p class="label-txt">${login}</p>
+        <input
+          name="lblLogin"
+          type="text"
+          class="input"
+          title="${invalidLogin}"
+          placeholder="${enterYourLogin}"
+          required
+          pattern="^[A-Za-z0-9,.'-]+$"
+        />
+        <div class="line-box">
+          <div class="line"></div>
+        </div>
+      </label>
+      <label>
+        <p class="label-txt">${password}</p>
+        <input
+          name="lblPassword"
+          type="password"
+          class="input"
+          title="${invalidPassword}"
+          placeholder="${enterYourPassword}"
+          required
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$"
+        />
+        <div class="line-box">
+          <div class="line"></div>
+        </div>
+      </label>
+      <button type="submit" name="btnRegister">${btnRegister}</button>
+      <button type="submit" name="btnLogIn">${btnLogIn}</button>
+    </form>
+  </body>
+  <div class="footer"><%@ include file="footer/footer.jsp" %></div>
+</html>

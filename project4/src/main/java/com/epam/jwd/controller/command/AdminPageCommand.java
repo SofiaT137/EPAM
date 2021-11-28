@@ -1,10 +1,9 @@
 package com.epam.jwd.controller.command;
 
-
-import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
+import com.epam.jwd.controller.listener.SessionListener;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
@@ -12,7 +11,13 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.*;
+import com.epam.jwd.service.impl.AccountService;
+import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.GroupService;
+import com.epam.jwd.service.impl.ReviewService;
+import com.epam.jwd.service.impl.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.util.ArrayList;
@@ -20,7 +25,10 @@ import java.util.List;
 
 public class AdminPageCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(SessionListener.class);
+
     private static final Command INSTANCE = new AdminPageCommand();
+
     private static final String GET_ALL_USER_COMMAND = "/controller?command=GET_ALL_USER";
     private static final String GET_ALL_REVIEW_COMMAND = "/controller?command=GET_ALL_REVIEW";
     private static final String GET_ALL_COURSE_COMMAND = "/controller?command=GET_ALL_COURSE";
@@ -28,12 +36,14 @@ public class AdminPageCommand implements Command {
     private static final String BLOCK_USER_COMMAND = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
+
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
     private static final String ALL_USERS_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE = "allCourses";
     private static final String ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE = "allReviews";
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
+
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<CourseDto, Integer> course_Service = new CourseService();
     private final Service<AccountDto, Integer> accountService = new AccountService();
