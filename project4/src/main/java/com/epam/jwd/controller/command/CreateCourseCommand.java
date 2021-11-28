@@ -8,9 +8,6 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.CourseService;
 
-
-
-import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.util.List;
 
@@ -20,8 +17,10 @@ public class CreateCourseCommand implements Command {
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_CREATE_COURSE_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
+
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+
     private final Service<CourseDto, Integer> courseService = new CourseService();
 
 

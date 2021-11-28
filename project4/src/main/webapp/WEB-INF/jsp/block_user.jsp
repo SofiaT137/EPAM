@@ -36,12 +36,12 @@
         <form action="/controller?command=BLOCK_USER_COMMAND" method="post">
       <div class="form-group">
              <label>First name: </label>
-             <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" />
+             <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
            </div>
            <p></p>
                <div class="form-group">
              <label>Last name:</label>
-             <input name="lblLastName"type="text" placeholder="${LastNameLabel}" />
+             <input name="lblLastName"type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
               </div>
            <p></p>
              <label>Group:</label>
@@ -53,7 +53,7 @@
            <p></p>
              <input type="submit" name="btnUnBlockUser" value="Unblock User"/>
              <input type="submit" name="btnBlockUser" value="Block User"/>
-             <input type="submit" name="btnGetBack" value="Get Back" />
+             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"' />
              </form>
               <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
               </body>

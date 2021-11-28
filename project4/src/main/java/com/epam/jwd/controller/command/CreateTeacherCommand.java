@@ -10,21 +10,27 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.StandardCharsets;
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateTeacherCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(CreateGroupCommand.class);
+
     private static final Command INSTANCE = new CreateTeacherCommand();
+
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
-    private static final String ADMIN_PAGE_JSP = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
+
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
-    private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
+
+    private static final String NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
+    private static final String ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is original.";
+    private static final String TEACHER = "Teacher";
 
     private final Service<AccountDto, Integer> accountService = new AccountService();
     private final Service<UserDto, Integer> userService = new UserService();
@@ -63,23 +69,11 @@ public class CreateTeacherCommand implements Command {
         }
     };
 
-    private static final ResponseContext ADMIN_RESULT_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ADMIN_PAGE_JSP;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+
         String btnAddTeacher = requestContext.getParameterFromJSP("btnAddTeacher");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
         final String role = "Teacher";
 
         if (btnAddTeacher != null) {
@@ -90,12 +84,13 @@ public class CreateTeacherCommand implements Command {
 
                 try {
                     accountDto = ((AccountService) accountService).getAccount(login);
-                    //log account is not original
-                    requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, "( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
+                    LOGGER.error(NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
+                    requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, "( " + login + " ) " + NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                     return ERROR_PAGE_CONTEXT;
                 } catch (DAOException exception) {
-                    //log Account is original
+                    LOGGER.error(ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 }
+
             try {
                 accountDto.setRole(role);
                 accountDto.setLogin(login);
@@ -103,11 +98,14 @@ public class CreateTeacherCommand implements Command {
                 accountDto.setIsActive(1);
 
                 accountDto = accountService.create(accountDto);
+
             } catch (Exception exception) {
+                LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
             try {
+
                 String lblFirstName = requestContext.getParameterFromJSP("lblFirstName");
                 String lblLastName = requestContext.getParameterFromJSP("lblLastName");
                 final int group_id = 2;
@@ -125,18 +123,18 @@ public class CreateTeacherCommand implements Command {
 
                 requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);
                 return REFRESH_PAGE_CONTEXT;
+
             } catch (Exception exception) {
                 try {
                     accountService.delete(accountDto);
-                } catch (ServiceException exception1) {
+                } catch (Exception exception1) {
+                    LOGGER.error(exception1.getMessage());
                     requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception1.getMessage());
                     return ERROR_PAGE_CONTEXT;
                 }
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
-        }else if (btnGetBack != null){
-            return ADMIN_RESULT_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }
@@ -148,7 +146,7 @@ public class CreateTeacherCommand implements Command {
             int account_id = userDto.getAccount_id();
             AccountDto accountDto;
             accountDto = accountService.getById(account_id);
-            if (accountDto.getRole().equals("Teacher")){
+            if (accountDto.getRole().equals(TEACHER)){
                 result.add(userDto);
             }
         }

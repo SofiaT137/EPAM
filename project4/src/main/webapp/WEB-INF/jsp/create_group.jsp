@@ -34,11 +34,11 @@
     <form action="/controller?command=CREATE_GROUP_COMMAND" method="post">
       <div class="form-group">
              <label>Group name: name:</label>
-             <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" />
+             <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
            </div>
            <p></p>
              <input type="submit" name="btnAddGroup" value="Add group"/>
-             <input type="submit" name="btnGetBack" value="Get Back" />
+             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'  />
              </form>
              <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
               </body>

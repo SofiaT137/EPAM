@@ -64,7 +64,7 @@
           title="${invalidLogin}"
           placeholder="${enterYourLogin}"
           required
-          pattern="^[A-Za-z0-9,.'-]+$"
+          pattern="^[A-Za-z0-9,.'-]{4,}$"
         />
         <div class="line-box">
           <div class="line"></div>

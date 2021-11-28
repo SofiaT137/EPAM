@@ -24,7 +24,6 @@ public class BlockUserCommand implements Command {
 
     private static final Command INSTANCE = new BlockUserCommand();
 
-    private static final String ADMIN_PAGE_JSP = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
     private static final String BLOCK_PAGE_JSP = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
 
@@ -40,7 +39,6 @@ public class BlockUserCommand implements Command {
     private final Service<GroupDto, Integer> groupService = new GroupService();
 
 
-
     public static Command getInstance() {
         return INSTANCE;
     }
@@ -48,19 +46,6 @@ public class BlockUserCommand implements Command {
     private BlockUserCommand() {
 
     }
-
-    private static final ResponseContext ADMIN_RESULT_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ADMIN_PAGE_JSP;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
 
     private static final ResponseContext BLOCK_PAGE_CONTEXT = new ResponseContext() {
 
@@ -93,11 +78,6 @@ public class BlockUserCommand implements Command {
 
         String btnUnBlockUser = requestContext.getParameterFromJSP("btnUnBlockUser");
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
-
-        if(btnGetBack != null){
-            return ADMIN_RESULT_CONTEXT;
-        }
 
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");

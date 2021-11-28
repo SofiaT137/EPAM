@@ -36,26 +36,26 @@
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
       <div class="form-group">
              <label>Login:</label>
-             <input name="lblLogin" type="text" placeholder="${LoginLabel}" />
+             <input name="lblLogin" type="text" placeholder="${LoginLabel}" required pattern="^[A-Za-z0-9,.'-]{4,}$" />
            </div>
            <p></p>
                <div class="form-group">
              <label>Password:</label>
-             <input name="lblPassword" type="text" placeholder="${PasswordLabel}" />
+             <input name="lblPassword" type="text" placeholder="${PasswordLabel}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$" />
               </div>
            <p></p>
            <div class="form-group">
             <label>First name:</label>
-           <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" />
+           <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$"/>
            </div>
             <p></p>
              <div class="form-group">
                 <label>Last name:</label>
-               <input name="lblLastName" type="text" placeholder="${LastNameLabel}" />
+               <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                </div>
                 <p></p>
              <input type="submit" name="btnAddTeacher" value="Add Teacher"/>
-             <input type="submit" name="btnGetBack" value="Get Back" />
+             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'  />
              </form>
               <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
               </body>

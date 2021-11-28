@@ -7,16 +7,26 @@ import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.impl.GroupService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class CreateGroupCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(CreateGroupCommand.class);
+
     private static final Command INSTANCE = new CreateGroupCommand();
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
-    private static final String ADMIN_PAGE_COMMAND = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
+    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
+
     private final Service<GroupDto, Integer> groupService = new GroupService();
+
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
+    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
+
+    private static final String NOT_UNIQUE_GROUP_NAME = "This group name is not unique!";
+    private static final String UNIQUE_GROUP_NAME = "This group name is unique!";
 
 
     public static Command getInstance() {
@@ -40,11 +50,11 @@ public class CreateGroupCommand implements Command {
         }
     };
 
-    private static final ResponseContext ADMIN_PAGE_CONTEXT = new ResponseContext() {
+    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return ADMIN_PAGE_COMMAND;
+            return ERROR_COURSE_COMMAND;
         }
 
         @Override
@@ -56,7 +66,6 @@ public class CreateGroupCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String btnAddGroup = requestContext.getParameterFromJSP("btnAddGroup");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         String groupName = requestContext.getParameterFromJSP("lblGroupName");
 
@@ -66,10 +75,11 @@ public class CreateGroupCommand implements Command {
 
             try{
                 groupDto = ((GroupService) groupService).filterGroup(groupName);
-                //log
-                //error page
+                LOGGER.error(NOT_UNIQUE_GROUP_NAME);
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
+                return ERROR_PAGE_CONTEXT;
             }catch (DAOException daoException){
-
+                LOGGER.info(UNIQUE_GROUP_NAME);
             }
 
             groupDto.setName(groupName);
@@ -79,9 +89,6 @@ public class CreateGroupCommand implements Command {
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
 
             return REFRESH_PAGE_CONTEXT;
-        }
-        else if (btnGetBack != null){
-            return ADMIN_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }

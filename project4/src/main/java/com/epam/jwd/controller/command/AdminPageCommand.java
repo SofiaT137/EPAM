@@ -33,6 +33,7 @@ public class AdminPageCommand implements Command {
     private static final String CREATE_NEW_TEACHER_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
     private static final String BLOCK_USER_COMMAND = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
+    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
 
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
     private static final String ALL_USERS_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
@@ -40,6 +41,7 @@ public class AdminPageCommand implements Command {
     private static final String ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE = "allReviews";
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
+    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
 
     private static final String CANNOT_FIND_ANY_COURSES_LOGGER = "I cannot find any courses at this university";
     private static final String CANNOT_FIND_ANY_REVIEWS_LOGGER = "I cannot find any reviews at this university";
@@ -138,6 +140,19 @@ public class AdminPageCommand implements Command {
         }
     };
 
+    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return ERROR_COURSE_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
@@ -149,7 +164,15 @@ public class AdminPageCommand implements Command {
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
         List<UserDto> allUser = userService.getAll();
-        List<GroupDto> all_groups = groupService.getAll();
+        List<GroupDto> all_groups;
+
+        try {
+            all_groups = groupService.getAll();
+        }catch (ServiceException exception){
+            LOGGER.error(exception.getMessage());
+            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
+            return ERROR_PAGE_CONTEXT;
+        }
         List<CourseDto> courseDtoList = new ArrayList<>();
 
         if (btnShowAllCourses != null){
@@ -167,11 +190,13 @@ public class AdminPageCommand implements Command {
 
         }else if (btnShowAllReviews != null){
             List<ReviewDto> allReviews = new ArrayList<>();
+
             try {
                 allReviews = reviewService.getAll();
             }catch (ServiceException exception){
                 LOGGER.info(CANNOT_FIND_ANY_REVIEWS_LOGGER);
             }
+
             requestContext.addAttributeToSession(ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE,allReviews);
             return GET_ALL_REVIEW_CONTEXT;
         }

@@ -18,7 +18,7 @@
       <body>
         <p></p>
         <form action="/controller?command=ADMIN_PAGE_COMMAND" method="post">
-          <b type="submit" name="btnShowAllCourses" value="Show courses" />
+          <input type="submit" name="btnShowAllCourses" value="Show courses" />
           <input type="submit" name="btnShowAllUsers" value="Show users" />
           <input type="submit" name="btnShowAllReviews" value="Show reviews" />
           <input type="submit" name="btnCreateNewTeacher" value="Create teacher" />
