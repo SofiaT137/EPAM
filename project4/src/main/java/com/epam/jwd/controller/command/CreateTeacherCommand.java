@@ -7,6 +7,7 @@ import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.UserService;
 
@@ -127,7 +128,7 @@ public class CreateTeacherCommand implements Command {
             } catch (Exception exception) {
                 try {
                     accountService.delete(accountDto);
-                } catch (ServerException exception1) {
+                } catch (ServiceException exception1) {
                     requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception1.getMessage());
                     return ERROR_PAGE_CONTEXT;
                 }

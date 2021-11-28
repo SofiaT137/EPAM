@@ -11,8 +11,6 @@ import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.AccountValidator;
 
-
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,13 +34,13 @@ public class AccountService implements Service<AccountDto,Integer> {
     }
 
     @Override
-    public Boolean update(AccountDto value) throws ServiceException, ServerException {
+    public Boolean update(AccountDto value) throws ServiceException {
         accountValidator.validate(value);
         return accountDAO.update(accountConverter.convert(value));
     }
 
     @Override
-    public Boolean delete(AccountDto value) throws ServiceException, ServerException {
+    public Boolean delete(AccountDto value) throws ServiceException {
         accountValidator.validate(value);
         return accountDAO.delete(accountConverter.convert(value));
     }

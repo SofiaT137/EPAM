@@ -119,10 +119,11 @@ public class GroupDAO implements DAO<Group,Integer> {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_NAME);
             preparedStatement.setString(1,groupName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (returnGroupList(resultSet).size() == 0){
+            List<Group> list = returnGroupList(resultSet);
+            if (list.size() == 0){
                 throw new DAOException("I cannot fins this group by its name");
             }
-            group = returnGroupList(resultSet).get(0);
+            group = list.get(0);
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {

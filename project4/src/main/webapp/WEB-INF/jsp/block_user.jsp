@@ -44,10 +44,12 @@
              <input name="lblLastName"type="text" placeholder="${LastNameLabel}" />
               </div>
            <p></p>
-           <div class="form-group">
-            <label>Group:</label>
-           <input name="lblGroup" type="text" placeholder="${GroupLabel}" />
-           </div>
+             <label>Group:</label>
+              <select name="Group">
+              <c:forEach items="${requestScope.university_groups}" var="group">
+                <option value="${group.name}">${group.name}</option>
+                 </c:forEach>
+              </select>
            <p></p>
              <input type="submit" name="btnUnBlockUser" value="Unblock User"/>
              <input type="submit" name="btnBlockUser" value="Block User"/>

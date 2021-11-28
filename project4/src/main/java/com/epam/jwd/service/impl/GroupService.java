@@ -11,7 +11,6 @@ import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.GroupValidator;
 
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +34,13 @@ public class GroupService implements Service<GroupDto,Integer> {
     }
 
     @Override
-    public Boolean update(GroupDto value) throws ServiceException, ServerException {
+    public Boolean update(GroupDto value) throws ServiceException {
         groupValidator.validate(value);
         return groupDAO.update(groupConverter.convert(value));
     }
 
     @Override
-    public Boolean delete(GroupDto value) throws ServiceException, ServerException {
+    public Boolean delete(GroupDto value) throws ServiceException{
         groupValidator.validate(value);
         return groupDAO.delete(groupConverter.convert(value));
     }

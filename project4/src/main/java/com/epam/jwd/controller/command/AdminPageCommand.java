@@ -3,7 +3,6 @@ package com.epam.jwd.controller.command;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
-import com.epam.jwd.controller.listener.SessionListener;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
@@ -24,7 +23,7 @@ import java.util.List;
 
 public class AdminPageCommand implements Command {
 
-    private static final Logger LOGGER = LogManager.getLogger(SessionListener.class);
+    private static final Logger LOGGER = LogManager.getLogger(AdminPageCommand.class);
 
     private static final Command INSTANCE = new AdminPageCommand();
 
@@ -33,7 +32,6 @@ public class AdminPageCommand implements Command {
     private static final String GET_ALL_COURSE_COMMAND = "/controller?command=GET_ALL_COURSE";
     private static final String CREATE_NEW_TEACHER_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
     private static final String BLOCK_USER_COMMAND = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
 
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
@@ -52,6 +50,7 @@ public class AdminPageCommand implements Command {
     private final Service<AccountDto, Integer> accountService = new AccountService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private final Service<GroupDto, Integer> groupService = new GroupService();
+
 
     public static Command getInstance() {
         return INSTANCE;
@@ -126,19 +125,6 @@ public class AdminPageCommand implements Command {
         }
     };
 
-    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ERROR_COURSE_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
     private static final ResponseContext CREATE_GROUP_CONTEXT = new ResponseContext() {
 
         @Override
@@ -163,6 +149,7 @@ public class AdminPageCommand implements Command {
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
         List<UserDto> allUser = userService.getAll();
+        List<GroupDto> all_groups = groupService.getAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
 
         if (btnShowAllCourses != null){
@@ -189,8 +176,7 @@ public class AdminPageCommand implements Command {
             return GET_ALL_REVIEW_CONTEXT;
         }
         else if (btnCreateNewGroup != null){
-            List<GroupDto> allGroup = groupService.getAll();
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,all_groups);
             return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
@@ -198,6 +184,7 @@ public class AdminPageCommand implements Command {
            return CREATE_NEW_TEACHER_CONTEXT;
         }else if (btnBlockUser != null){
             List<UserDto> blockedUser = findBlockedUser(allUser);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,all_groups);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUser);
             return BLOCK_USER_CONTEXT;
         }

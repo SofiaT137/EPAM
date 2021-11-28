@@ -7,6 +7,7 @@ import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
 
 import java.nio.charset.StandardCharsets;
@@ -98,7 +99,7 @@ public class UpdateCourseCommand implements Command {
 
             try {
                courseService.update(courseDto);
-            } catch (ServerException exception) {
+            } catch (ServiceException exception) {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }

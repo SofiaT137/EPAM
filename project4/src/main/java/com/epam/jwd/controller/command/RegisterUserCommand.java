@@ -8,6 +8,7 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
@@ -100,7 +101,7 @@ public class RegisterUserCommand implements Command {
             if (!savePoint){
                 try {
                     accountService.delete(registerAccount);
-                } catch (ServerException exception1) {
+                } catch (ServiceException exception1) {
                     //log "I cannot delete this account
                     requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception1.getMessage());
                     return ERROR_PAGE_CONTEXT;

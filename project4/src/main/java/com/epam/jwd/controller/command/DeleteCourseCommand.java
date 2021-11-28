@@ -8,14 +8,14 @@ import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class DeleteCourseCommand implements Command {
 
@@ -105,7 +105,7 @@ public class DeleteCourseCommand implements Command {
                         listOfThisCourseReview) {
                     try {
                         reviewService.delete(review);
-                    } catch (ServerException e) {
+                    } catch (ServiceException e) {
                         //log
                     }
                 }

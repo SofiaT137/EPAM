@@ -41,13 +41,13 @@ public class UserService implements Service<UserDto,Integer> {
     }
 
     @Override
-    public Boolean update(UserDto value) throws ServerException {
+    public Boolean update(UserDto value) throws ServiceException {
         userValidator.validate(value);
         return userDAO.update(userConverter.convert(value));
     }
 
     @Override
-    public Boolean delete(UserDto value) throws ServerException {
+    public Boolean delete(UserDto value) throws ServiceException {
         userValidator.validate(value);
         return userDAO.delete(userConverter.convert(value));
     }
