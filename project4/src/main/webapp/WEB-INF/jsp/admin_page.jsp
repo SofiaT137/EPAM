@@ -27,6 +27,6 @@
         </form>
         <a href="/controller?command=LOG_OUT_COMMAND">Log out</a>
         <p></p>
-        <%@ include file="footer/footer.jsp" %>
+         <%@ include file="footer/footer.jsp" %>
       </body>
     </html>

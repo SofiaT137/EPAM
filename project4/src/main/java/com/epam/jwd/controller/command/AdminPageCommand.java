@@ -19,7 +19,6 @@ import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +42,10 @@ public class AdminPageCommand implements Command {
     private static final String ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE = "allReviews";
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
+
+    private static final String CANNOT_FIND_ANY_COURSES_LOGGER = "I cannot find any courses at this university";
+    private static final String CANNOT_FIND_ANY_REVIEWS_LOGGER = "I cannot find any reviews at this university";
+    private static final String FIND_PEOPLE_WITH_ROLE_TEACHER = "Teacher";
 
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<CourseDto, Integer> course_Service = new CourseService();
@@ -159,14 +162,14 @@ public class AdminPageCommand implements Command {
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
-        List<UserDto> allUser= userService.getAll();
+        List<UserDto> allUser = userService.getAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
 
         if (btnShowAllCourses != null){
             try{
                 courseDtoList = course_Service.getAll();
             }catch (ServiceException exception){
-                //log exception.getMessage();
+                LOGGER.info(CANNOT_FIND_ANY_COURSES_LOGGER);
             }
             requestContext.addAttributeToSession(ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE,courseDtoList);
             return GET_ALL_COURSE_CONTEXT;
@@ -180,7 +183,7 @@ public class AdminPageCommand implements Command {
             try {
                 allReviews = reviewService.getAll();
             }catch (ServiceException exception){
-                //log
+                LOGGER.info(CANNOT_FIND_ANY_REVIEWS_LOGGER);
             }
             requestContext.addAttributeToSession(ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE,allReviews);
             return GET_ALL_REVIEW_CONTEXT;
@@ -203,11 +206,12 @@ public class AdminPageCommand implements Command {
 
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
-        for (UserDto userDto : list) {
+        for (UserDto userDto
+                : list) {
             int account_id = userDto.getAccount_id();
             AccountDto accountDto;
             accountDto = accountService.getById(account_id);
-            if (accountDto.getRole().equals("Teacher")){
+            if (accountDto.getRole().equals(FIND_PEOPLE_WITH_ROLE_TEACHER)){
                 result.add(userDto);
             }
         }
@@ -216,7 +220,8 @@ public class AdminPageCommand implements Command {
 
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
-        for (UserDto userDto : list) {
+        for (UserDto userDto
+                : list) {
             if (accountService.getById(userDto.getAccount_id()).getIsActive() == 0){
                 blockedUser.add(userDto);
             }

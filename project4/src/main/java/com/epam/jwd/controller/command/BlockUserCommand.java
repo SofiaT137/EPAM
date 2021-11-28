@@ -19,9 +19,12 @@ import java.util.List;
 public class BlockUserCommand implements Command {
 
     private static final Command INSTANCE = new BlockUserCommand();
+
     private static final String ADMIN_PAGE_JSP = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
     private static final String BLOCK_PAGE_JSP = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
+
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
+    
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<AccountDto, Integer> serviceAccount = new AccountService();
 
@@ -114,7 +117,8 @@ public class BlockUserCommand implements Command {
 
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
-        for (UserDto userDto : list) {
+        for (UserDto userDto
+                : list) {
             if (serviceAccount.getById(userDto.getAccount_id()).getIsActive() == 0){
                 blockedUser.add(userDto);
             }
