@@ -17,7 +17,7 @@ public class HelloTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            pageContext.getOut().write("Hello, " + this.userName);
+            pageContext.getOut().write(" " + this.userName);
         } catch (IOException e) {
             //logger
             throw new JspException(TAG_EXCEPTION);

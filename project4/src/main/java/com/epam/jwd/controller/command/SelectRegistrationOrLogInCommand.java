@@ -21,21 +21,27 @@ import java.util.Objects;
 public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
+
     private static final String REGISTER_STUDENT_JSP = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
     private static final String STUDENT_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String TEACHER_PAGE_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
     private static final String ADMIN_PAGE_COMMAND = "/controller?command=SHOW_ADMIN_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
+
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
+
     private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
     private static final String LOGIN_OR_PASSWORD_MISTAKE = "You made a mistake in your login or password. Try again!";
     private static final String ACCESS_DENIED ="Access denied. Please,contact administrator!";
+
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
+
+    private static final String CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE = "language";
 
 
     private static final ResponseContext REGISTER_USER_CONTEXT = new ResponseContext() {
@@ -118,6 +124,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
+        String language = (String) requestContext.getAttributeFromSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE);
+        if (language == null){
+            requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
+        }
 
         String role = "Student";
 

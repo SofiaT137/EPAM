@@ -35,14 +35,12 @@ public class ChangeLanguageCommand implements Command {
 
     }
 
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String language = requestContext.getParameterFromJSP("language");
 
         if (language != null){
             requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, language);
-            requestContext.addAttributeToJSP(CURRENT_LANGUAGE_JSP_COLLECTION_ATTRIBUTE, language);
             return UPDATE_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
