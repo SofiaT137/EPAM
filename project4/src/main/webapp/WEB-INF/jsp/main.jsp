@@ -7,8 +7,8 @@
 
 <fmt:message bundle="${loc}" key="website" var="website"/>
 <fmt:message bundle="${loc}" key="elective" var="elective"/>
-<fmt:message bundle="${loc}" key="ru" var="ru"/>
-<fmt:message bundle="${loc}" key="en" var="en"/>
+<fmt:message bundle="${loc}" key="Russian" var="Russian"/>
+<fmt:message bundle="${loc}" key="English" var="English"/>
 <fmt:message bundle="${loc}" key="selectLanguage" var="selectLanguage"/>
 <fmt:message bundle="${loc}" key="login" var="login"/>
 <fmt:message bundle="${loc}" key="password" var="password"/>
@@ -44,7 +44,7 @@
           name="btnRussian"
           onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=ru"'
         >
-          Russian
+          ${Russian}
         </button>
         <button
           type="submit"
@@ -52,7 +52,7 @@
           name="btnEnglish"
           onClick='location.href="/controller?command=CHANGE_LANGUAGE_COMMAND&language=en"'
         >
-          English
+          ${English}
         </button>
       </div>
       <label>

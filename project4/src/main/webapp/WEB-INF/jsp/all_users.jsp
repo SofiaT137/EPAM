@@ -1,24 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="allTheUniversityUsers" var="allTheUniversityUsers"/>
+<fmt:message bundle="${loc}" key="noUsers" var="noUsers"/>
+<fmt:message bundle="${loc}" key="userId" var="userId"/>
+<fmt:message bundle="${loc}" key="accountId" var="accountId"/>
+<fmt:message bundle="${loc}" key="groupId" var="groupId"/>
+<fmt:message bundle="${loc}" key="firstName" var="firstName"/>
+<fmt:message bundle="${loc}" key="lastName" var="lastName"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
    <head>
-       <h2>All the university users:</h2>
+       <h2>${allTheUniversityUsers}</h2>
         </head>
          <body>
       <c:choose>
               <c:when test="${all_users.size() eq 0}">
-              <p>You have no users at the university! It is strange.</p>
+              <p>${noUsers}</p>
                   </c:when>
                   <c:otherwise>
           <table border="1" table style="width:450px" style="text-align:center">
                <thead>
                 <tr>
-                  <th>User id</th>
-                  <th>Account id</th>
-                  <th>Group id</th>
-                  <th>First name</th>
-                  <th>Last name</th>
+                  <th>${userId}</th>
+                  <th>${accountId}</th>
+                  <th>${groupId}</th>
+                  <th>${firstName}</th>
+                  <th>${lastName}</th>
                  </tr>
               </thead>
             <c:forEach items="${requestScope.all_users}" var="user">
@@ -36,12 +49,7 @@
                  </c:otherwise>
                  </c:choose>
                  <p></p>
-                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">Get Back</a>
+                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
+                 <%@ include file="footer/footer.jsp" %>
               </body>
-              <p></p>
-     <footer class="bg-light text-center text-lg-start">
-         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-          © 2021 Copyright: Made by Sofia Tkachenia
-        </div>
-      </footer>
-     </html>
+           </html>

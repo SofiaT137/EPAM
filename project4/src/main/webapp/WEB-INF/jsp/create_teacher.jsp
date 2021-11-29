@@ -1,23 +1,42 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="createTeacher" var="createTeacher"/>
+<fmt:message bundle="${loc}" key="allTeachers" var="allTeachers"/>
+<fmt:message bundle="${loc}" key="noTeachers" var="noTeachers"/>
+<fmt:message bundle="${loc}" key="userId" var="userId"/>
+<fmt:message bundle="${loc}" key="firstName" var="firstName"/>
+<fmt:message bundle="${loc}" key="lastName" var="lastName"/>
+<fmt:message bundle="${loc}" key="Login" var="Login"/>
+<fmt:message bundle="${loc}" key="Password" var="Password"/>
+<fmt:message bundle="${loc}" key="btnAddTeacher" var="btnAddTeacher"/>
+<fmt:message bundle="${loc}" key="LoginLabel" var="LoginLabel"/>
+<fmt:message bundle="${loc}" key="PasswordLabel" var="PasswordLabel"/>
+<fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
+<fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
    <head>
-       <h2>Create a teacher</h2>
+       <h2>${createTeacher}</h2>
         </head>
          <body>
-           <h2>All teachers at the university: </h2>
+           <h2>${allTeachers}</h2>
     <c:choose>
               <c:when test="${all_teachers.size() eq 0}">
-              <p>You have no teacher at the university! It is strange.</p>
+              <p>${noTeachers}</p>
                   </c:when>
                   <c:otherwise>
           <table border="1" table style="width:250px" style="text-align:center">
                <thead>
                  <tr>
-                   <th>User id</th>
-                   <th>First name</th>
-                   <th>Last name</th>
+                   <th>${userId}</th>
+                   <th>${firstName}</th>
+                   <th>${lastName}</th>
                    </tr>
                </thead>
                 <c:forEach items="${requestScope.all_teachers}" var="teacher">
@@ -35,34 +54,29 @@
             <p></p>
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
       <div class="form-group">
-             <label>Login:</label>
+             <label>${Login}</label>
              <input name="lblLogin" type="text" placeholder="${LoginLabel}" required pattern="^[A-Za-z0-9,.'-]{4,}$" />
            </div>
            <p></p>
                <div class="form-group">
-             <label>Password:</label>
+             <label>${Password}</label>
              <input name="lblPassword" type="text" placeholder="${PasswordLabel}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$" />
               </div>
            <p></p>
            <div class="form-group">
-            <label>First name:</label>
+            <label>${firstName}</label>
            <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$"/>
            </div>
             <p></p>
              <div class="form-group">
-                <label>Last name:</label>
+                <label>${lastName}</label>
                <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                </div>
                 <p></p>
-             <input type="submit" name="btnAddTeacher" value="Add Teacher"/>
-             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'  />
+             <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>
+             <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
              </form>
               <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-              </body>
-              <p></p>
-     <footer class="bg-light text-center text-lg-start">
-         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-          © 2021 Copyright: Made by Sofia Tkachenia
-        </div>
-      </footer>
-     </html>
+            <%@ include file="footer/footer.jsp" %>
+        </body>
+    </html>

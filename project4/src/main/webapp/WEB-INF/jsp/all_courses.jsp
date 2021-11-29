@@ -1,22 +1,33 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="allTheUniversityCourses" var="allTheUniversityCourses"/>
+<fmt:message bundle="${loc}" key="noCourses" var="noCourses"/>
+<fmt:message bundle="${loc}" key="courseName" var="courseName"/>
+<fmt:message bundle="${loc}" key="courseStartDate" var="courseStartDate"/>
+<fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
    <head>
-       <h2>All the university courses:</h2>
+       <h2>${allTheUniversityCourses}</h2>
         </head>
          <body>
       <c:choose>
               <c:when test="${all_courses.size() eq 0}">
-              <p>You have no courses at the university! It is strange.</p>
+              <p>${noCourses}</p>
                   </c:when>
                   <c:otherwise>
           <table border="1" table style="width:250px" style="text-align:center">
                <thead>
                 <tr>
-                  <th>Course name</th>
-                  <th>Course start date</th>
-                  <th>Course end date</th>
+                  <th>${courseName}</th>
+                  <th>${courseStartDate}</th>
+                  <th>${CourseEndDate}</th>
                   </tr>
               </thead>
             <c:forEach items="${requestScope.all_courses}" var="course">
@@ -32,7 +43,7 @@
                  </c:otherwise>
                  </c:choose>
                  <p></p>
-                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">Get Back</a>
+                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
                    <%@ include file="footer/footer.jsp" %>
               </body>
             </html>

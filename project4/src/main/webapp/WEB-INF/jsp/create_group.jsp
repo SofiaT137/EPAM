@@ -1,22 +1,35 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="createGroup" var="createGroup"/>
+<fmt:message bundle="${loc}" key="allGroups" var="allGroups"/>
+<fmt:message bundle="${loc}" key="noGroups" var="noGroups"/>
+<fmt:message bundle="${loc}" key="groupId" var="groupId"/>
+<fmt:message bundle="${loc}" key="groupName" var="groupName"/>
+<fmt:message bundle="${loc}" key="GroupNameLabel" var="GroupNameLabel"/>
+<fmt:message bundle="${loc}" key="btnAddGroup" var="btnAddGroup"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
    <head>
-       <h2>Let`s create a group: </h2>
+       <h2>${createGroup}</h2>
         </head>
          <body>
-           <h2>All university groups: </h2>
+           <h2>${allGroups}</h2>
     <c:choose>
               <c:when test="${university_groups.size() eq 0}">
-              <p>You have no university groups!</p>
+              <p>${noGroups}</p>
                   </c:when>
                   <c:otherwise>
           <table border="1">
                <thead>
                  <tr>
-                   <th>Group id</th>
-                    <th>Group name</th>
+                   <th>${groupId}</th>
+                    <th>${groupName}</th>
                    </tr>
                </thead>
                 <c:forEach items="${requestScope.university_groups}" var="group">
@@ -33,19 +46,14 @@
             <p></p>
     <form action="/controller?command=CREATE_GROUP_COMMAND" method="post">
       <div class="form-group">
-             <label>Group name: name:</label>
+             <label>${groupName}</label>
              <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
            </div>
            <p></p>
-             <input type="submit" name="btnAddGroup" value="Add group"/>
-             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'  />
+            <button type="submit" name="btnAddGroup">${btnAddGroup}</button>
+            <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
              </form>
              <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-              </body>
-              <p></p>
-     <footer class="bg-light text-center text-lg-start">
-         <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-          © 2021 Copyright: Made by Sofia Tkachenia
-        </div>
-      </footer>
-     </html>
+                <%@ include file="footer/footer.jsp" %>
+            </body>
+        </html>

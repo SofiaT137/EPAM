@@ -20,35 +20,26 @@
         <style>
           <%@include file="/WEB-INF/css/only_buttons.css"%>
         </style>
-        <custom:hello userName="${hello}${current_user.first_name}" />
       </head>
       <body>
-        <p></p>
-        <ul class="wrapper">
+         <div class="tagStyle">
+        <custom:hello userName="${hello}${current_user.first_name}" />
+        <div>
+        <div class="center">
         <form action="/controller?command=ADMIN_PAGE_COMMAND" method="post">
-            <li class="form-row">
-            <input type="submit" name="btnShowAllCourses" value="${showCourses}" />
-          </li>
-          <li class="form-row">
-           <input type="submit" name="btnShowAllUsers" value="${showUsers}"  />
-          </li>
-           <li class="form-row">
-          <input type="submit" name="btnShowAllReviews" value="${showReviews}"  />
-          </li>
-         <li class="form-row">
-          <input type="submit" name="btnCreateNewTeacher" value="${createTeacher}"  />
-          </li>
-           <li class="form-row">
-           <input type="submit" name="btnCreateNewGroup" value="${createGroup}"  />
-           </li>
-         <li class="form-row">
-          <input type="submit" name="btnBlockUser" value="${blockUnblockUser}"  />
-          </li>
-         </ul>
+          <button type="submit" name="btnShowAllCourses">${showCourses}</button>
+          <button type="submit" name="btnShowAllUsers">${showUsers}</button>
+          <button type="submit" name="btnShowAllReviews">${showReviews}</button>
+          <button type="submit" name="btnCreateNewTeacher">${createTeacher}</button>
+          <button type="submit" name="btnCreateNewGroup">${createGroup}</button>
+          <button type="submit" name="btnBlockUser">${blockUnblockUser}</button>
         </form>
+        </div>
+        <div class="logout">
         <a href="/controller?command=LOG_OUT_COMMAND">
           <span class="glyphicon glyphicon-log-out" ></span>
         </a>
+        </div>
         <p></p>
          <%@ include file="footer/footer.jsp" %>
       </body>
