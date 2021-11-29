@@ -1,6 +1,5 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
@@ -9,23 +8,27 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.ReviewService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RateStudentCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(RateStudentCommand.class);
+
     private static final Command INSTANCE = new RateStudentCommand();
+
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
-    private static final String CANNOT_FIND_USER_MESSAGE = "This user does not exist!";
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
-    private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
-    private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_COURSE_COMMAND";
     private static final String USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE = "studentsCourse";
 
-    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
+    private static final String CANNOT_FIND_USER_MESSAGE = "This user does not exist!";
+
+    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
+    private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
+
+        private final Service<ReviewDto, Integer> reviewService = new ReviewService();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -61,29 +64,14 @@ public class RateStudentCommand implements Command {
         }
     };
 
-    private static final ResponseContext TEACHER_RESULT_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return TEACHER_RESULT_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
         String btnAddReview = requestContext.getParameterFromJSP("btnAddReview");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String group = requestContext.getParameterFromJSP("lblGroup");
+        String group_id = requestContext.getParameterFromJSP("lblGroup");
         String grade = requestContext.getParameterFromJSP("lblGrade");
         String review = requestContext.getParameterFromJSP("lblReview");
 
@@ -97,11 +85,12 @@ public class RateStudentCommand implements Command {
                     .collect(Collectors.toList());
 
             UserDto currentStudent = getAllUserByFullName.stream()
-                    .filter((userDto1) -> userDto1.getGroup_id() == Integer.parseInt(group))
+                    .filter((userDto1) -> userDto1.getGroup_id() == Integer.parseInt(group_id))
                     .findFirst()
                     .orElse(null);
 
             if (currentStudent == null) {
+                LOGGER.error(CANNOT_FIND_USER_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_USER_MESSAGE);
                 return ERROR_PAGE_CONTEXT;
             }
@@ -118,9 +107,6 @@ public class RateStudentCommand implements Command {
             listOfStudents.remove(currentStudent);
             requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,listOfStudents);
             return REFRESH_PAGE_CONTEXT;
-        }
-        else if (btnGetBack != null){
-            return TEACHER_RESULT_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }

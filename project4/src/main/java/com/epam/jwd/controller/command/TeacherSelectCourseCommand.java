@@ -11,23 +11,29 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TeacherSelectCourseCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(TeacherSelectCourseCommand.class);
+
     private static final Command INSTANCE = new TeacherSelectCourseCommand();
 
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String GET_RATE_COURSE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
     private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
+
     private static final String SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "selectedCourse";
     private static final String USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE = "studentsCourse";
+
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String CANNOT_FIND_COURSE_MESSAGE = "This course name is wrong! Or this course does not exist!";
+
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
 
@@ -87,7 +93,7 @@ public class TeacherSelectCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         if (btnFillReview != null){
-            String course = requestContext.getParameterFromJSP("lblCourseName");
+            String course = requestContext.getParameterFromJSP("Course_name");
                 List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
             if (list.size() != 0){
                 CourseDto selectedCourse = list.get(0);
@@ -100,6 +106,7 @@ public class TeacherSelectCourseCommand implements Command {
 
             }
             else{
+                LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
                 return ERROR_PAGE_CONTEXT;
             }
@@ -118,7 +125,7 @@ public class TeacherSelectCourseCommand implements Command {
                 boolean b = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(current_course.getId(), userDto.getId()) != null;
                 result.add(userDto);
             }catch (DAOException exception){
-                //log
+                LOGGER.info(exception.getMessage());
             }
         }
         return result;

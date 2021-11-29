@@ -24,7 +24,7 @@
              <c:forEach items="${requestScope.students_course}" var="student">
             <tbody>
               <tr>
-                  <td><c:out value="${student.id}" /></td>
+                  <td><c:out value="${student.group_id}" /></td>
                   <td><c:out value="${student.first_name}" /></td>
                    <td><c:out value="${student.last_name}" /></td>
                 </tr>
@@ -37,17 +37,17 @@
            <form action="/controller?command=RATE_STUDENT_COMMAND" method="post">
               <div class="form-group">
                      <label>Student first name:</label>
-                     <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" />
+                     <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                    </div>
                    <p></p>
                        <div class="form-group">
                      <label>Student last name:</label>
-                     <input name="lblLastName" type="text" placeholder="${LastNameLabel}" />
+                     <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                       </div>
                    <p></p>
                    <div class="form-group">
                     <label>Student group:</label>
-                   <input name="lblGroup" type="text" placeholder="${GroupLabel}" />
+                   <input name="lblGroup" type="text" placeholder="${GroupLabel}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]*$" />
                    </div>
                     <p></p>
                   <div class="form-group">
@@ -57,11 +57,11 @@
                      <p></p>
                      <div class="form-group">
                   <label>Student review:</label>
-                     <input name="lblReview" type="text" placeholder="${ReviewLabel}"/>
+                     <input name="lblReview" type="text" placeholder="${ReviewLabel}" />
                      </div>
                  <p></p>
-                     <input type="submit" name="btnAddReview" value="Add review"/>
-                     <input type="submit" name="btnGetBack" value="Get Back" />
+                     <input type="submit" name="btnAddReview" value="Add review" <c:if test="${students_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>/>
+                     <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"' />
                      </form>
                       <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
                       </body>

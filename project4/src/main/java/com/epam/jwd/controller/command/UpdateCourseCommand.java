@@ -9,21 +9,25 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.nio.charset.StandardCharsets;
-import java.rmi.ServerException;
 import java.sql.Date;
 import java.util.List;
 
 
 public class UpdateCourseCommand implements Command {
 
+    private static final Logger LOGGER = LogManager.getLogger(UpdateCourseCommand.class);
+
     private static final Command INSTANCE = new UpdateCourseCommand();
-    private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
+
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_UPDATE_COURSE_COMMAND";
+
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+
     private final Service<CourseDto, Integer> courseService = new CourseService();
 
     public static Command getInstance() {
@@ -47,19 +51,6 @@ public class UpdateCourseCommand implements Command {
         }
     };
 
-    private static final ResponseContext TEACHER_RESULT_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return TEACHER_RESULT_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
     private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
 
         @Override
@@ -75,24 +66,27 @@ public class UpdateCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        String btnUpdate = requestContext.getParameterFromJSP("btnUpdate");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
+        String btnUpdate = requestContext.getParameterFromJSP("btnUpdate");
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
 
         if (btnUpdate != null) {
-            Integer id = Integer.parseInt(requestContext.getParameterFromJSP("lblCourseId"));
-            String course_name = requestContext.getParameterFromJSP("lblCourseName");
+
+            String course_name = requestContext.getParameterFromJSP("Course_name");
             Date start_date = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
             Date end_date = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
 
             CourseDto courseDto;
+
             try{
-                courseDto = courseService.getById(id);
+                List<CourseDto> list = ((CourseService) courseService).filterCourse(course_name);
+                courseDto = list.get(0);
             }catch (DAOException exception){
+                LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
+
             courseDto.setName(course_name);
             courseDto.setStartCourse(start_date);
             courseDto.setEndCourse(end_date);
@@ -100,6 +94,7 @@ public class UpdateCourseCommand implements Command {
             try {
                courseService.update(courseDto);
             } catch (ServiceException exception) {
+                LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
@@ -108,9 +103,6 @@ public class UpdateCourseCommand implements Command {
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterChanging);
             return REFRESH_PAGE_CONTEXT;
 
-        }else if (btnGetBack != null){
-            return TEACHER_RESULT_CONTEXT;
-        }
-        return DefaultCommand.getInstance().execute(requestContext);
+        } return DefaultCommand.getInstance().execute(requestContext);
     }
 }

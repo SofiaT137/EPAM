@@ -36,10 +36,15 @@
          </c:choose>
          <p></p>
 <form action="/controller?command=DELETE_COURSE_COMMAND" method="post">
-        <div class="form-group">
-                    <label>Delete</label>
-                    <input name="lblDelete" type="text" placeholder="Enter the course name:" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
-                  <p></p>
+           <div class="form-group">
+                  <label>Course name:</label>
+                  <select name="Course_name">
+                  <c:forEach items="${requestScope.user_course}" var="course">
+                    <option value="${course.name}">${course.name}</option>
+                     </c:forEach>
+                  </select>
+                  </div>
+               <p></p>
                 <input type="submit" name="btnDeleteCourse" value="Delete course" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                 <input type="submit" name="btnGetBack" value="Get Back" />
                 </div>

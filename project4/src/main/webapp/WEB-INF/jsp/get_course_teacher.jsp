@@ -34,10 +34,15 @@
          </c:choose>
   <p></p>
    <form action="/controller?command=TEACHER_SELECT_COURSE_COMMAND" method="post">
-           <div class="form-group">
-                       <label>Enter the course name: </label>
-                       <input name="lblCourseName" type="text" placeholder="Enter the course name" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
-                     <p></p>
+                 <div class="form-group">
+                      <label>Course name:</label>
+                       <select name="Course_name">
+                       <c:forEach items="${requestScope.finished_course}" var="course">
+                         <option value="${course.name}">${course.name}</option>
+                          </c:forEach>
+                       </select>
+                       </div>
+                    <p></p>
                    <input type="submit" name="btnFillReview" value="Fill Review" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                    <input type="submit" name="btnGetBack" value="Get Back" />
                    </div>

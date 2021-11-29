@@ -35,22 +35,22 @@
             <p></p>
     <form action="/controller?command=CREATE_COURSE_COMMAND" method="post">
       <div class="form-group">
-             <label>Course name: name:</label>
-             <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" />
+             <label>Course name:</label>
+             <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" required pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$"/>
            </div>
            <p></p>
                <div class="form-group">
              <label>Course start date: </label>
-             <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" />
+             <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required pattern = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
               </div>
            <p></p>
            <div class="form-group">
             <label>Course end date: </label>
-           <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" />
+           <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required pattern = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
            </div>
             <p></p>
              <input type="submit" name="btnAddCourse" value="Add course"/>
-             <input type="submit" name="btnGetBack" value="Get Back" />
+             <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"' />
              </form>
               <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
               </body>

@@ -7,7 +7,6 @@ import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class CreateTeacherCommand implements Command {
 
-    private static final Logger LOGGER = LogManager.getLogger(CreateGroupCommand.class);
+    private static final Logger LOGGER = LogManager.getLogger(CreateTeacherCommand.class);
 
     private static final Command INSTANCE = new CreateTeacherCommand();
 

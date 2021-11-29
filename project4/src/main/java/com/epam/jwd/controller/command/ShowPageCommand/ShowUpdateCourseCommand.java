@@ -36,8 +36,6 @@ public class ShowUpdateCourseCommand implements Command {
         }
     };
 
-
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
