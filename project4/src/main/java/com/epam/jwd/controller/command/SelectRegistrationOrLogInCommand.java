@@ -14,6 +14,7 @@ import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.UserService;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -159,7 +160,12 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             String userRole = accountDto.getRole();
             if (Objects.equals(userRole, "Teacher") || Objects.equals(userRole, "Student")) {
-                List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
+                List<CourseDto> user_courses = new ArrayList<>();
+                try{
+                    user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
+                }catch (ServiceException exception){
+                    //log
+                }
                 requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             }
             if (userRole.equals("Admin")){

@@ -46,7 +46,7 @@
                           </div>
                        <p></p>
                            <input type="submit" name="btnDeleteCourse" value="Delete course" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
-                           <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"' />
+                           <input type="submit" name="btnGetBack" value="Get Back"  />
                            </div>
                            </form>
                         <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>

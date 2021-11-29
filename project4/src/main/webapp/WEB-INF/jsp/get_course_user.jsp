@@ -37,9 +37,15 @@
   <p></p>
    <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
            <div class="form-group">
-                       <label>Sign up to course #</label>
-                       <input name="lblGet" type="text" placeholder="Enter the course number" <c:if test="${possible_courses.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
-                     <p></p>
+              <div class="form-group">
+                      <label>Course name:</label>
+                      <select name="Course_name">
+                      <c:forEach items="${requestScope.possible_courses}" var="course">
+                        <option value="${course.name}">${course.name}</option>
+                         </c:forEach>
+                      </select>
+                      </div>
+                   <p></p>
                    <input type="submit" name="btnGetCourse" value="Get course" <c:if test="${possible_courses.size() == 0}"><c:out value="disabled='disabled'"/></c:if> />
                    <input type="submit" name="btnGetBack" value="Get Back" />
                    </div>

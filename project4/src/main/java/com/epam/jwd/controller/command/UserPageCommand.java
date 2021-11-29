@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
@@ -10,23 +11,28 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.ReviewService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 public class UserPageCommand implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger(UserPageCommand.class);
 
     private static final Command INSTANCE = new UserPageCommand();
     private static final String GET_REVIEW_COMMAND = "/controller?command=SHOW_REVIEW_PAGE_COMMAND";
     private static final String GET_COURSE_COMMAND = "/controller?command=SHOW_POSSIBLE_PAGE_COMMAND";
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
+
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
+
     private static final String USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE = "userReview";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
+    private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
 
     public static Command getInstance() {
@@ -86,21 +92,25 @@ public class UserPageCommand implements Command {
         String btnGetCourse = requestContext.getParameterFromJSP("btnGetCourse");
         String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
 
+        List<CourseDto> courseList = new ArrayList<>();
+        try {
+            courseList = courseService.getAll();
+        }catch (ServiceException exception){
+            LOGGER.info(exception.getMessage());
+        }
+
         if (btnSeeResults != null){
             List<ReviewDto> reviewDtoList = getAllUserReview(userDto.getId(),userCourse);
             requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, reviewDtoList);
             return SEE_USER_RESULT_CONTEXT;
         }else if(btnGetCourse != null){
-            List<CourseDto> courseList = new ArrayList<>();
-            try {
-                courseList = courseService.getAll();
-            }catch (ServiceException exception){
-                //log
-            }
             List<CourseDto> possibleCourses = findUserPossibleToSignInCourses(courseList,userCourse);
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCourses);
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
+            List<CourseDto> finishedUserCourses = findAllFinishedUserCourses(userCourse);
+             userCourse.removeAll(finishedUserCourses);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourse);
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);
@@ -113,8 +123,8 @@ public class UserPageCommand implements Command {
             try{
                 ReviewDto reviewDto = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),user_id);
                 reviewDtoList.add(reviewDto);
-            }catch (NoSuchElementException exception){
-                //log
+            }catch (DAOException exception){
+                LOGGER.info(exception.getMessage());
             }
         }
         return reviewDtoList;
@@ -127,11 +137,30 @@ public class UserPageCommand implements Command {
 
         allCourses.removeAll(userCourses);
         if (allCourses.size() != 0){
-            result = allCourses.stream()
-                    .filter(courseDto -> courseDto.getEndCourse().after(dateForCheck))
-                    .collect(Collectors.toList());
+            for (CourseDto course:
+                 allCourses) {
+                if (course.getEndCourse().after(dateForCheck)){
+                    result.add(course);
+                }
+            }
         }
 
+        return result;
+    }
+
+    private List<CourseDto> findAllFinishedUserCourses(List<CourseDto> userCourses){
+        List<CourseDto> result = new ArrayList<>();
+        long millis=System.currentTimeMillis();
+        Date dateForCheck = new Date(millis);
+
+        if (userCourses.size() != 0){
+            for (CourseDto course:
+                    userCourses) {
+                if (course.getEndCourse().before(dateForCheck)){
+                    result.add(course);
+                }
+            }
+        }
         return result;
     }
 }

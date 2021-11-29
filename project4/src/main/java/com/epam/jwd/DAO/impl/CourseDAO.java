@@ -24,7 +24,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_FIND_ALL_COURSE = "SELECT * FROM course";
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT * FROM course WHERE course_id =  ?";
     private static final String SQL_FIND_COURSE_BY_NAME = "SELECT * FROM course WHERE name = ?;";
-    private static final String SQL_FIND_AVAILABLE_USER_COURSES = "SELECT * FROM user_has_course WHERE user_id =  ?";
+    private static final String SQL_FIND_AVAILABLE_USER_COURSES = "SELECT * FROM user_has_course WHERE user_id = ?";
     private static final String SQL_FIND_ALL_USERS_AT_COURSE = "SELECT * FROM user_has_course WHERE course_id =  ?";
     private static final String SQL_DELETE_COURSE_BY_ID = "DELETE FROM course WHERE course_id = ?";
     private static final String SQL_DELETE_USER_FROM_COURSE = "DELETE FROM user_has_course WHERE user_id = ? and course_id = ?";
