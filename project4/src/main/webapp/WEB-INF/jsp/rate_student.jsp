@@ -1,24 +1,44 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="Elective" var="Elective"/>
+<fmt:message bundle="${loc}" key="courseStudents" var="courseStudents"/>
+<fmt:message bundle="${loc}" key="noCourseStudent" var="noCourseStudent"/>
+<fmt:message bundle="${loc}" key="groupNumber" var="groupNumber"/>
+<fmt:message bundle="${loc}" key="firstName" var="firstName"/>
+<fmt:message bundle="${loc}" key="lastName" var="lastName"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
+<fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
+<fmt:message bundle="${loc}" key="GroupLabel" var="GroupLabel"/>
+<fmt:message bundle="${loc}" key="GradeLabel" var="GradeLabel"/>
+<fmt:message bundle="${loc}" key="ReviewLabel" var="ReviewLabel"/>
+<fmt:message bundle="${loc}" key="Grade" var="Grade"/>
+<fmt:message bundle="${loc}" key="Review" var="Review"/>
+<fmt:message bundle="${loc}" key="btnAddReview" var="btnAddReview"/>
+
+
 <html>
    <head>
-       <title>Elective</title>
-       <h2>Let`s finish this review:</h2>
+       <title>${Elective}</title>
         </head>
    <body>
-   <h2>This course students: </h2>
+   <h2>${courseStudents}</h2>
    <c:choose>
            <c:when test="${students_course.size() eq 0}">
-           <p>You have no students on this courses!</p>
+           <p>${noCourseStudent}</p>
                </c:when>
                <c:otherwise>
        <table border="1">
             <thead>
               <tr>
-                <th>Group number</th>
-                <th>First name</th>
-                <th>Last name</th>
+                <th>${groupNumber}</th>
+                <th>${firstName}</th>
+                <th>${lastName}</th>
                 </tr>
             </thead>
              <c:forEach items="${requestScope.students_course}" var="student">
@@ -36,39 +56,34 @@
          <p></p>
            <form action="/controller?command=RATE_STUDENT_COMMAND" method="post">
               <div class="form-group">
-                     <label>Student first name:</label>
+                     <label>${firstName}</label>
                      <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                    </div>
                    <p></p>
                        <div class="form-group">
-                     <label>Student last name:</label>
+                     <label>${lastName}</label>
                      <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                       </div>
                    <p></p>
                    <div class="form-group">
-                    <label>Student group:</label>
+                    <label>${groupNumber}</label>
                    <input name="lblGroup" type="text" placeholder="${GroupLabel}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]*$" />
                    </div>
                     <p></p>
                   <div class="form-group">
-                    <label>Student grade:</label>
+                    <label>${Grade}</label>
                      <input name="lblGrade" type="number" placeholder="${GradeLabel}" min="0" max="10"/>
                      </div>
                      <p></p>
                      <div class="form-group">
-                  <label>Student review:</label>
+                  <label>${Review}</label>
                      <input name="lblReview" type="text" placeholder="${ReviewLabel}" />
                      </div>
                  <p></p>
-                     <input type="submit" name="btnAddReview" value="Add review" <c:if test="${students_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>/>
-                     <input type="submit" name="btnGetBack" value="Get Back" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"' />
+            <button type="submit" name="btnAddReview"  <c:if test="${students_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>>${btnAddReview}</button>
+            <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
                      </form>
-                      <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-                      </body>
-                      <p></p>
-             <footer class="bg-light text-center text-lg-start">
-                 <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-                  © 2021 Copyright: Made by Sofia Tkachenia
-                </div>
-              </footer>
-         </html>
+                <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+                <%@ include file="footer/footer.jsp" %>
+            </body>
+        </html>
