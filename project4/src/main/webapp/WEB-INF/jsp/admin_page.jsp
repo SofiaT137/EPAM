@@ -24,16 +24,18 @@
       <body>
          <div class="tagStyle">
         <custom:hello userName="${hello}${current_user.first_name}" />
-        <div>
-        <div class="center">
-        <form action="/controller?command=ADMIN_PAGE_COMMAND" method="post">
+        </div>
+        <div class="wrapper">
+         <div class="center">
+         <form action="/controller?command=ADMIN_PAGE_COMMAND" method="post">
           <button type="submit" name="btnShowAllCourses">${showCourses}</button>
           <button type="submit" name="btnShowAllUsers">${showUsers}</button>
           <button type="submit" name="btnShowAllReviews">${showReviews}</button>
           <button type="submit" name="btnCreateNewTeacher">${createTeacher}</button>
           <button type="submit" name="btnCreateNewGroup">${createGroup}</button>
           <button type="submit" name="btnBlockUser">${blockUnblockUser}</button>
-        </form>
+         </form>
+         </div>
         </div>
         <div class="logout">
         <a href="/controller?command=LOG_OUT_COMMAND">

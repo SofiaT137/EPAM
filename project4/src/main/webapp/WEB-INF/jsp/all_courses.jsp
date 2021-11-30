@@ -19,8 +19,8 @@
          <body>
       <c:choose>
               <c:when test="${all_courses.size() eq 0}">
-              <p>${noCourses}</p>
-                  </c:when>
+                 <p>${noCourses}</p>
+              </c:when>
                   <c:otherwise>
           <table border="1" table style="width:250px" style="text-align:center">
                <thead>
