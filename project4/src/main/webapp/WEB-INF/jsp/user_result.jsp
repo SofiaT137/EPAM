@@ -1,23 +1,35 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="yourResults" var="yourResults"/>
+<fmt:message bundle="${loc}" key="youHaveNotAnyReviews" var="youHaveNotAnyReviews"/>
+<fmt:message bundle="${loc}" key="courseName" var="courseName"/>
+<fmt:message bundle="${loc}" key="Grade" var="Grade"/>
+<fmt:message bundle="${loc}" key="Review" var="Review"/>
+<fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+
 
 <html>
    <head>
-       <h2>Your results:</h2>
         </head>
        <body>
+        <h2>${yourResults}</h2>
        <c:choose>
            <c:when test="${user_review.size() eq 0}">
-           <p>You have not any reviews!</p>
+           <p>${youHaveNotAnyReviews}</p>
            </c:when>
         <c:otherwise>
    <table border="1">
        <c:forEach items="${requestScope.user_review}" var="review">
          <thead>
            <tr>
-             <th>Course name</th>
-             <th>Grade</th>
-             <th>Review</th>
+             <th>${courseName}</th>
+             <th>${Grade}</th>
+             <th>${Review}</th>
            </tr>
          </thead>
          <tbody>
@@ -33,15 +45,11 @@
           </c:choose>
    <p></p>
          <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
-                  <input type="submit" name="btnGetBack" value="Get Back" />
+                  <button type="submit" name="btnGetBack">${getBack}</button>
                 </form>
                 <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
           <p></p>
       <p></p>
-    <footer class="bg-light text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-         © 2021 Copyright: Made by Sofia Tkachenia
-       </div>
-     </footer>
-    </body>
-</html>
+            <%@ include file="footer/footer.jsp" %>
+        </body>
+    </html>
