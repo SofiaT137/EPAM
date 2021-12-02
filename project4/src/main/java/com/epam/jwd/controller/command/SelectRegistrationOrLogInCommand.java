@@ -189,7 +189,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 try{
                     user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
                 }catch (ServiceException exception){
-                    //log
+                    LOGGER.info(exception.getMessage());
                 }
                 requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
             }

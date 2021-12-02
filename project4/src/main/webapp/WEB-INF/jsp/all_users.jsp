@@ -9,7 +9,7 @@
 <fmt:message bundle="${loc}" key="noUsers" var="noUsers"/>
 <fmt:message bundle="${loc}" key="userId" var="userId"/>
 <fmt:message bundle="${loc}" key="accountId" var="accountId"/>
-<fmt:message bundle="${loc}" key="groupId" var="groupId"/>
+<fmt:message bundle="${loc}" key="groupName" var="groupName"/>
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
 <fmt:message bundle="${loc}" key="lastName" var="lastName"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
@@ -29,7 +29,7 @@
                 <tr>
                   <th>${userId}</th>
                   <th>${accountId}</th>
-                  <th>${groupId}</th>
+                  <th>${groupName}</th>
                   <th>${firstName}</th>
                   <th>${lastName}</th>
                  </tr>
@@ -39,7 +39,7 @@
              <tr>
           <td><c:out value="${user.id}" /></td>
           <td><c:out value="${user.account_id}" /></td>
-          <td><c:out value="${user.group_id}" /></td>
+          <td><c:out value="${user.group_name}" /></td>
           <td><c:out value="${user.first_name}" /></td>
           <td><c:out value="${user.last_name}" /></td>
            </tr>

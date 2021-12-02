@@ -79,6 +79,7 @@ public class CreateTeacherCommand implements Command {
             String login = requestContext.getParameterFromJSP("lblLogin");
             String password = requestContext.getParameterFromJSP("lblPassword");
 
+
             AccountDto accountDto = new AccountDto();
 
                 try {
@@ -111,7 +112,7 @@ public class CreateTeacherCommand implements Command {
 
                 UserDto userDto = new UserDto();
                 userDto.setAccount_id(accountDto.getId());
-                userDto.setGroup_id(group_id);
+                userDto.setGroup_name(TEACHER);
                 userDto.setFirst_name(lblFirstName);
                 userDto.setLast_name(lblLastName);
 

@@ -98,7 +98,7 @@ public class RegisterUserCommand implements Command {
 
                 UserDto userDto = new UserDto();
                 userDto.setAccount_id(registerAccount.getId());
-                userDto.setGroup_id(groupDto.getId());
+                userDto.setGroup_name(groupDto.getName());
                 userDto.setFirst_name(firstName);
                 userDto.setLast_name(lastName);
 

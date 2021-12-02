@@ -71,7 +71,7 @@ public class RateStudentCommand implements Command {
 
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String group_id = requestContext.getParameterFromJSP("lblGroup");
+        String group_name = requestContext.getParameterFromJSP("group_name");
         String grade = requestContext.getParameterFromJSP("lblGrade");
         String review = requestContext.getParameterFromJSP("lblReview");
 
@@ -85,7 +85,7 @@ public class RateStudentCommand implements Command {
                     .collect(Collectors.toList());
 
             UserDto currentStudent = getAllUserByFullName.stream()
-                    .filter((userDto1) -> userDto1.getGroup_id() == Integer.parseInt(group_id))
+                    .filter((userDto1) -> userDto1.getGroup_name().equals(group_name))
                     .findFirst()
                     .orElse(null);
 

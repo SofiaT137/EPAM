@@ -108,7 +108,7 @@ public class BlockUserCommand implements Command {
 
         UserDto current_user = userDto.get(0);
 
-         if (current_user.getGroup_id() != groupDto.getId()){
+         if (!(current_user.getGroup_name().equals(groupName))){
              LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
              requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_THIS_USER_IN_GROUP);
              return ERROR_PAGE_CONTEXT;

@@ -6,9 +6,11 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
+import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.GroupService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +38,7 @@ public class TeacherSelectCourseCommand implements Command {
 
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
-
+    private final Service<GroupDto, Integer> groupService = new GroupService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
 
 
@@ -103,13 +105,15 @@ public class TeacherSelectCourseCommand implements Command {
                 List<UserDto> list1 = findAllStudentWithReview(usersOfSelectedCourse,selectedCourse);
                 usersOfSelectedCourse.removeAll(list1);
                 requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,usersOfSelectedCourse);
-
             }
             else{
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
                 return ERROR_PAGE_CONTEXT;
             }
+
+
+
             return RATE_STUDENT_CONTEXT;
         }else if(btnGetBack !=null){
             return TEACHER_RESULT_CONTEXT;

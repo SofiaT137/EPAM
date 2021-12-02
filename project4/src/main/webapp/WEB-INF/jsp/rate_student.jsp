@@ -14,7 +14,7 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 <fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
 <fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
-<fmt:message bundle="${loc}" key="GroupLabel" var="GroupLabel"/>
+<fmt:message bundle="${loc}" key="Group" var="Group"/>
 <fmt:message bundle="${loc}" key="GradeLabel" var="GradeLabel"/>
 <fmt:message bundle="${loc}" key="ReviewLabel" var="ReviewLabel"/>
 <fmt:message bundle="${loc}" key="Grade" var="Grade"/>
@@ -44,7 +44,7 @@
              <c:forEach items="${requestScope.students_course}" var="student">
             <tbody>
               <tr>
-                  <td><c:out value="${student.group_id}" /></td>
+                  <td><c:out value="${student.group_name}" /></td>
                   <td><c:out value="${student.first_name}" /></td>
                    <td><c:out value="${student.last_name}" /></td>
                 </tr>
@@ -65,10 +65,14 @@
                      <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
                       </div>
                    <p></p>
-                   <div class="form-group">
-                    <label>${groupNumber}</label>
-                   <input name="lblGroup" type="text" placeholder="${GroupLabel}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]*$" />
-                   </div>
+                    <div class="form-group">
+                        <label>${Group}</label>
+                        <select name="group_name">
+                        <c:forEach items="${requestScope.all_groups}" var="group">
+                        <option value="${group.name}">${group.name}</option>
+                        </c:forEach>
+                        </select>
+                    </div>
                     <p></p>
                   <div class="form-group">
                     <label>${Grade}</label>
