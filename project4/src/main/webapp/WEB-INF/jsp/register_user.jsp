@@ -1,35 +1,49 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<fmt:setLocale value="${sessionScope.language}"/>
+<fmt:setBundle basename="locale" var="loc"/>
+
+<fmt:message bundle="${loc}" key="elective" var="elective"/>
+<fmt:message bundle="${loc}" key="letsFinishRegistration" var="letsFinishRegistration"/>
+<fmt:message bundle="${loc}" key="firstName" var="firstName"/>
+<fmt:message bundle="${loc}" key="lastName" var="lastName"/>
+<fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
+<fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
+<fmt:message bundle="${loc}" key="Group" var="Group"/>
+<fmt:message bundle="${loc}" key="btnRegister" var="btnRegister"/>
 <html>
    <head>
-          <title>Elective</title>
-       <h2>Let`s finish registration:</h2>
+          <title>${elective}</title>
         </head>
     <body>
+            <h2>${letsFinishRegistration}</h2>
         <form action="/controller?command=REGISTER_USER_COMMAND" method="post">
      <div class="form-group">
-            <label>First Name</label>
+            <label>${firstName}</label>
             <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required pattern= "^[a-zA-Z '.-]{2,20}*$"/>
           </div>
           <p></p>
               <div class="form-group">
-            <label>Last Name</label>
+            <label>${lastName}</label>
             <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required pattern= "^[a-zA-Z '.-]{2,20}*$" />
              </div>
           <p></p>
-           <label>Group</label>
-          <input name="lblGroup" type="text" placeholder="${GroupLabel}" required pattern="^[0-9]{2,7}*$" />
-          </div>
-        <p></p>
-            <input type="submit" name="btnRegister" value="Register"/>
+         <div class="form-group">
+            <label>${Group}</label>
+            <select name="group_name">
+            <c:forEach items="${requestScope.all_groups}" var="group">
+              <option value="${group.name}">${group.name}</option>
+               </c:forEach>
+            </select>
+         </div>
+         <p></p>
+            <button type="submit" name="btnRegister">${btnRegister}</button>
             </form>
             <p></p>
             <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-             </body>
-    <footer class="bg-light text-center text-lg-start">
-        <div class="text-center p-3" style="background-color: rgba(88, 69, 16, 0.2);">
-         © 2021 Copyright: Made by Sofia Tkachenia
-       </div>
-     </footer>
-</html>
+                </body>
+            <%@ include file="footer/footer.jsp" %>
+        </body>
+    </html>

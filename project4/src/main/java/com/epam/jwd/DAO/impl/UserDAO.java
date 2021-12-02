@@ -3,9 +3,10 @@ package com.epam.jwd.DAO.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
-import com.epam.jwd.DAO.model.group.Group;
-import com.epam.jwd.DAO.model.user.Account;
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,14 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
     private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? and last_name = ?";
     private static final String SQL_FIND_USER_BY_ACCOUNT_ID = "SELECT * FROM user WHERE account_id = ?";
+
+    private static final String ERROR_CANNOT_SAVE_USER = "I cannot create this user!";
+    private static final String ERROR_CANNOT_UPDATE_USER = "I cannot update this user!";
+    private static final String ERROR_CANNOT_FIND_ANY_USER = "I cannot find any user!";
+    private static final String ERROR_CANNOT_FIND_THIS_USER = "I cannot find this user!";
+
+
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -44,9 +53,9 @@ public class UserDAO implements DAO<User,Integer> {
                 resultSet.close();
                 return user_id;
             } catch (SQLException | InterruptedException exception) {
-                //TODO log and throw exception;
-                return null;
+                LOGGER.error(exception.getMessage());
             }
+            throw new DAOException(ERROR_CANNOT_SAVE_USER);
         }
 
     @Override
@@ -62,7 +71,7 @@ public class UserDAO implements DAO<User,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_UPDATE_USER);
             return false;
         }
     }
@@ -74,7 +83,7 @@ public class UserDAO implements DAO<User,Integer> {
 
     @Override
     public List<User> findAll() {
-        List<User> users = new ArrayList<>();
+        List<User> users;
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -83,8 +92,8 @@ public class UserDAO implements DAO<User,Integer> {
             resultSet.close();
             return users;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_USER);
         }
     }
 
@@ -99,8 +108,8 @@ public class UserDAO implements DAO<User,Integer> {
                 preparedStatement.close();
                 resultSet.close();
             } catch (SQLException | InterruptedException exception) {
-                //TODO log and throw exception;
-                return null;
+                LOGGER.error(exception.getMessage());
+                throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
             }
             return user;
         }
@@ -116,8 +125,8 @@ public class UserDAO implements DAO<User,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
         }
         return userList;
     }
@@ -132,8 +141,8 @@ public class UserDAO implements DAO<User,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
         }
         return user;
     }
@@ -150,8 +159,8 @@ public class UserDAO implements DAO<User,Integer> {
                 user.setLast_name(resultSet.getString("last_name"));
                 userList.add(user);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
         }
         return userList;
     }

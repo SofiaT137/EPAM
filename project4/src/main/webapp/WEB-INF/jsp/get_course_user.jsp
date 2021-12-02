@@ -52,7 +52,6 @@
   <p></p>
    <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
            <div class="form-group">
-              <div class="form-group">
                       <label>${courseName}</label>
                       <select name="Course_name">
                       <c:forEach items="${requestScope.possible_courses}" var="course">

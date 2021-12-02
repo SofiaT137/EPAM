@@ -12,6 +12,7 @@ public class ShowRatePageCommand implements Command {
     private static final Command INSTANCE = new ShowRatePageCommand();
 
     private static final String RATE_STUDENT_JSP = "/WEB-INF/jsp/rate_student.jsp";
+
     private static final String COURSE_STUDENT_JSP_COLLECTION_ATTRIBUTE = "students_course";
 
     private static final ResponseContext RATE_STUDENT_PAGE_CONTEXT = new ResponseContext() {

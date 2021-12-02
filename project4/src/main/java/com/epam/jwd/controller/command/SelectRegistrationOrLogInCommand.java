@@ -6,19 +6,24 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
+import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.GroupService;
 import com.epam.jwd.service.impl.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class SelectRegistrationOrLogInCommand implements Command {
+
+    private static final Logger LOGGER = LogManager.getLogger(SelectRegistrationOrLogInCommand.class);
 
     private static final Command INSTANCE = new SelectRegistrationOrLogInCommand();
 
@@ -31,15 +36,18 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE = "registerAccount";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
+    private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "allGroups";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
 
     private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
     private static final String LOGIN_OR_PASSWORD_MISTAKE = "You made a mistake in your login or password. Try again!";
     private static final String ACCESS_DENIED ="Access denied. Please,contact administrator!";
+    private static final String ACCOUNT_IS_ORIGINAL = "This account name is original :) !";
 
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<GroupDto, Integer> groupService = new GroupService();
 
     private static final String CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE = "language";
 
@@ -124,6 +132,13 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
+        List<GroupDto> listOfGroups = groupService.getAll();
+        GroupDto adminGroup = ((GroupService)groupService).filterGroup("Admin");
+        GroupDto teacherGroup = ((GroupService)groupService).filterGroup("Teacher");
+        listOfGroups.remove(adminGroup);
+        listOfGroups.remove(teacherGroup);
+        requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,listOfGroups);
+
         String language = (String) requestContext.getAttributeFromSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE);
         if (language == null){
             requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
@@ -134,12 +149,11 @@ public class SelectRegistrationOrLogInCommand implements Command {
         if (btnRegister != null) {
             try{
                 ((AccountService) service).getAccount(login);
-                //log account is not original
+                LOGGER.error(EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,"( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 return ERROR_PAGE_CONTEXT;
-
             }catch (DAOException exception) {
-                //log Account is original
+                LOGGER.error(ACCOUNT_IS_ORIGINAL);
             }
 
            AccountDto accountDto = new AccountDto();
@@ -158,11 +172,12 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 accountDto = ((AccountService) service).filterAccount(login,password);
                 requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             }catch (Exception exception){
+                LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,LOGIN_OR_PASSWORD_MISTAKE);
                 return ERROR_PAGE_CONTEXT;
             }
-
             if (accountDto.getIsActive() == 0){
+                LOGGER.error(ACCESS_DENIED);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,ACCESS_DENIED);
                 return ERROR_PAGE_CONTEXT;
             }
