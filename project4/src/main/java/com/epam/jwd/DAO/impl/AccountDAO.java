@@ -5,7 +5,8 @@ import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
 import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.user.Account;
-import com.epam.jwd.DAO.model.user.Role;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,6 +18,10 @@ import java.util.List;
 
 public class AccountDAO implements DAO<Account, Integer>  {
 
+    private static final Logger LOGGER = LogManager.getLogger(AccountDAO.class);
+
+    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password, is_active) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT * FROM account WHERE account_id =  ?";
@@ -25,8 +30,14 @@ public class AccountDAO implements DAO<Account, Integer>  {
     private static final String SQL_DELETE_ACCOUNT_BY_ID = "DELETE FROM account WHERE account_id = ?";
     private static final String SQL_UPDATE_ACCOUNT_BY_ID = "UPDATE account SET role_id = ?, login = ?, password = ?, is_active = ? WHERE account_id = ?";
 
-
-    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+    private static final String ERROR_CANNOT_SAVE_ACCOUNT = "I cannot create this account!";
+    private static final String ERROR_CANNOT_UPDATE_ACCOUNT= "I cannot update this account!";
+    private static final String ERROR_CANNOT_DELETE_ACCOUNT = "I cannot delete this account!";
+    private static final String ERROR_CANNOT_FIND_ANY_ACCOUNT = "I cannot find any account!";
+    private static final String ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN = "I cannot find this account by it's login";
+    private static final String ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN_AND_PASSWORD = "I cannot find this account by it's login and password!";
+    private static final String ERROR_NOT_UNIQUE_ACCOUNT = "This account is not unique!";
+    private static final String ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST = "Something wrong with sql request. Check the data!";
 
     private final RoleDAO roleDAO = new RoleDAO();
 
@@ -49,9 +60,9 @@ public class AccountDAO implements DAO<Account, Integer>  {
             resultSet.close();
             return account_id;
         } catch (SQLException | InterruptedException exception) {
-            //log and Rethrow exception
-            return -1;
+            LOGGER.error(exception.getMessage());
         }
+        throw new DAOException(ERROR_CANNOT_SAVE_ACCOUNT);
     }
 
     @Override
@@ -67,7 +78,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_UPDATE_ACCOUNT);
             return false;
         }
     }
@@ -81,7 +92,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_DELETE_ACCOUNT);
             return false;
         }
     }
@@ -97,8 +108,8 @@ public class AccountDAO implements DAO<Account, Integer>  {
             resultSet.close();
             return accounts;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_ACCOUNT);
         }
     }
 
@@ -113,8 +124,8 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_ACCOUNT);
         }
         return account;
     }
@@ -130,12 +141,12 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN_AND_PASSWORD);
         }
         if (accountList.size() != 1){
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_NOT_UNIQUE_ACCOUNT);
+            throw new DAOException(ERROR_NOT_UNIQUE_ACCOUNT);
         }
         return accountList.get(0);
     }
@@ -152,8 +163,9 @@ public class AccountDAO implements DAO<Account, Integer>  {
                 account.setIsActive(resultSet.getInt("is_active"));
                 accountList.add(account);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
         }
         return accountList;
     }
@@ -166,13 +178,13 @@ public class AccountDAO implements DAO<Account, Integer>  {
             ResultSet resultSet = preparedStatement.executeQuery();
             accountList = returnAccountList(resultSet);
             if (accountList.size() == 0){
-                throw new DAOException("I cannot find this account by it's login");
+                throw new DAOException(ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN);
             }
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN);
         }
         return accountList.get(0);
     }

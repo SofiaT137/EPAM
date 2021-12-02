@@ -5,6 +5,8 @@ import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
 import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.review.Review;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.sql.Connection;
@@ -17,6 +19,8 @@ import java.util.List;
 
 public class ReviewDAO implements DAO<Review, Integer> {
 
+    private static final Logger LOGGER = LogManager.getLogger(ReviewDAO.class);
+
     private static final String SQL_SAVE_REVIEW = "INSERT INTO review (user_id, course_id, grade, review) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE review SET user_id = ?, course_id = ?, grade = ? review = ? WHERE review_id = ?";
     private static final String SQL_DELETE_REVIEW_BY_ID = "DELETE FROM review WHERE id = ?";
@@ -27,6 +31,16 @@ public class ReviewDAO implements DAO<Review, Integer> {
     private static final String SQL_FIND_REVIEW_BY_COURSE_ID = "SELECT * FROM review WHERE course_id = ? ;";
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+
+    private static final String ERROR_CANNOT_SAVE_REVIEW = "I cannot create this review!";
+    private static final String ERROR_CANNOT_UPDATE_REVIEW = "I cannot update this review!";
+    private static final String ERROR_CANNOT_DELETE_REVIEW = "I cannot delete this review!";
+    private static final String ERROR_CANNOT_FIND_ANY_REVIEW = "I cannot find any review!";
+    private static final String ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID = "I cannot find any review by user id!";
+    private static final String ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST = "Something wrong with sql request. Check the data!";
+    private static final String ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID = "I can't found this course for this person";
+    private static final String ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID = "I can't found any review by it's course id";
+
 
     @Override
     public Integer save(Review review) {
@@ -45,8 +59,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
             resultSet.close();
             return review_id;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_SAVE_REVIEW);
+            throw new DAOException(ERROR_CANNOT_SAVE_REVIEW);
         }
     }
 
@@ -63,7 +77,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_UPDATE_REVIEW);
             return false;
         }
     }
@@ -77,14 +91,14 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_DELETE_REVIEW);
             return false;
         }
     }
 
     @Override
     public List<Review> findAll() {
-        List<Review> reviews = new ArrayList<>();
+        List<Review> reviews;
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_REVIEW);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -93,8 +107,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
             resultSet.close();
             return reviews;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW);
         }
     }
 
@@ -109,8 +123,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW);
         }
         return review;
     }
@@ -126,8 +140,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID);
+            throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID);
         }
         return reviewList;
     }
@@ -144,8 +158,9 @@ public class ReviewDAO implements DAO<Review, Integer> {
                 review.setReview(resultSet.getString("review"));
                 reviewList.add(review);
             }
-        } catch (SQLException e) {
-//            e.printStackTrace();
+        } catch (SQLException exception) {
+            LOGGER.error(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
+            throw new DAOException(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
         }
         return reviewList;
     }
@@ -163,10 +178,10 @@ public class ReviewDAO implements DAO<Review, Integer> {
             }
             preparedStatement.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
+            throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
         }
-        throw new DAOException("I can't found this course for this person");
+        throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
     }
 
     public List<Review> findReviewByCourseId(int course_id){
@@ -177,15 +192,13 @@ public class ReviewDAO implements DAO<Review, Integer> {
             ResultSet resultSet = preparedStatement.executeQuery();
             list = returnReviewList(resultSet);
             if (list.size() == 0){
-                throw new DAOException("I can't found any review for this course");
+                throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
             }
             preparedStatement.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
+            throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
         }
-        throw new DAOException("I can't found this course by it's id");
+        return list;
     }
-
-
 }

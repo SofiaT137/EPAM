@@ -18,6 +18,8 @@ import java.util.List;
 
 public class UserDAO implements DAO<User,Integer> {
 
+    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
+
     private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, university_group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
@@ -30,8 +32,6 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String ERROR_CANNOT_FIND_ANY_USER = "I cannot find any user!";
     private static final String ERROR_CANNOT_FIND_THIS_USER = "I cannot find this user!";
 
-
-    private static final Logger LOGGER = LogManager.getLogger(UserDAO.class);
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
