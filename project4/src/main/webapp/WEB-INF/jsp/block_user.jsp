@@ -20,10 +20,15 @@
 
 <html>
    <head>
-       <h2>${blockUser}</h2>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+            <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+            <%@include file="/WEB-INF/css/tables.css"%>
+          </style>
         </head>
          <body>
-           <h2>${allBlockedUser}</h2>
+          <h2>${blockUser}</h2>
+           <h4>${allBlockedUser}</h4>
     <c:choose>
               <c:when test="${blocked_users.size() eq 0}">
               <p>${noBlockedUsers}</p>

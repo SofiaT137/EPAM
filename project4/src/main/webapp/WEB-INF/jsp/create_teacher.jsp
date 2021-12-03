@@ -22,16 +22,21 @@
 
 <html>
    <head>
-       <h2>${createTeacher}</h2>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+            <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+            <%@include file="/WEB-INF/css/tables.css"%>
+          </style>
         </head>
          <body>
-           <h2>${allTeachers}</h2>
+         <h2>${createTeacher}</h2>
+           <h4>${allTeachers}</h4>
     <c:choose>
               <c:when test="${all_teachers.size() eq 0}">
               <p>${noTeachers}</p>
                   </c:when>
                   <c:otherwise>
-          <table border="1" table style="width:250px" style="text-align:center">
+          <table border="1" table style="width:33%" style="text-align:center">
                <thead>
                  <tr>
                    <th>${userId}</th>

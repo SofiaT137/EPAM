@@ -8,9 +8,8 @@ body {
       border: 3px solid #73AD21;
       padding: 10px;
       display: inline-block;
-        vertical-align: middle;
-  text-align: center;
-
+      vertical-align: middle;
+      text-align: center;
 }
 
 .tagStyle{

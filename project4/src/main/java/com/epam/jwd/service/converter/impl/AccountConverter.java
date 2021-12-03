@@ -5,7 +5,11 @@ import com.epam.jwd.DAO.model.user.Role;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 
+/**
+ * Class for convert of account
+ */
 public class AccountConverter implements Converter<Account, AccountDto,Integer> {
+
 
     @Override
     public Account convert(AccountDto accountDto) {
