@@ -3,8 +3,11 @@ package com.epam.jwd.DAO.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
+import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.DAO.model.course.Course;
 import com.epam.jwd.DAO.model.user.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.sql.Connection;
@@ -17,6 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDAO implements DAO<Course,Integer> {
+
+    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+
+    private static final Logger LOGGER = LogManager.getLogger(CourseDAO.class);
 
     private static final String SQL_SAVE_COURSE = "INSERT INTO course (name, start_date, end_date) VALUES (?, ?, ?)";
     private static final String SQL_ADD_USER_INTO_COURSE = "INSERT INTO user_has_course (user_id, course_id) VALUES (?, ?)";
@@ -31,15 +38,26 @@ public class CourseDAO implements DAO<Course,Integer> {
     private static final String SQL_DELETE_COURSE_FROM_USER_HAS_COURSE = "DELETE FROM user_has_course WHERE course_id = ?";
 
 
-    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+    private static final String ERROR_CANNOT_SAVE_COURSE = "I cannot create this course!";
+    private static final String ERROR_CANNOT_UPDATE_COURSE= "I cannot update this course!";
+    private static final String ERROR_CANNOT_DELETE_COURSE = "I cannot delete this course!";
+    private static final String ERROR_CANNOT_FIND_ANY_COURSE = "I cannot find any course!";
+    private static final String ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME = "I cannot find any course by it's name!";
+    private static final String ERROR_CANNOT_ADD_USER_INTO_COURSE = "I cannot add this user into course!";
+    private static final String ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES= "I cannot find any available courses for this person!";
+    private static final String ERROR_CANNOT_FIND_PEOPLE_INTO_COURSE = "I cannot find any person on this course";
+    private static final String ERROR_CANNOT_DELETE_THIS_PERSON_FROM_COURSE = "I cannot delete this person from course";
+    private static final String ERROR_CANNOT_DELETE_FORM_USER_HAS_COURSE_WHERE_COURSE_ID = "I cannot delete from user_has_course all fields where course_id";
+    private static final String ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST = "Something wrong with sql request. Check the data!";
+
 
     @Override
     public Integer save(Course course) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1,course.getName());
-            preparedStatement.setDate(2, (Date) course.getStartCourse());
-            preparedStatement.setDate(3,(Date) course.getEndCourse());
+            preparedStatement.setDate(2, course.getStartCourse());
+            preparedStatement.setDate(3,course.getEndCourse());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
@@ -49,9 +67,9 @@ public class CourseDAO implements DAO<Course,Integer> {
             resultSet.close();
             return course_id;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return -1;
+            LOGGER.error(exception.getMessage());
         }
+        throw new DAOException(ERROR_CANNOT_SAVE_COURSE);
     }
 
     public Boolean addUserIntoCourse(String course_name, String first_name,String last_name){
@@ -66,7 +84,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_ADD_USER_INTO_COURSE);
             return false;
         }
     }
@@ -85,8 +103,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.info(ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES);
         }
         return courses;
     }
@@ -106,8 +123,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
-            return null;
+            LOGGER.info(ERROR_CANNOT_FIND_PEOPLE_INTO_COURSE);
         }
         return users;
     }
@@ -124,7 +140,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_DELETE_THIS_PERSON_FROM_COURSE);
             return false;
         }
     }
@@ -137,7 +153,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_DELETE_FORM_USER_HAS_COURSE_WHERE_COURSE_ID);
             return false;
         }
     }
@@ -155,7 +171,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_UPDATE_COURSE);
             return false;
         }
     }
@@ -168,7 +184,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             return result;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_DELETE_COURSE);
             return false;
         }
     }
@@ -184,7 +200,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             resultSet.close();
             return courses;
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
             return null;
         }
     }
@@ -200,7 +216,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
             return null;
         }
         return course;
@@ -216,7 +232,7 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.close();
             resultSet.close();
         } catch (SQLException | InterruptedException exception) {
-            //TODO log and throw exception;
+            LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME);
             return null;
         }
         return courseList;
@@ -233,8 +249,8 @@ public class CourseDAO implements DAO<Course,Integer> {
                 course.setEndCourse(resultSet.getDate("end_date"));
                 courseList.add(course);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            LOGGER.error(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
         }
         return courseList;
     }
