@@ -33,3 +33,19 @@ button:hover {
 form {
   text-align: center;
  }
+
+ .logout{
+     padding: 20px;
+     position:relative;
+  }
+  .imageicon {
+      font-size: 50px;
+      }
+
+
+  .glyphicon {
+ position:absolute;width:80px;
+ right:0;
+ top: 85%;
+      font-size: 50px;
+  }

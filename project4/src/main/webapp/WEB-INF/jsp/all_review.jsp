@@ -16,15 +16,19 @@
 
 <html>
    <head>
-       <h2>${allTheUniversityReviews}</h2>
-        </head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+         <%@include file="/WEB-INF/css/tables.css"%>
+       </style>
+         </head>
          <body>
+         <h2>${allTheUniversityReviews}</h2>
       <c:choose>
               <c:when test="${all_reviews.size() eq 0}">
               <p>${noReviews}</p>
                   </c:when>
                   <c:otherwise>
-          <table border="1" table style="width:250px" style="text-align:center">
+          <table border="1" table style="width:33%" style="text-align:center">
                <thead>
                 <tr>
                   <th>${reviewId}</th>

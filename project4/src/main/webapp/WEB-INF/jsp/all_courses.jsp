@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style>
          <%@include file="/WEB-INF/css/tables.css"%>
-       </style>
+         </style>
          </head>
          <body>
          <h2>${allTheUniversityCourses}</h2>
@@ -26,7 +26,7 @@
                  <p>${noCourses}</p>
               </c:when>
                   <c:otherwise>
-          <table>
+          <table border="1" table style="width:33%" style="text-align:center">
                <thead>
                 <tr>
                   <th>${courseName}</th>

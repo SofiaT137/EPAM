@@ -19,17 +19,22 @@
 
 
 <html>
-   <head>
-     </head>
+    <head>
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+         <style>
+             <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+             <%@include file="/WEB-INF/css/tables.css"%>
+           </style>
+         </head>
     <body>
      <custom:hello userName="${hello}${current_user.first_name} ${current_user.last_name}"/>
-    <h2>${youAreMentor}</h2>
+    <h3>${youAreMentor}</h3>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
         <p>${youAreNotMentor}</p>
             </c:when>
             <c:otherwise>
-           <table border="1">
+           <table border="1" table style="width:33%" style="text-align:center">
             <thead>
               <tr>
                 <th>${courseName}</th>
@@ -56,8 +61,12 @@
                   <button type="submit" name="btnUpdateCourse">${btnUpdateCourse}</button>
                   <button type="submit" name="btnDeleteCourse">${btnDeleteCourse}</button>
                   </form>
-                  <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-                <p></p>
+                  <div class="logout">
+                   <a href="/controller?command=LOG_OUT_COMMAND">
+                     <span class="glyphicon glyphicon-log-out" ></span>
+                   </a>
+                   </div>
+                   <p></p>
             <%@ include file="footer/footer.jsp" %>
         </body>
     </html>

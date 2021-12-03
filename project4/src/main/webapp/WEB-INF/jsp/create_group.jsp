@@ -16,16 +16,21 @@
 
 <html>
    <head>
-       <h2>${createGroup}</h2>
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <style>
+            <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+            <%@include file="/WEB-INF/css/tables.css"%>
+          </style>
         </head>
          <body>
-           <h2>${allGroups}</h2>
+         <h2>${createGroup}</h2>
+           <h4>${allGroups}</h4>
     <c:choose>
               <c:when test="${university_groups.size() eq 0}">
               <p>${noGroups}</p>
                   </c:when>
                   <c:otherwise>
-          <table border="1">
+          <table border="1" table style="width:33%" style="text-align:center">
                <thead>
                  <tr>
                    <th>${groupId}</th>
@@ -53,7 +58,12 @@
             <button type="submit" name="btnAddGroup">${btnAddGroup}</button>
             <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
              </form>
-             <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+           <div class="logout">
+           <a href="/controller?command=LOG_OUT_COMMAND">
+             <span class="glyphicon glyphicon-log-out" ></span>
+           </a>
+           </div>
+           <p></p>
                 <%@ include file="footer/footer.jsp" %>
             </body>
         </html>

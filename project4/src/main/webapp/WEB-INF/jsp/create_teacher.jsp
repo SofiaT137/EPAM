@@ -81,7 +81,12 @@
              <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>
              <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
              </form>
-              <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+             <div class="logout">
+             <a href="/controller?command=LOG_OUT_COMMAND">
+               <span class="glyphicon glyphicon-log-out" ></span>
+             </a>
+             </div>
+             <p></p>
             <%@ include file="footer/footer.jsp" %>
         </body>
     </html>
