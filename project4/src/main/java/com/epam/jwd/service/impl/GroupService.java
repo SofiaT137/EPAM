@@ -10,12 +10,16 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.GroupValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GroupService implements Service<GroupDto,Integer> {
+
+    private static final Logger LOGGER = LogManager.getLogger(GroupService.class);
 
     private final DAO<Group,Integer> groupDAO = new GroupDAO();
     private final Validator<GroupDto> groupValidator = new GroupValidator();
@@ -48,10 +52,12 @@ public class GroupService implements Service<GroupDto,Integer> {
     @Override
     public GroupDto getById(Integer id) throws ServiceException {
         if (id == null) {
+            LOGGER.error(ID_IS_NULL_EXCEPTION);
             throw new ServiceException(ID_IS_NULL_EXCEPTION);
         }
         Group group =  groupDAO.findById(id);
         if (group == null){
+            LOGGER.error(GROUP_NOT_FOUND_EXCEPTION);
             throw new ServiceException(GROUP_NOT_FOUND_EXCEPTION);
         }
         return groupConverter.convert(group);
@@ -62,6 +68,7 @@ public class GroupService implements Service<GroupDto,Integer> {
         List<Group> groupGetAll = groupDAO.findAll();
         List<GroupDto> groupDtoList = new ArrayList<>();
         if (groupGetAll.isEmpty()){
+            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
             throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
         }
         groupGetAll.forEach(group -> groupDtoList.add(groupConverter.convert(group)));

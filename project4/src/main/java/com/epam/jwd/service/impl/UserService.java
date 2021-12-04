@@ -8,18 +8,20 @@ import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
-import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.UserValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class UserService implements Service<UserDto,Integer> {
+
+    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
     private final DAO<Course,Integer> courseDAO = new CourseDAO();
     private final DAO<User,Integer> userDAO = new UserDAO();
@@ -55,10 +57,12 @@ public class UserService implements Service<UserDto,Integer> {
     @Override
     public UserDto getById(Integer id) throws ServiceException {
         if (id == null) {
+            LOGGER.error(ID_IS_NULL_EXCEPTION);
            throw new ServiceException(ID_IS_NULL_EXCEPTION);
        }
        User user = userDAO.findById(id);
        if (user == null){
+           LOGGER.error(USER_NOT_FOUND_EXCEPTION);
            throw new ServiceException(USER_NOT_FOUND_EXCEPTION);
        }
        return userConverter.convert(user);
@@ -70,6 +74,7 @@ public class UserService implements Service<UserDto,Integer> {
         List<User> daoGetAll = userDAO.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
+            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
             throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
         }
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
@@ -80,6 +85,7 @@ public class UserService implements Service<UserDto,Integer> {
         List<User> daoGetAll = ((UserDAO)userDAO).filterUser(first_name,last_name);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
+            LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
             throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
         }
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));

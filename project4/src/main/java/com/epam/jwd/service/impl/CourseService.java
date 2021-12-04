@@ -13,12 +13,16 @@ import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.CourseValidator;
 import com.epam.jwd.service.validator.impl.UserValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CourseService implements Service<CourseDto,Integer> {
+
+    private static final Logger LOGGER = LogManager.getLogger(CourseService.class);
 
     private final DAO<Course,Integer> courseDAO = new CourseDAO();
     private final Validator<CourseDto> courseValidator = new CourseValidator();
@@ -44,6 +48,7 @@ public class CourseService implements Service<CourseDto,Integer> {
         List<Course> courseList = ((CourseDAO) courseDAO).getUserAvailableCourses(first_name,last_name);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (courseList.isEmpty()){
+            LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
             throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
         }
         courseList.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
@@ -77,10 +82,12 @@ public class CourseService implements Service<CourseDto,Integer> {
     @Override
     public CourseDto getById(Integer id) throws ServiceException {
         if (id == null) {
+            LOGGER.error(ID_IS_NULL_EXCEPTION);
             throw new ServiceException(ID_IS_NULL_EXCEPTION);
         }
         Course course = courseDAO.findById(id);
         if (course == null){
+            LOGGER.error(COURSE_NOT_FOUND_EXCEPTION);
             throw new ServiceException(COURSE_NOT_FOUND_EXCEPTION);
         }
         return courseConverter.convert(course);
@@ -91,6 +98,7 @@ public class CourseService implements Service<CourseDto,Integer> {
         List<Course> daoGetAll = courseDAO.findAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
+            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
             throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
         }
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
@@ -102,6 +110,7 @@ public class CourseService implements Service<CourseDto,Integer> {
         List<Course> daoGetAll = ((CourseDAO)courseDAO).filterCourse(course_name);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
+            LOGGER.error(CANNOT_FIND_COURSE_EXCEPTION);
             throw new ServiceException(CANNOT_FIND_COURSE_EXCEPTION);
         }
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));

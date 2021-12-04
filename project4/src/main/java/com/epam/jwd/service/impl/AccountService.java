@@ -10,11 +10,15 @@ import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.AccountValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AccountService implements Service<AccountDto,Integer> {
+
+    private static final Logger LOGGER = LogManager.getLogger(AccountService.class);
 
     private final DAO<Account,Integer> accountDAO = new AccountDAO();
     private final Validator<AccountDto> accountValidator = new AccountValidator();
@@ -23,7 +27,7 @@ public class AccountService implements Service<AccountDto,Integer> {
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
     private static final String ACCOUNT_NOT_FOUND_EXCEPTION = "This account is not found!";
     private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any account.";
-    private static final String CANNOT_FIND_ACCOUNT_EXCEPTION = "I can't find this account by its name";
+
 
     @Override
     public AccountDto create(AccountDto value) throws ServiceException {
@@ -48,10 +52,12 @@ public class AccountService implements Service<AccountDto,Integer> {
     @Override
     public AccountDto getById(Integer id) throws ServiceException {
         if (id == null) {
+            LOGGER.error(ID_IS_NULL_EXCEPTION);
             throw new ServiceException(ID_IS_NULL_EXCEPTION);
         }
         Account account =  accountDAO.findById(id);
         if (account == null){
+            LOGGER.error(ACCOUNT_NOT_FOUND_EXCEPTION);
             throw new ServiceException(ACCOUNT_NOT_FOUND_EXCEPTION);
         }
         return accountConverter.convert(account);
@@ -62,6 +68,7 @@ public class AccountService implements Service<AccountDto,Integer> {
         List<Account> daoGetAll = accountDAO.findAll();
         List<AccountDto> accountDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
+            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
             throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
         }
         daoGetAll.forEach(account -> accountDtoList.add(accountConverter.convert(account)));
