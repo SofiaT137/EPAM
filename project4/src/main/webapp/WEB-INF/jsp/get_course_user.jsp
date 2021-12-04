@@ -28,11 +28,13 @@
    <h2>${courseRegistrationPage}</h2>
     <c:choose>
               <c:when test="${possible_courses.size() eq 0}">
+              <div class="exception">
               <p>${noAnyPossibleToRegistrationCourses}</p>
+              <div>
               </c:when>
            <c:otherwise>
    <h3>${possibleToRegistrationCourses}</h3>
-    <table border="1">
+    <table border="1" table style="width:33%" style="text-align:center">
             <thead>
               <tr>
                 <th>${courseId}</th>
@@ -69,8 +71,12 @@
                    <button type="submit" name="btnGetBack">${getBack}</button>
                    </div>
                    </form>
-                   <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-                    <p></p>
+                  <div class="logout">
+                   <a href="/controller?command=LOG_OUT_COMMAND">
+                     <span class="glyphicon glyphicon-log-out" ></span>
+                   </a>
+                   </div>
+                   <p></p>
             <%@ include file="footer/footer.jsp" %>
         </body>
     </html>

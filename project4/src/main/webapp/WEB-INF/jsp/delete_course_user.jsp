@@ -28,7 +28,9 @@
    <h4>${yourCourses}</h4>
    <c:choose>
            <c:when test="${user_course.size() eq 0}">
+           <div class="exception">
            <p>${noCoursesForDelete}</p>
+           <div>
                </c:when>
                <c:otherwise>
        <table border="1">
@@ -55,21 +57,25 @@
          </c:choose>
          <p></p>
            <form action="/controller?command=DELETE_USER_COURSE_COMMAND" method="post">
-                   <div class="form-group">
-                          <label>${courseName}</label>
-                          <select name="Course_name">
-                          <c:forEach items="${requestScope.user_course}" var="course">
-                            <option value="${course.name}">${course.name}</option>
-                             </c:forEach>
-                          </select>
-                          </div>
-                       <p></p>
-                          <button type="submit" name="btnDeleteCourse" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>  >${btnDeleteCourse}</button>
-                          <button type="submit" name="btnGetBack">${getBack}</button>
-                           </div>
-                           </form>
-                        <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-                        <p></p>
+           <div class="form-group">
+                  <label>${courseName}</label>
+                  <select name="Course_name">
+                  <c:forEach items="${requestScope.user_course}" var="course">
+                    <option value="${course.name}">${course.name}</option>
+                     </c:forEach>
+                  </select>
+                  </div>
+               <p></p>
+                  <button type="submit" name="btnDeleteCourse" <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>  >${btnDeleteCourse}</button>
+                  <button type="submit" name="btnGetBack">${getBack}</button>
+                   </div>
+                   </form>
+                  <div class="logout">
+                   <a href="/controller?command=LOG_OUT_COMMAND">
+                     <span class="glyphicon glyphicon-log-out" ></span>
+                   </a>
+                   </div>
+                   <p></p>
                 <%@ include file="footer/footer.jsp" %>
              </body>
          </html>

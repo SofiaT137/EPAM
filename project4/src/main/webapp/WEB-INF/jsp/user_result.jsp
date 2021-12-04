@@ -22,13 +22,15 @@
           </style>
         </head>
        <body>
-        <h2>${yourResults}</h2>
+        <h3>${yourResults}</h3>
        <c:choose>
            <c:when test="${user_review.size() eq 0}">
+           <div class="exception">
            <p>${youHaveNotAnyReviews}</p>
+           <div>
            </c:when>
         <c:otherwise>
-   <table border="1">
+   <table border="1" table style="width:33%" style="text-align:center">
        <c:forEach items="${requestScope.user_review}" var="review">
          <thead>
            <tr>
@@ -52,9 +54,12 @@
          <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
                   <button type="submit" name="btnGetBack">${getBack}</button>
                 </form>
-                <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+         <div class="logout">
+          <a href="/controller?command=LOG_OUT_COMMAND">
+            <span class="glyphicon glyphicon-log-out" ></span>
+          </a>
+          </div>
           <p></p>
-      <p></p>
             <%@ include file="footer/footer.jsp" %>
         </body>
     </html>

@@ -27,11 +27,15 @@
            </style>
          </head>
     <body>
+    <div class= "custom">
      <custom:hello userName="${hello}${current_user.first_name} ${current_user.last_name}"/>
+     </div>
     <h3>${youAreMentor}</h3>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
+        <div class="exception">
         <p>${youAreNotMentor}</p>
+        </div>
             </c:when>
             <c:otherwise>
            <table border="1" table style="width:33%" style="text-align:center">

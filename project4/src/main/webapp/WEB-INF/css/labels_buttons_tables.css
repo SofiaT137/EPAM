@@ -12,6 +12,11 @@ select, input{
     width:200px;
 }
 
+.exception,h2,h3,h4{
+    text-align: center;
+}
+
+
 button {
   display: inline-block;
   padding: 12px 24px;
@@ -34,19 +39,27 @@ form {
   text-align: center;
  }
 
- .logout{
+.logout{
      padding: 20px;
      position:relative;
-  }
-  .imageicon {
-      font-size: 50px;
-      }
+}
+.imageicon {
+    font-size: 50px;
+}
 
 
-  .glyphicon {
- position: fixed; bottom: 0; right: 0;
- width:80px;
- right:0;
- top: 85%;
-      font-size: 50px;
-  }
+.glyphicon {
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    margin:0;
+    padding:5px 3px;
+    font-size: 60px;
+}
+
+.custom{
+    font-weight: bold;
+    font-size: 200%;
+    text-align: center;
+    padding: 20px;
+}

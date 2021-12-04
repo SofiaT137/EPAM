@@ -19,10 +19,11 @@
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <style>
           <%@include file="/WEB-INF/css/only_buttons.css"%>
+          <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
         </style>
       </head>
       <body>
-         <div class="tagStyle">
+         <div class= "custom">
         <custom:hello userName="${hello}${current_user.first_name}" />
         </div>
         <div class="wrapper">

@@ -26,14 +26,18 @@
           </style>
         </head>
     <body>
+    <div class= "custom">
     <custom:hello userName="${hello}${current_user.first_name} ${current_user.last_name}"/>
-    <h2>${yourCourses}</h2>
+    </div>
+    <h3>${yourCourses}</h3>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
+        <div class="exception">
         <p>${yourCourseListIsEmpty}</p>
+        <div>
             </c:when>
             <c:otherwise>
-           <table border="1">
+           <table border="1" table style="width:33%" style="text-align:center" >
             <thead>
               <tr>
                 <th>${courseId}</th>
@@ -61,8 +65,12 @@
                    <button type="submit" name="btnGetCourse">${btnGetCourse}</button>
                    <button type="submit" name="btnDeleteCourse">${btnDeleteCourse}</button>
                   </form>
-                  <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-            <p></p>
+                  <div class="logout">
+                   <a href="/controller?command=LOG_OUT_COMMAND">
+                     <span class="glyphicon glyphicon-log-out" ></span>
+                   </a>
+                   </div>
+                   <p></p>
             <%@ include file="footer/footer.jsp" %>
         </body>
     </html>
