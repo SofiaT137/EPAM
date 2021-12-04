@@ -4,7 +4,7 @@ CREATE TABLE `account` (
   `account_id` int NOT NULL AUTO_INCREMENT,
   `role_id` int NOT NULL,
   `login` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(65) NOT NULL,
   `is_active` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `login_UNIQUE` (`login`),
@@ -20,6 +20,7 @@ CREATE TABLE `course` (
   `end_date` date NOT NULL,
   PRIMARY KEY (`course_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 ROW_FORMAT=COMPRESSED;
+
 
 CREATE TABLE `review` (
   `review_id` int NOT NULL AUTO_INCREMENT,
