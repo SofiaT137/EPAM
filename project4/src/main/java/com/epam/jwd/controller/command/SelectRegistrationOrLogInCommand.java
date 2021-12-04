@@ -144,7 +144,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
         }
 
-        String role = "Student";
+        final String role = "Student";
 
         if (btnRegister != null) {
             try{
@@ -171,9 +171,9 @@ public class SelectRegistrationOrLogInCommand implements Command {
             try{
                 accountDto = ((AccountService) service).filterAccount(login,password);
                 requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
-            }catch (Exception exception){
+            }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
-                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,LOGIN_OR_PASSWORD_MISTAKE);
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
             if (accountDto.getIsActive() == 0){

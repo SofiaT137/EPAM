@@ -12,6 +12,7 @@ CREATE TABLE `account` (
   CONSTRAINT `fk_account_role1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
+
 CREATE TABLE `course` (
   `course_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,

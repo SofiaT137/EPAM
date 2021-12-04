@@ -16,7 +16,7 @@
          </div>
          </p>
          <div class="logout">
-        <div class="imageicon"><img src="/img/no_meme.jpg" alt="Grumpy cat picture" />
+        <div class="imageicon"><img src="${pageContext.request.contextPath}/img/no_meme.jpg" alt="Grumpy cat picture" />
         </div>
          <a href = "/controller?command=LOG_OUT_COMMAND">
          <span class="glyphicon glyphicon-log-out" ></span>
