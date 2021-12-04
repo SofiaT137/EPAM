@@ -22,15 +22,17 @@
             <%@include file="/WEB-INF/css/tables.css"%>
           </style>
         </head>
-   <body>
-   <h2>${deleteCoursePage}</h2>
-   <h4>${youAreMentor}</h4>
-   <c:choose>
+        <body>
+           <h2>${deleteCoursePage}</h2>
+            <h4>${youAreMentor}</h4>
+           <c:choose>
            <c:when test="${user_course.size() eq 0}">
+           <div class= "exception">
            <p>${noCourses}</p>
+           </div>
                </c:when>
                <c:otherwise>
-       <table border="1">
+       <table border="1" table style="width:33%" style="text-align:center">
             <thead>
               <tr>
                 <th>${courseName}</th>
@@ -51,7 +53,7 @@
          </c:otherwise>
          </c:choose>
          <p></p>
-<form action="/controller?command=DELETE_COURSE_COMMAND" method="post">
+    <form action="/controller?command=DELETE_COURSE_COMMAND" method="post">
            <div class="form-group">
                   <label>${courseName}</label>
                   <select name="Course_name">
@@ -65,8 +67,12 @@
                 <button type="submit" name="btnGetBack">${getBack}</button>
                 </div>
                 </form>
-             <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-                  <p></p>
+               <div class="logout">
+               <a href="/controller?command=LOG_OUT_COMMAND">
+                 <span class="glyphicon glyphicon-log-out" ></span>
+               </a>
+               </div>
+               <p></p>
                <%@ include file="footer/footer.jsp" %>
            </body>
        </html>

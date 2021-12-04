@@ -21,15 +21,17 @@
               <%@include file="/WEB-INF/css/tables.css"%>
             </style>
           </head>
-   <body>
-   <h2>${selectCourseForReview}</h2>
-    <c:choose>
+       <body>
+       <h2>${selectCourseForReview}</h2>
+        <c:choose>
               <c:when test="${finished_course.size() eq 0}">
+              <div class= "exception">
               <p>${youAreNotMentor}</p>
+              </div>
               </c:when>
            <c:otherwise>
-   <h3>${possibleToCheckCourse}</h3>
-    <table border="1">
+    <h3>${possibleToCheckCourse}</h3>
+    <table border="1" table style="width:33%" style="text-align:center">
             <thead>
               <tr>
                 <th>${courseName}</th>
@@ -64,7 +66,12 @@
                 <button type="submit" name="btnGetBack">${getBack}</button>
                    </div>
                    </form>
-                   <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+               <div class="logout">
+               <a href="/controller?command=LOG_OUT_COMMAND">
+                 <span class="glyphicon glyphicon-log-out" ></span>
+               </a>
+               </div>
+               <p></p>
                 <%@ include file="footer/footer.jsp" %>
             </body>
         </html>

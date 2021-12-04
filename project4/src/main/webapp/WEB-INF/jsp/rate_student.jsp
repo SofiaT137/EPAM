@@ -31,13 +31,15 @@
           </style>
         </head>
    <body>
-   <h2>${courseStudents}</h2>
-   <c:choose>
+       <h2>${courseStudents}</h2>
+       <c:choose>
            <c:when test="${students_course.size() eq 0}">
+           <div class= "exception">
            <p>${noCourseStudent}</p>
+           </div>
                </c:when>
                <c:otherwise>
-       <table border="1">
+       <table border="1" table style="width:33%" style="text-align:center">
             <thead>
               <tr>
                 <th>${groupNumber}</th>
@@ -91,7 +93,12 @@
             <button type="submit" name="btnAddReview"  <c:if test="${students_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>>${btnAddReview}</button>
             <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
                      </form>
-                <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
+                        <div class="logout">
+                        <a href="/controller?command=LOG_OUT_COMMAND">
+                          <span class="glyphicon glyphicon-log-out" ></span>
+                        </a>
+                        </div>
+                        <p></p>
                 <%@ include file="footer/footer.jsp" %>
             </body>
         </html>
