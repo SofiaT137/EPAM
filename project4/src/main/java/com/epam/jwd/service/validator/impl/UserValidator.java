@@ -3,12 +3,15 @@ package com.epam.jwd.service.validator.impl;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserValidator implements Validator<UserDto> {
+
+    private static final Logger LOGGER = LogManager.getLogger(UserValidator.class);
 
     private static final String FIRST_AND_LAST_NAME_REGEX = "^[a-zA-Zа-яА-Я '.-]*$";
 
@@ -26,11 +29,13 @@ public class UserValidator implements Validator<UserDto> {
 
     private void validateName(final String name) throws ServiceException {
         if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH){
+            LOGGER.error(NAME_LENGTH_EXCEPTION);
             throw new ServiceException(NAME_LENGTH_EXCEPTION);
         }
         Pattern namePattern = Pattern.compile(FIRST_AND_LAST_NAME_REGEX);
         Matcher matcher = namePattern.matcher(name);
         if(!matcher.find()){
+            LOGGER.error(USER_NAME_EXCEPTION);
             throw new ServiceException(USER_NAME_EXCEPTION);
         }
     }

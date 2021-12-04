@@ -3,8 +3,12 @@ package com.epam.jwd.service.validator.impl;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.validator.api.Validator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ReviewValidator implements Validator<ReviewDto> {
+
+    private static final Logger LOGGER = LogManager.getLogger(ReviewValidator.class);
 
     private final static Integer MIN_GRADE_VALUE = 0;
     private final static Integer MAX_GRADE_VALUE = 10;
@@ -19,17 +23,17 @@ public class ReviewValidator implements Validator<ReviewDto> {
        validateReview(dto.getReview());
     }
 
-    private boolean validateGrade(final Integer grade) throws ServiceException  {
+    private void validateGrade(final Integer grade) throws ServiceException  {
         if (grade < MIN_GRADE_VALUE || grade > MAX_GRADE_VALUE){
+            LOGGER.error(GRADE_VALUE_EXCEPTION);
             throw new ServiceException(GRADE_VALUE_EXCEPTION);
         }
-        return true;
     }
 
-    private boolean validateReview(final String review) throws ServiceException  {
+    private void validateReview(final String review) throws ServiceException  {
         if (review.length() > MAX_REVIEW_LENGTH){
+            LOGGER.error(REVIEW_LENGTH_EXCEPTION);
             throw new ServiceException(REVIEW_LENGTH_EXCEPTION);
         }
-        return true;
     }
 }
