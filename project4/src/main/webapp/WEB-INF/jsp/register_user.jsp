@@ -14,9 +14,13 @@
 <fmt:message bundle="${loc}" key="Group" var="Group"/>
 <fmt:message bundle="${loc}" key="btnRegister" var="btnRegister"/>
 <html>
-   <head>
-          <title>${elective}</title>
-        </head>
+  <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+       <style>
+           <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+           <%@include file="/WEB-INF/css/tables.css"%>
+         </style>
+       </head>
     <body>
             <h2>${letsFinishRegistration}</h2>
         <form action="/controller?command=REGISTER_USER_COMMAND" method="post">

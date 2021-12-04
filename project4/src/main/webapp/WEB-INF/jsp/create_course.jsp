@@ -16,10 +16,15 @@
 
 <html>
    <head>
-       <h2>${createCourse}</h2>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%>
+          </style>
         </head>
          <body>
-           <h2>${yourCourses}</h2>
+         <h2>${createCourse}</h2>
+           <h4>${yourCourses}</h4>
     <c:choose>
               <c:when test="${user_course.size() eq 0}">
               <p>${noCourses}</p>

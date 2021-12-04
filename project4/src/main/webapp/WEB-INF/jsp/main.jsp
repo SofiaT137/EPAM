@@ -79,7 +79,7 @@
           title="${invalidPassword}"
           placeholder="${enterYourPassword}"
           required
-          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$"
+          pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?-&]{8,}$"
         />
         <div class="line-box">
           <div class="line"></div>

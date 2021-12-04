@@ -14,10 +14,15 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
-   <head>
-        <h2>${selectCourseForReview}</h2>
-   </head>
+     <head>
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <style>
+              <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+              <%@include file="/WEB-INF/css/tables.css"%>
+            </style>
+          </head>
    <body>
+   <h2>${selectCourseForReview}</h2>
     <c:choose>
               <c:when test="${finished_course.size() eq 0}">
               <p>${youAreNotMentor}</p>

@@ -16,8 +16,13 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
-   <head>
-       </head>
+     <head>
+           <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          <style>
+              <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+              <%@include file="/WEB-INF/css/tables.css"%>
+            </style>
+          </head>
    <body>
          <h2>${deleteCoursePage}</h2>
    <h4>${yourCourses}</h4>
