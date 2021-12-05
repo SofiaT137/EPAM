@@ -1,6 +1,6 @@
 html,
 body {
-      background-image: url(../img/studying.jpg);
+      background-image: url(${pageContext.request.contextPath}/img/studying.jpg);
       background-size: cover
 }
 form {
