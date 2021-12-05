@@ -62,7 +62,7 @@
                        </select>
                        </div>
                     <p></p>
-                <button type="submit" name="btnFillReview"  <c:if test="${user_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if>>${btnFillReview}</button>
+                <button type="submit" name="btnFillReview" <c:if test="${finished_course.size() == 0}"><c:out value="disabled='disabled'"/></c:if> >${btnFillReview}</button>
                 <button type="submit" name="btnGetBack">${getBack}</button>
                    </div>
                    </form>

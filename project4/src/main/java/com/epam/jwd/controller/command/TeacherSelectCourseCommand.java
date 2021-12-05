@@ -9,6 +9,7 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
 import com.epam.jwd.service.impl.GroupService;
 import com.epam.jwd.service.impl.ReviewService;
@@ -34,12 +35,12 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE = "studentsCourse";
 
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
-    private static final String CANNOT_FIND_COURSE_MESSAGE = "This course name is wrong! Or this course does not exist!";
+    private static final String CANNOT_FIND_COURSE_MESSAGE_BY_NAME = "This course name is wrong! Or this course does not exist!";
+
 
     private final Service<UserDto, Integer> userService = new UserService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
-    private final Service<GroupDto, Integer> groupService = new GroupService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+        private final Service<CourseDto, Integer> courseService = new CourseService();
 
 
     private static final ResponseContext RATE_STUDENT_CONTEXT = new ResponseContext() {
@@ -95,8 +96,15 @@ public class TeacherSelectCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         if (btnFillReview != null){
+
             String course = requestContext.getParameterFromJSP("Course_name");
-                List<CourseDto> list = ((CourseService) courseService).filterCourse(course);
+                List<CourseDto> list = new ArrayList<>();
+                try{
+                    list = ((CourseService) courseService).filterCourse(course);
+                }catch (ServiceException exception){
+                    LOGGER.info(exception.getMessage());
+                }
+
             if (list.size() != 0){
                 CourseDto selectedCourse = list.get(0);
                 requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE,selectedCourse);
@@ -107,13 +115,10 @@ public class TeacherSelectCourseCommand implements Command {
                 requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,usersOfSelectedCourse);
             }
             else{
-                LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
-                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
+                LOGGER.error(CANNOT_FIND_COURSE_MESSAGE_BY_NAME);
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE_BY_NAME);
                 return ERROR_PAGE_CONTEXT;
             }
-
-
-
             return RATE_STUDENT_CONTEXT;
         }else if(btnGetBack !=null){
             return TEACHER_RESULT_CONTEXT;
