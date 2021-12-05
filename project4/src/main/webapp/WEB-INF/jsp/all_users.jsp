@@ -13,17 +13,21 @@
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
 <fmt:message bundle="${loc}" key="lastName" var="lastName"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
 
 <html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-        <%@include file="/WEB-INF/css/tables.css"%><%@include file="/WEB-INF/css/labels_buttons.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%>
+        <%@include file="/WEB-INF/css/labels_buttons.css"%>
     </style>
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${allTheUniversityUsers}</h2>
     <c:choose>
         <c:when test="${all_users.size() eq 0}">
@@ -65,7 +69,7 @@
             <div class="paggination">
                 <c:if test="${current_page != 1}">
                     <td>
-                        <a href="/controller?command=GET_ALL_USER&page=${current_page - 1}">Previous</a>
+                        <a href="/controller?command=GET_ALL_USER&page=${current_page - 1}">${previous}</a>
                     </td>
                 </c:if>
 
@@ -85,16 +89,17 @@
                 <%--For displaying Next link --%>
                     <c:if test="${current_page lt number_of_pages}">
                         <td>
-                            <a href="/controller?command=GET_ALL_USER&page=${current_page + 1}">Next</a>
+                            <a href="/controller?command=GET_ALL_USER&page=${current_page + 1}">${next}</a>
                         </td>
                     </c:if>
             </div>
         </c:otherwise>
     </c:choose>
-    <div>
+    <div class="getBack">
         <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
     </div>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

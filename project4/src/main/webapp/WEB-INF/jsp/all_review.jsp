@@ -19,16 +19,17 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-        <%@include file="/WEB-INF/css/tables.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%><%@include file="/WEB-INF/css/labels_buttons.css"%>
     </style>
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${allTheUniversityReviews}</h2>
     <c:choose>
         <c:when test="${all_reviews.size() eq 0}">
             <p>${noReviews}</p>
-        </c:when>
+            </c:when>
         <c:otherwise>
             <table border="1" table style="width: 33%" style="text-align: center">
                 <thead>
@@ -65,8 +66,11 @@
         </c:otherwise>
     </c:choose>
     <p></p>
+    <div class="getBack">
     <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
+    </div>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

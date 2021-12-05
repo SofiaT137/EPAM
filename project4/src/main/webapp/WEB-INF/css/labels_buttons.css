@@ -12,18 +12,13 @@ select, input{
     width:200px;
 }
 
-.exception,h2,h3,h4{
-    text-align: center;
-}
-
-
 button {
   display: inline-block;
   padding: 12px 24px;
   background: rgb(220,220,220);
   font-weight: bold;
   color: rgb(120,120,120);
-  border: none;
+  border: 3;
   outline: none;
   border-radius: 3px;
   cursor: pointer;
@@ -38,6 +33,15 @@ button:hover {
 form {
   text-align: center;
  }
+
+.exception,h2,h3,h4{
+ text-align: center;
+}
+
+.wrapper{
+    padding: 70px;
+}
+
 
 .logout{
      padding: 20px;
@@ -66,4 +70,12 @@ form {
 
 .paggination{
     text-align: center;
+     font-size: 150%;
 }
+
+.getBack{
+    text-align: center;
+    font-size: 150%;
+}
+
+

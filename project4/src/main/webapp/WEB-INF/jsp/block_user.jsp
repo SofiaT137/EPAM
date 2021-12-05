@@ -23,16 +23,19 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-        <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
+        <%@include file="/WEB-INF/css/labels_buttons.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%>
     </style>
 </head>
 
 <body>
     <h2>${blockUser}</h2>
-    <h4>${allBlockedUser}</h4>
+    <h3>${allBlockedUser}</h3>
     <c:choose>
         <c:when test="${blocked_users.size() eq 0}">
+            <div class ="exception">
             <p>${noBlockedUsers}</p>
+            </div>
         </c:when>
         <c:otherwise>
             <table border="1" table style="width: 33%" style="text-align: center">

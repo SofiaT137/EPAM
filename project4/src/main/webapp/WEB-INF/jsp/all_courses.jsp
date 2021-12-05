@@ -18,10 +18,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
         <%@include file="/WEB-INF/css/tables.css"%>
+        <%@include file="/WEB-INF/css/labels_buttons.css"%>
     </style>
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${allTheUniversityCourses}</h2>
     <c:choose>
         <c:when test="${all_courses.size() eq 0}">
@@ -55,8 +57,11 @@
         </c:otherwise>
     </c:choose>
     <p></p>
+    <div class="getBack">
     <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
+    </div>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

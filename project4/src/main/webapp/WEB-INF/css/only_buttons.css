@@ -26,11 +26,11 @@ body {
 }
 
 .wrapper{
-   display: flex;
-       justify-content: center; /*Центрирование по горизонтали*/
-       align-items: center;     /*Центрирование по вертикали */
-     height:70%;
-     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height:70%;
+    width: 100%;
 }
 
 .glyphicon {
@@ -44,7 +44,7 @@ button {
   background: rgb(220,220,220);
   font-weight: bold;
   color: rgb(120,120,120);
-  border: none;
+  border: 3;
   outline: none;
   border-radius: 3px;
   cursor: pointer;
