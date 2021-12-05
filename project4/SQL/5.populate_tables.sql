@@ -14,19 +14,19 @@ VALUES (
 '1'
 );
 
-INSERT INTO user (
+INSERT INTO user (5
 `user_id`,
 `account_id`,
 `university_group_id`,
 `first_name`,
 `last_name`)
- VALUES (
- '1',
- '1',
- '1',
- 'Administrator',
- 'Administrator'
- );
+VALUES (
+'1',
+'1',
+'1',
+'Administrator',
+'Administrator'
+);
 
 INSERT INTO account (
 `account_id`,
@@ -48,13 +48,13 @@ INSERT INTO user (
 `university_group_id`,
 `first_name`,
 `last_name`)
- VALUES (
- '2',
- '2',
- '2',
- 'Валерий',
- 'Мататов'
- );
+VALUES (
+'2',
+'2',
+'2',
+'Валерий',
+'Мататов'
+);
 
 INSERT INTO account (
 `account_id`,
@@ -76,41 +76,41 @@ INSERT INTO user (
 `university_group_id`,
 `first_name`,
 `last_name`)
- VALUES (
- '3',
- '3',
- '3',
- 'Дмитрий',
- 'Филипенко'
- );
+VALUES (
+'3',
+'3',
+'3',
+'Дмитрий',
+'Филипенко'
+);
 
- INSERT INTO account (
- `account_id`,
- `role_id`,
- `login`,
- `password`,
- `is_active`)
- VALUES (
- '4',
- '3',
- 'SergeyGivoglot93',
- '$2a$10$HO3a131TXVLpoPXKGRNeS.rXZyJzc/cEI/HgYUacW.yM.PigktIcC', /** BCrypt password "SergeyGivoglot93"*/
- '1'
- );
+INSERT INTO account (
+`account_id`,
+`role_id`,
+`login`,
+`password`,
+`is_active`)
+VALUES (
+'4',
+'3',
+'SergeyGivoglot93',
+'$2a$10$HO3a131TXVLpoPXKGRNeS.rXZyJzc/cEI/HgYUacW.yM.PigktIcC', /** BCrypt password "SergeyGivoglot93"*/
+'1'
+);
 
- INSERT INTO user (
- `user_id`,
- `account_id`,
- `university_group_id`,
- `first_name`,
- `last_name`)
-  VALUES (
-  '4',
-  '4',
-  '3',
-  'Сергей',
-  'Живоглод'
-  );
+INSERT INTO user (
+`user_id`,
+`account_id`,
+`university_group_id`,
+`first_name`,
+`last_name`)
+VALUES (
+'4',
+'4',
+'3',
+'Сергей',
+'Живоглод'
+);
 
   /** Finished course */
 

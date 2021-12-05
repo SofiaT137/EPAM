@@ -15,6 +15,8 @@ public class GetAllUserCommand implements Command {
     private static final String USERS_JSP = "/WEB-INF/jsp/all_users.jsp";
 
     private static final String USERS_JSP_USERS_COLLECTION_ATTRIBUTE = "all_users";
+    private static final String NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE = "number_of_pages";
+    private static final String CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE = "current_page";
 
     public static Command getInstance(){
         return INSTANCE;
@@ -38,8 +40,21 @@ public class GetAllUserCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
+        final int recordsPerPage = 5;
         List<UserDto> all_users = (List<UserDto>) requestContext.getAttributeFromSession("allUsers");
-        requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE, all_users);
+        int numberOfRecords = all_users.size();
+        int numberOfPages  = (int) Math.ceil(numberOfRecords * 1.0 / recordsPerPage);
+        int page = 1;
+        if(requestContext.getParameterFromJSP("page") != null){
+            page = Integer.parseInt(requestContext.getParameterFromJSP("page"));
+        }
+        if (page < 1 || page > numberOfPages){
+            page = 1;
+        }
+        List<UserDto> usersOnPage = all_users.subList((page-1)*recordsPerPage, Math.min(page*recordsPerPage,numberOfRecords));
+        requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE, usersOnPage);
+        requestContext.addAttributeToJSP(NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE, numberOfPages);
+        requestContext.addAttributeToJSP(CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE, page);
         return GET_USERS_CONTEXT;
     }
 }

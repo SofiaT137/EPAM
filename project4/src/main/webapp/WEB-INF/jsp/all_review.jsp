@@ -15,45 +15,48 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
-   <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <style>
-         <%@include file="/WEB-INF/css/tables.css"%>
-       </style>
-         </head>
-         <body>
-         <h2>${allTheUniversityReviews}</h2>
-      <c:choose>
-              <c:when test="${all_reviews.size() eq 0}">
-              <p>${noReviews}</p>
-                  </c:when>
-                  <c:otherwise>
-          <table border="1" table style="width:33%" style="text-align:center">
-               <thead>
-                <tr>
-                  <th>${reviewId}</th>
-                  <th>${userId}</th>
-                  <th>${courseName}</th>
-                  <th>${Grade}</th>
-                  <th>${Review} </th>
-                  </tr>
-              </thead>
-            <c:forEach items="${requestScope.all_reviews}" var="review">
-           <tbody>
-             <tr>
-           <td><c:out value="${review.id}" /></td>
-           <td><c:out value="${review.user_id}" /></td>
-          <td><c:out value="${review.course_name}" /></td>
-          <td><c:out value="${review.grade}" /></td>
-          <td><c:out value="${review.review}" /></td>
-           </tr>
-           </tbody>
-               </c:forEach>
-              </table>
-                 </c:otherwise>
-                 </c:choose>
-                 <p></p>
-                   <a href = "/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
-             <%@ include file="footer/footer.jsp" %>
-              </body>
-            </html>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <style>
+      <%@include file="/WEB-INF/css/tables.css"%>
+    </style>
+  </head>
+  <body>
+    <h2>${allTheUniversityReviews}</h2>
+    <c:choose>
+      <c:when test="${all_reviews.size() eq 0}">
+        <p>${noReviews}</p>
+      </c:when>
+      <c:otherwise>
+        <table border="1" table style="width: 33%" style="text-align: center">
+          <thead>
+            <tr>
+              <th>${reviewId}</th>
+              <th>${userId}</th>
+              <th>${courseName}</th>
+              <th>${Grade}</th>
+              <th>${Review}</th>
+            </tr>
+          </thead>
+          <c:forEach items="${requestScope.all_reviews}" var="review">
+            <tbody>
+              <tr>
+                <td><c:out value="${review.id}" /></td>
+                <td><c:out value="${review.user_id}" /></td>
+                <td><c:out value="${review.course_name}" /></td>
+                <td><c:out value="${review.grade}" /></td>
+                <td><c:out value="${review.review}" /></td>
+              </tr>
+            </tbody>
+          </c:forEach>
+        </table>
+      </c:otherwise>
+    </c:choose>
+    <p></p>
+    <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
+    <%@ include file="footer/footer.jsp" %>
+  </body>
+</html>

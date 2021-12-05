@@ -27,7 +27,7 @@ public class AdminPageCommand implements Command {
 
     private static final Command INSTANCE = new AdminPageCommand();
 
-    private static final String GET_ALL_USER_COMMAND = "/controller?command=GET_ALL_USER";
+    private static final String GET_ALL_USER_COMMAND = "/controller?command=GET_ALL_USER&page=1";
     private static final String GET_ALL_REVIEW_COMMAND = "/controller?command=GET_ALL_REVIEW";
     private static final String GET_ALL_COURSE_COMMAND = "/controller?command=GET_ALL_COURSE";
     private static final String CREATE_NEW_TEACHER_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
