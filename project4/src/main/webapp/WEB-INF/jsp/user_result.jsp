@@ -12,54 +12,60 @@
 <fmt:message bundle="${loc}" key="Review" var="Review"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
-
 <html>
-   <head>
-         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <style>
-            <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
-            <%@include file="/WEB-INF/css/tables.css"%>
-          </style>
-        </head>
-       <body>
-        <h3>${yourResults}</h3>
-       <c:choose>
-           <c:when test="${user_review.size() eq 0}">
-           <div class="exception">
-           <p>${youHaveNotAnyReviews}</p>
-           <div>
-           </c:when>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        <%@include file="/WEB-INF/css/labels_buttons_tables.css"%><%@include file="/WEB-INF/css/tables.css"%>
+    </style>
+</head>
+
+<body>
+    <h3>${yourResults}</h3>
+    <c:choose>
+        <c:when test="${user_review.size() eq 0}">
+            <div class="exception">
+                <p>${youHaveNotAnyReviews}</p>
+                <div>
+        </c:when>
         <c:otherwise>
-   <table border="1" table style="width:33%" style="text-align:center">
-       <c:forEach items="${requestScope.user_review}" var="review">
-         <thead>
-           <tr>
-             <th>${courseName}</th>
-             <th>${Grade}</th>
-             <th>${Review}</th>
-           </tr>
-         </thead>
-         <tbody>
-           <tr>
-               <td><c:out value="${review.course_name}" /></td>
-               <td><c:out value="${review.grade}" /></td>
-               <td><c:out value="${review.review}" /></td>
-             </tr>
-         </tbody>
-       </c:forEach>
-   </table>
-          </c:otherwise>
-          </c:choose>
-   <p></p>
-         <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
-                  <button type="submit" name="btnGetBack">${getBack}</button>
-                </form>
-         <div class="logout">
-          <a href="/controller?command=LOG_OUT_COMMAND">
-            <span class="glyphicon glyphicon-log-out" ></span>
-          </a>
-          </div>
-          <p></p>
-            <%@ include file="footer/footer.jsp" %>
-        </body>
-    </html>
+            <table border="1" table style="width:33%" style="text-align:center">
+                <c:forEach items="${requestScope.user_review}" var="review">
+                    <thead>
+                        <tr>
+                            <th>${courseName}</th>
+                            <th>${Grade}</th>
+                            <th>${Review}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <c:out value="${review.course_name}" />
+                            </td>
+                            <td>
+                                <c:out value="${review.grade}" />
+                            </td>
+                            <td>
+                                <c:out value="${review.review}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+        </c:otherwise>
+    </c:choose>
+    <p></p>
+    <form action="/controller?command=SHOW_USER_PAGE_COMMAND" method="post">
+        <button type="submit" name="btnGetBack">${getBack}</button>
+    </form>
+    <div class="logout">
+        <a href="/controller?command=LOG_OUT_COMMAND">
+            <span class="glyphicon glyphicon-log-out"></span>
+        </a>
+    </div>
+    <p></p>
+    <%@ include file="footer/footer.jsp" %>
+</body>
+</html>

@@ -20,70 +20,85 @@
 
 
 <html>
-      <head>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-           <style>
-               <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
-               <%@include file="/WEB-INF/css/tables.css"%>
-             </style>
-           </head>
-         <body>
-           <h2>${letsUpdateACourse}</h2>
-           <h4>${yourCurrentCourses}</h4>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        <%@include file="/WEB-INF/css/labels_buttons_tables.css"%><%@include file="/WEB-INF/css/tables.css"%>
+    </style>
+</head>
+
+<body>
+    <h2>${letsUpdateACourse}</h2>
+    <h4>${yourCurrentCourses}</h4>
     <c:choose>
-              <c:when test="${user_course.size() eq 0}">
-              <p>${noCourses}</p>
-                  </c:when>
-                  <c:otherwise>
-          <table border="1">
-               <thead>
-                 <tr>
-                   <th>${courseId}</th>
-                   <th>${courseName}</th>
-                   <th>${courseStartDate}</th>
-                   <th>${CourseEndDate}</th>
-                   </tr>
-               </thead>
+        <c:when test="${user_course.size() eq 0}">
+            <p>${noCourses}</p>
+        </c:when>
+        <c:otherwise>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>${courseId}</th>
+                        <th>${courseName}</th>
+                        <th>${courseStartDate}</th>
+                        <th>${CourseEndDate}</th>
+                    </tr>
+                </thead>
                 <c:forEach items="${requestScope.user_course}" var="course">
-               <tbody>
-                 <tr>
-              <td><c:out value="${course.id}" /></td>
-              <td><c:out value="${course.name}" /></td>
-              <td><c:out value="${course.startCourse}" /></td>
-              <td><c:out value="${course.endCourse}" /></td>
-               </tr>
-               </tbody>
-             </c:forEach>
-         </table>
-            </c:otherwise>
-            </c:choose>
-            <p></p>
-         <form action="/controller?command=UPDATE_COURSE_COMMAND" method="post">
-         <div class="form-group">
-             <h3>${newCourseData}</h3>
-              <label>${courseName}</label>
-               <select name="Course_name">
-               <c:forEach items="${requestScope.user_course}" var="course">
-                 <option value="${course.name}">${course.name}</option>
-                  </c:forEach>
-               </select>
-               </div>
-            <p></p>
-               <div class="form-group">
-             <label>${courseStartDate}</label>
-             <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required pattern = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
-              </div>
-           <p></p>
-           <div class="form-group">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <c:out value="${course.id}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.name}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.startCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.endCourse}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+        </c:otherwise>
+    </c:choose>
+    <p></p>
+    <form action="/controller?command=UPDATE_COURSE_COMMAND" method="post">
+        <div class="form-group">
+            <h3>${newCourseData}</h3>
+            <label>${courseName}</label>
+            <select name="Course_name">
+                <c:forEach items="${requestScope.user_course}" var="course">
+                    <option value="${course.name}">${course.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <p></p>
+        <div class="form-group">
+            <label>${courseStartDate}</label>
+            <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required
+                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+        </div>
+        <p></p>
+        <div class="form-group">
             <label>${CourseEndDate}</label>
-           <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required pattern = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
-           </div>
-            <p></p>
-            <button type="submit" name="btnUpdate">${btnUpdate}</button>
-            <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
-              </form>
-             <p></p>
-              <a href = "/controller?command=LOG_OUT_COMMAND">Log out</a>
-              </body>
-        <div class="footer"><%@ include file="footer/footer.jsp" %></div>
-     </html>
+            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required
+                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+        </div>
+        <p></p>
+        <button type="submit" name="btnUpdate">${btnUpdate}</button>
+        <button type="submit" name="btnGetBack"
+            onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
+    </form>
+    <p></p>
+    <a href="/controller?command=LOG_OUT_COMMAND">Log out</a>
+</body>
+<div class="footer">
+    <%@ include file="footer/footer.jsp" %>
+</div>
+
+</html>

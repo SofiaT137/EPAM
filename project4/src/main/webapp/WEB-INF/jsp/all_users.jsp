@@ -15,90 +15,86 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    />
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-      <%@include file="/WEB-INF/css/tables.css"%>
-      <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%><%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <h2>${allTheUniversityUsers}</h2>
     <c:choose>
-      <c:when test="${all_users.size() eq 0}">
-        <p>${noUsers}</p>
-      </c:when>
-      <c:otherwise>
-        <table
-          border="1"
-          cellpadding="5"
-          cellspacing="5"
-          table
-          style="width: 33%"
-          style="text-align: center"
-        >
-          <thead>
-            <tr>
-              <th>${userId}</th>
-              <th>${accountId}</th>
-              <th>${groupName}</th>
-              <th>${firstName}</th>
-              <th>${lastName}</th>
-            </tr>
-          </thead>
-          <c:forEach items="${requestScope.all_users}" var="user">
-            <tbody>
-              <tr>
-                <td><c:out value="${user.id}" /></td>
-                <td><c:out value="${user.account_id}" /></td>
-                <td><c:out value="${user.group_name}" /></td>
-                <td><c:out value="${user.first_name}" /></td>
-                <td><c:out value="${user.last_name}" /></td>
-              </tr>
-            </tbody>
-          </c:forEach>
-        </table>
-        <div class="paggination">
-          <c:if test="${current_page != 1}">
-            <td>
-              <a
-                href="/controller?command=GET_ALL_USER&page=${current_page - 1}"
-                >Previous</a
-              >
-            </td>
-          </c:if>
+        <c:when test="${all_users.size() eq 0}">
+            <p>${noUsers}</p>
+        </c:when>
+        <c:otherwise>
+            <table border="1" cellpadding="5" cellspacing="5" table style="width: 33%" style="text-align: center">
+                <thead>
+                    <tr>
+                        <th>${userId}</th>
+                        <th>${accountId}</th>
+                        <th>${groupName}</th>
+                        <th>${firstName}</th>
+                        <th>${lastName}</th>
+                    </tr>
+                </thead>
+                <c:forEach items="${requestScope.all_users}" var="user">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <c:out value="${user.id}" />
+                            </td>
+                            <td>
+                                <c:out value="${user.account_id}" />
+                            </td>
+                            <td>
+                                <c:out value="${user.group_name}" />
+                            </td>
+                            <td>
+                                <c:out value="${user.first_name}" />
+                            </td>
+                            <td>
+                                <c:out value="${user.last_name}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+            <div class="paggination">
+                <c:if test="${current_page != 1}">
+                    <td>
+                        <a href="/controller?command=GET_ALL_USER&page=${current_page - 1}">Previous</a>
+                    </td>
+                </c:if>
 
-          <c:forEach begin="1" end="${number_of_pages}" var="i">
-            <c:choose>
-              <c:when test="${current_page eq i}">
-                <td>${i}</td>
-              </c:when>
-              <c:otherwise>
-                <td>
-                  <a href="/controller?command=GET_ALL_USER&page=${i}">${i}</a>
-                </td>
-              </c:otherwise>
-            </c:choose>
-          </c:forEach>
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                    <c:choose>
+                        <c:when test="${current_page eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <a href="/controller?command=GET_ALL_USER&page=${i}">${i}</a>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
 
-          <%--For displaying Next link --%>
-          <c:if test="${current_page lt number_of_pages}">
-            <td>
-              <a
-                href="/controller?command=GET_ALL_USER&page=${current_page + 1}"
-                >Next</a
-              >
-            </td>
-          </c:if>
-        </div>
-      </c:otherwise>
+                <%--For displaying Next link --%>
+                    <c:if test="${current_page lt number_of_pages}">
+                        <td>
+                            <a href="/controller?command=GET_ALL_USER&page=${current_page + 1}">Next</a>
+                        </td>
+                    </c:if>
+            </div>
+        </c:otherwise>
     </c:choose>
     <div>
-      <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
+        <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
     </div>
     <%@ include file="footer/footer.jsp" %>
-  </body>
+</body>
+
 </html>

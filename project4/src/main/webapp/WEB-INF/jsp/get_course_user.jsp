@@ -17,66 +17,79 @@
 
 
 <html>
-   <head>
-         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <style>
-            <%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
-            <%@include file="/WEB-INF/css/tables.css"%>
-          </style>
-        </head>
-   <body>
-   <h2>${courseRegistrationPage}</h2>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        <%@include file="/WEB-INF/css/labels_buttons_tables.css"%><%@include file="/WEB-INF/css/tables.css"%>
+    </style>
+</head>
+
+<body>
+    <h2>${courseRegistrationPage}</h2>
     <c:choose>
-              <c:when test="${possible_courses.size() eq 0}">
-              <div class="exception">
-              <p>${noAnyPossibleToRegistrationCourses}</p>
-              <div>
-              </c:when>
-           <c:otherwise>
-   <h3>${possibleToRegistrationCourses}</h3>
-    <table border="1" table style="width:33%" style="text-align:center">
-            <thead>
-              <tr>
-                <th>${courseId}</th>
-                <th>${courseName}</th>
-                <th>${courseStartDate}</th>
-                <th>${CourseEndDate}</th>
-              </tr>
-            </thead>
-        <c:forEach items="${requestScope.possible_courses}" var="course">
-        <tbody>
-          <tr>
-              <td><c:out value="${course.id}" /></td>
-              <td><c:out value="${course.name}" /></td>
-              <td><c:out value="${course.startCourse}" /></td>
-              <td><c:out value="${course.endCourse}" /></td>
-            </tr>
-        </tbody>
-      </c:forEach>
-  </table>
-         </c:otherwise>
-         </c:choose>
-  <p></p>
-   <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
-           <div class="form-group">
-                      <label>${courseName}</label>
-                      <select name="Course_name">
-                      <c:forEach items="${requestScope.possible_courses}" var="course">
-                        <option value="${course.name}">${course.name}</option>
-                         </c:forEach>
-                      </select>
-                      </div>
-                   <p></p>
-                   <button type="submit" name="btnGetCourse" <c:if test="${possible_courses.size() == 0}"><c:out value="disabled='disabled'"/></c:if> >${btnGetCourse}</button>
-                   <button type="submit" name="btnGetBack">${getBack}</button>
-                   </div>
-                   </form>
-                  <div class="logout">
-                   <a href="/controller?command=LOG_OUT_COMMAND">
-                     <span class="glyphicon glyphicon-log-out" ></span>
-                   </a>
-                   </div>
-                   <p></p>
-            <%@ include file="footer/footer.jsp" %>
-        </body>
-    </html>
+        <c:when test="${possible_courses.size() eq 0}">
+            <div class="exception">
+                <p>${noAnyPossibleToRegistrationCourses}</p>
+                <div>
+        </c:when>
+        <c:otherwise>
+            <h3>${possibleToRegistrationCourses}</h3>
+            <table border="1" table style="width:33%" style="text-align:center">
+                <thead>
+                    <tr>
+                        <th>${courseId}</th>
+                        <th>${courseName}</th>
+                        <th>${courseStartDate}</th>
+                        <th>${CourseEndDate}</th>
+                    </tr>
+                </thead>
+                <c:forEach items="${requestScope.possible_courses}" var="course">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <c:out value="${course.id}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.name}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.startCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.endCourse}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+        </c:otherwise>
+    </c:choose>
+    <p></p>
+    <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
+        <div class="form-group">
+            <label>${courseName}</label>
+            <select name="Course_name">
+                <c:forEach items="${requestScope.possible_courses}" var="course">
+                    <option value="${course.name}">${course.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <p></p>
+        <button type="submit" name="btnGetCourse" <c:if test="${possible_courses.size() == 0}">
+            <c:out value="disabled='disabled'" />
+            </c:if> >${btnGetCourse}
+        </button>
+        <button type="submit" name="btnGetBack">${getBack}</button>
+        </div>
+    </form>
+    <div class="logout">
+        <a href="/controller?command=LOG_OUT_COMMAND">
+            <span class="glyphicon glyphicon-log-out"></span>
+        </a>
+    </div>
+    <p></p>
+    <%@ include file="footer/footer.jsp" %>
+</body>
+
+</html>

@@ -13,44 +13,50 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
-  <head>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    />
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-      <%@include file="/WEB-INF/css/tables.css"%>
+        <%@include file="/WEB-INF/css/tables.css"%>
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <h2>${allTheUniversityCourses}</h2>
     <c:choose>
-      <c:when test="${all_courses.size() eq 0}">
-        <p>${noCourses}</p>
-      </c:when>
-      <c:otherwise>
-        <table border="1" table style="width: 33%" style="text-align: center">
-          <thead>
-            <tr>
-              <th>${courseName}</th>
-              <th>${courseStartDate}</th>
-              <th>${CourseEndDate}</th>
-            </tr>
-          </thead>
-          <c:forEach items="${requestScope.all_courses}" var="course">
-            <tbody>
-              <tr>
-                <td><c:out value="${course.name}" /></td>
-                <td><c:out value="${course.startCourse}" /></td>
-                <td><c:out value="${course.endCourse}" /></td>
-              </tr>
-            </tbody>
-          </c:forEach>
-        </table>
-      </c:otherwise>
+        <c:when test="${all_courses.size() eq 0}">
+            <p>${noCourses}</p>
+        </c:when>
+        <c:otherwise>
+            <table border="1" table style="width: 33%" style="text-align: center">
+                <thead>
+                    <tr>
+                        <th>${courseName}</th>
+                        <th>${courseStartDate}</th>
+                        <th>${CourseEndDate}</th>
+                    </tr>
+                </thead>
+                <c:forEach items="${requestScope.all_courses}" var="course">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <c:out value="${course.name}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.startCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.endCourse}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </c:forEach>
+            </table>
+        </c:otherwise>
     </c:choose>
     <p></p>
     <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
     <%@ include file="footer/footer.jsp" %>
-  </body>
+</body>
+
 </html>
