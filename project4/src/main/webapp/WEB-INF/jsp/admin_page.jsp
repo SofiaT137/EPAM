@@ -19,7 +19,7 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
-        <%@include file="/WEB-INF/css/only_buttons.css"%><%@include file="/WEB-INF/css/labels_buttons_tables.css"%>
+        <%@include file="/WEB-INF/css/only_buttons.css"%><%@include file="/WEB-INF/css/labels_buttons.css"%>
     </style>
 </head>
 
