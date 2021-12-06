@@ -9,11 +9,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@WebFilter(servletNames = "app")
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;
@@ -23,7 +25,7 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.context = filterConfig.getServletContext();
-        this.context.log("AUTHENTICATION_MESSAGE");
+        this.context.log(AUTHENTICATION_MESSAGE);
     }
 
     @Override
@@ -45,7 +47,8 @@ public class AuthenticationFilter implements Filter {
             AccountDto accountDto = (AccountDto)session.getAttribute("registerAccount");
             if (accountDto == null && (commandName == null
                                             || !(commandName.equals("SELECT_REGISTRATION_OR_LOG_IN")
-                                                || commandName.equals("SHOW_ERROR_PAGE_COMMAND") ))){
+                                                || commandName.equals("SHOW_ERROR_PAGE_COMMAND")
+                                                || commandName.equals("CHANGE_LANGUAGE_COMMAND")))){
                 res.sendRedirect("/index.jsp");
                 return;
             }

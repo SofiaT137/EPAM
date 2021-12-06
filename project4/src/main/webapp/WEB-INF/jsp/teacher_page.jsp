@@ -32,6 +32,11 @@
         <custom:hello userName="${hello}${current_user.first_name} ${current_user.last_name}" />
     </div>
     <h3>${youAreMentor}</h3>
+        <div class="logout">
+            <a href="/controller?command=LOG_OUT_COMMAND">
+                <span class="glyphicon glyphicon-log-out"></span>
+            </a>
+        </div>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
             <div class="exception">
@@ -72,11 +77,7 @@
         <button type="submit" name="btnUpdateCourse">${btnUpdateCourse}</button>
         <button type="submit" name="btnDeleteCourse">${btnDeleteCourse}</button>
     </form>
-    <div class="logout">
-        <a href="/controller?command=LOG_OUT_COMMAND">
-            <span class="glyphicon glyphicon-log-out"></span>
-        </a>
-    </div>
+
     <p></p>
     <%@ include file="footer/footer.jsp" %>
 </body>

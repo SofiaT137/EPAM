@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet(urlPatterns = "/controller")
+@WebServlet(urlPatterns = "/controller", name = "app")
 public class Controller extends HttpServlet {
 
     private static final String COMMAND_PARAM = "command";
