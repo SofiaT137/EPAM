@@ -19,6 +19,10 @@
 <fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
 <fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
+<fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
+<fmt:message bundle="${loc}" key="invalidLogin" var="invalidLogin"/>
+<fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
 
 <html>
 
@@ -67,25 +71,22 @@
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
         <div class="form-group">
             <label>${Login}</label>
-            <input name="lblLogin" type="text" placeholder="${LoginLabel}" required pattern="^[A-Za-z0-9,.'-]{4,}$" />
+            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]{4,}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${Password}</label>
-            <input name="lblPassword" type="text" placeholder="${PasswordLabel}" required
-                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$" />
+            <input name="lblPassword" type="password" class="input" title="${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>

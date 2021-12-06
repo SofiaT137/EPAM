@@ -49,8 +49,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setObject(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
-            preparedStatement.setString(3,
-                    BCrypt.hashpw(account.getPassword(),BCrypt.gensalt()));
+            preparedStatement.setString(3,account.getPassword());
             preparedStatement.setInt(4, account.getIsActive());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();

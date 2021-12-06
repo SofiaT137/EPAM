@@ -13,6 +13,7 @@
 <fmt:message bundle="${loc}" key="GroupNameLabel" var="GroupNameLabel"/>
 <fmt:message bundle="${loc}" key="btnAddGroup" var="btnAddGroup"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="invalidGroupName" var="invalidGroupName"/>
 
 <html>
 
@@ -57,8 +58,7 @@
     <form action="/controller?command=CREATE_GROUP_COMMAND" method="post">
         <div class="form-group">
             <label>${groupName}</label>
-            <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" required
-                pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
+            <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
         </div>
         <p></p>
         <button type="submit" name="btnAddGroup">${btnAddGroup}</button>

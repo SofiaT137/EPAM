@@ -36,7 +36,7 @@
             <p>${noCourses}</p>
         </c:when>
         <c:otherwise>
-            <table border="1">
+            <table border="1" table style="width:33%" style="text-align:center">
                 <thead>
                     <tr>
                         <th>${courseId}</th>

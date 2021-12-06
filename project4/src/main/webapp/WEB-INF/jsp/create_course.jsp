@@ -13,6 +13,7 @@
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
 <fmt:message bundle="${loc}" key="btnAddCourse" var="btnAddCourse"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="invalidCourseName" var="invalidCourseName"/>
 
 <html>
 
@@ -63,20 +64,17 @@
     <form action="/controller?command=CREATE_COURSE_COMMAND" method="post">
         <div class="form-group">
             <label>${courseName}</label>
-            <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" required
-                pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$" />
+            <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" title="${invalidCourseName}" required pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${courseStartDate}</label>
-            <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required
-                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+            <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${CourseEndDate}</label>
-            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required
-                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
         </div>
         <p></p>
 

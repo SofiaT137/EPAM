@@ -12,6 +12,7 @@ import com.epam.jwd.service.validator.api.Validator;
 import com.epam.jwd.service.validator.impl.AccountValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +29,19 @@ public class AccountService implements Service<AccountDto,Integer> {
     private static final String ACCOUNT_NOT_FOUND_EXCEPTION = "This account is not found!";
     private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any account.";
 
+    public void validate(String login, String password){
+        AccountDto dummy = new AccountDto();
+        dummy.setLogin(login);
+        dummy.setPassword(password);
+        accountValidator.validate(dummy);
+    }
+
+    public String encryptPassword(String password){
+        return BCrypt.hashpw(password,BCrypt.gensalt());
+    }
 
     @Override
     public AccountDto create(AccountDto value) throws ServiceException {
-        accountValidator.validate(value);
         Account account = accountConverter.convert(value);
         accountDAO.save(account);
         return accountConverter.convert(account);
@@ -39,13 +49,11 @@ public class AccountService implements Service<AccountDto,Integer> {
 
     @Override
     public Boolean update(AccountDto value) throws ServiceException {
-        accountValidator.validate(value);
         return accountDAO.update(accountConverter.convert(value));
     }
 
     @Override
     public Boolean delete(AccountDto value) throws ServiceException {
-        accountValidator.validate(value);
         return accountDAO.delete(accountConverter.convert(value));
     }
 

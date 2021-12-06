@@ -40,7 +40,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
 
     private static final String EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is not original for registration. Try again.";
-    private static final String LOGIN_OR_PASSWORD_MISTAKE = "You made a mistake in your login or password. Try again!";
     private static final String ACCESS_DENIED ="Access denied. Please,contact administrator!";
     private static final String ACCOUNT_IS_ORIGINAL = "This account name is original :) !";
 
@@ -129,6 +128,13 @@ public class SelectRegistrationOrLogInCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         String login = requestContext.getParameterFromJSP("lblLogin");
         String password = requestContext.getParameterFromJSP("lblPassword");
+        try{
+            ((AccountService)service).validate(login,password);
+        }catch (Exception exception){
+            LOGGER.error(exception.getMessage());
+            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
+            return ERROR_PAGE_CONTEXT;
+        }
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
@@ -140,6 +146,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,listOfGroups);
 
         String language = (String) requestContext.getAttributeFromSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE);
+
         if (language == null){
             requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
         }
@@ -156,13 +163,20 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 LOGGER.error(ACCOUNT_IS_ORIGINAL);
             }
 
-           AccountDto accountDto = new AccountDto();
+            password = ((AccountService) service).encryptPassword(password);
+
+            AccountDto accountDto = new AccountDto();
             accountDto.setRole(role);
             accountDto.setLogin(login);
             accountDto.setPassword(password);
             accountDto.setIsActive(1);
 
-            accountDto = service.create(accountDto);
+            try{
+                accountDto = service.create(accountDto);
+            }catch (Exception exception){
+                LOGGER.error(exception.getMessage());
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
+            }
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             return REGISTER_USER_CONTEXT;
 

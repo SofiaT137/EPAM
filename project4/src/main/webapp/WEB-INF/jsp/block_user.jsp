@@ -17,6 +17,8 @@
 <fmt:message bundle="${loc}" key="FirstLabel" var="FirstLabel"/>
 <fmt:message bundle="${loc}" key="LastLabel" var="LastLabel"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
+<fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
 
 <html>
 
@@ -68,14 +70,12 @@
     <form action="/controller?command=BLOCK_USER_COMMAND" method="post">
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" placeholder="${FirstLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" placeholder="${LastLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <label>${Group}</label>

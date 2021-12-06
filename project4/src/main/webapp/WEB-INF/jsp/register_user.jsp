@@ -13,6 +13,8 @@
 <fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
 <fmt:message bundle="${loc}" key="Group" var="Group"/>
 <fmt:message bundle="${loc}" key="btnRegister" var="btnRegister"/>
+<fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
+<fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
 
 
 <html>
@@ -29,14 +31,12 @@
     <form action="/controller?command=REGISTER_USER_COMMAND" method="post">
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" placeholder="${FirstNameLabel}" required
-                pattern="^[a-zA-Z '.-]{2,20}*$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" placeholder="${LastNameLabel}" required
-                pattern="^[a-zA-Z '.-]{2,20}*$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">

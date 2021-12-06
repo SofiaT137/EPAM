@@ -76,9 +76,17 @@ public class CreateTeacherCommand implements Command {
         final String role = "Teacher";
 
         if (btnAddTeacher != null) {
+
             String login = requestContext.getParameterFromJSP("lblLogin");
             String password = requestContext.getParameterFromJSP("lblPassword");
 
+            try{
+                ((AccountService)accountService).validate(login,password);
+            }catch (Exception exception){
+                LOGGER.error(exception.getMessage());
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
+                return ERROR_PAGE_CONTEXT;
+            }
 
             AccountDto accountDto = new AccountDto();
 
@@ -90,6 +98,8 @@ public class CreateTeacherCommand implements Command {
                 } catch (DAOException exception) {
                     LOGGER.error(ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 }
+
+            password = ((AccountService) accountService).encryptPassword(password);
 
             try {
                 accountDto.setRole(role);

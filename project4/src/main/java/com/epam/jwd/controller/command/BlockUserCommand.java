@@ -96,10 +96,8 @@ public class BlockUserCommand implements Command {
             return ERROR_PAGE_CONTEXT;
         }
 
-        GroupDto groupDto;
-
         try{
-            groupDto = ((GroupService) groupService).filterGroup(groupName);
+            GroupDto groupDto = ((GroupService) groupService).filterGroup(groupName);
         }catch (DAOException exception){
            LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
             requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
