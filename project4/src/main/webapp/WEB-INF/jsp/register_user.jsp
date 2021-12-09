@@ -21,6 +21,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <%@ include file="header/header.jsp" %>
     <style>
         <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
     </style>
@@ -51,9 +52,6 @@
         <button type="submit" name="btnRegister">${btnRegister}</button>
     </form>
     <p></p>
-    <a href="/controller?command=LOG_OUT_COMMAND">Log out</a>
-</body>
-<%@ include file="footer/footer.jsp" %>
+        <%@ include file="footer/footer.jsp" %>
     </body>
-
 </html>

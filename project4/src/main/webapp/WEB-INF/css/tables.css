@@ -36,8 +36,9 @@ table td {
 table tbody tr:nth-child(even){
 	background: #f8f8f8!important;
 }
+
 footer {
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;

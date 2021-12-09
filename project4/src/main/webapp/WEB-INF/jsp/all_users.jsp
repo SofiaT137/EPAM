@@ -20,6 +20,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <%@ include file="header/header.jsp" %>
     <style>
         <%@include file="/WEB-INF/css/tables.css"%>
         <%@include file="/WEB-INF/css/labels_buttons.css"%>

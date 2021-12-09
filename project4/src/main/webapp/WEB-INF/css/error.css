@@ -4,10 +4,10 @@ body {
 }
 
 .tagStyle{
-   font-weight: bold;
-   font-size: 1.8em;
-    text-align:left;
-    padding:8px;
+    font-weight: bold;
+    font-size: 1.8em;
+    text-align:center;
+    padding:0px;
 }
 
 footer {
@@ -28,13 +28,13 @@ img{
     position:relative;
  }
  .imageicon {
-     font-size: 50px;
-     }
-
+     font-size: 40px;
+     text-align:center;
+ }
 
  .glyphicon {
-position:absolute;width:80px;
-right:0;
-top: 85%;
-     font-size: 50px;
+    position:absolute;width:80px;
+    right:0;
+    top: 85%;
+    font-size: 50px;
  }

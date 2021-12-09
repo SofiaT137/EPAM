@@ -42,23 +42,8 @@ form {
     padding: 70px;
 }
 
-
-.logout{
-     padding: 20px;
-     position:relative;
-}
 .imageicon {
     font-size: 50px;
-}
-
-
-.glyphicon {
-    position:absolute;
-    bottom:5px;
-    right:5px;
-    margin:0;
-    padding:5px 3px;
-    font-size: 60px;
 }
 
 .custom{
@@ -77,5 +62,15 @@ form {
     text-align: center;
     font-size: 150%;
 }
+
+.glyphicon {
+    position:absolute;
+    bottom:5px;
+    right:5px;
+    margin:0;
+    padding:5px 3px;
+    font-size: 45px;
+}
+
 
 

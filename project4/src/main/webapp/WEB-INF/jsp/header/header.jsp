@@ -1,10 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:set var="language" value="${not empty language ? language : pageContext.request.locale}" scope="session"/>
-<fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="resources.locale" var="loc"/>
+<link rel="stylesheet" href="/WEB-INF/css/header.css">
+<header>
+   <div class="logout">
+           <a href="/controller?command=LOG_OUT_COMMAND">
+               <span class="glyphicon glyphicon-log-out"></span>
+           </a>
+       </div>
+ </header>
 
 
 

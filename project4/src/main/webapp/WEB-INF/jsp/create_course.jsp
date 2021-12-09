@@ -19,6 +19,7 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <%@ include file="header/header.jsp" %>
     <style>
         <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
     </style>
@@ -83,11 +84,6 @@
             onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
     </form>
 </body>
-<div class="logout">
-    <a href="/controller?command=LOG_OUT_COMMAND">
-        <span class="glyphicon glyphicon-log-out"></span>
-    </a>
-</div>
 <p></p>
 <%@ include file="footer/footer.jsp" %>
     </body>
