@@ -81,11 +81,11 @@ public class RateStudentCommand implements Command {
         if (btnAddReview !=null) {
 
             List<UserDto> getAllUserByFullName = allCourseUser.stream()
-                    .filter(userDto1 -> userDto1.getFirst_name().equals(firstName) && userDto1.getLast_name().equals(lastName))
+                    .filter(userDto1 -> userDto1.getFirstName().equals(firstName) && userDto1.getLastName().equals(lastName))
                     .collect(Collectors.toList());
 
             UserDto currentStudent = getAllUserByFullName.stream()
-                    .filter(userDto1 -> userDto1.getGroup_name().equals(groupName))
+                    .filter(userDto1 -> userDto1.getGroupName().equals(groupName))
                     .findFirst()
                     .orElse(null);
 

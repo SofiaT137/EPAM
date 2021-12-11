@@ -203,7 +203,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             if (Objects.equals(userRole, ROLE_TEACHER) || Objects.equals(userRole, ROLE_STUDENT)) {
                 List<CourseDto> userCourses = new ArrayList<>();
                 try{
-                    userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
+                    userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
                 }catch (ServiceException exception){
                     LOGGER.info(exception.getMessage());
                 }

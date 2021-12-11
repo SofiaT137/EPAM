@@ -119,7 +119,7 @@ public class DeleteUserCourseCommand implements Command {
 
             List<CourseDto> userCourses = new ArrayList<>();
             try{
-                userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+                userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             }catch (ServiceException exception){
                 LOGGER.info(exception.getMessage());
             }

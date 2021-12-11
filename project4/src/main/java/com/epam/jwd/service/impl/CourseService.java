@@ -57,13 +57,13 @@ public class CourseService implements Service<CourseDto,Integer> {
     public Boolean deleteUserFromCourse(CourseDto courseDto, UserDto userDto){
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
-       return ((CourseDAO)courseDAO).deleteUserFromCourse(courseDto.getName(),userDto.getFirst_name(),userDto.getLast_name());
+       return ((CourseDAO)courseDAO).deleteUserFromCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
     }
 
     public Boolean addUserIntoCourse(CourseDto courseDto, UserDto userDto) {
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
-        return ((CourseDAO)courseDAO).addUserIntoCourse(courseDto.getName(),userDto.getFirst_name(),userDto.getLast_name());
+        return ((CourseDAO)courseDAO).addUserIntoCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
     }
 
     @Override

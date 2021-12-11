@@ -30,7 +30,7 @@
 
 <body>
     <div class="custom">
-        <custom:hello userName="${hello}${current_user.first_name} ${current_user.last_name}" />
+        <custom:hello userName="${hello}${current_user.firstName} ${current_user.lastName}" />
     </div>
     <h3>${youAreMentor}</h3>
         <div class="logout">

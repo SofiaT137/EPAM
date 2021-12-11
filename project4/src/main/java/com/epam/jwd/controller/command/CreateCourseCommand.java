@@ -88,7 +88,7 @@ public class CreateCourseCommand implements Command {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
-            List<CourseDto> coursesAfterAdding = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+            List<CourseDto> coursesAfterAdding = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
 
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterAdding);
             return REFRESH_PAGE_CONTEXT;

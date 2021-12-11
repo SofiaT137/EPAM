@@ -55,13 +55,13 @@
                     <tbody>
                         <tr>
                             <td>
-                                <c:out value="${student.group_name}" />
+                                <c:out value="${student.groupName}" />
                             </td>
                             <td>
-                                <c:out value="${student.first_name}" />
+                                <c:out value="${student.firstName}" />
                             </td>
                             <td>
-                                <c:out value="${student.last_name}" />
+                                <c:out value="${student.lastName}" />
                             </td>
                         </tr>
                     </tbody>

@@ -220,7 +220,7 @@ public class AdminPageCommand implements Command {
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            int accountId = userDto.getAccount_id();
+            int accountId = userDto.getAccountId();
             AccountDto accountDto;
             accountDto = accountService.getById(accountId);
             if (accountDto.getRole().equals(FIND_PEOPLE_WITH_ROLE_TEACHER)){
@@ -234,7 +234,7 @@ public class AdminPageCommand implements Command {
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            if (accountService.getById(userDto.getAccount_id()).getIsActive() == 0){
+            if (accountService.getById(userDto.getAccountId()).getIsActive() == 0){
                 blockedUser.add(userDto);
             }
         }

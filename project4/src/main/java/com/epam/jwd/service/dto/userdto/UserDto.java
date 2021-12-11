@@ -6,59 +6,59 @@ import java.util.Objects;
 
 public class UserDto extends AbstractDto<Integer> {
 
-    private int account_id;
-    private String group_name;
-    private String first_name;
-    private String last_name;
+    private int accountId;
+    private String groupName;
+    private String firstName;
+    private String lastName;
 
-    public UserDto(int account_id, String group_name, String first_name, String last_name) {
-        this.account_id = account_id;
-        this.group_name = group_name;
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public UserDto(int accountId, String groupName, String firstName, String lastName) {
+        this.accountId = accountId;
+        this.groupName = groupName;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public UserDto(Integer id, int account_id, String group_name, int group_id, String first_name, String last_name) {
+    public UserDto(Integer id, int accountId, String groupName, int groupId, String firstName, String lastName)  {
         this.id = id;
-        this.account_id = account_id;
-        this.group_name = group_name;
-        this.first_name = first_name;
-        this.last_name = last_name;
+        this.accountId = accountId;
+        this.groupName = groupName;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public UserDto() {
     }
 
-    public int getAccount_id() {
-        return account_id;
+    public int getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(int account_id) {
-        this.account_id = account_id;
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
-    public String getGroup_name() {
-        return group_name;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroup_name(String group_name) {
-        this.group_name = group_name;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -66,26 +66,26 @@ public class UserDto extends AbstractDto<Integer> {
         if (this == o) return true;
         if (!(o instanceof UserDto)) return false;
         UserDto userDto = (UserDto) o;
-        return Objects.equals(account_id, userDto.getAccount_id())
-                && Objects.equals(group_name, userDto.getGroup_name())
-                && Objects.equals(first_name,userDto.getFirst_name())
-                && Objects.equals(last_name, userDto.getLast_name())
+        return Objects.equals(accountId, userDto.getAccountId())
+                && Objects.equals(groupName, userDto.getGroupName())
+                && Objects.equals(firstName,userDto.getFirstName())
+                && Objects.equals(lastName, userDto.getLastName())
                 && Objects.equals(id,userDto.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(account_id, group_name, first_name,last_name);
+        return Objects.hash(accountId, groupName, firstName,lastName);
     }
 
     @Override
     public String toString() {
         return "UserDto{" +
                 "id=" + id +
-                ", account_id=" + account_id +
-                ", group_name=" + group_name +
-                ", first_name='" + first_name + '\'' +
-                ", last_name='" + last_name + '\'' +
+                ", account_id=" + accountId +
+                ", group_name=" + groupName +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 '}';
     }
 }

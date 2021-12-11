@@ -106,12 +106,12 @@ public class BlockUserCommand implements Command {
 
         UserDto currentUser= userDto.get(0);
 
-         if (!(currentUser.getGroup_name().equals(groupName))){
+         if (!(currentUser.getGroupName().equals(groupName))){
              LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
              requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_THIS_USER_IN_GROUP);
              return ERROR_PAGE_CONTEXT;
         }
-        AccountDto currentAccount = serviceAccount.getById(currentUser.getAccount_id());
+        AccountDto currentAccount = serviceAccount.getById(currentUser.getAccountId());
 
          if (btnBlockUser != null){
             if (currentAccount.getIsActive() == 0){
@@ -161,7 +161,7 @@ public class BlockUserCommand implements Command {
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            if (serviceAccount.getById(userDto.getAccount_id()).getIsActive() == 0){
+            if (serviceAccount.getById(userDto.getAccountId()).getIsActive() == 0){
                 blockedUser.add(userDto);
             }
         }

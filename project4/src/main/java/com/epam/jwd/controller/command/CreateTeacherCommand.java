@@ -119,10 +119,10 @@ public class CreateTeacherCommand implements Command {
                 String lblLastName = requestContext.getParameterFromJSP("lblLastName");
 
                 UserDto userDto = new UserDto();
-                userDto.setAccount_id(accountDto.getId());
-                userDto.setGroup_name(TEACHER);
-                userDto.setFirst_name(lblFirstName);
-                userDto.setLast_name(lblLastName);
+                userDto.setAccountId(accountDto.getId());
+                userDto.setGroupName(TEACHER);
+                userDto.setFirstName(lblFirstName);
+                userDto.setLastName(lblLastName);
 
                 userService.create(userDto);
 
@@ -151,7 +151,7 @@ public class CreateTeacherCommand implements Command {
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            int accountId= userDto.getAccount_id();
+            int accountId= userDto.getAccountId();
             AccountDto accountDto;
             accountDto = accountService.getById(accountId);
             if (accountDto.getRole().equals(TEACHER)){

@@ -96,10 +96,10 @@ public class RegisterUserCommand implements Command {
                 registerAccount = (AccountDto) requestContext.getAttributeFromSession("registerAccount");
 
                 UserDto userDto = new UserDto();
-                userDto.setAccount_id(registerAccount.getId());
-                userDto.setGroup_name(groupDto.getName());
-                userDto.setFirst_name(firstName);
-                userDto.setLast_name(lastName);
+                userDto.setAccountId(registerAccount.getId());
+                userDto.setGroupName(groupDto.getName());
+                userDto.setFirstName(firstName);
+                userDto.setLastName(lastName);
 
                 currentUser = serviceUser.create(userDto);
                 savePoint = true;
@@ -122,7 +122,7 @@ public class RegisterUserCommand implements Command {
 
         List<CourseDto> userCourses = new ArrayList<>();
         try {
-            userCourses = ((CourseService) courseService).getUserAvailableCourses(currentUser.getFirst_name(), currentUser.getLast_name());
+            userCourses = ((CourseService) courseService).getUserAvailableCourses(currentUser.getFirstName(), currentUser.getLastName());
         } catch (ServiceException exception) {
             LOGGER.info(LOGGER_INFO_THE_COURSE_LIST_EMPTY);
         }

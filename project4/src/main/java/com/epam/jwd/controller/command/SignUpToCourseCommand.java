@@ -109,7 +109,7 @@ public class SignUpToCourseCommand implements Command {
                 return ERROR_PAGE_CONTEXT;
             }
             possibleCoursesList.remove(findCourse);
-            List<CourseDto> userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+            List<CourseDto> userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCoursesList);
             return REFRESH_PAGE_CONTEXT;

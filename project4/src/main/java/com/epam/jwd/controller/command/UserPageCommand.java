@@ -86,7 +86,7 @@ public class UserPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE);
 
         String btnSeeResults = requestContext.getParameterFromJSP("btnSeeResults");
         String btnGetCourse = requestContext.getParameterFromJSP("btnGetCourse");
@@ -116,12 +116,12 @@ public class UserPageCommand implements Command {
            return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    private List<ReviewDto> getAllUserReview(int user_id, List<CourseDto> listOfCourses){
+    private List<ReviewDto> getAllUserReview(int userId, List<CourseDto> listOfCourses){
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         for (CourseDto courseDto:
                 listOfCourses ) {
             try{
-                ReviewDto reviewDto = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),user_id);
+                ReviewDto reviewDto = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
                 reviewDtoList.add(reviewDto);
             }catch (DAOException exception){
                 LOGGER.info(exception.getMessage());

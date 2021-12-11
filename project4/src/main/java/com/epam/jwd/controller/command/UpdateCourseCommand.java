@@ -99,7 +99,7 @@ public class UpdateCourseCommand implements Command {
                 return ERROR_PAGE_CONTEXT;
             }
 
-            List<CourseDto> coursesAfterChanging = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+            List<CourseDto> coursesAfterChanging = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterChanging);
             return REFRESH_PAGE_CONTEXT;
 

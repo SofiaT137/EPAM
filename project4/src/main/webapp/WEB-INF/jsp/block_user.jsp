@@ -56,10 +56,10 @@
                                 <c:out value="${user.id}" />
                             </td>
                             <td>
-                                <c:out value="${user.first_name}" />
+                                <c:out value="${user.firstName}" />
                             </td>
                             <td>
-                                <c:out value="${user.last_name}" />
+                                <c:out value="${user.lastName}" />
                             </td>
                         </tr>
                     </tbody>
