@@ -85,7 +85,9 @@ public class CreateGroupCommand implements Command {
             groupDto.setName(groupName);
 
             groupService.create(groupDto);
+
             List<GroupDto> allGroup = groupService.getAll();
+
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
 
             return REFRESH_PAGE_CONTEXT;

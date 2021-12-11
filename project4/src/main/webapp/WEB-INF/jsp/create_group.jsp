@@ -63,8 +63,7 @@
         </div>
         <p></p>
         <button type="submit" name="btnAddGroup">${btnAddGroup}</button>
-        <button type="submit" name="btnGetBack"
-            onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
+        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
