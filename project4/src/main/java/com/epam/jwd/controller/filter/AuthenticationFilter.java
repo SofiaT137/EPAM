@@ -1,6 +1,9 @@
 package com.epam.jwd.controller.filter;
 
+import com.epam.jwd.DAO.impl.ReviewDAO;
 import com.epam.jwd.service.dto.userdto.AccountDto;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,7 +21,7 @@ import java.io.IOException;
 @WebFilter(servletNames = "app")
 public class AuthenticationFilter implements Filter {
 
-    private ServletContext context;
+    private static final Logger LOGGER = LogManager.getLogger(AuthenticationFilter.class);
 
     private static final String AUTHENTICATION_MESSAGE = "AuthenticationFilter initialized";
 
@@ -27,8 +30,8 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        this.context = filterConfig.getServletContext();
-        this.context.log(AUTHENTICATION_MESSAGE);
+        ServletContext context = filterConfig.getServletContext();
+        LOGGER.info(AUTHENTICATION_MESSAGE);
     }
 
     @Override

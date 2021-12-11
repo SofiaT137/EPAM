@@ -7,6 +7,7 @@ import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountService;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -108,11 +109,12 @@ public class CreateTeacherCommand implements Command {
 
                 accountDto = accountService.create(accountDto);
 
-            } catch (Exception exception) {
+            } catch (ServiceException exception) {
                 LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
+
             try {
 
                 String lblFirstName = requestContext.getParameterFromJSP("lblFirstName");

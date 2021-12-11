@@ -23,7 +23,7 @@ public class UserDAO implements DAO<User,Integer> {
     private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, university_group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
-    private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
+    private static final String SQL_UPDATE_USER_BY_ID = "UPDATE user SET account_id = ?, university_group_id = ?, first_name = ? last_name = ? WHERE user_id = ?";
     private static final String SQL_FIND_USER_BY_FULL_NAME = "SELECT * FROM user WHERE first_name = ? and last_name = ?";
     private static final String SQL_FIND_USER_BY_ACCOUNT_ID = "SELECT * FROM user WHERE account_id = ?";
 
@@ -37,42 +37,42 @@ public class UserDAO implements DAO<User,Integer> {
 
     @Override
     public Integer save(User user) {
-            try(Connection connection = connectionPool.takeConnection()){
-                ResultSet resultSet;
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setInt(1,user.getAccount_id());
-                preparedStatement.setInt(2,user.getGroup_id());
-                preparedStatement.setString(3,user.getFirst_name());
-                preparedStatement.setString(4,user.getLast_name());
+        Connection connection = connectionPool.takeConnection();
+            try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)){
+                preparedStatement.setInt(1,user.getAccountId());
+                preparedStatement.setInt(2,user.getGroupId());
+                preparedStatement.setString(3,user.getFirstName());
+                preparedStatement.setString(4,user.getLastName());
                 preparedStatement.executeUpdate();
-                resultSet = preparedStatement.getGeneratedKeys();
+                ResultSet resultSet = preparedStatement.getGeneratedKeys();
                 resultSet.next();
                 int userId = resultSet.getInt(1);
                 user.setId(userId);
-                preparedStatement.close();
                 resultSet.close();
                 return userId;
-            } catch (SQLException | InterruptedException exception) {
+            } catch (SQLException exception) {
                 LOGGER.error(exception.getMessage());
+                throw new DAOException(ERROR_CANNOT_SAVE_USER);
+            } finally {
+                connectionPool.returnConnection(connection);
             }
-            throw new DAOException(ERROR_CANNOT_SAVE_USER);
         }
 
     @Override
     public Boolean update(User user) {
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER_BY_ID);
-            preparedStatement.setInt(1,user.getAccount_id());
-            preparedStatement.setInt(2,user.getGroup_id());
-            preparedStatement.setString(3,user.getFirst_name());
-            preparedStatement.setString(4,user.getLast_name());
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER_BY_ID)) {
+            preparedStatement.setInt(1,user.getAccountId());
+            preparedStatement.setInt(2,user.getGroupId());
+            preparedStatement.setString(3,user.getFirstName());
+            preparedStatement.setString(4,user.getLastName());
             preparedStatement.setInt(5,user.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_UPDATE_USER);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
@@ -84,65 +84,69 @@ public class UserDAO implements DAO<User,Integer> {
     @Override
     public List<User> findAll() {
         List<User> users;
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS)){
             ResultSet resultSet = preparedStatement.executeQuery();
             users = returnUserList(resultSet);
-            preparedStatement.close();
             resultSet.close();
             return users;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_ANY_USER);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public User findById(Integer id) {
             User user;
-            try(Connection connection = connectionPool.takeConnection()) {
-                PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ID);
+            Connection connection = connectionPool.takeConnection();
+            try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ID)) {
                 preparedStatement.setInt(1,id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 user =  returnUserList(resultSet).get(0);
-                preparedStatement.close();
                 resultSet.close();
-            } catch (SQLException | InterruptedException exception) {
+            } catch (SQLException exception) {
                 LOGGER.error(exception.getMessage());
                 throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+            } finally {
+                connectionPool.returnConnection(connection);
             }
             return user;
         }
 
     public List<User> filterUser(String firstName,String lastName){
         List<User> userList;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME)) {
             preparedStatement.setString(1,firstName);
             preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
             userList = returnUserList(resultSet);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return userList;
     }
 
     public User findUserByAccountId(int accountId){
         User user;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ACCOUNT_ID);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ACCOUNT_ID)) {
             preparedStatement.setInt(1,accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
             user = returnUserList(resultSet).get(0);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return user;
     }
@@ -153,10 +157,10 @@ public class UserDAO implements DAO<User,Integer> {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getInt("user_id"));
-                user.setAccount_id(resultSet.getInt("account_id"));
-                user.setGroup_id(resultSet.getInt("university_group_id"));
-                user.setFirst_name(resultSet.getString("first_name"));
-                user.setLast_name(resultSet.getString("last_name"));
+                user.setAccountId(resultSet.getInt("account_id"));
+                user.setGroupId(resultSet.getInt("university_group_id"));
+                user.setFirstName(resultSet.getString("first_name"));
+                user.setLastName(resultSet.getString("last_name"));
                 userList.add(user);
             }
         } catch (SQLException exception) {

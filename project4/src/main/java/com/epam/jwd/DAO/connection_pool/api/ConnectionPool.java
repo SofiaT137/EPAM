@@ -5,6 +5,6 @@ import java.sql.Connection;
 public interface ConnectionPool {
     void initialize();
     void shutDown();
-    Connection takeConnection() throws InterruptedException;
+    Connection takeConnection();
     void returnConnection(Connection connection);
 }

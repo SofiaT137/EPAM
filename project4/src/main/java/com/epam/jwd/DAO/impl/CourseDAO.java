@@ -11,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,8 +52,8 @@ public class CourseDAO implements DAO<Course,Integer> {
 
     @Override
     public Integer save(Course course) {
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,course.getName());
             preparedStatement.setDate(2, course.getStartCourse());
             preparedStatement.setDate(3,course.getEndCourse());
@@ -63,177 +62,183 @@ public class CourseDAO implements DAO<Course,Integer> {
             resultSet.next();
             int courseId = resultSet.getInt(1);
             course.setId(courseId);
-            preparedStatement.close();
             resultSet.close();
             return courseId;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         throw new DAOException(ERROR_CANNOT_SAVE_COURSE);
     }
 
     public Boolean addUserIntoCourse(String courseName, String firstName,String lastName){
-        try(Connection connection = connectionPool.takeConnection()){
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE)){
             Course course = filterCourse(courseName).get(0);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.filterUser(firstName,lastName).get(0);
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_ADD_USER_INTO_COURSE);
             return false;
+        }  finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     public List<Course> getUserAvailableCourses(String firstName,String lastName){
         List<Course> courses = new ArrayList<>();
-        try(Connection connection = connectionPool.takeConnection()){
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES)){
             UserDAO userDAO = new UserDAO();
             User user = userDAO.filterUser(firstName,lastName).get(0);
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES);
             preparedStatement.setInt(1,user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 courses.add(findById(resultSet.getInt("course_id")));
             }
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException  exception) {
             LOGGER.info(ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return courses;
     }
 
     public List<User> getAllUserAtCourse(String courseName){
         List<User> users = new ArrayList<>();
-        try(Connection connection = connectionPool.takeConnection()){
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE)){
             CourseDAO courseDAO = new CourseDAO();
             UserDAO userDAO = new UserDAO();
             Course course = courseDAO.filterCourse(courseName).get(0);
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE);
             preparedStatement.setInt(1,course.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 users.add(userDAO.findById(resultSet.getInt("user_id")));
             }
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.info(ERROR_CANNOT_FIND_PEOPLE_INTO_COURSE);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return users;
     }
 
     public Boolean deleteUserFromCourse(String courseName, String firstName,String lastName){
-        try(Connection connection = connectionPool.takeConnection()){
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE)){
             Course course = filterCourse(courseName).get(0);
             UserDAO userDAO = new UserDAO();
             User user = userDAO.filterUser(firstName,lastName).get(0);
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_DELETE_THIS_PERSON_FROM_COURSE);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     public Boolean deleteAllFieldsUserHasCourseByCourseId(int courseId){
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_FROM_USER_HAS_COURSE);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_FROM_USER_HAS_COURSE)){
             preparedStatement.setInt(1,courseId);
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_DELETE_FORM_USER_HAS_COURSE_WHERE_COURSE_ID);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
 
     @Override
     public Boolean update(Course course) {
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_COURSE_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_COURSE_BY_ID)) {
             preparedStatement.setString(1,course.getName());
             preparedStatement.setDate(2, course.getStartCourse());
             preparedStatement.setDate(3, course.getEndCourse());
             preparedStatement.setInt(4,course.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_UPDATE_COURSE);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
     @Override
     public Boolean delete(Course course) {
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_BY_ID)) {
             preparedStatement.setInt(1,course.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_DELETE_COURSE);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public List<Course> findAll() {
-        List<Course> courses = new ArrayList<>();
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE);
+        List<Course> courses;
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE)){
             ResultSet resultSet = preparedStatement.executeQuery();
             courses = returnCourseList(resultSet);
-            preparedStatement.close();
             resultSet.close();
             return courses;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
-            return null;
+            return null; // !!!!!
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public Course findById(Integer id) {
-        Course course = null;
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID);
+        Course course;
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID)) {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             course = returnCourseList(resultSet).get(0);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
             return null;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return course;
     }
 
     public List<Course> filterCourse(String name){
         List<Course> courseList;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME)) {
             preparedStatement.setString(1,name);
             ResultSet resultSet = preparedStatement.executeQuery();
             courseList = returnCourseList(resultSet);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME);
             return null;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return courseList;
     }

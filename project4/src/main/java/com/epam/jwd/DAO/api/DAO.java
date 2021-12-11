@@ -16,14 +16,14 @@ public interface DAO <T extends AbstractEntity<K>,K> {
      * @param entity object
      * @return id saved object
      */
-    K save(T entity);
+    K save(T entity) ;
 
     /**
      * Update
      * @param entity object
      * @return was true
      */
-    Boolean update(T entity);
+    Boolean update(T entity) ;
 
     /**
      * delete object

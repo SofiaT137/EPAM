@@ -1,6 +1,8 @@
 package com.epam.jwd.DAO.connection_pool.impl;
 
 import com.epam.jwd.DAO.connection_pool.api.ConnectionPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 import java.sql.Connection;
@@ -20,20 +22,24 @@ public class ConnectionPollImpl implements ConnectionPool {
 
     private boolean initialized = false;
 
+    private static final Logger LOGGER = LogManager.getLogger(ConnectionPollImpl.class);
+
+    private static final String CONNECTION_WAS_CREATED = "Connection was created" ;
+
     private final BlockingQueue<ProxyConnection> availableConnections = new LinkedBlockingDeque<>();
     private final BlockingQueue<ProxyConnection> givenAwayConnections = new LinkedBlockingDeque<>();
 
-    private static ConnectionPool INSTANCE;
+    private static ConnectionPool instance;
 
     private ConnectionPollImpl() {
     }
 
     public static ConnectionPool getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new ConnectionPollImpl();
-            INSTANCE.initialize();
+        if (instance == null) {
+            instance = new ConnectionPollImpl();
+            instance.initialize();
         }
-        return INSTANCE;
+        return instance;
     }
 
     @Override
@@ -41,17 +47,17 @@ public class ConnectionPollImpl implements ConnectionPool {
         if (!initialized){
             try{
                 Class.forName(DRIVER);
-            } catch (ClassNotFoundException e) {
-                //logger
+            } catch (ClassNotFoundException exception) {
+                LOGGER.error(exception.getMessage());
             }
             try{
                 for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
                     createConnection();
                 }
                 initialized = true;
-                //log info connections was created
+                LOGGER.info(CONNECTION_WAS_CREATED);
             } catch (SQLException exception) {
-                // logger
+                LOGGER.info(exception.getMessage());
             }
         }
     }
@@ -65,21 +71,25 @@ public class ConnectionPollImpl implements ConnectionPool {
     }
 
     @Override
-    public synchronized Connection takeConnection() throws InterruptedException {
+    public synchronized Connection takeConnection()  {
         while(availableConnections.isEmpty()) {
-            this.wait();
+            try {
+                wait();
+            } catch (InterruptedException exception) {
+                LOGGER.error(exception.getMessage());
+                Thread.currentThread().interrupt();
+            }
         }
         final ProxyConnection connection = availableConnections.poll();
         givenAwayConnections.add(connection);
         return connection;
     }
 
-
     @Override
     public synchronized void returnConnection(Connection connection) {
         if (connection != null && givenAwayConnections.remove((ProxyConnection) connection)) {
             availableConnections.add((ProxyConnection) connection);
-            notifyAll();
+            this.notifyAll();
         }
     }
 
@@ -104,7 +114,7 @@ public class ConnectionPollImpl implements ConnectionPool {
         try {
             connection.realClose();
         }catch (SQLException exception){
-            //log
+            LOGGER.error(exception.getMessage());
         }
     }
 }

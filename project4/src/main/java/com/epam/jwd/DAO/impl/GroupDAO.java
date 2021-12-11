@@ -44,89 +44,92 @@ public class GroupDAO implements DAO<Group,Integer> {
 
     @Override
     public Integer save(Group group) {
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_GROUP, Statement.RETURN_GENERATED_KEYS);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_GROUP, Statement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,group.getName());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             int groupId = resultSet.getInt(1);
             group.setId(groupId);
-            preparedStatement.close();
             resultSet.close();
             return groupId;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(CANNOT_SAVE_THIS_GROUP);
             throw new DAOException(CANNOT_SAVE_THIS_GROUP);
+        }  finally {
+            connectionPool.returnConnection(connection);
         }
     }
     @Override
     public Boolean update(Group group) {
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_GROUP_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_GROUP_BY_ID)) {
             preparedStatement.setString(1,group.getName());
             preparedStatement.setInt(2,group.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(CANNOT_UPDATE_THIS_GROUP);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
 
     @Override
     public Boolean delete(Group group) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_GROUP_BY_NAME);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_GROUP_BY_NAME)) {
             preparedStatement.setString(1, group.getName());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(CANNOT_DELETE_THIS_GROUP);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public List<Group> findAll() {
         List<Group> groups;
-        try(Connection connection = connectionPool.takeConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_GROUP);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_GROUP)){
             ResultSet resultSet = preparedStatement.executeQuery();
             groups = returnGroupList(resultSet);
-            preparedStatement.close();
             resultSet.close();
             return groups;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(NO_GROUPS_AT_UNIVERSITY);
             throw new DAOException(NO_GROUPS_AT_UNIVERSITY);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public Group findById(Integer id) {
         Group group;
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_ID)) {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             group =  returnGroupList(resultSet).get(0);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(CANNOT_FIND_THIS_GROUP_BY_ID);
             throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_ID);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return group;
     }
 
     public Group filterGroup(String groupName){
         Group group;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_NAME);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_NAME)) {
             preparedStatement.setString(1,groupName);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Group> list = returnGroupList(resultSet);
@@ -134,11 +137,12 @@ public class GroupDAO implements DAO<Group,Integer> {
                 throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_NAME);
             }
             group = list.get(0);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(CANNOT_FIND_THIS_GROUP_BY_NAME);
             throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_NAME);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return group;
     }

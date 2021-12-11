@@ -31,36 +31,38 @@ public class RoleDAO implements RoleDao {
 
     @Override
     public int getIdByRoleName(String roleName) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_NAME);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_NAME)) {
             preparedStatement.setString(1, roleName);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return resultSet.getInt(ROLE_ID);
             }
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ROLE_BY_NAME);
             throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_NAME);
+        }  finally {
+            connectionPool.returnConnection(connection);
         }
         throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_NAME);
     }
 
     @Override
     public Role getRoleById(int roleId) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_ID)) {
             preparedStatement.setInt(1, roleId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return Role.getByName(resultSet.getString(ROLE_NAME));
             }
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ROLE_BY_ID);
             throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_ID);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_ID);
     }

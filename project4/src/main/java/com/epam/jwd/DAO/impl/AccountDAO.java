@@ -44,104 +44,107 @@ public class AccountDAO implements DAO<Account, Integer>  {
 
     @Override
     public Integer save(Account account) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            ResultSet resultSet;
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3,account.getPassword());
             preparedStatement.setInt(4, account.getIsActive());
             preparedStatement.executeUpdate();
-            resultSet = preparedStatement.getGeneratedKeys();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             int accountId = resultSet.getInt(1);
             account.setId(accountId);
-            preparedStatement.close();
             resultSet.close();
             return accountId;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_SAVE_ACCOUNT + ": " + exception.getMessage() );
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public Boolean update(Account account) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_BY_ID)) {
             preparedStatement.setInt(1, roleDAO.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.setInt(4, account.getIsActive());
             preparedStatement.setInt(5, account.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_UPDATE_ACCOUNT);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
-    public Boolean delete(Account account) {
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT_BY_ID);
+    public Boolean delete(Account account){
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT_BY_ID)) {
             preparedStatement.setInt(1, account.getId());
-            Boolean result = preparedStatement.executeUpdate() > 0;
-            preparedStatement.close();
-            return result;
-        } catch (SQLException | InterruptedException exception) {
+            return preparedStatement.executeUpdate() > 0;
+        } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_DELETE_ACCOUNT);
             return false;
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
-    public List<Account> findAll() {
+    public List<Account> findAll(){
         List<Account> accounts;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_ACCOUNTS);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_ACCOUNTS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             accounts = returnAccountList(resultSet);
-            preparedStatement.close();
             resultSet.close();
             return accounts;
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_ACCOUNT);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
     }
 
     @Override
     public Account findById (Integer id){
         Account account;
-        try(Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNT_BY_ID);
+        Connection connection = connectionPool.takeConnection();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNT_BY_ID)) {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             account = findAccount(resultSet);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception){
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_ACCOUNT);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return account;
     }
 
     public Account findAccountByLogin(String login){
         Account account;
-        try (Connection connection = connectionPool.takeConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN);
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_LOGIN)) {
             preparedStatement.setString(1,login);
             ResultSet resultSet = preparedStatement.executeQuery();
             account = findAccount(resultSet);
-            preparedStatement.close();
             resultSet.close();
-        } catch (SQLException | InterruptedException exception) {
+        } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN);
+        } finally {
+            connectionPool.returnConnection(connection);
         }
         return account;
     }
@@ -183,8 +186,6 @@ public class AccountDAO implements DAO<Account, Integer>  {
         }
         return list.get(0);
     }
-
-
 }
 
 

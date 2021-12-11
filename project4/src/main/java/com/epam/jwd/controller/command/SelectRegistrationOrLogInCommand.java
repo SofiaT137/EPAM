@@ -142,7 +142,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
-        List<GroupDto> listOfGroups = groupService.getAll();
+        List<GroupDto> listOfGroups;
+        listOfGroups = groupService.getAll();
         GroupDto adminGroup = ((GroupService)groupService).filterGroup(ROLE_ADMIN);
         GroupDto teacherGroup = ((GroupService)groupService).filterGroup(ROLE_TEACHER);
         listOfGroups.remove(adminGroup);
@@ -175,7 +176,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
             try{
                 accountDto = service.create(accountDto);
-            }catch (Exception exception){
+            }catch (ServiceException exception){
                 LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
             }

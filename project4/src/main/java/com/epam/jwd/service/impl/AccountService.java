@@ -83,12 +83,12 @@ public class AccountService implements Service<AccountDto,Integer> {
         return accountDtoList;
     }
 
-    public AccountDto filterAccount(String login,String password){
+    public AccountDto filterAccount(String login,String password) {
         Account account = ((AccountDAO)accountDAO).filterAccount(login,password);
         return accountConverter.convert(account);
     }
 
-    public AccountDto getAccount(String login){
+    public AccountDto getAccount(String login) {
         Account account = ((AccountDAO)accountDAO).findAccountByLogin(login);
         return accountConverter.convert(account);
     }
