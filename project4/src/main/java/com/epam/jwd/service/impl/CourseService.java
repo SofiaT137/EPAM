@@ -3,7 +3,6 @@ package com.epam.jwd.service.impl;
 import com.epam.jwd.DAO.api.DAO;
 import com.epam.jwd.DAO.impl.CourseDAO;
 import com.epam.jwd.DAO.model.course.Course;
-import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.CourseConverter;
@@ -44,8 +43,8 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseConverter.convert(course);
     }
 
-    public List<CourseDto> getUserAvailableCourses(String first_name,String last_name){
-        List<Course> courseList = ((CourseDAO) courseDAO).getUserAvailableCourses(first_name,last_name);
+    public List<CourseDto> getUserAvailableCourses(String firstName,String lastName){
+        List<Course> courseList = ((CourseDAO) courseDAO).getUserAvailableCourses(firstName,lastName);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (courseList.isEmpty()){
             LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
@@ -106,8 +105,8 @@ public class CourseService implements Service<CourseDto,Integer> {
     }
 
 
-    public List<CourseDto> filterCourse(String course_name){
-        List<Course> daoGetAll = ((CourseDAO)courseDAO).filterCourse(course_name);
+    public List<CourseDto> filterCourse(String courseName){
+        List<Course> daoGetAll = ((CourseDAO)courseDAO).filterCourse(courseName);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_COURSE_EXCEPTION);
@@ -117,8 +116,8 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseDtoList;
     }
 
-    public Boolean deleteAllCourseInUSERHAsCourse(int course_id){
-        return ((CourseDAO)courseDAO).deleteAllFieldsUserHasCourseByCourseId(course_id);
+    public Boolean deleteAllCourseInUSERHAsCourse(int courseId){
+        return ((CourseDAO)courseDAO).deleteAllFieldsUserHasCourseByCourseId(courseId);
     }
 
 }

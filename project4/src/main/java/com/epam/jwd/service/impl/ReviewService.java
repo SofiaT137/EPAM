@@ -76,8 +76,8 @@ public class ReviewService implements Service<ReviewDto,Integer> {
         return reviewDtoList;
     }
 
-    public List<ReviewDto> filterReview(int user_id) {
-        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).filterReview(user_id);
+    public List<ReviewDto> filterReview(int userId) {
+        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).filterReview(userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);
@@ -87,13 +87,13 @@ public class ReviewService implements Service<ReviewDto,Integer> {
         return reviewDtoList;
     }
 
-    public ReviewDto findReviewByCourseIdAndUserId(int course_id,int user_id) {
-        Review review = ((ReviewDAO)reviewDAO).findReviewByCourseIdAndUserId(course_id,user_id);
+    public ReviewDto findReviewByCourseIdAndUserId(int courseId,int userId) {
+        Review review = ((ReviewDAO)reviewDAO).findReviewByCourseIdAndUserId(courseId,userId);
         return reviewConverter.convert(review);
     }
 
-    public List<ReviewDto> findReviewByCourseId(int course_id) {
-        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).findReviewByCourseId(course_id);
+    public List<ReviewDto> findReviewByCourseId(int courseId) {
+        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).findReviewByCourseId(courseId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);

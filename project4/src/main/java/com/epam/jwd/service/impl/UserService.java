@@ -81,8 +81,8 @@ public class UserService implements Service<UserDto,Integer> {
         return userDtoList;
     }
 
-    public List<UserDto> filterUser(String first_name,String last_name){
-        List<User> daoGetAll = ((UserDAO)userDAO).filterUser(first_name,last_name);
+    public List<UserDto> filterUser(String firstName,String lastName){
+        List<User> daoGetAll = ((UserDAO)userDAO).filterUser(firstName,lastName);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
@@ -92,13 +92,13 @@ public class UserService implements Service<UserDto,Integer> {
         return userDtoList;
     }
 
-    public UserDto findUserByAccountId(int account_id){
-        User user = ((UserDAO)userDAO).findUserByAccountId(account_id);
+    public UserDto findUserByAccountId(int accountId){
+        User user = ((UserDAO)userDAO).findUserByAccountId(accountId);
         return userConverter.convert(user);
     }
 
-    public List<UserDto> findALLStudentOnThisCourse(String course_name){
-        List<User> daoGetAllStudent = ((CourseDAO)courseDAO).getAllUserAtCourse(course_name);
+    public List<UserDto> findALLStudentOnThisCourse(String courseName){
+        List<User> daoGetAllStudent = ((CourseDAO)courseDAO).getAllUserAtCourse(courseName);
         List<UserDto> dtoGetAllStudent = new ArrayList<>();
         daoGetAllStudent.forEach(student -> dtoGetAllStudent.add(userConverter.convert(student)));
         return dtoGetAllStudent;
