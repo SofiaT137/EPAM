@@ -54,11 +54,11 @@ public class AccountDAO implements DAO<Account, Integer>  {
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            int account_id = resultSet.getInt(1);
-            account.setId(account_id);
+            int accountId = resultSet.getInt(1);
+            account.setId(accountId);
             preparedStatement.close();
             resultSet.close();
-            return account_id;
+            return accountId;
         } catch (SQLException | InterruptedException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_SAVE_ACCOUNT + ": " + exception.getMessage() );
@@ -175,7 +175,7 @@ public class AccountDAO implements DAO<Account, Integer>  {
 
     private Account findAccount(ResultSet resultSet){
         List<Account> list = (returnAccountList(resultSet));
-        if (list.size() == 0){
+        if (list.isEmpty()){
             throw new DAOException(ERROR_CANNOT_FIND_THIS_ACCOUNT);
         }
         else if (list.size() > 1){

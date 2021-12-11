@@ -4,5 +4,5 @@ import com.epam.jwd.DAO.model.user.Role;
 
 public interface RoleDao {
     int getIdByRoleName(String roleName);
-    Role getRoleById(int role_id);
+    Role getRoleById(int roleId);
 }

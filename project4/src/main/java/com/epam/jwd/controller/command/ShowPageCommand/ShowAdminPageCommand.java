@@ -3,10 +3,8 @@ package com.epam.jwd.controller.command.ShowPageCommand;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
-import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
-import java.util.List;
 
 public class ShowAdminPageCommand implements Command {
 

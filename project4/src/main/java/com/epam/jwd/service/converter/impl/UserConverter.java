@@ -12,12 +12,12 @@ public class UserConverter implements Converter<User, UserDto,Integer> {
     @Override
     public User convert(UserDto userDto) {
         int groupId = groupDAO.filterGroup(userDto.getGroupName()).getId();
-        return new User(userDto.getId(),userDto.getAccountId(),groupId,userDto.getFirstName(), userDto.getLastName());
+        return new User(userDto.getId(),userDto.getAccountId(),groupId,userDto.getFirstName(),userDto.getLastName());
     }
 
     @Override
     public UserDto convert(User user) {
-        String groupName = groupDAO.findById(user.getGroup_id()).getName();
-        return new UserDto(user.getId(),user.getAccount_id(),groupName,user.getGroup_id(),user.getFirst_name(),user.getLast_name());
+        String groupName = groupDAO.findById(user.getGroupId()).getName();
+        return new UserDto(user.getId(),user.getAccountId(),groupName,user.getGroupId(),user.getFirstName(),user.getLastName());
     }
 }

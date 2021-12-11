@@ -7,43 +7,43 @@ import java.util.Objects;
 
 public class Review extends AbstractEntity<Integer> {
 
-    private int user_id;
-    private int course_id;
+    private int userId;
+    private int courseId;
     private int grade;
     private String review;
 
     public Review() {
     }
 
-    public Review(Integer id, int user_id, int course_id, int grade, String review) {
+    public Review(Integer id, int userId, int courseId, int grade, String review) {
         super(id);
-        this.user_id = user_id;
-        this.course_id = course_id;
+        this.userId = userId;
+        this.courseId = courseId;
         this.grade = grade;
         this.review = review;
     }
 
-    public Review(int user_id, int course_id, int grade, String review) {
-        this.user_id = user_id;
-        this.course_id = course_id;
+    public Review(int userId, int courseId, int grade, String review) {
+        this.userId = userId;
+        this.courseId = courseId;
         this.grade = grade;
         this.review = review;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getCourse_id() {
-        return course_id;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setCourse_id(int course_id) {
-        this.course_id = course_id;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public int getGrade() {
@@ -67,8 +67,8 @@ public class Review extends AbstractEntity<Integer> {
         if (this == o) return true;
         if (!(o instanceof Review)) return false;
         Review review1 = (Review) o;
-        return user_id == review1.getUser_id()
-                && course_id == review1.getCourse_id()
+        return userId == review1.getUserId()
+                && courseId == review1.getCourseId()
                 && grade == review1.getGrade()
                 && Objects.equals(review, review1.getReview())
                 && Objects.equals(id,review1.getId());
@@ -76,15 +76,15 @@ public class Review extends AbstractEntity<Integer> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(user_id, course_id, grade, review,id);
+        return Objects.hash(userId, courseId, grade, review,id);
     }
 
     @Override
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", course_id=" + course_id +
+                ", user_id=" + userId +
+                ", course_id=" + courseId +
                 ", grade=" + grade +
                 ", review='" + review + '\'' +
                 '}';

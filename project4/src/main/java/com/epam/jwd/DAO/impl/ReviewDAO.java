@@ -46,18 +46,18 @@ public class ReviewDAO implements DAO<Review, Integer> {
     public Integer save(Review review) {
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_REVIEW, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1,review.getUser_id());
-            preparedStatement.setInt(2,review.getCourse_id());
+            preparedStatement.setInt(1,review.getUserId());
+            preparedStatement.setInt(2,review.getCourseId());
             preparedStatement.setInt(3,review.getGrade());
             preparedStatement.setString(4,review.getReview());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            int review_id = resultSet.getInt(1);
-            review.setId(review_id);
+            int reviewId = resultSet.getInt(1);
+            review.setId(reviewId);
             preparedStatement.close();
             resultSet.close();
-            return review_id;
+            return reviewId;
         } catch (SQLException | InterruptedException exception) {
             LOGGER.error(ERROR_CANNOT_SAVE_REVIEW);
             throw new DAOException(ERROR_CANNOT_SAVE_REVIEW);
@@ -68,8 +68,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
     public Boolean update(Review review) {
         try(Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REVIEW_BY_ID);
-            preparedStatement.setInt(1,review.getUser_id());
-            preparedStatement.setInt(2,review.getCourse_id());
+            preparedStatement.setInt(1,review.getUserId());
+            preparedStatement.setInt(2,review.getCourseId());
             preparedStatement.setInt(3,review.getGrade());
             preparedStatement.setString(4,review.getReview());
             preparedStatement.setInt(5,review.getId());
@@ -130,11 +130,11 @@ public class ReviewDAO implements DAO<Review, Integer> {
     }
 
 
-    public List<Review> filterReview(int user_id){
+    public List<Review> filterReview(int userId){
         List<Review> reviewList;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_USER_ID);
-            preparedStatement.setInt(1,user_id);
+            preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             reviewList = returnReviewList(resultSet);
             preparedStatement.close();
@@ -152,8 +152,8 @@ public class ReviewDAO implements DAO<Review, Integer> {
             while (resultSet.next()) {
                 Review review = new Review();
                 review.setId(resultSet.getInt("review_id"));
-                review.setUser_id(resultSet.getInt("user_id"));
-                review.setCourse_id(resultSet.getInt("course_id"));
+                review.setUserId(resultSet.getInt("user_id"));
+                review.setCourseId(resultSet.getInt("course_id"));
                 review.setGrade(resultSet.getInt("grade"));
                 review.setReview(resultSet.getString("review"));
                 reviewList.add(review);
@@ -165,15 +165,15 @@ public class ReviewDAO implements DAO<Review, Integer> {
         return reviewList;
     }
 
-    public Review findReviewByCourseIdAndUserId(int course_id,int user_id){
+    public Review findReviewByCourseIdAndUserId(int courseId,int userId){
         List<Review> list;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_USER_ID_COURSE_ID);
-            preparedStatement.setInt(1,user_id);
-            preparedStatement.setInt(2,course_id);
+            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(2,courseId);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = (returnReviewList(resultSet));
-            if (list.size() != 0){
+            if (!(list.isEmpty())){
                 return list.get(0);
             }
             preparedStatement.close();
@@ -184,14 +184,14 @@ public class ReviewDAO implements DAO<Review, Integer> {
         throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
     }
 
-    public List<Review> findReviewByCourseId(int course_id){
+    public List<Review> findReviewByCourseId(int courseId){
         List<Review> list;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_REVIEW_BY_COURSE_ID);
-            preparedStatement.setInt(1,course_id);
+            preparedStatement.setInt(1,courseId);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = returnReviewList(resultSet);
-            if (list.size() == 0){
+            if (list.isEmpty()){
                 throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
             }
             preparedStatement.close();

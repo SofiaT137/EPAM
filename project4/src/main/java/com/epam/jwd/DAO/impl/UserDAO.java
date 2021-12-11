@@ -47,11 +47,11 @@ public class UserDAO implements DAO<User,Integer> {
                 preparedStatement.executeUpdate();
                 resultSet = preparedStatement.getGeneratedKeys();
                 resultSet.next();
-                int user_id = resultSet.getInt(1);
-                user.setId(user_id);
+                int userId = resultSet.getInt(1);
+                user.setId(userId);
                 preparedStatement.close();
                 resultSet.close();
-                return user_id;
+                return userId;
             } catch (SQLException | InterruptedException exception) {
                 LOGGER.error(exception.getMessage());
             }
@@ -114,12 +114,12 @@ public class UserDAO implements DAO<User,Integer> {
             return user;
         }
 
-    public List<User> filterUser(String first_name,String last_name){
+    public List<User> filterUser(String firstName,String lastName){
         List<User> userList;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME);
-            preparedStatement.setString(1,first_name);
-            preparedStatement.setString(2,last_name);
+            preparedStatement.setString(1,firstName);
+            preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
             userList = returnUserList(resultSet);
             preparedStatement.close();
@@ -131,11 +131,11 @@ public class UserDAO implements DAO<User,Integer> {
         return userList;
     }
 
-    public User findUserByAccountId(int account_id){
+    public User findUserByAccountId(int accountId){
         User user;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_ACCOUNT_ID);
-            preparedStatement.setInt(1,account_id);
+            preparedStatement.setInt(1,accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
             user = returnUserList(resultSet).get(0);
             preparedStatement.close();

@@ -16,7 +16,7 @@ public class ConnectionPollImpl implements ConnectionPool {
     public static final String USER = "root";
     public static final String PASSWORD = "13041993Sofia";
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final static int INITIAL_POOL_SIZE = 5;
+    private static final int INITIAL_POOL_SIZE = 5;
 
     private boolean initialized = false;
 
@@ -77,11 +77,9 @@ public class ConnectionPollImpl implements ConnectionPool {
 
     @Override
     public synchronized void returnConnection(Connection connection) {
-        if (connection != null) {
-            if (givenAwayConnections.remove((ProxyConnection) connection)) {
-                availableConnections.add((ProxyConnection) connection);
-                notifyAll();
-            }
+        if (connection != null && givenAwayConnections.remove((ProxyConnection) connection)) {
+            availableConnections.add((ProxyConnection) connection);
+            notifyAll();
         }
     }
 

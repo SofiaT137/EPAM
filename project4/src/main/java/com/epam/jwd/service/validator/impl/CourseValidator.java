@@ -15,10 +15,10 @@ public class CourseValidator implements Validator<CourseDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(CourseValidator.class);
 
-    private static final String COURSE_NAME_REGEX = "^[a-zA-Zа-яА-я\\s'+.-]*$";
+    private static final String COURSE_NAME_REGEX = "^[a-zA-Zа-яА-Я\\s'+.-]*$";
 
-    private final static Integer MIN_NAME_LENGTH = 2;
-    private final static Integer MAX_NAME_LENGTH = 30;
+    private static final  Integer MIN_NAME_LENGTH = 2;
+    private static final  Integer MAX_NAME_LENGTH = 30;
 
     private static final String NAME_LENGTH_EXCEPTION = "The name length must be from 2 to 30 characters.";
     private static final String DATE_SUBTRACTION_EXCEPTION = "The course's end date must be greater than start date.";
@@ -44,8 +44,8 @@ public class CourseValidator implements Validator<CourseDto> {
         }
     }
 
-    private void validateDate(final Date start_date,final Date end_date) throws ServiceException {
-        if (start_date.after(end_date)){
+    private void validateDate(final Date startDate,final Date endDate) throws ServiceException {
+        if (startDate.after(endDate)){
             LOGGER.error(DATE_SUBTRACTION_EXCEPTION);
             throw new ServiceException(DATE_SUBTRACTION_EXCEPTION);
         }

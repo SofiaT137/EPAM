@@ -31,7 +31,6 @@ public class RoleDAO implements RoleDao {
 
     @Override
     public int getIdByRoleName(String roleName) {
-        Role role = null;
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_NAME);
             preparedStatement.setString(1, roleName);
@@ -49,11 +48,10 @@ public class RoleDAO implements RoleDao {
     }
 
     @Override
-    public Role getRoleById(int role_id) {
-        Role role = null;
+    public Role getRoleById(int roleId) {
         try (Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ROLE_BY_ID);
-            preparedStatement.setInt(1, role_id);
+            preparedStatement.setInt(1, roleId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 return Role.getByName(resultSet.getString(ROLE_NAME));

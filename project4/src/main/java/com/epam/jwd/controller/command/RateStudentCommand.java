@@ -96,8 +96,8 @@ public class RateStudentCommand implements Command {
             }
 
             ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setUser_id(currentStudent.getId());
-            reviewDto.setCourse_name(courseDto.getName());
+            reviewDto.setUserId(currentStudent.getId());
+            reviewDto.setCourseName(courseDto.getName());
             reviewDto.setGrade(Integer.parseInt(grade));
             reviewDto.setReview(review);
 

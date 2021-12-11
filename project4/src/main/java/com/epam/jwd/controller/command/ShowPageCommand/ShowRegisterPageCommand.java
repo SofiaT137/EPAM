@@ -4,7 +4,6 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
-import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 

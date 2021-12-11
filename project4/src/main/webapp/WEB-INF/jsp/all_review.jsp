@@ -49,10 +49,10 @@
                                 <c:out value="${review.id}" />
                             </td>
                             <td>
-                                <c:out value="${review.user_id}" />
+                                <c:out value="${review.userId}" />
                             </td>
                             <td>
-                                <c:out value="${review.course_name}" />
+                                <c:out value="${review.courseName}" />
                             </td>
                             <td>
                                 <c:out value="${review.grade}" />

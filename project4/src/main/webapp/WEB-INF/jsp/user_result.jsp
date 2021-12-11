@@ -43,7 +43,7 @@
                     <tbody>
                         <tr>
                             <td>
-                                <c:out value="${review.course_name}" />
+                                <c:out value="${review.courseName}" />
                             </td>
                             <td>
                                 <c:out value="${review.grade}" />

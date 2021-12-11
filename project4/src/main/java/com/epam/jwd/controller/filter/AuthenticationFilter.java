@@ -19,7 +19,10 @@ import java.io.IOException;
 public class AuthenticationFilter implements Filter {
 
     private ServletContext context;
+
     private static final String AUTHENTICATION_MESSAGE = "AuthenticationFilter initialized";
+
+    private static final String INDEX_JSP = "/index.jsp";
 
 
     @Override
@@ -39,17 +42,17 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = req.getSession(false);
 
         if (session == null && commandName != null){
-            res.sendRedirect("/index.jsp");
+            res.sendRedirect(INDEX_JSP);
             return;
         }
 
-        if (session != null && !(uri.endsWith("/index.jsp"))){
+        if (session != null && !(uri.endsWith(INDEX_JSP))){
             AccountDto accountDto = (AccountDto)session.getAttribute("registerAccount");
             if (accountDto == null && (commandName == null
                                             || !(commandName.equals("SELECT_REGISTRATION_OR_LOG_IN")
                                                 || commandName.equals("SHOW_ERROR_PAGE_COMMAND")
                                                 || commandName.equals("CHANGE_LANGUAGE_COMMAND")))){
-                res.sendRedirect("/index.jsp");
+                res.sendRedirect(INDEX_JSP);
                 return;
             }
         }

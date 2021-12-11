@@ -16,8 +16,8 @@ public class AccountValidator implements Validator<AccountDto> {
     private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$";
     private static final String LOGIN_REGEX  = "^[A-Za-z0-9,.'-]+$";
 
-    private final static Integer MIN_PASSWORD_LENGTH = 8;
-    private final static Integer MIN_LOGIN_LENGTH = 4;
+    private static final Integer MIN_PASSWORD_LENGTH = 8;
+    private static final  Integer MIN_LOGIN_LENGTH = 4;
 
     private static final String PASSWORD_LENGTH_EXCEPTION = "The length must be more than 8 character";
     private static final String PASSWORD_NAME_EXCEPTION = "Please, enter the valid password.";

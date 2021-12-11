@@ -50,11 +50,11 @@ public class GroupDAO implements DAO<Group,Integer> {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            int group_id = resultSet.getInt(1);
-            group.setId(group_id);
+            int groupId = resultSet.getInt(1);
+            group.setId(groupId);
             preparedStatement.close();
             resultSet.close();
-            return group_id;
+            return groupId;
         } catch (SQLException | InterruptedException exception) {
             LOGGER.error(CANNOT_SAVE_THIS_GROUP);
             throw new DAOException(CANNOT_SAVE_THIS_GROUP);
@@ -130,7 +130,7 @@ public class GroupDAO implements DAO<Group,Integer> {
             preparedStatement.setString(1,groupName);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Group> list = returnGroupList(resultSet);
-            if (list.size() == 0){
+            if (list.isEmpty()){
                 throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_NAME);
             }
             group = list.get(0);

@@ -15,8 +15,8 @@ public class GroupValidator implements Validator<GroupDto> {
 
     private static final String GROUP_NAME_REGEX  = "^[A-Za-z0-9,.'-]+$";
 
-    private final static Integer MIN_NAME_LENGTH = 3;
-    private final static Integer MAX_NAME_LENGTH = 20;
+    private static final Integer MIN_NAME_LENGTH = 3;
+    private static final Integer MAX_NAME_LENGTH = 20;
 
     private static final String NAME_LENGTH_EXCEPTION = "The length must be more than 3 character and less that 20 characters";
     private static final String GROUP_NAME_EXCEPTION = "Please, enter the valid group name.";

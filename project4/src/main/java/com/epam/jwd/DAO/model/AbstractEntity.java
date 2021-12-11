@@ -3,11 +3,11 @@ package com.epam.jwd.DAO.model;
 public abstract class AbstractEntity<T> {
     protected T id;
 
-    public AbstractEntity() {
+    protected AbstractEntity() {
 
     }
 
-    public AbstractEntity(T id) {
+    protected AbstractEntity(T id) {
         this.id = id;
     }
 

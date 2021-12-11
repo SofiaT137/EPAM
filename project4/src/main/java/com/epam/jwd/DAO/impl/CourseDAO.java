@@ -61,22 +61,22 @@ public class CourseDAO implements DAO<Course,Integer> {
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            int course_id = resultSet.getInt(1);
-            course.setId(course_id);
+            int courseId = resultSet.getInt(1);
+            course.setId(courseId);
             preparedStatement.close();
             resultSet.close();
-            return course_id;
+            return courseId;
         } catch (SQLException | InterruptedException exception) {
             LOGGER.error(exception.getMessage());
         }
         throw new DAOException(ERROR_CANNOT_SAVE_COURSE);
     }
 
-    public Boolean addUserIntoCourse(String course_name, String first_name,String last_name){
+    public Boolean addUserIntoCourse(String courseName, String firstName,String lastName){
         try(Connection connection = connectionPool.takeConnection()){
-            Course course = filterCourse(course_name).get(0);
+            Course course = filterCourse(courseName).get(0);
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.filterUser(first_name,last_name).get(0);
+            User user = userDAO.filterUser(firstName,lastName).get(0);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
@@ -89,11 +89,11 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
     }
 
-    public List<Course> getUserAvailableCourses(String first_name,String last_name){
+    public List<Course> getUserAvailableCourses(String firstName,String lastName){
         List<Course> courses = new ArrayList<>();
         try(Connection connection = connectionPool.takeConnection()){
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.filterUser(first_name,last_name).get(0);
+            User user = userDAO.filterUser(firstName,lastName).get(0);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES);
             preparedStatement.setInt(1,user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -108,12 +108,12 @@ public class CourseDAO implements DAO<Course,Integer> {
         return courses;
     }
 
-    public List<User> getAllUserAtCourse(String course_name){
+    public List<User> getAllUserAtCourse(String courseName){
         List<User> users = new ArrayList<>();
         try(Connection connection = connectionPool.takeConnection()){
             CourseDAO courseDAO = new CourseDAO();
             UserDAO userDAO = new UserDAO();
-            Course course = courseDAO.filterCourse(course_name).get(0);
+            Course course = courseDAO.filterCourse(courseName).get(0);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE);
             preparedStatement.setInt(1,course.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -128,11 +128,11 @@ public class CourseDAO implements DAO<Course,Integer> {
         return users;
     }
 
-    public Boolean deleteUserFromCourse(String course_name, String first_name,String last_name){
+    public Boolean deleteUserFromCourse(String courseName, String firstName,String lastName){
         try(Connection connection = connectionPool.takeConnection()){
-            Course course = filterCourse(course_name).get(0);
+            Course course = filterCourse(courseName).get(0);
             UserDAO userDAO = new UserDAO();
-            User user = userDAO.filterUser(first_name,last_name).get(0);
+            User user = userDAO.filterUser(firstName,lastName).get(0);
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
@@ -145,10 +145,10 @@ public class CourseDAO implements DAO<Course,Integer> {
         }
     }
 
-    public Boolean deleteAllFieldsUserHasCourseByCourseId(int course_id){
+    public Boolean deleteAllFieldsUserHasCourseByCourseId(int courseId){
         try(Connection connection = connectionPool.takeConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE_FROM_USER_HAS_COURSE);
-            preparedStatement.setInt(1,course_id);
+            preparedStatement.setInt(1,courseId);
             Boolean result = preparedStatement.executeUpdate() > 0;
             preparedStatement.close();
             return result;
@@ -164,8 +164,8 @@ public class CourseDAO implements DAO<Course,Integer> {
         try(Connection connection = connectionPool.takeConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_COURSE_BY_ID);
             preparedStatement.setString(1,course.getName());
-            preparedStatement.setDate(2, (Date) course.getStartCourse());
-            preparedStatement.setDate(3,(Date) course.getEndCourse());
+            preparedStatement.setDate(2, course.getStartCourse());
+            preparedStatement.setDate(3, course.getEndCourse());
             preparedStatement.setInt(4,course.getId());
             Boolean result = preparedStatement.executeUpdate() > 0;
             preparedStatement.close();

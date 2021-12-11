@@ -1,28 +1,27 @@
 package com.epam.jwd.service.dto.reviewdto;
 
-import com.epam.jwd.DAO.model.course.Course;
 import com.epam.jwd.service.dto.AbstractDto;
 
 import java.util.Objects;
 
 public class ReviewDto extends AbstractDto<Integer> {
 
-    private int user_id;
-    private String course_name;
+    private int userId;
+    private String courseName;
     private int grade;
     private String review;
 
-    public ReviewDto(int user_id, String course_name, int grade, String review) {
-        this.user_id = user_id;
-        this.course_name = course_name;
+    public ReviewDto(int userId, String courseName, int grade, String review) {
+        this.userId = userId;
+        this.courseName = courseName;
         this.grade = grade;
         this.review = review;
     }
 
-    public ReviewDto(Integer id,int user_id, String course_name, int grade, String review) {
+    public ReviewDto(Integer id,int userId, String courseName, int grade, String review) {
         this.id = id;
-        this.user_id = user_id;
-        this.course_name = course_name;
+        this.userId = userId;
+        this.courseName = courseName;
         this.grade = grade;
         this.review = review;
     }
@@ -31,20 +30,20 @@ public class ReviewDto extends AbstractDto<Integer> {
 
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getCourse_name() {
-        return course_name;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
     public int getGrade() {
@@ -68,24 +67,24 @@ public class ReviewDto extends AbstractDto<Integer> {
         if (this == o) return true;
         if (!(o instanceof ReviewDto)) return false;
         ReviewDto reviewDto = (ReviewDto) o;
-        return user_id == reviewDto.user_id
+        return userId == reviewDto.userId
                 && grade == reviewDto.grade
-                && Objects.equals(course_name, reviewDto.course_name)
+                && Objects.equals(courseName, reviewDto.courseName)
                 && Objects.equals(review, reviewDto.review)
                 && Objects.equals(id,reviewDto.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, user_id, course_name, grade, review);
+        return Objects.hash(id, userId, courseName, grade, review);
     }
 
     @Override
     public String toString() {
         return "ReviewDto{" +
                 "id=" + id +
-                ", user_id=" + user_id +
-                ", course_name='" + course_name + '\'' +
+                ", user_id=" + userId +
+                ", course_name='" + courseName + '\'' +
                 ", grade=" + grade +
                 ", review='" + review + '\'' +
                 '}';
