@@ -11,13 +11,13 @@ public class UserConverter implements Converter<User, UserDto,Integer> {
 
     @Override
     public User convert(UserDto userDto) {
-        int group_id = groupDAO.filterGroup(userDto.getGroup_name()).getId();
-        return new User(userDto.getId(),userDto.getAccount_id(),group_id,userDto.getFirst_name(), userDto.getLast_name());
+        int groupId = groupDAO.filterGroup(userDto.getGroup_name()).getId();
+        return new User(userDto.getId(),userDto.getAccount_id(),groupId,userDto.getFirst_name(), userDto.getLast_name());
     }
 
     @Override
     public UserDto convert(User user) {
-        String group_name = groupDAO.findById(user.getGroup_id()).getName();
-        return new UserDto(user.getId(),user.getAccount_id(),group_name,user.getGroup_id(),user.getFirst_name(),user.getLast_name());
+        String groupName = groupDAO.findById(user.getGroup_id()).getName();
+        return new UserDto(user.getId(),user.getAccount_id(),groupName,user.getGroup_id(),user.getFirst_name(),user.getLast_name());
     }
 }

@@ -11,13 +11,13 @@ public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
 
     @Override
     public Review convert(ReviewDto reviewDto) {
-        int course_id = courseDAO.filterCourse(reviewDto.getCourse_name()).get(0).getId();
-        return new Review(reviewDto.getId(),reviewDto.getUser_id(),course_id,reviewDto.getGrade(),reviewDto.getReview());
+        int courseId = courseDAO.filterCourse(reviewDto.getCourse_name()).get(0).getId();
+        return new Review(reviewDto.getId(),reviewDto.getUser_id(),courseId,reviewDto.getGrade(),reviewDto.getReview());
     }
 
     @Override
     public ReviewDto convert(Review review) {
-        String course_name = courseDAO.findById(review.getCourse_id()).getName();
-        return new ReviewDto(review.getId(),review.getUser_id(),course_name,review.getGrade(),review.getReview());
+        String courseName = courseDAO.findById(review.getCourse_id()).getName();
+        return new ReviewDto(review.getId(),review.getUser_id(),courseName,review.getGrade(),review.getReview());
     }
 }
