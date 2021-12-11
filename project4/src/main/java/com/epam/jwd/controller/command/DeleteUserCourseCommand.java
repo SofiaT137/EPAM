@@ -85,7 +85,7 @@ public class DeleteUserCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
 
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-        List<CourseDto> courseDtoList = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+        List<CourseDto> courseDtoList = (List<CourseDto>) requestContext.getAttributeFromSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE);
 
         if (btnDeleteCourse != null){
 
@@ -103,7 +103,8 @@ public class DeleteUserCourseCommand implements Command {
 
             CourseDto courseDtoForDelete = listOfCourses.get(0);
 
-            Boolean result = ((CourseService) courseService).deleteUserFromCourse(courseDtoForDelete,userDto);
+            boolean result = ((CourseService) courseService).deleteUserFromCourse(courseDtoForDelete,userDto);
+
             if (!result){
                 LOGGER.error(SOMETHING_WENT_WRONG_EXCEPTION);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, SOMETHING_WENT_WRONG_EXCEPTION);
@@ -116,13 +117,13 @@ public class DeleteUserCourseCommand implements Command {
             return REFRESH_PAGE_CONTEXT;
         }else if(btnGetBack !=null){
 
-            List<CourseDto> user_courses = new ArrayList<>();
+            List<CourseDto> userCourses = new ArrayList<>();
             try{
-                user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+                userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
             }catch (ServiceException exception){
                 LOGGER.info(exception.getMessage());
             }
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
             return USER_RESULT_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);

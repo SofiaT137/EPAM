@@ -101,15 +101,16 @@ public class SignUpToCourseCommand implements Command {
 
             CourseDto findCourse = listOfCourses.get(0);
 
-            Boolean result = ((CourseService) courseService).addUserIntoCourse(findCourse,userDto);
+            boolean result = ((CourseService) courseService).addUserIntoCourse(findCourse,userDto);
+
             if (!result){
                LOGGER.error(SOMETHING_WENT_WRONG_EXCEPTION);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, SOMETHING_WENT_WRONG_EXCEPTION);
                 return ERROR_PAGE_CONTEXT;
             }
             possibleCoursesList.remove(findCourse);
-            List<CourseDto> user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
+            List<CourseDto> userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(),userDto.getLast_name());
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCoursesList);
             return REFRESH_PAGE_CONTEXT;
         }else if (btnGetBack != null){

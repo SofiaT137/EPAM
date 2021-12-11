@@ -39,8 +39,8 @@ public class GetAllCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> all_course =  (List<CourseDto>) requestContext.getAttributeFromSession("allCourses");
-        requestContext.addAttributeToJSP(COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE, all_course);
+        List<CourseDto> allCourse =  (List<CourseDto>) requestContext.getAttributeFromSession("allCourses");
+        requestContext.addAttributeToJSP(COURSES_JSP_COURSES_COLLECTION_ATTRIBUTE, allCourse);
         return GET_COURSE_CONTEXT;
     }
 }

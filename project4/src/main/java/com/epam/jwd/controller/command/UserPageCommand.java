@@ -136,7 +136,7 @@ public class UserPageCommand implements Command {
         Date dateForCheck = new Date(millis);
 
         allCourses.removeAll(userCourses);
-        if (allCourses.size() != 0){
+        if (!(allCourses.isEmpty())){
             for (CourseDto course:
                  allCourses) {
                 if (course.getEndCourse().after(dateForCheck)){
@@ -153,7 +153,7 @@ public class UserPageCommand implements Command {
         long millis=System.currentTimeMillis();
         Date dateForCheck = new Date(millis);
 
-        if (userCourses.size() != 0){
+        if (!(userCourses.isEmpty())){
             for (CourseDto course:
                     userCourses) {
                 if (course.getEndCourse().before(dateForCheck)){

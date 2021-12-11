@@ -72,14 +72,14 @@ public class UpdateCourseCommand implements Command {
 
         if (btnUpdate != null) {
 
-            String course_name = requestContext.getParameterFromJSP("Course_name");
-            Date start_date = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
-            Date end_date = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
+            String courseName = requestContext.getParameterFromJSP("Course_name");
+            Date startDate = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
+            Date endDate = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
 
             CourseDto courseDto;
 
             try{
-                List<CourseDto> list = ((CourseService) courseService).filterCourse(course_name);
+                List<CourseDto> list = ((CourseService) courseService).filterCourse(courseName);
                 courseDto = list.get(0);
             }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
@@ -87,9 +87,9 @@ public class UpdateCourseCommand implements Command {
                 return ERROR_PAGE_CONTEXT;
             }
 
-            courseDto.setName(course_name);
-            courseDto.setStartCourse(start_date);
-            courseDto.setEndCourse(end_date);
+            courseDto.setName(courseName);
+            courseDto.setStartCourse(startDate);
+            courseDto.setEndCourse(endDate);
 
             try {
                courseService.update(courseDto);

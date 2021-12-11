@@ -105,7 +105,7 @@ public class DeleteCourseCommand implements Command {
 
             List<CourseDto> courseList = ((CourseService) courseService).filterCourse(name);
 
-            if (courseList.size() == 0){
+            if (courseList.isEmpty()){
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
                 return ERROR_PAGE_CONTEXT;
@@ -119,7 +119,7 @@ public class DeleteCourseCommand implements Command {
             }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
             }
-            if (listOfThisCourseReview.size() != 0){
+            if (!(listOfThisCourseReview.isEmpty())){
                 for (ReviewDto review:
                         listOfThisCourseReview) {
                     try {
@@ -129,7 +129,7 @@ public class DeleteCourseCommand implements Command {
                     }
                 }
             }
-            Boolean result = ((CourseService)courseService).deleteAllCourseInUSERHAsCourse(courseDtoForDelete.getId());
+            boolean result = ((CourseService)courseService).deleteAllCourseInUSERHAsCourse(courseDtoForDelete.getId());
 
             if (!result) {
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);

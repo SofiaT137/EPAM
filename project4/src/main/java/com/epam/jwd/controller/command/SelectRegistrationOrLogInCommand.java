@@ -43,6 +43,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String ACCESS_DENIED ="Access denied. Please,contact administrator!";
     private static final String ACCOUNT_IS_ORIGINAL = "This account name is original :) !";
 
+    private static final String ROLE_ADMIN = "Admin";
+    private static final String ROLE_TEACHER = "Teacher";
+    private static final String ROLE_STUDENT = "Student";
+
     private final Service<AccountDto, Integer> service = new AccountService();
     private final Service<UserDto, Integer> serviceUser = new UserService();
     private final Service<CourseDto, Integer> courseService = new CourseService();
@@ -139,8 +143,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
         List<GroupDto> listOfGroups = groupService.getAll();
-        GroupDto adminGroup = ((GroupService)groupService).filterGroup("Admin");
-        GroupDto teacherGroup = ((GroupService)groupService).filterGroup("Teacher");
+        GroupDto adminGroup = ((GroupService)groupService).filterGroup(ROLE_ADMIN);
+        GroupDto teacherGroup = ((GroupService)groupService).filterGroup(ROLE_TEACHER);
         listOfGroups.remove(adminGroup);
         listOfGroups.remove(teacherGroup);
         requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,listOfGroups);
@@ -150,8 +154,6 @@ public class SelectRegistrationOrLogInCommand implements Command {
         if (language == null){
             requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
         }
-
-        final String role = "Student";
 
         if (btnRegister != null) {
             try{
@@ -166,7 +168,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             password = ((AccountService) service).encryptPassword(password);
 
             AccountDto accountDto = new AccountDto();
-            accountDto.setRole(role);
+            accountDto.setRole(ROLE_STUDENT);
             accountDto.setLogin(login);
             accountDto.setPassword(password);
             accountDto.setIsActive(1);
@@ -198,18 +200,18 @@ public class SelectRegistrationOrLogInCommand implements Command {
             UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             String userRole = accountDto.getRole();
-            if (Objects.equals(userRole, "Teacher") || Objects.equals(userRole, "Student")) {
-                List<CourseDto> user_courses = new ArrayList<>();
+            if (Objects.equals(userRole, ROLE_TEACHER) || Objects.equals(userRole, ROLE_STUDENT)) {
+                List<CourseDto> userCourses = new ArrayList<>();
                 try{
-                    user_courses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
+                    userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirst_name(), userDto.getLast_name());
                 }catch (ServiceException exception){
                     LOGGER.info(exception.getMessage());
                 }
-                requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
+                requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
             }
-            if (userRole.equals("Admin")){
+            if (userRole.equals(ROLE_ADMIN)){
                 return ADMIN_PAGE_CONTEXT;
-            }else if (userRole.equals("Teacher")){
+            }else if (userRole.equals(ROLE_TEACHER)){
                 return TEACHER_PAGE_CONTEXT;
             }
             return STUDENT_PAGE_CONTEXT;

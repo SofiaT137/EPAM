@@ -84,7 +84,7 @@ public class BlockUserCommand implements Command {
         String groupName = requestContext.getParameterFromJSP("Group");
 
         List<UserDto> allUser= serviceUser.getAll();
-        List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession("blockedUsers");
+        List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);
 
         List<UserDto> userDto;
 
@@ -97,21 +97,21 @@ public class BlockUserCommand implements Command {
         }
 
         try{
-            GroupDto groupDto = ((GroupService) groupService).filterGroup(groupName);
+           ((GroupService) groupService).filterGroup(groupName);
         }catch (DAOException exception){
            LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
             requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
             return ERROR_PAGE_CONTEXT;
         }
 
-        UserDto current_user = userDto.get(0);
+        UserDto currentUser= userDto.get(0);
 
-         if (!(current_user.getGroup_name().equals(groupName))){
+         if (!(currentUser.getGroup_name().equals(groupName))){
              LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
              requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_THIS_USER_IN_GROUP);
              return ERROR_PAGE_CONTEXT;
         }
-        AccountDto currentAccount = serviceAccount.getById(current_user.getAccount_id());
+        AccountDto currentAccount = serviceAccount.getById(currentUser.getAccount_id());
 
          if (btnBlockUser != null){
             if (currentAccount.getIsActive() == 0){

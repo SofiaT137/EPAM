@@ -6,12 +6,10 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
-import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.GroupService;
 import com.epam.jwd.service.impl.ReviewService;
 import com.epam.jwd.service.impl.UserService;
 import org.apache.logging.log4j.LogManager;
@@ -105,7 +103,7 @@ public class TeacherSelectCourseCommand implements Command {
                     LOGGER.info(exception.getMessage());
                 }
 
-            if (list.size() != 0){
+            if (!(list.isEmpty())){
                 CourseDto selectedCourse = list.get(0);
                 requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE,selectedCourse);
                 List<UserDto> usersOfSelectedCourse = ((UserService) userService).findALLStudentOnThisCourse(selectedCourse.getName());
@@ -126,12 +124,12 @@ public class TeacherSelectCourseCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto current_course){
+    private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto currentCourse){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto:
              list) {
             try{
-                boolean b = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(current_course.getId(), userDto.getId()) != null;
+                ((ReviewService) reviewService).findReviewByCourseIdAndUserId(currentCourse.getId(), userDto.getId());
                 result.add(userDto);
             }catch (DAOException exception){
                 LOGGER.info(exception.getMessage());

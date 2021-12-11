@@ -73,7 +73,6 @@ public class CreateTeacherCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
 
         String btnAddTeacher = requestContext.getParameterFromJSP("btnAddTeacher");
-        final String role = "Teacher";
 
         if (btnAddTeacher != null) {
 
@@ -102,7 +101,7 @@ public class CreateTeacherCommand implements Command {
             password = ((AccountService) accountService).encryptPassword(password);
 
             try {
-                accountDto.setRole(role);
+                accountDto.setRole(TEACHER);
                 accountDto.setLogin(login);
                 accountDto.setPassword(password);
                 accountDto.setIsActive(1);
@@ -118,7 +117,6 @@ public class CreateTeacherCommand implements Command {
 
                 String lblFirstName = requestContext.getParameterFromJSP("lblFirstName");
                 String lblLastName = requestContext.getParameterFromJSP("lblLastName");
-                final int group_id = 2;
 
                 UserDto userDto = new UserDto();
                 userDto.setAccount_id(accountDto.getId());
@@ -126,7 +124,7 @@ public class CreateTeacherCommand implements Command {
                 userDto.setFirst_name(lblFirstName);
                 userDto.setLast_name(lblLastName);
 
-                userDto = userService.create(userDto);
+                userService.create(userDto);
 
                 List<UserDto> allUser = userService.getAll();
                 List<UserDto> allTeachers = findAlLUserTeachers(allUser);
@@ -153,9 +151,9 @@ public class CreateTeacherCommand implements Command {
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            int account_id = userDto.getAccount_id();
+            int accountId= userDto.getAccount_id();
             AccountDto accountDto;
-            accountDto = accountService.getById(account_id);
+            accountDto = accountService.getById(accountId);
             if (accountDto.getRole().equals(TEACHER)){
                 result.add(userDto);
             }

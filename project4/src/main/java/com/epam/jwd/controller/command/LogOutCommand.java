@@ -7,8 +7,6 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
-
 
 public class LogOutCommand implements Command {
 

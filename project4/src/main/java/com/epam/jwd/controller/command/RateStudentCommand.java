@@ -71,21 +71,21 @@ public class RateStudentCommand implements Command {
 
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String group_name = requestContext.getParameterFromJSP("group_name");
+        String groupName = requestContext.getParameterFromJSP("group_name");
         String grade = requestContext.getParameterFromJSP("lblGrade");
         String review = requestContext.getParameterFromJSP("lblReview");
 
-        List<UserDto> allCourseUser = (List<UserDto>) requestContext.getAttributeFromSession("studentsCourse");
+        List<UserDto> allCourseUser = (List<UserDto>) requestContext.getAttributeFromSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE);
         CourseDto courseDto = (CourseDto) requestContext.getAttributeFromSession("selectedCourse");
 
         if (btnAddReview !=null) {
 
             List<UserDto> getAllUserByFullName = allCourseUser.stream()
-                    .filter((userDto1) -> userDto1.getFirst_name().equals(firstName) && userDto1.getLast_name().equals(lastName))
+                    .filter(userDto1 -> userDto1.getFirst_name().equals(firstName) && userDto1.getLast_name().equals(lastName))
                     .collect(Collectors.toList());
 
             UserDto currentStudent = getAllUserByFullName.stream()
-                    .filter((userDto1) -> userDto1.getGroup_name().equals(group_name))
+                    .filter(userDto1 -> userDto1.getGroup_name().equals(groupName))
                     .findFirst()
                     .orElse(null);
 
@@ -103,7 +103,7 @@ public class RateStudentCommand implements Command {
 
            reviewService.create(reviewDto);
 
-            List<UserDto> listOfStudents = (List<UserDto>) requestContext.getAttributeFromSession("studentsCourse");
+            List<UserDto> listOfStudents = (List<UserDto>) requestContext.getAttributeFromSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE);
             listOfStudents.remove(currentStudent);
             requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,listOfStudents);
             return REFRESH_PAGE_CONTEXT;

@@ -38,8 +38,8 @@ public class GetAllReviewCommand implements Command{
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<ReviewDto> all_reviews = (List<ReviewDto>) requestContext.getAttributeFromSession("allReviews");
-        requestContext.addAttributeToJSP(REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE,all_reviews);
+        List<ReviewDto> allReview = (List<ReviewDto>) requestContext.getAttributeFromSession("allReviews");
+        requestContext.addAttributeToJSP(REVIEW_JSP_REVIEWS_COLLECTION_ATTRIBUTE,allReview);
         return GET_REVIEW_CONTEXT;
     }
 }

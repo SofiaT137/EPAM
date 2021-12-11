@@ -41,8 +41,8 @@ public class GetAllUserCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         final int recordsPerPage = 5;
-        List<UserDto> all_users = (List<UserDto>) requestContext.getAttributeFromSession("allUsers");
-        int numberOfRecords = all_users.size();
+        List<UserDto> allUsers = (List<UserDto>) requestContext.getAttributeFromSession("allUsers");
+        int numberOfRecords = allUsers.size();
         int numberOfPages  = (int) Math.ceil(numberOfRecords * 1.0 / recordsPerPage);
         int page = 1;
         if(requestContext.getParameterFromJSP("page") != null){
@@ -51,7 +51,7 @@ public class GetAllUserCommand implements Command {
         if (page < 1 || page > numberOfPages){
             page = 1;
         }
-        List<UserDto> usersOnPage = all_users.subList((page-1)*recordsPerPage, Math.min(page*recordsPerPage,numberOfRecords));
+        List<UserDto> usersOnPage = allUsers.subList((page-1)*recordsPerPage, Math.min(page*recordsPerPage,numberOfRecords));
         requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE, usersOnPage);
         requestContext.addAttributeToJSP(NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE, numberOfPages);
         requestContext.addAttributeToJSP(CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE, page);

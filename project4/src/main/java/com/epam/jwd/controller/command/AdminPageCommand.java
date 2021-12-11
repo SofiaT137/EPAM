@@ -48,7 +48,7 @@ public class AdminPageCommand implements Command {
     private static final String FIND_PEOPLE_WITH_ROLE_TEACHER = "Teacher";
 
     private final Service<UserDto, Integer> userService = new UserService();
-    private final Service<CourseDto, Integer> course_Service = new CourseService();
+    private final Service<CourseDto, Integer> courseService = new CourseService();
     private final Service<AccountDto, Integer> accountService = new AccountService();
     private final Service<ReviewDto, Integer> reviewService = new ReviewService();
     private final Service<GroupDto, Integer> groupService = new GroupService();
@@ -164,10 +164,10 @@ public class AdminPageCommand implements Command {
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
         List<UserDto> allUser = userService.getAll();
-        List<GroupDto> all_groups;
+        List<GroupDto> allGroups;
 
         try {
-            all_groups = groupService.getAll();
+            allGroups = groupService.getAll();
         }catch (ServiceException exception){
             LOGGER.error(exception.getMessage());
             requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
@@ -177,7 +177,7 @@ public class AdminPageCommand implements Command {
 
         if (btnShowAllCourses != null){
             try{
-                courseDtoList = course_Service.getAll();
+                courseDtoList = courseService.getAll();
             }catch (ServiceException exception){
                 LOGGER.info(CANNOT_FIND_ANY_COURSES_LOGGER);
             }
@@ -201,7 +201,7 @@ public class AdminPageCommand implements Command {
             return GET_ALL_REVIEW_CONTEXT;
         }
         else if (btnCreateNewGroup != null){
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,all_groups);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroups);
             return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
@@ -209,7 +209,7 @@ public class AdminPageCommand implements Command {
            return CREATE_NEW_TEACHER_CONTEXT;
         }else if (btnBlockUser != null){
             List<UserDto> blockedUser = findBlockedUser(allUser);
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,all_groups);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroups);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUser);
             return BLOCK_USER_CONTEXT;
         }
@@ -220,9 +220,9 @@ public class AdminPageCommand implements Command {
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
                 : list) {
-            int account_id = userDto.getAccount_id();
+            int accountId = userDto.getAccount_id();
             AccountDto accountDto;
-            accountDto = accountService.getById(account_id);
+            accountDto = accountService.getById(accountId);
             if (accountDto.getRole().equals(FIND_PEOPLE_WITH_ROLE_TEACHER)){
                 result.add(userDto);
             }

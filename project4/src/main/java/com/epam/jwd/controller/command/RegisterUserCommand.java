@@ -1,6 +1,5 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.DAO.exception.DAOException;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
@@ -82,13 +81,13 @@ public class RegisterUserCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String group_name = requestContext.getParameterFromJSP("group_name");
+        String groupName = requestContext.getParameterFromJSP("group_name");
         String btnRegister = requestContext.getParameterFromJSP("btnRegister");
 
         AccountDto registerAccount = null;
-        UserDto current_user = null;
+        UserDto currentUser = null;
 
-        GroupDto groupDto = ((GroupService) groupService).filterGroup(group_name);
+        GroupDto groupDto = ((GroupService) groupService).filterGroup(groupName);
 
         boolean savePoint = false;
 
@@ -102,9 +101,9 @@ public class RegisterUserCommand implements Command {
                 userDto.setFirst_name(firstName);
                 userDto.setLast_name(lastName);
 
-                current_user = serviceUser.create(userDto);
+                currentUser = serviceUser.create(userDto);
                 savePoint = true;
-                requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, current_user);
+                requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, currentUser);
             }
         } catch (Exception exception) {
             if (!savePoint) {
@@ -121,13 +120,13 @@ public class RegisterUserCommand implements Command {
             return ERROR_PAGE_CONTEXT;
         }
 
-        List<CourseDto> user_courses = new ArrayList<>();
+        List<CourseDto> userCourses = new ArrayList<>();
         try {
-            user_courses = ((CourseService) courseService).getUserAvailableCourses(current_user.getFirst_name(), current_user.getLast_name());
+            userCourses = ((CourseService) courseService).getUserAvailableCourses(currentUser.getFirst_name(), currentUser.getLast_name());
         } catch (ServiceException exception) {
             LOGGER.info(LOGGER_INFO_THE_COURSE_LIST_EMPTY);
         }
-        requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, user_courses);
+        requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, reviewDtoList);
         return USER_PAGE_CONTEXT;
