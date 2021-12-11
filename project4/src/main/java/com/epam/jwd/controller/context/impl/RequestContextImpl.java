@@ -3,18 +3,15 @@ package com.epam.jwd.controller.context.impl;
 import com.epam.jwd.controller.context.api.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
 
 public class RequestContextImpl implements RequestContext{
 
     private final HttpServletRequest request;
-//    private HttpSession session;
 
     public RequestContextImpl(HttpServletRequest request) {
         this.request = request;
-//        this.session = request.getSession(false);
     }
+    
     @Override
     public void addAttributeToJSP(String name, Object attribute) {
         request.setAttribute(name,attribute);
@@ -37,12 +34,6 @@ public class RequestContextImpl implements RequestContext{
 
     @Override
     public void invalidateCurrentSession() {
-
         request.getSession(false).invalidate();
-
-//        session = request.getSession(false);
-//        if (session != null) {
-//            session.invalidate();
-//        }
     }
 }
