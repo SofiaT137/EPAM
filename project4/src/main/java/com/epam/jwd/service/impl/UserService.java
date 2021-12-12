@@ -50,8 +50,7 @@ public class UserService implements Service<UserDto,Integer> {
 
     @Override
     public Boolean delete(UserDto value) throws ServiceException {
-        userValidator.validate(value);
-        return userDAO.delete(userConverter.convert(value));
+        return false;
     }
 
     @Override
@@ -81,7 +80,7 @@ public class UserService implements Service<UserDto,Integer> {
         return userDtoList;
     }
 
-    public List<UserDto> filterUser(String firstName,String lastName){
+    public UserDto filterUser(String firstName,String lastName){
         List<User> daoGetAll = ((UserDAO)userDAO).filterUser(firstName,lastName);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
@@ -89,7 +88,7 @@ public class UserService implements Service<UserDto,Integer> {
             throw new ServiceException(CANNOT_FIND_USER_EXCEPTION);
         }
         daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
-        return userDtoList;
+        return userDtoList.get(0);
     }
 
     public UserDto findUserByAccountId(int accountId){

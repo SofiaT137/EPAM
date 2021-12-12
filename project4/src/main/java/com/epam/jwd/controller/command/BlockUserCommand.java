@@ -89,7 +89,7 @@ public class BlockUserCommand implements Command {
         List<UserDto> allUser= serviceUser.getAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);
 
-        List<UserDto> userDto;
+        UserDto userDto;
 
         try{
             userDto = ((UserService)serviceUser).filterUser(firstName,lastName);
@@ -107,7 +107,7 @@ public class BlockUserCommand implements Command {
             return ERROR_PAGE_CONTEXT;
         }
 
-        UserDto currentUser= userDto.get(0);
+        UserDto currentUser = userDto;
 
          if (!(currentUser.getGroupName().equals(groupName))){
              LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
@@ -153,7 +153,7 @@ public class BlockUserCommand implements Command {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
-            blockedUsers.removeAll(userDto);
+            blockedUsers.remove(userDto);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUsers);
             return BLOCK_PAGE_CONTEXT;
         }
