@@ -92,7 +92,7 @@
         <p></p>
         <div class="form-group">
             <label>${Grade}</label>
-            <input name="lblGrade" type="number" placeholder="${GradeLabel}" min="0" max="10" />
+            <input name="lblGrade" type="number" placeholder="${GradeLabel}" required pattern="^[0-9]{1,2}$" />
         </div>
         <p></p>
         <div class="form-group">

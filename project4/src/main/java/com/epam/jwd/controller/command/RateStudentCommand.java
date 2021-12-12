@@ -24,6 +24,7 @@ public class RateStudentCommand implements Command {
     private static final String USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE = "studentsCourse";
 
     private static final String CANNOT_FIND_USER_MESSAGE = "This user does not exist!";
+    private static final String INCORRECT_GRADE_USER_MESSAGE = "This grade is incorrect! Correct range of grades: from 0 to 10.";
 
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
@@ -92,6 +93,14 @@ public class RateStudentCommand implements Command {
             if (currentStudent == null) {
                 LOGGER.error(CANNOT_FIND_USER_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_USER_MESSAGE);
+                return ERROR_PAGE_CONTEXT;
+            }
+
+            int value = Integer.parseInt(grade);
+
+            if (value < 0 || value > 10){
+                LOGGER.error(INCORRECT_GRADE_USER_MESSAGE);
+                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, INCORRECT_GRADE_USER_MESSAGE);
                 return ERROR_PAGE_CONTEXT;
             }
 

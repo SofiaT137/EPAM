@@ -193,24 +193,23 @@ public class CourseDAO implements DAO<Course,Integer> {
 
     @Override
     public List<Course> findAll() {
-        List<Course> courses;
+        List<Course> courses = null;
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE)){
             ResultSet resultSet = preparedStatement.executeQuery();
             courses = returnCourseList(resultSet);
             resultSet.close();
-            return courses;
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
-            return null; // !!!!!
         } finally {
             connectionPool.returnConnection(connection);
         }
+        return courses;
     }
 
     @Override
     public Course findById(Integer id) {
-        Course course;
+        Course course = null;
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID)) {
             preparedStatement.setInt(1,id);
@@ -219,7 +218,6 @@ public class CourseDAO implements DAO<Course,Integer> {
             resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
-            return null;
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -227,7 +225,7 @@ public class CourseDAO implements DAO<Course,Integer> {
     }
 
     public List<Course> filterCourse(String name){
-        List<Course> courseList;
+        List<Course> courseList = null;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME)) {
             preparedStatement.setString(1,name);
@@ -236,7 +234,6 @@ public class CourseDAO implements DAO<Course,Integer> {
             resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME);
-            return null;
         } finally {
             connectionPool.returnConnection(connection);
         }

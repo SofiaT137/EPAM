@@ -10,24 +10,24 @@ public class Review extends AbstractEntity<Integer> {
     private int userId;
     private int courseId;
     private int grade;
-    private String review;
+    private String comment;
 
     public Review() {
     }
 
-    public Review(Integer id, int userId, int courseId, int grade, String review) {
+    public Review(Integer id, int userId, int courseId, int grade, String comment) {
         super(id);
         this.userId = userId;
         this.courseId = courseId;
         this.grade = grade;
-        this.review = review;
+        this.comment = comment;
     }
 
-    public Review(int userId, int courseId, int grade, String review) {
+    public Review(int userId, int courseId, int grade, String comment) {
         this.userId = userId;
         this.courseId = courseId;
         this.grade = grade;
-        this.review = review;
+        this.comment = comment;
     }
 
     public int getUserId() {
@@ -54,12 +54,12 @@ public class Review extends AbstractEntity<Integer> {
         this.grade = grade;
     }
 
-    public String getReview() {
-        return review;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReview(String review) {
-        this.review = review;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     @Override
@@ -70,13 +70,13 @@ public class Review extends AbstractEntity<Integer> {
         return userId == review1.getUserId()
                 && courseId == review1.getCourseId()
                 && grade == review1.getGrade()
-                && Objects.equals(review, review1.getReview())
+                && Objects.equals(comment, review1.getComment())
                 && Objects.equals(id,review1.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, courseId, grade, review,id);
+        return Objects.hash(userId, courseId, grade, comment,id);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Review extends AbstractEntity<Integer> {
                 ", user_id=" + userId +
                 ", course_id=" + courseId +
                 ", grade=" + grade +
-                ", review='" + review + '\'' +
+                ", review='" + comment + '\'' +
                 '}';
     }
 }

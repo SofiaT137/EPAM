@@ -49,7 +49,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.setInt(1,review.getUserId());
             preparedStatement.setInt(2,review.getCourseId());
             preparedStatement.setInt(3,review.getGrade());
-            preparedStatement.setString(4,review.getReview());
+            preparedStatement.setString(4,review.getComment());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
@@ -72,7 +72,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
             preparedStatement.setInt(1,review.getUserId());
             preparedStatement.setInt(2,review.getCourseId());
             preparedStatement.setInt(3,review.getGrade());
-            preparedStatement.setString(4,review.getReview());
+            preparedStatement.setString(4,review.getComment());
             preparedStatement.setInt(5,review.getId());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException exception) {
@@ -200,7 +200,7 @@ public class ReviewDAO implements DAO<Review, Integer> {
                 review.setUserId(resultSet.getInt("user_id"));
                 review.setCourseId(resultSet.getInt("course_id"));
                 review.setGrade(resultSet.getInt("grade"));
-                review.setReview(resultSet.getString("review"));
+                review.setComment(resultSet.getString("review"));
                 reviewList.add(review);
             }
         } catch (SQLException exception) {

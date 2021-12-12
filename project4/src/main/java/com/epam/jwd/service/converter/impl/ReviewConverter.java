@@ -18,6 +18,6 @@ public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
     @Override
     public ReviewDto convert(Review review) {
         String courseName = courseDAO.findById(review.getCourseId()).getName();
-        return new ReviewDto(review.getId(),review.getUserId(),courseName,review.getGrade(),review.getReview());
+        return new ReviewDto(review.getId(),review.getUserId(),courseName,review.getGrade(),review.getComment());
     }
 }
