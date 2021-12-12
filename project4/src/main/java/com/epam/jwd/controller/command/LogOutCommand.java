@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.text.MessageFormat;
 
-
+/**
+ * Log out command
+ */
 public class LogOutCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(LogOutCommand.class);

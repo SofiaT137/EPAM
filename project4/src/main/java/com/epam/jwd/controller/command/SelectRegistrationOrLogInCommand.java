@@ -21,6 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The command of selection: registration or log in
+ */
+
 public class SelectRegistrationOrLogInCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(SelectRegistrationOrLogInCommand.class);

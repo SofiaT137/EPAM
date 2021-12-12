@@ -8,6 +8,9 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 
 import java.util.List;
 
+/**
+ *  The command of getting of all university reviews
+ */
 public class GetAllReviewCommand implements Command{
 
     private static final Command INSTANCE = new GetAllReviewCommand();

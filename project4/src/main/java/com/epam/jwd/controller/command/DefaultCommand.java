@@ -5,6 +5,9 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 
 
+/**
+ * The default command
+ */
 public class DefaultCommand implements Command {
 
     private static final Command INSTANCE = new DefaultCommand();

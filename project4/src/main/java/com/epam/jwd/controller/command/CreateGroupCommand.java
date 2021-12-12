@@ -12,6 +12,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The command of creating groups
+ */
 public class CreateGroupCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(CreateGroupCommand.class);

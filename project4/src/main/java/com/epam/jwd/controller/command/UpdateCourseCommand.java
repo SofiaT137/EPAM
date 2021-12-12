@@ -15,7 +15,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.util.List;
 
-
+/**
+ * The command of updating course
+ */
 public class UpdateCourseCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(UpdateCourseCommand.class);

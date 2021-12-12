@@ -21,6 +21,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main command of admin logic
+ */
 public class AdminPageCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(AdminPageCommand.class);
@@ -216,6 +219,11 @@ public class AdminPageCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
+    /**
+     * Find all user with role "Teacher"
+     * @param list of UserDto
+     * @return list of all user with role "Teacher"
+     */
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
@@ -230,6 +238,11 @@ public class AdminPageCommand implements Command {
         return result;
     }
 
+    /**
+     * Find all blocked users
+     * @param list list of UserDto
+     * @return list of all blocked user
+     */
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto

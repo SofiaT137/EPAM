@@ -13,6 +13,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The main command of teacher's logic
+ */
 public class TeacherPageCommand implements Command {
 
     private static final Command INSTANCE = new TeacherPageCommand();
@@ -113,6 +116,11 @@ public class TeacherPageCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
+    /**
+     * Find finished course
+     * @param list of courseDto
+     * @return list of all finished courses
+     */
     private List<CourseDto> findFinishedCourses(List<CourseDto> list){
         List<CourseDto> result;
         LocalDate tomorrow = LocalDate.now().plusDays(1);

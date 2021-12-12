@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The command of creating teachers
+ */
 public class CreateTeacherCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(CreateTeacherCommand.class);
@@ -149,6 +152,11 @@ public class CreateTeacherCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
+    /**
+     * Find all users with role "Teacher"
+     * @param list list of UserDto
+     * @return list of all teachers
+     */
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto

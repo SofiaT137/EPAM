@@ -8,6 +8,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+/**
+ *  The command of getting of all university users
+ */
 public class GetAllUserCommand implements Command {
 
     private static final Command INSTANCE = new GetAllUserCommand();

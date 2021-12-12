@@ -4,6 +4,9 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 
+/**
+ * The command of changing language
+ */
 public class ChangeLanguageCommand implements Command {
 
     private static final String UPDATE_PAGE_JSP = "/WEB-INF/jsp/main.jsp";

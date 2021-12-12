@@ -20,7 +20,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The command of register student
+ */
 public class RegisterUserCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(RegisterUserCommand.class);

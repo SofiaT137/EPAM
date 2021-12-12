@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ *  The command of deleting a user from course
+ */
 public class DeleteUserCourseCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(DeleteUserCourseCommand.class);

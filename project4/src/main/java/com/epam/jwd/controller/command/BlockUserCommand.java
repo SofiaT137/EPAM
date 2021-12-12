@@ -18,6 +18,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The command of blocking user
+ */
 public class BlockUserCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(BlockUserCommand.class);
@@ -157,6 +160,11 @@ public class BlockUserCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
+    /**
+     * Find all blocked users
+     * @param list of UserDto
+     * @return list of all blocked user
+     */
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto

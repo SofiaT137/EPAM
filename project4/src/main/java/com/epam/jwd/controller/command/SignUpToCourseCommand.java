@@ -13,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
+/**
+ * The command of signing up student to course
+ */
 public class SignUpToCourseCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(SignUpToCourseCommand.class);

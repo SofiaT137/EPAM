@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The command of selection course for teacher
+ */
 public class TeacherSelectCourseCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(TeacherSelectCourseCommand.class);
@@ -124,6 +127,12 @@ public class TeacherSelectCourseCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
+    /**
+     * Find all students with review
+     * @param list of students
+     * @param currentCourse
+     * @return list of all students with review
+     */
     private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto currentCourse){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto:

@@ -5,6 +5,9 @@ import java.util.Arrays;
 import com.epam.jwd.controller.command.ShowPageCommand.*;
 import com.epam.jwd.controller.command.api.Command;
 
+/**
+ * The all commands enum
+ */
 public enum Commands {
     DEFAULT(DefaultCommand.getInstance()),
     GET_ALL_COURSE(GetAllCourseCommand.getInstance()),
@@ -51,6 +54,11 @@ public enum Commands {
         this.command = command;
     }
 
+    /**
+     * Get requested command or default command
+     * @param name of the command
+     * @return requested command
+     */
     public static Command getCommand(String name) {
         return Arrays.stream(Commands.values())
                 .filter(command -> command.name().equalsIgnoreCase(name))

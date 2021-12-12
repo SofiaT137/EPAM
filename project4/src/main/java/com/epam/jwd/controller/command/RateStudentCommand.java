@@ -14,6 +14,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The command of estimating students
+ */
 public class RateStudentCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(RateStudentCommand.class);

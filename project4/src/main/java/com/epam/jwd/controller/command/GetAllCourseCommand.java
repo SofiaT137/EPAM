@@ -7,6 +7,10 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
+/**
+ *  The command of getting of all university courses
+ */
+
 public class GetAllCourseCommand implements Command {
 
     private static final Command INSTANCE = new GetAllCourseCommand();

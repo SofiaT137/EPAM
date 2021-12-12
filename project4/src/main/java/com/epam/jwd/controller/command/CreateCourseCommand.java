@@ -13,6 +13,9 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Date;
 import java.util.List;
 
+/**
+ * The  command of creating course
+ */
 public class CreateCourseCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(CreateCourseCommand.class);
