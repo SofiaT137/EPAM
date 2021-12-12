@@ -7,6 +7,8 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.text.MessageFormat;
+
 
 public class LogOutCommand implements Command {
 
@@ -41,11 +43,10 @@ public class LogOutCommand implements Command {
     public ResponseContext execute(RequestContext requestContext) {
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
         if (userDto != null) {
-            LOGGER.info(userDto.getFirstName() + " " + userDto.getLastName() + " is logged out.");
+            String msg = MessageFormat.format("{0},{1} is logged out.",userDto.getFirstName(),userDto.getLastName());
+            LOGGER.info(msg);
         }
-
         requestContext.invalidateCurrentSession();
         return MAIN_PAGE_CONTEXT;
     }
-
 }
