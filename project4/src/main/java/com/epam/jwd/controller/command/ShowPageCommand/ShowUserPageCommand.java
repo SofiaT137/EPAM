@@ -9,7 +9,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
-
+/**
+ *  The command shows "user(student)" page
+ */
 public class ShowUserPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowUserPageCommand();

@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
+/**
+ * The command shows "get course teacher" page
+ */
 public class ShowTeacherCourseCommand implements Command {
 
     private static final Command INSTANCE = new ShowTeacherCourseCommand();

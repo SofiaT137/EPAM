@@ -8,6 +8,10 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+/**
+ * The command shows "block user (by administrator)" page
+ */
+
 public class ShowBlockUserPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowBlockUserPageCommand();

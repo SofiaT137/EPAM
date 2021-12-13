@@ -4,6 +4,10 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 
+/**
+ * The command shows "error" page
+ */
+
 public class ShowErrorPageCommand implements Command{
 
     private static final Command INSTANCE = new ShowErrorPageCommand();

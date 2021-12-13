@@ -8,6 +8,10 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+
+/**
+ * The command shows "teacher" page
+ */
 public class ShowTeacherPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowTeacherPageCommand();

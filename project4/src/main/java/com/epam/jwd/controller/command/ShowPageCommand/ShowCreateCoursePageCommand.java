@@ -7,6 +7,10 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
+/**
+ * The command shows "create course (by teacher)" page
+ */
+
 public class ShowCreateCoursePageCommand implements Command {
 
     private static final Command INSTANCE = new ShowCreateCoursePageCommand();

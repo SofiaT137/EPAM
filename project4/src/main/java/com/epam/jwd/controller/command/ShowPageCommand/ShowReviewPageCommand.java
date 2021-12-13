@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 
 import java.util.List;
 
+/**
+ * The command shows "user(student) results" page
+ */
 public class ShowReviewPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowReviewPageCommand();

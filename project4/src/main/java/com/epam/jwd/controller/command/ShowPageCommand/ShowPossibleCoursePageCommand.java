@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
+/**
+ * The command shows "possible courses for user(student)" page
+ */
 public class ShowPossibleCoursePageCommand implements Command {
 
     private static final Command INSTANCE = new ShowPossibleCoursePageCommand();

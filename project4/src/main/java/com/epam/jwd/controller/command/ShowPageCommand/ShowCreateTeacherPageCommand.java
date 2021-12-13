@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+/**
+ * The command shows "create teacher (by administrator)" page
+ */
 public class ShowCreateTeacherPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowCreateTeacherPageCommand();

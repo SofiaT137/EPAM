@@ -8,6 +8,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+/**
+ * The command shows "delete course (by teacher)" page
+ */
 public class ShowDeleteCoursePageCommand implements Command {
 
     private static final Command INSTANCE = new ShowDeleteCoursePageCommand();

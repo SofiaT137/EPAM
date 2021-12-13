@@ -8,6 +8,9 @@ import com.epam.jwd.service.dto.userdto.UserDto;
 
 import java.util.List;
 
+/**
+ * The command shows "rate student" page
+ */
 public class ShowRatePageCommand implements Command {
 
     private static final Command INSTANCE = new ShowRatePageCommand();

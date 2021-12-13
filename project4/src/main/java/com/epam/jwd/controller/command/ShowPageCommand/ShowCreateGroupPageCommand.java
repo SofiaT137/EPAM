@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 
 import java.util.List;
 
+/**
+ * The command shows "create group (by administrator)" page
+ */
 public class ShowCreateGroupPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowCreateGroupPageCommand();

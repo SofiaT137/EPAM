@@ -5,7 +5,9 @@ import com.epam.jwd.controller.context.api.RequestContext;
 import com.epam.jwd.controller.context.api.ResponseContext;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
-
+/**
+ *  The command shows "administrator" page
+ */
 public class ShowAdminPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowAdminPageCommand();

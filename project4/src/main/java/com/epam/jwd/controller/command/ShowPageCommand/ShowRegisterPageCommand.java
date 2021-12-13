@@ -7,6 +7,10 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 
 import java.util.List;
 
+/**
+ * The command shows "user(student) register " page
+ */
+
 public class ShowRegisterPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowRegisterPageCommand();

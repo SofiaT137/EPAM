@@ -7,6 +7,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 
 import java.util.List;
 
+/**
+ *  The command shows "update course" page
+ */
 public class ShowUpdateCourseCommand implements Command {
 
     private static final Command INSTANCE = new ShowUpdateCourseCommand();
