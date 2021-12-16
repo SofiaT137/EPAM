@@ -14,7 +14,7 @@ VALUES (
 '1'
 );
 
-INSERT INTO user (5
+INSERT INTO user (
 `user_id`,
 `account_id`,
 `university_group_id`,

@@ -4,6 +4,9 @@ import com.epam.jwd.controller.context.api.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * Implementation of request context
+ */
 public class RequestContextImpl implements RequestContext{
 
     private final HttpServletRequest request;

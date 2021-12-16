@@ -147,7 +147,13 @@ public class DeleteCourseCommand implements Command {
                     return ERROR_PAGE_CONTEXT;
                 }
 
-            List<CourseDto> coursesAfterDelete = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+            List<CourseDto> coursesAfterDelete = new ArrayList<>();
+                try{
+                    coursesAfterDelete = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+                }
+                catch (ServiceException exception){
+                    LOGGER.info(exception.getMessage());
+                }
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterDelete);
             return REFRESH_PAGE_CONTEXT;
         }
