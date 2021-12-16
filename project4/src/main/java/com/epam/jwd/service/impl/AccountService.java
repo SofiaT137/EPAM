@@ -17,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The account service
+ */
 public class AccountService implements Service<AccountDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountService.class);
@@ -36,6 +39,11 @@ public class AccountService implements Service<AccountDto,Integer> {
         accountValidator.validate(dummy);
     }
 
+    /**
+     * Encrypt password method
+     * @param password password for encrypt
+     * @return encrypted password
+     */
     public String encryptPassword(String password){
         return BCrypt.hashpw(password,BCrypt.gensalt());
     }
@@ -83,11 +91,22 @@ public class AccountService implements Service<AccountDto,Integer> {
         return accountDtoList;
     }
 
+    /**
+     * Find account method by login and password
+     * @param login
+     * @param password
+     * @return AccountDto Object
+     */
     public AccountDto filterAccount(String login,String password) {
         Account account = ((AccountDAO)accountDAO).filterAccount(login,password);
         return accountConverter.convert(account);
     }
 
+    /**
+     * Find account method by login
+     * @param login
+     * @return AccountDto Object
+     */
     public AccountDto getAccount(String login) {
         Account account = ((AccountDAO)accountDAO).findAccountByLogin(login);
         return accountConverter.convert(account);

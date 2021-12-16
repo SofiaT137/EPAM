@@ -18,7 +18,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The user service
+ */
 public class UserService implements Service<UserDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
@@ -80,6 +82,12 @@ public class UserService implements Service<UserDto,Integer> {
         return userDtoList;
     }
 
+    /**
+     * Find user by firstName and lastName
+     * @param firstName user's firstName
+     * @param lastName user's lastName
+     * @return UserDto object
+     */
     public UserDto filterUser(String firstName,String lastName){
         List<User> daoGetAll = ((UserDAO)userDAO).filterUser(firstName,lastName);
         List<UserDto> userDtoList = new ArrayList<>();
@@ -91,11 +99,21 @@ public class UserService implements Service<UserDto,Integer> {
         return userDtoList.get(0);
     }
 
+    /**
+     * Find user by accountId
+     * @param accountId User account's ID
+     * @return UserDto object
+     */
     public UserDto findUserByAccountId(int accountId){
         User user = ((UserDAO)userDAO).findUserByAccountId(accountId);
         return userConverter.convert(user);
     }
 
+    /**
+     * Find all students on course
+     * @param courseName name of the course
+     * @return List of UserDto objects
+     */
     public List<UserDto> findALLStudentOnThisCourse(String courseName){
         List<User> daoGetAllStudent = ((CourseDAO)courseDAO).getAllUserAtCourse(courseName);
         List<UserDto> dtoGetAllStudent = new ArrayList<>();

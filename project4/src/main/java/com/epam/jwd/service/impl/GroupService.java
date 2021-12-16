@@ -16,7 +16,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * The group service
+ */
 public class GroupService implements Service<GroupDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(GroupService.class);
@@ -75,6 +77,11 @@ public class GroupService implements Service<GroupDto,Integer> {
         return groupDtoList;
     }
 
+    /**
+     * Find group by name
+     * @param name group name
+     * @return GroupDto object
+     */
     public GroupDto filterGroup(String name){
         Group group = ((GroupDAO)groupDAO).filterGroup(name);
         return groupConverter.convert(group);

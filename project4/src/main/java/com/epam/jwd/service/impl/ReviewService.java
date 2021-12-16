@@ -16,6 +16,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The review service
+ */
 public class ReviewService implements Service<ReviewDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(ReviewService.class);
@@ -76,6 +79,11 @@ public class ReviewService implements Service<ReviewDto,Integer> {
         return reviewDtoList;
     }
 
+    /**
+     * Find review by User ID
+     * @param userId User ID
+     * @return list of ReviewDto
+     */
     public List<ReviewDto> filterReview(int userId) {
         List<Review> daoGetAll = ((ReviewDAO)reviewDAO).filterReview(userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
@@ -87,11 +95,22 @@ public class ReviewService implements Service<ReviewDto,Integer> {
         return reviewDtoList;
     }
 
+    /**
+     *  Find review by Course ID and User ID
+     * @param courseId Course ID
+     * @param userId User ID
+     * @return ReviewDto object
+     */
     public ReviewDto findReviewByCourseIdAndUserId(int courseId,int userId) {
         Review review = ((ReviewDAO)reviewDAO).findReviewByCourseIdAndUserId(courseId,userId);
         return reviewConverter.convert(review);
     }
 
+    /**
+     * Find review by Course ID
+     * @param courseId Course ID
+     * @return list of ReviewDto objects
+     */
     public List<ReviewDto> findReviewByCourseId(int courseId) {
         List<Review> daoGetAll = ((ReviewDAO)reviewDAO).findReviewByCourseId(courseId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();

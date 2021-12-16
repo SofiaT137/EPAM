@@ -19,6 +19,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The course service
+ */
+
 public class CourseService implements Service<CourseDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(CourseService.class);
@@ -43,6 +47,12 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseConverter.convert(course);
     }
 
+    /**
+     * Get user available courses
+     * @param firstName user's first name
+     * @param lastName user's last name
+     * @return list of CourseDto
+     */
     public List<CourseDto> getUserAvailableCourses(String firstName,String lastName){
         List<Course> courseList = ((CourseDAO) courseDAO).getUserAvailableCourses(firstName,lastName);
         List<CourseDto> courseDtoList = new ArrayList<>();
@@ -54,12 +64,23 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseDtoList;
     }
 
+    /**
+     * Delete user from course
+     * @param courseDto Course Dto
+     * @param userDto User Dto
+     * @return Boolean result
+     */
     public Boolean deleteUserFromCourse(CourseDto courseDto, UserDto userDto){
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
        return ((CourseDAO)courseDAO).deleteUserFromCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
     }
 
+    /**  Add user into course
+     * @param courseDto Course Dto
+     * @param userDto User Dto
+     * @return Boolean result
+     */
     public Boolean addUserIntoCourse(CourseDto courseDto, UserDto userDto) {
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
@@ -105,6 +126,11 @@ public class CourseService implements Service<CourseDto,Integer> {
     }
 
 
+    /**
+     * Find course by name
+     * @param courseName
+     * @return list of CourseDto
+     */
     public List<CourseDto> filterCourse(String courseName){
         List<Course> daoGetAll = ((CourseDAO)courseDAO).filterCourse(courseName);
         List<CourseDto> courseDtoList = new ArrayList<>();
@@ -116,6 +142,11 @@ public class CourseService implements Service<CourseDto,Integer> {
         return courseDtoList;
     }
 
+    /**
+     * Delete all courses in user has course by course id
+     * @param courseId Course ID
+     * @return Boolean result
+     */
     public Boolean deleteAllCourseInUSERHAsCourse(int courseId){
         return ((CourseDAO)courseDAO).deleteAllFieldsUserHasCourseByCourseId(courseId);
     }
