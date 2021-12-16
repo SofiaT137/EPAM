@@ -4,7 +4,9 @@ import com.epam.jwd.DAO.model.group.Group;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 
-
+/**
+ * Class for convert of group
+ */
 public class GroupConverter implements Converter<Group, GroupDto,Integer> {
 
     @Override

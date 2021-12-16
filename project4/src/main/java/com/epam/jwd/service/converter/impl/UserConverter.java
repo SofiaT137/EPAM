@@ -5,6 +5,9 @@ import com.epam.jwd.DAO.model.user.User;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
+/**
+ * Class for convert of user
+ */
 public class UserConverter implements Converter<User, UserDto,Integer> {
 
     GroupDAO groupDAO = new GroupDAO();

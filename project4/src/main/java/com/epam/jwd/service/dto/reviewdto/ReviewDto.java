@@ -4,6 +4,7 @@ import com.epam.jwd.service.dto.AbstractDto;
 
 import java.util.Objects;
 
+
 public class ReviewDto extends AbstractDto<Integer> {
 
     private int userId;

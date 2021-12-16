@@ -4,6 +4,10 @@ import com.epam.jwd.DAO.model.course.Course;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 
+/**
+ * Class for convert of course
+ */
+
 public class CourseConverter implements Converter<Course, CourseDto,Integer> {
     @Override
     public Course convert(CourseDto courseDto) {
