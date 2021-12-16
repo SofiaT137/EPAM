@@ -44,7 +44,7 @@ public class Controller extends HttpServlet {
     }
 
     /**
-     * Do get method
+     * DoGet method
      * @param req request
      * @param resp response
      * @throws ServletException exception
@@ -56,7 +56,7 @@ public class Controller extends HttpServlet {
     }
 
     /**
-     * Do post method
+     * DoPost method
      * @param req request
      * @param resp response
      * @throws ServletException exception

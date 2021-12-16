@@ -7,7 +7,7 @@
 
 <fmt:message bundle="${loc}" key="letsUpdateACourse" var="letsUpdateACourse"/>
 <fmt:message bundle="${loc}" key="yourCurrentCourses" var="yourCurrentCourses"/>
-<fmt:message bundle="${loc}" key="noCourses" var="noCourses"/>
+<fmt:message bundle="${loc}" key="youHaveNoCourses" var="youHaveNoCourses"/>
 <fmt:message bundle="${loc}" key="courseId" var="courseId"/>
 <fmt:message bundle="${loc}" key="courseName" var="courseName"/>
 <fmt:message bundle="${loc}" key="courseStartDate" var="courseStartDate"/>
@@ -34,7 +34,7 @@
     <h4>${yourCurrentCourses}</h4>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
-            <p>${noCourses}</p>
+            <h4>${youHaveNoCourses}</h4>
         </c:when>
         <c:otherwise>
             <table border="1" table style="width:33%" style="text-align:center">
