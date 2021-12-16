@@ -4,6 +4,10 @@ import com.epam.jwd.service.dto.AbstractDto;
 
 import java.util.Objects;
 
+
+/**
+ * The GroupDto class
+ */
 public class GroupDto extends AbstractDto<Integer> {
 
     private String name;

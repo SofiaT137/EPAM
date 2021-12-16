@@ -4,6 +4,9 @@ import com.epam.jwd.service.dto.AbstractDto;
 
 import java.util.Objects;
 
+/**
+ * The UserDto class
+ */
 public class UserDto extends AbstractDto<Integer> {
 
     private int accountId;

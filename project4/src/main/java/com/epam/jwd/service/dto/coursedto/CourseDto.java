@@ -5,6 +5,9 @@ import com.epam.jwd.service.dto.AbstractDto;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * The courseDto class
+ */
 public class CourseDto extends AbstractDto<Integer> {
 
     private String name;

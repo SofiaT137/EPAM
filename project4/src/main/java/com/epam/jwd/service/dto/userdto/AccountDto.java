@@ -4,6 +4,9 @@ import com.epam.jwd.service.dto.AbstractDto;
 
 import java.util.Objects;
 
+/**
+ * The AccountDto class
+ */
 public class AccountDto extends AbstractDto<Integer> {
 
     private String role;
