@@ -9,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The group validator
+ */
 public class GroupValidator implements Validator<GroupDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(GroupValidator.class);
@@ -25,7 +28,11 @@ public class GroupValidator implements Validator<GroupDto> {
     public void validate(GroupDto dto) throws ServiceException {
         validateName(dto.getName());
     }
-
+    /**
+     * Validate name method
+     * @param name group name
+     * @throws ServiceException exception
+     */
     private void validateName(final String name) throws ServiceException {
         if (name.length() < MIN_NAME_LENGTH && name.length() > MAX_NAME_LENGTH){
             LOGGER.error(NAME_LENGTH_EXCEPTION);

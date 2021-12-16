@@ -9,6 +9,10 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The user validator
+ */
+
 public class UserValidator implements Validator<UserDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserValidator.class);
@@ -27,6 +31,11 @@ public class UserValidator implements Validator<UserDto> {
          validateName(dto.getLastName());
     }
 
+    /**
+     * Validate name method
+     * @param name course name
+     * @throws ServiceException exception
+     */
     private void validateName(final String name) throws ServiceException {
         if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH){
             LOGGER.error(NAME_LENGTH_EXCEPTION);

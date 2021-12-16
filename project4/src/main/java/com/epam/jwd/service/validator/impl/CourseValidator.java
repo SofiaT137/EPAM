@@ -11,6 +11,9 @@ import java.sql.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The course validator
+ */
 public class CourseValidator implements Validator<CourseDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(CourseValidator.class);
@@ -31,6 +34,11 @@ public class CourseValidator implements Validator<CourseDto> {
         validateDate(dto.getStartCourse(),dto.getEndCourse());
     }
 
+    /**
+     * Validate name method
+     * @param name course name
+     * @throws ServiceException exception
+     */
     private void validateName(final String name) throws ServiceException {
         if (name.length() < MIN_NAME_LENGTH || name.length() > MAX_NAME_LENGTH){
             LOGGER.error(NAME_LENGTH_EXCEPTION);
@@ -44,6 +52,12 @@ public class CourseValidator implements Validator<CourseDto> {
         }
     }
 
+    /**
+     * Validate date method
+     * @param startDate start date of the course
+     * @param endDate end date of the course
+     * @throws ServiceException exception
+     */
     private void validateDate(final Date startDate,final Date endDate) throws ServiceException {
         if (startDate.after(endDate)){
             LOGGER.error(DATE_SUBTRACTION_EXCEPTION);
