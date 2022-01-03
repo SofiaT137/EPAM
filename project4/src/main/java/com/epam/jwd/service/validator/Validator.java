@@ -1,4 +1,4 @@
-package com.epam.jwd.service.validator.api;
+package com.epam.jwd.service.validator;
 
 import com.epam.jwd.service.exception.ServiceException;
 

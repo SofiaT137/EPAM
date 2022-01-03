@@ -3,7 +3,6 @@ package com.epam.jwd.controller.command;
 import java.util.Arrays;
 
 import com.epam.jwd.controller.command.show_page_command.*;
-import com.epam.jwd.controller.command.api.Command;
 
 /**
  * The all commands enum

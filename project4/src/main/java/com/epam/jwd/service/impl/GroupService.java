@@ -1,14 +1,14 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.api.Dao;
+import com.epam.jwd.Dao.Dao;
 import com.epam.jwd.Dao.impl.GroupDao;
 import com.epam.jwd.Dao.model.group.Group;
-import com.epam.jwd.service.api.Service;
-import com.epam.jwd.service.converter.api.Converter;
+import com.epam.jwd.service.Service;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.GroupConverter;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.api.Validator;
+import com.epam.jwd.service.validator.Validator;
 import com.epam.jwd.service.validator.impl.GroupValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,6 +1,6 @@
 package com.epam.jwd.controller.context.impl;
 
-import com.epam.jwd.controller.context.api.RequestContext;
+import com.epam.jwd.controller.context.RequestContext;
 
 import javax.servlet.http.HttpServletRequest;
 

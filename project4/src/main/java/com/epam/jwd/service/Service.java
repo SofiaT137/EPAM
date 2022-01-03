@@ -1,4 +1,4 @@
-package com.epam.jwd.service.api;
+package com.epam.jwd.service;
 
 import com.epam.jwd.service.dto.AbstractDto;
 import com.epam.jwd.service.exception.ServiceException;

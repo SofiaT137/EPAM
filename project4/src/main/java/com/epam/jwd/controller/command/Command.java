@@ -1,8 +1,7 @@
-package com.epam.jwd.controller.command.api;
+package com.epam.jwd.controller.command;
 
-import com.epam.jwd.controller.command.Commands;
-import com.epam.jwd.controller.context.api.RequestContext;
-import com.epam.jwd.controller.context.api.ResponseContext;
+import com.epam.jwd.controller.context.RequestContext;
+import com.epam.jwd.controller.context.ResponseContext;
 
 /**
  *  The command interface

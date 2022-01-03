@@ -1,8 +1,8 @@
 package com.epam.jwd.controller.command.show_page_command;
 
-import com.epam.jwd.controller.command.api.Command;
-import com.epam.jwd.controller.context.api.RequestContext;
-import com.epam.jwd.controller.context.api.ResponseContext;
+import com.epam.jwd.controller.command.Command;
+import com.epam.jwd.controller.context.RequestContext;
+import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
 /**

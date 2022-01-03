@@ -1,6 +1,6 @@
 package com.epam.jwd.Dao.impl;
 
-import com.epam.jwd.Dao.api.RoleDao;
+import com.epam.jwd.Dao.RoleDao;
 import com.epam.jwd.Dao.connection_pool.ConnectionPool;
 import com.epam.jwd.Dao.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.Dao.exception.DAOException;

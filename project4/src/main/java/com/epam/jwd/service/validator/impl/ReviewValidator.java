@@ -2,7 +2,7 @@ package com.epam.jwd.service.validator.impl;
 
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.api.Validator;
+import com.epam.jwd.service.validator.Validator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,4 +1,4 @@
-package com.epam.jwd.Dao.api;
+package com.epam.jwd.Dao;
 
 import com.epam.jwd.Dao.model.AbstractEntity;
 

@@ -1,15 +1,15 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.api.Dao;
+import com.epam.jwd.Dao.Dao;
 import com.epam.jwd.Dao.impl.CourseDao;
 import com.epam.jwd.Dao.model.course.Course;
-import com.epam.jwd.service.api.Service;
-import com.epam.jwd.service.converter.api.Converter;
+import com.epam.jwd.service.Service;
+import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.CourseConverter;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.validator.api.Validator;
+import com.epam.jwd.service.validator.Validator;
 import com.epam.jwd.service.validator.impl.CourseValidator;
 import com.epam.jwd.service.validator.impl.UserValidator;
 import org.apache.logging.log4j.LogManager;

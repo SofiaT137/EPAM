@@ -1,4 +1,4 @@
-package com.epam.jwd.controller.context.api;
+package com.epam.jwd.controller.context;
 
 /**
  * The context of the request

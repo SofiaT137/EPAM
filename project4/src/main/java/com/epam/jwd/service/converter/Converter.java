@@ -1,4 +1,4 @@
-package com.epam.jwd.service.converter.api;
+package com.epam.jwd.service.converter;
 
 import com.epam.jwd.Dao.model.AbstractEntity;
 import com.epam.jwd.service.dto.AbstractDto;
