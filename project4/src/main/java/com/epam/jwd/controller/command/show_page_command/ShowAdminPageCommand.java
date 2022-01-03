@@ -1,4 +1,4 @@
-package com.epam.jwd.controller.command.ShowPageCommand;
+package com.epam.jwd.controller.command.show_page_command;
 
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.context.api.RequestContext;

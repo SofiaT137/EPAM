@@ -2,7 +2,7 @@ package com.epam.jwd.controller.command;
 
 import java.util.Arrays;
 
-import com.epam.jwd.controller.command.ShowPageCommand.*;
+import com.epam.jwd.controller.command.show_page_command.*;
 import com.epam.jwd.controller.command.api.Command;
 
 /**
@@ -46,7 +46,6 @@ public enum Commands {
     CREATE_TEACHER_COMMAND(CreateTeacherCommand.getInstance()),
     BLOCK_USER_COMMAND(BlockUserCommand.getInstance()),
     LOG_OUT_COMMAND(LogOutCommand.getInstance());
-
 
     private final Command command;
 
