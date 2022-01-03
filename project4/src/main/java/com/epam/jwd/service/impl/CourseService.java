@@ -132,7 +132,7 @@ public class CourseService implements Service<CourseDto,Integer> {
      * @return list of CourseDto
      */
     public List<CourseDto> filterCourse(String courseName){
-        List<Course> daoGetAll = ((CourseDao) courseDao).filterCourse(courseName);
+        List<Course> daoGetAll = ((CourseDao) courseDao).findCourseByName(courseName);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_COURSE_EXCEPTION);

@@ -62,7 +62,6 @@ public class CourseDao implements Dao<Course,Integer> {
             resultSet.next();
             int courseId = resultSet.getInt(1);
             course.setId(courseId);
-            resultSet.close();
             return courseId;
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -75,7 +74,7 @@ public class CourseDao implements Dao<Course,Integer> {
     public Boolean addUserIntoCourse(String courseName, String firstName,String lastName){
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE)){
-            Course course = filterCourse(courseName).get(0);
+            Course course = findCourseByName(courseName).get(0);
             UserDao userDAO = new UserDao();
             User user = userDAO.filterUser(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
@@ -100,7 +99,6 @@ public class CourseDao implements Dao<Course,Integer> {
             while (resultSet.next()){
                 courses.add(findById(resultSet.getInt("course_id")));
             }
-            resultSet.close();
         } catch (SQLException  exception) {
             LOGGER.info(ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES);
         } finally {
@@ -115,13 +113,12 @@ public class CourseDao implements Dao<Course,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE)){
             CourseDao courseDAO = new CourseDao();
             UserDao userDAO = new UserDao();
-            Course course = courseDAO.filterCourse(courseName).get(0);
+            Course course = courseDAO.findCourseByName(courseName).get(0);
             preparedStatement.setInt(1,course.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 users.add(userDAO.findById(resultSet.getInt("user_id")));
             }
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.info(ERROR_CANNOT_FIND_PEOPLE_INTO_COURSE);
         } finally {
@@ -133,7 +130,7 @@ public class CourseDao implements Dao<Course,Integer> {
     public Boolean deleteUserFromCourse(String courseName, String firstName,String lastName){
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE)){
-            Course course = filterCourse(courseName).get(0);
+            Course course = findCourseByName(courseName).get(0);
             UserDao userDAO = new UserDao();
             User user = userDAO.filterUser(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
@@ -159,7 +156,6 @@ public class CourseDao implements Dao<Course,Integer> {
             connectionPool.returnConnection(connection);
         }
     }
-
 
     @Override
     public Boolean update(Course course) {
@@ -191,6 +187,7 @@ public class CourseDao implements Dao<Course,Integer> {
         }
     }
 
+
     @Override
     public List<Course> findAll() {
         List<Course> courses = null;
@@ -198,7 +195,6 @@ public class CourseDao implements Dao<Course,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE)){
             ResultSet resultSet = preparedStatement.executeQuery();
             courses = returnCourseList(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
         } finally {
@@ -215,7 +211,6 @@ public class CourseDao implements Dao<Course,Integer> {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             course = returnCourseList(resultSet).get(0);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
         } finally {
@@ -224,14 +219,13 @@ public class CourseDao implements Dao<Course,Integer> {
         return course;
     }
 
-    public List<Course> filterCourse(String name){
+    public List<Course> findCourseByName(String name){
         List<Course> courseList = null;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME)) {
             preparedStatement.setString(1,name);
             ResultSet resultSet = preparedStatement.executeQuery();
             courseList = returnCourseList(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME);
         } finally {
@@ -240,7 +234,7 @@ public class CourseDao implements Dao<Course,Integer> {
         return courseList;
     }
 
-    private List<Course> returnCourseList (ResultSet resultSet){
+    private List<Course> returnCourseList(ResultSet resultSet){
         List<Course> courseList = new ArrayList<>();
         try {
             while (resultSet.next()) {

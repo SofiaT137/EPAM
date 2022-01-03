@@ -14,7 +14,7 @@ public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
 
     @Override
     public Review convert(ReviewDto reviewDto) {
-        int courseId = courseDAO.filterCourse(reviewDto.getCourseName()).get(0).getId();
+        int courseId = courseDAO.findCourseByName(reviewDto.getCourseName()).get(0).getId();
         return new Review(reviewDto.getId(),reviewDto.getUserId(),courseId,reviewDto.getGrade(),reviewDto.getReview());
     }
 

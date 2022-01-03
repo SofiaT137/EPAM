@@ -95,25 +95,6 @@ public class AccountDao implements Dao<Account, Integer> {
         }
     }
 
-    private List<Account> returnAccountList (ResultSet resultSet){
-        List<Account> accountList = new ArrayList<>();
-        try {
-            while (resultSet.next()) {
-                Account account = new Account();
-                account.setId(resultSet.getInt("account_id"));
-                account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));
-                account.setLogin(resultSet.getString("login"));
-                account.setPassword(resultSet.getString("password"));
-                account.setIsActive(resultSet.getInt("is_active"));
-                accountList.add(account);
-            }
-        } catch (SQLException exception) {
-            LOGGER.error(exception.getMessage());
-            throw new DAOException(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
-        }
-        return accountList;
-    }
-
     @Override
     public List<Account> findAll(){
         List<Account> accounts;
@@ -128,17 +109,6 @@ public class AccountDao implements Dao<Account, Integer> {
         } finally {
             connectionPool.returnConnection(connection);
         }
-    }
-
-    private Account returnAccountFromDataBase(ResultSet resultSet){
-        List<Account> list = (returnAccountList(resultSet));
-        if (list.isEmpty()){
-            throw new DAOException(ERROR_CANNOT_FIND_THIS_ACCOUNT);
-        }
-        else if (list.size() > 1){
-            throw new DAOException(ERROR_NOT_UNIQUE_ACCOUNT);
-        }
-        return list.get(0);
     }
 
     @Override
@@ -175,12 +145,42 @@ public class AccountDao implements Dao<Account, Integer> {
         return account;
     }
 
+    private List<Account> returnAccountList (ResultSet resultSet){
+        List<Account> accountList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setId(resultSet.getInt("account_id"));
+                account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));
+                account.setLogin(resultSet.getString("login"));
+                account.setPassword(resultSet.getString("password"));
+                account.setIsActive(resultSet.getInt("is_active"));
+                accountList.add(account);
+            }
+        } catch (SQLException exception) {
+            LOGGER.error(exception.getMessage());
+            throw new DAOException(ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST);
+        }
+        return accountList;
+    }
+
     public Account findAccountByLoginAndPassword(String login, String password){
         Account account = findAccountByLogin(login);
         if (!(BCrypt.checkpw(password,account.getPassword()))){
             throw new DAOException(ERROR_PASSWORD_IS_INCORRECT);
         }
         return account;
+    }
+
+    private Account returnAccountFromDataBase(ResultSet resultSet){
+        List<Account> list = (returnAccountList(resultSet));
+        if (list.isEmpty()){
+            throw new DAOException(ERROR_CANNOT_FIND_THIS_ACCOUNT);
+        }
+        else if (list.size() > 1){
+            throw new DAOException(ERROR_NOT_UNIQUE_ACCOUNT);
+        }
+        return list.get(0);
     }
 }
 
