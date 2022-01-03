@@ -38,7 +38,6 @@ public class GroupDao implements Dao<Group,Integer> {
     private static final String UNIVERSITY_GROUP_ID = "university_group_id";
     private static final String NAME = "name";
 
-
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
 
@@ -52,7 +51,6 @@ public class GroupDao implements Dao<Group,Integer> {
             resultSet.next();
             int groupId = resultSet.getInt(1);
             group.setId(groupId);
-            resultSet.close();
             return groupId;
         } catch (SQLException exception) {
             LOGGER.error(CANNOT_SAVE_THIS_GROUP);
@@ -76,7 +74,6 @@ public class GroupDao implements Dao<Group,Integer> {
         }
     }
 
-
     @Override
     public Boolean delete(Group group) {
         Connection connection = connectionPool.takeConnection();
@@ -98,7 +95,6 @@ public class GroupDao implements Dao<Group,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_GROUP)){
             ResultSet resultSet = preparedStatement.executeQuery();
             groups = returnGroupList(resultSet);
-            resultSet.close();
             return groups;
         } catch (SQLException exception) {
             LOGGER.error(NO_GROUPS_AT_UNIVERSITY);
@@ -116,7 +112,6 @@ public class GroupDao implements Dao<Group,Integer> {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             group =  returnGroupList(resultSet).get(0);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(CANNOT_FIND_THIS_GROUP_BY_ID);
             throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_ID);
@@ -126,7 +121,7 @@ public class GroupDao implements Dao<Group,Integer> {
         return group;
     }
 
-    public Group filterGroup(String groupName){
+    public Group findGroupByName(String groupName){
         Group group;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_GROUP_BY_NAME)) {
@@ -137,7 +132,6 @@ public class GroupDao implements Dao<Group,Integer> {
                 throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_NAME);
             }
             group = list.get(0);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(CANNOT_FIND_THIS_GROUP_BY_NAME);
             throw new DAOException(CANNOT_FIND_THIS_GROUP_BY_NAME);

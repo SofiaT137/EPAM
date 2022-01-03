@@ -83,7 +83,7 @@ public class GroupService implements Service<GroupDto,Integer> {
      * @return GroupDto object
      */
     public GroupDto filterGroup(String name){
-        Group group = ((GroupDao) groupDao).filterGroup(name);
+        Group group = ((GroupDao) groupDao).findGroupByName(name);
         return groupConverter.convert(group);
     }
 }
