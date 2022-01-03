@@ -119,13 +119,6 @@ public class UserPageCommand implements Command {
            return DefaultCommand.getInstance().execute(requestContext);
     }
 
-
-    /**
-     * Get all user's review
-     * @param userId user id
-     * @param listOfCourses list of all user's courses
-     * @return list of all user review
-     */
     private List<ReviewDto> getAllUserReview(int userId, List<CourseDto> listOfCourses){
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         for (CourseDto courseDto:
@@ -140,12 +133,6 @@ public class UserPageCommand implements Command {
         return reviewDtoList;
     }
 
-    /**
-     * Find all possible to registration courses for user
-     * @param allCourses all university courses
-     * @param userCourses all user's courses
-     * @return list of all possible to sing in courses for user
-     */
     private List<CourseDto> findUserPossibleToSignInCourses(List<CourseDto> allCourses, List<CourseDto> userCourses){
         List<CourseDto> result = new ArrayList<>();
         long millis=System.currentTimeMillis();
@@ -164,12 +151,6 @@ public class UserPageCommand implements Command {
         return result;
     }
 
-
-    /**
-     * Find all finished courses by user
-     * @param userCourses list of all user's courses
-     * @return list of all finished user's courses
-     */
     private List<CourseDto> findAllFinishedUserCourses(List<CourseDto> userCourses){
         List<CourseDto> result = new ArrayList<>();
         long millis=System.currentTimeMillis();
