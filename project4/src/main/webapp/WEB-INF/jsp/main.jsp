@@ -19,6 +19,7 @@
 <fmt:message bundle="${loc}" key="invalidLogin" var="invalidLogin"/>
 <fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
 
+<!DOCTYPE html>
 <html>
 
 <head>
