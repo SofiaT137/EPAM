@@ -31,8 +31,9 @@ public class UserDao implements Dao<User,Integer> {
 
     private static final String ERROR_CANNOT_SAVE_USER = "I cannot create this user!";
     private static final String ERROR_CANNOT_UPDATE_USER = "I cannot update this user!";
-    private static final String ERROR_CANNOT_FIND_ANY_USER = "I cannot find any user!";
-    private static final String ERROR_CANNOT_FIND_THIS_USER = "I cannot find this user!";
+
+    private static final String INFO_CANNOT_FIND_ANY_USER = "I cannot find any user!";
+    private static final String INFO_CANNOT_FIND_THIS_USER = "I cannot find this user!";
 
 
     @Override
@@ -82,18 +83,18 @@ public class UserDao implements Dao<User,Integer> {
 
     @Override
     public List<User> findAll() {
-        List<User> users;
+        List<User> users = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS)){
             ResultSet resultSet = preparedStatement.executeQuery();
             users = returnUserList(resultSet);
             return users;
         } catch (SQLException exception) {
-            LOGGER.error(exception.getMessage());
-            throw new DAOException(ERROR_CANNOT_FIND_ANY_USER);
+            LOGGER.info(INFO_CANNOT_FIND_ANY_USER);
         } finally {
             connectionPool.returnConnection(connection);
         }
+        return users;
     }
 
     @Override
@@ -106,7 +107,7 @@ public class UserDao implements Dao<User,Integer> {
                 user =  returnUserList(resultSet).get(0);
             } catch (SQLException exception) {
                 LOGGER.error(exception.getMessage());
-                throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+                throw new DAOException(INFO_CANNOT_FIND_THIS_USER);
             } finally {
                 connectionPool.returnConnection(connection);
             }
@@ -123,7 +124,7 @@ public class UserDao implements Dao<User,Integer> {
             userList = returnUserList(resultSet);
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
-            throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+            throw new DAOException(INFO_CANNOT_FIND_THIS_USER);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -139,7 +140,7 @@ public class UserDao implements Dao<User,Integer> {
             user = returnUserList(resultSet).get(0);
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
-            throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
+            throw new DAOException(INFO_CANNOT_FIND_THIS_USER);
         } finally {
             connectionPool.returnConnection(connection);
         }

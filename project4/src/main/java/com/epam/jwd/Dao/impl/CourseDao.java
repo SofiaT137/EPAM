@@ -40,7 +40,7 @@ public class CourseDao implements Dao<Course,Integer> {
     private static final String ERROR_CANNOT_SAVE_COURSE = "I cannot create this course!";
     private static final String ERROR_CANNOT_UPDATE_COURSE= "I cannot update this course!";
     private static final String ERROR_CANNOT_DELETE_COURSE = "I cannot delete this course!";
-    private static final String ERROR_CANNOT_FIND_ANY_COURSE = "I cannot find any course!";
+    private static final String INFO_CANNOT_FIND_ANY_COURSE = "I cannot find any course!";
     private static final String ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME = "I cannot find any course by it's name!";
     private static final String ERROR_CANNOT_ADD_USER_INTO_COURSE = "I cannot add this user into course!";
     private static final String ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES= "I cannot find any available courses for this person!";
@@ -187,16 +187,15 @@ public class CourseDao implements Dao<Course,Integer> {
         }
     }
 
-
     @Override
     public List<Course> findAll() {
-        List<Course> courses = null;
+        List<Course> courses = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_COURSE)){
             ResultSet resultSet = preparedStatement.executeQuery();
             courses = returnCourseList(resultSet);
         } catch (SQLException exception) {
-            LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
+            LOGGER.info(INFO_CANNOT_FIND_ANY_COURSE);
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -212,7 +211,7 @@ public class CourseDao implements Dao<Course,Integer> {
             ResultSet resultSet = preparedStatement.executeQuery();
             course = returnCourseList(resultSet).get(0);
         } catch (SQLException exception) {
-            LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE);
+            LOGGER.error(INFO_CANNOT_FIND_ANY_COURSE);
         } finally {
             connectionPool.returnConnection(connection);
         }

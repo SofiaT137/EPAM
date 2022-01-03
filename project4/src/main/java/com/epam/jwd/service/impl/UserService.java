@@ -74,11 +74,9 @@ public class UserService implements Service<UserDto,Integer> {
     public List<UserDto> findAll() throws ServiceException {
         List<User> daoGetAll = userDao.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
-            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
+        if (!(daoGetAll.isEmpty())){
+            daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
         }
-        daoGetAll.forEach(user -> userDtoList.add(userConverter.convert(user)));
         return userDtoList;
     }
 

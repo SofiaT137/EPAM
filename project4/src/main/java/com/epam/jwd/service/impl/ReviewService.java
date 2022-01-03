@@ -71,11 +71,9 @@ public class ReviewService implements Service<ReviewDto,Integer> {
     public List<ReviewDto> findAll() throws ServiceException {
         List<Review> daoGetAll = reviewDao.findAll();
         List<ReviewDto> reviewDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
-            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
+        if (!(daoGetAll.isEmpty())){
+            daoGetAll.forEach(review -> reviewDtoList.add(reviewConverter.convert(review)));
         }
-        daoGetAll.forEach(review -> reviewDtoList.add(reviewConverter.convert(review)));
         return reviewDtoList;
     }
 

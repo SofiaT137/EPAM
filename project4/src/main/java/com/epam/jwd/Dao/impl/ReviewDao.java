@@ -34,7 +34,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     private static final String ERROR_CANNOT_SAVE_REVIEW = "I cannot create this review!";
     private static final String ERROR_CANNOT_UPDATE_REVIEW = "I cannot update this review!";
     private static final String ERROR_CANNOT_DELETE_REVIEW = "I cannot delete this review!";
-    private static final String ERROR_CANNOT_FIND_ANY_REVIEW = "I cannot find any review!";
+    private static final String INFO_CANNOT_FIND_ANY_REVIEW = "I cannot find any review!";
     private static final String ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID = "I cannot find any review by user id!";
     private static final String ERROR_SOMETHING_WRONG_WITH_SQL_REQUEST = "Something wrong with sql request. Check the data!";
     private static final String ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID = "I can't found this course for this person";
@@ -97,18 +97,18 @@ public class ReviewDao implements Dao<Review, Integer> {
 
     @Override
     public List<Review> findAll() {
-        List<Review> reviews;
+        List<Review> reviews = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_REVIEW)){
             ResultSet resultSet = preparedStatement.executeQuery();
             reviews = returnReviewList(resultSet);
             return reviews;
         } catch (SQLException exception) {
-            LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
-            throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW);
+            LOGGER.info(INFO_CANNOT_FIND_ANY_REVIEW);
         } finally {
             connectionPool.returnConnection(connection);
         }
+        return reviews;
     }
 
     @Override
@@ -120,8 +120,8 @@ public class ReviewDao implements Dao<Review, Integer> {
             ResultSet resultSet = preparedStatement.executeQuery();
             review = returnReviewList(resultSet).get(0);
         } catch (SQLException exception) {
-            LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
-            throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW);
+            LOGGER.error(INFO_CANNOT_FIND_ANY_REVIEW);
+            throw new DAOException(INFO_CANNOT_FIND_ANY_REVIEW);
         } finally {
             connectionPool.returnConnection(connection);
         }

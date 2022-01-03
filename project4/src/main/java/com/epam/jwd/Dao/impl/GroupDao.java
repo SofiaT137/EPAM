@@ -97,7 +97,7 @@ public class GroupDao implements Dao<Group,Integer> {
             groups = returnGroupList(resultSet);
             return groups;
         } catch (SQLException exception) {
-            LOGGER.error(NO_GROUPS_AT_UNIVERSITY);
+            LOGGER.info(NO_GROUPS_AT_UNIVERSITY);
         } finally {
             connectionPool.returnConnection(connection);
         }
