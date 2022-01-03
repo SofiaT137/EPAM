@@ -103,17 +103,14 @@ public class UserPageCommand implements Command {
         }
 
         if (btnSeeResults != null){
-            List<ReviewDto> reviewDtoList = getAllUserReview(userDto.getId(),userCourse);
-            requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, reviewDtoList);
+            requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, getAllUserReview(userDto.getId(),userCourse));
             return SEE_USER_RESULT_CONTEXT;
         }else if(btnGetCourse != null){
-            List<CourseDto> possibleCourses = findUserPossibleToSignInCourses(courseList,userCourse);
-            requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCourses);
+            requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, findUserPossibleToSignInCourses(courseList,userCourse));
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
             List<CourseDto> finishedUserCourses = findAllFinishedUserCourses(userCourse);
-             userCourse.removeAll(finishedUserCourses);
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourse);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE,userCourse.removeAll(finishedUserCourses));
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);
@@ -137,8 +134,8 @@ public class UserPageCommand implements Command {
         List<CourseDto> result = new ArrayList<>();
         long millis=System.currentTimeMillis();
         Date dateForCheck = new Date(millis);
-
         allCourses.removeAll(userCourses);
+
         if (!(allCourses.isEmpty())){
             for (CourseDto course:
                  allCourses) {
