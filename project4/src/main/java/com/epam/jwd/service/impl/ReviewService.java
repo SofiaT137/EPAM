@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.DAO.api.DAO;
-import com.epam.jwd.DAO.impl.ReviewDAO;
-import com.epam.jwd.DAO.model.review.Review;
+import com.epam.jwd.Dao.api.Dao;
+import com.epam.jwd.Dao.impl.ReviewDao;
+import com.epam.jwd.Dao.model.review.Review;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.ReviewConverter;
@@ -23,7 +23,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(ReviewService.class);
 
-    private final DAO<Review,Integer> reviewDAO = new ReviewDAO();
+    private final Dao<Review,Integer> reviewDao = new ReviewDao();
     private final Validator<ReviewDto> reviewValidator= new ReviewValidator();
     private final Converter<Review, ReviewDto, Integer> reviewConverter = new ReviewConverter();
 
@@ -36,20 +36,20 @@ public class ReviewService implements Service<ReviewDto,Integer> {
     public ReviewDto create(ReviewDto value) throws ServiceException {
         reviewValidator.validate(value);
         Review review = reviewConverter.convert(value);
-        reviewDAO.save(review);
+        reviewDao.save(review);
         return reviewConverter.convert(review);
     }
 
     @Override
     public Boolean update(ReviewDto value) throws ServiceException {
         reviewValidator.validate(value);
-        return reviewDAO.update(reviewConverter.convert(value));
+        return reviewDao.update(reviewConverter.convert(value));
     }
 
     @Override
     public Boolean delete(ReviewDto value) throws ServiceException{
         reviewValidator.validate(value);
-        return reviewDAO.delete(reviewConverter.convert(value));
+        return reviewDao.delete(reviewConverter.convert(value));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
             LOGGER.error(ID_IS_NULL_EXCEPTION);
             throw new ServiceException(ID_IS_NULL_EXCEPTION);
         }
-        Review review = reviewDAO.findById(id);
+        Review review = reviewDao.findById(id);
         if (review == null){
             LOGGER.error(REVIEW_NOT_FOUND_EXCEPTION);
             throw new ServiceException(REVIEW_NOT_FOUND_EXCEPTION);
@@ -69,7 +69,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
 
     @Override
     public List<ReviewDto> getAll() throws ServiceException {
-        List<Review> daoGetAll = reviewDAO.findAll();
+        List<Review> daoGetAll = reviewDao.findAll();
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
@@ -85,7 +85,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return list of ReviewDto
      */
     public List<ReviewDto> filterReview(int userId) {
-        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).filterReview(userId);
+        List<Review> daoGetAll = ((ReviewDao) reviewDao).filterReview(userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);
@@ -102,7 +102,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return ReviewDto object
      */
     public ReviewDto findReviewByCourseIdAndUserId(int courseId,int userId) {
-        Review review = ((ReviewDAO)reviewDAO).findReviewByCourseIdAndUserId(courseId,userId);
+        Review review = ((ReviewDao) reviewDao).findReviewByCourseIdAndUserId(courseId,userId);
         return reviewConverter.convert(review);
     }
 
@@ -112,7 +112,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return list of ReviewDto objects
      */
     public List<ReviewDto> findReviewByCourseId(int courseId) {
-        List<Review> daoGetAll = ((ReviewDAO)reviewDAO).findReviewByCourseId(courseId);
+        List<Review> daoGetAll = ((ReviewDao) reviewDao).findReviewByCourseId(courseId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);

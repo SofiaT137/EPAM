@@ -1,7 +1,7 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.DAO.impl.GroupDAO;
-import com.epam.jwd.DAO.model.user.User;
+import com.epam.jwd.Dao.impl.GroupDao;
+import com.epam.jwd.Dao.model.user.User;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
@@ -10,7 +10,7 @@ import com.epam.jwd.service.dto.userdto.UserDto;
  */
 public class UserConverter implements Converter<User, UserDto,Integer> {
 
-    GroupDAO groupDAO = new GroupDAO();
+    GroupDao groupDAO = new GroupDao();
 
     @Override
     public User convert(UserDto userDto) {

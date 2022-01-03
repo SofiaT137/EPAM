@@ -1,6 +1,6 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.DAO.model.group.Group;
+import com.epam.jwd.Dao.model.group.Group;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 

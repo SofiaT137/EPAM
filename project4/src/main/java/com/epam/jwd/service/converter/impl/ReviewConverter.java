@@ -1,7 +1,7 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.DAO.impl.CourseDAO;
-import com.epam.jwd.DAO.model.review.Review;
+import com.epam.jwd.Dao.impl.CourseDao;
+import com.epam.jwd.Dao.model.review.Review;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 
@@ -10,7 +10,7 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
  */
 public class ReviewConverter implements Converter<Review, ReviewDto,Integer> {
 
-    CourseDAO courseDAO = new CourseDAO();
+    CourseDao courseDAO = new CourseDao();
 
     @Override
     public Review convert(ReviewDto reviewDto) {

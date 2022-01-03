@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.DAO.api.DAO;
-import com.epam.jwd.DAO.impl.GroupDAO;
-import com.epam.jwd.DAO.model.group.Group;
+import com.epam.jwd.Dao.api.Dao;
+import com.epam.jwd.Dao.impl.GroupDao;
+import com.epam.jwd.Dao.model.group.Group;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.GroupConverter;
@@ -23,7 +23,7 @@ public class GroupService implements Service<GroupDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(GroupService.class);
 
-    private final DAO<Group,Integer> groupDAO = new GroupDAO();
+    private final Dao<Group,Integer> groupDao = new GroupDao();
     private final Validator<GroupDto> groupValidator = new GroupValidator();
     private final Converter<Group, GroupDto, Integer> groupConverter = new GroupConverter();
 
@@ -35,20 +35,20 @@ public class GroupService implements Service<GroupDto,Integer> {
     public GroupDto create(GroupDto value) throws ServiceException {
         groupValidator.validate(value);
         Group group = groupConverter.convert(value);
-        groupDAO.save(group);
+        groupDao.save(group);
         return groupConverter.convert(group);
     }
 
     @Override
     public Boolean update(GroupDto value) throws ServiceException {
         groupValidator.validate(value);
-        return groupDAO.update(groupConverter.convert(value));
+        return groupDao.update(groupConverter.convert(value));
     }
 
     @Override
     public Boolean delete(GroupDto value) throws ServiceException{
         groupValidator.validate(value);
-        return groupDAO.delete(groupConverter.convert(value));
+        return groupDao.delete(groupConverter.convert(value));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class GroupService implements Service<GroupDto,Integer> {
             LOGGER.error(ID_IS_NULL_EXCEPTION);
             throw new ServiceException(ID_IS_NULL_EXCEPTION);
         }
-        Group group =  groupDAO.findById(id);
+        Group group =  groupDao.findById(id);
         if (group == null){
             LOGGER.error(GROUP_NOT_FOUND_EXCEPTION);
             throw new ServiceException(GROUP_NOT_FOUND_EXCEPTION);
@@ -67,7 +67,7 @@ public class GroupService implements Service<GroupDto,Integer> {
 
     @Override
     public List<GroupDto> getAll() throws ServiceException {
-        List<Group> groupGetAll = groupDAO.findAll();
+        List<Group> groupGetAll = groupDao.findAll();
         List<GroupDto> groupDtoList = new ArrayList<>();
         if (groupGetAll.isEmpty()){
             LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
@@ -83,7 +83,7 @@ public class GroupService implements Service<GroupDto,Integer> {
      * @return GroupDto object
      */
     public GroupDto filterGroup(String name){
-        Group group = ((GroupDAO)groupDAO).filterGroup(name);
+        Group group = ((GroupDao) groupDao).filterGroup(name);
         return groupConverter.convert(group);
     }
 }

@@ -1,10 +1,10 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.DAO.api.DAO;
-import com.epam.jwd.DAO.impl.CourseDAO;
-import com.epam.jwd.DAO.impl.UserDAO;
-import com.epam.jwd.DAO.model.course.Course;
-import com.epam.jwd.DAO.model.user.User;
+import com.epam.jwd.Dao.api.Dao;
+import com.epam.jwd.Dao.impl.CourseDao;
+import com.epam.jwd.Dao.impl.UserDao;
+import com.epam.jwd.Dao.model.course.Course;
+import com.epam.jwd.Dao.model.user.User;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.converter.api.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;
@@ -25,8 +25,8 @@ public class UserService implements Service<UserDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserService.class);
 
-    private final DAO<Course,Integer> courseDAO = new CourseDAO();
-    private final DAO<User,Integer> userDAO = new UserDAO();
+    private final Dao<Course,Integer> courseDao = new CourseDao();
+    private final Dao<User,Integer> userDao = new UserDao();
     private final Validator<UserDto> userValidator = new UserValidator();
     private final Converter<User, UserDto, Integer> userConverter = new UserConverter();
 
@@ -40,14 +40,14 @@ public class UserService implements Service<UserDto,Integer> {
     public UserDto create(UserDto value) throws ServiceException {
         userValidator.validate(value);
         User user = userConverter.convert(value);
-        userDAO.save(user);
+        userDao.save(user);
         return userConverter.convert(user);
     }
 
     @Override
     public Boolean update(UserDto value) throws ServiceException {
         userValidator.validate(value);
-        return userDAO.update(userConverter.convert(value));
+        return userDao.update(userConverter.convert(value));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UserService implements Service<UserDto,Integer> {
             LOGGER.error(ID_IS_NULL_EXCEPTION);
            throw new ServiceException(ID_IS_NULL_EXCEPTION);
        }
-       User user = userDAO.findById(id);
+       User user = userDao.findById(id);
        if (user == null){
            LOGGER.error(USER_NOT_FOUND_EXCEPTION);
            throw new ServiceException(USER_NOT_FOUND_EXCEPTION);
@@ -72,7 +72,7 @@ public class UserService implements Service<UserDto,Integer> {
 
     @Override
     public List<UserDto> getAll() throws ServiceException {
-        List<User> daoGetAll = userDAO.findAll();
+        List<User> daoGetAll = userDao.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
@@ -89,7 +89,7 @@ public class UserService implements Service<UserDto,Integer> {
      * @return UserDto object
      */
     public UserDto filterUser(String firstName,String lastName){
-        List<User> daoGetAll = ((UserDAO)userDAO).filterUser(firstName,lastName);
+        List<User> daoGetAll = ((UserDao) userDao).filterUser(firstName,lastName);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
@@ -105,7 +105,7 @@ public class UserService implements Service<UserDto,Integer> {
      * @return UserDto object
      */
     public UserDto findUserByAccountId(int accountId){
-        User user = ((UserDAO)userDAO).findUserByAccountId(accountId);
+        User user = ((UserDao) userDao).findUserByAccountId(accountId);
         return userConverter.convert(user);
     }
 
@@ -115,7 +115,7 @@ public class UserService implements Service<UserDto,Integer> {
      * @return List of UserDto objects
      */
     public List<UserDto> findALLStudentOnThisCourse(String courseName){
-        List<User> daoGetAllStudent = ((CourseDAO)courseDAO).getAllUserAtCourse(courseName);
+        List<User> daoGetAllStudent = ((CourseDao) courseDao).getAllUserAtCourse(courseName);
         List<UserDto> dtoGetAllStudent = new ArrayList<>();
         daoGetAllStudent.forEach(student -> dtoGetAllStudent.add(userConverter.convert(student)));
         return dtoGetAllStudent;

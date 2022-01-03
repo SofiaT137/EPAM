@@ -1,12 +1,9 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.DAO.impl.AccountDAO;
-import com.epam.jwd.DAO.model.group.Group;
-import com.epam.jwd.DAO.model.user.Role;
+import com.epam.jwd.Dao.model.user.Role;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import org.junit.jupiter.api.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import static org.junit.jupiter.api.Assertions.*;
 

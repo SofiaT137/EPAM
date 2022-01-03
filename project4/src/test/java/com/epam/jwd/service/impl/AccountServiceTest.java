@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.DAO.exception.DAOException;
-import com.epam.jwd.DAO.impl.AccountDAO;
-import com.epam.jwd.DAO.model.user.Role;
+import com.epam.jwd.Dao.exception.DAOException;
+import com.epam.jwd.Dao.impl.AccountDao;
+import com.epam.jwd.Dao.model.user.Role;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ class AccountServiceTest {
     private final String password1 = "TestTestTest93";
     private final Role role = Role.STUDENT;
     private final AccountService accountService = new AccountService();
-    private final AccountDAO accountDAO = new AccountDAO();
+    private final AccountDao accountDAO = new AccountDao();
     private AccountDto accountDto1;
 
 
@@ -49,7 +49,7 @@ class AccountServiceTest {
         create();
         accountDto1.setIsActive(0);
         accountService.update(accountDto1);
-        assertEquals(accountDAO.filterAccount(login1,password1).getIsActive(),accountDto1.getIsActive());
+        assertEquals(accountDAO.findAccountByLoginAndPassword(login1,password1).getIsActive(),accountDto1.getIsActive());
     }
 
     @Test
