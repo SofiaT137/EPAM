@@ -85,7 +85,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return list of ReviewDto
      */
     public List<ReviewDto> filterReview(int userId) {
-        List<Review> daoGetAll = ((ReviewDao) reviewDao).filterReview(userId);
+        List<Review> daoGetAll = ((ReviewDao) reviewDao).findReviewByUserId(userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);

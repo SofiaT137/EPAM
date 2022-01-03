@@ -8,7 +8,6 @@ import com.epam.jwd.Dao.model.review.Review;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,7 +54,6 @@ public class ReviewDao implements Dao<Review, Integer> {
             resultSet.next();
             int reviewId = resultSet.getInt(1);
             review.setId(reviewId);
-            resultSet.close();
             return reviewId;
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_SAVE_REVIEW);
@@ -104,7 +102,6 @@ public class ReviewDao implements Dao<Review, Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_REVIEW)){
             ResultSet resultSet = preparedStatement.executeQuery();
             reviews = returnReviewList(resultSet);
-            resultSet.close();
             return reviews;
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
@@ -122,7 +119,6 @@ public class ReviewDao implements Dao<Review, Integer> {
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             review = returnReviewList(resultSet).get(0);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW);
             throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW);
@@ -133,7 +129,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     }
 
 
-    public List<Review> filterReview(int userId){
+    public List<Review> findReviewByUserId(int userId){
         List<Review> reviewList;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ACCOUNTS_BY_USER_ID)) {
@@ -148,27 +144,6 @@ public class ReviewDao implements Dao<Review, Integer> {
             connectionPool.returnConnection(connection);
         }
         return reviewList;
-    }
-
-    public Review findReviewByCourseIdAndUserId(int courseId,int userId){
-        List<Review> list;
-        Connection connection = connectionPool.takeConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_USER_ID_COURSE_ID)) {
-            preparedStatement.setInt(1,userId);
-            preparedStatement.setInt(2,courseId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            list = (returnReviewList(resultSet));
-            if (!(list.isEmpty())){
-                return list.get(0);
-            }
-            resultSet.close();
-        } catch (SQLException exception) {
-            LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
-            throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
-        }  finally {
-            connectionPool.returnConnection(connection);
-        }
-        throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
     }
 
     public List<Review> findReviewByCourseId(int courseId){
@@ -189,6 +164,26 @@ public class ReviewDao implements Dao<Review, Integer> {
             throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
         }
         return list;
+    }
+
+    public Review findReviewByCourseIdAndUserId(int courseId,int userId){
+        List<Review> list;
+        Connection connection = connectionPool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_USER_ID_COURSE_ID)) {
+            preparedStatement.setInt(1,userId);
+            preparedStatement.setInt(2,courseId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            list = (returnReviewList(resultSet));
+            if (!(list.isEmpty())){
+                return list.get(0);
+            }
+        } catch (SQLException exception) {
+            LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
+            throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
+        }  finally {
+            connectionPool.returnConnection(connection);
+        }
+        throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
     }
 
     private List<Review> returnReviewList (ResultSet resultSet){
