@@ -1,5 +1,6 @@
 package com.epam.jwd.Dao.impl;
 
+import com.epam.jwd.Dao.api.RoleDao;
 import com.epam.jwd.Dao.connection_pool.api.ConnectionPool;
 import com.epam.jwd.Dao.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.Dao.exception.DAOException;
@@ -12,9 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RoleDao implements com.epam.jwd.Dao.api.RoleDao {
+public class RoleDaoImpl implements RoleDao {
 
-    private static final Logger LOGGER = LogManager.getLogger(RoleDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(RoleDaoImpl.class);
 
     private static final String SQL_FIND_ROLE_BY_NAME = "SELECT * FROM role WHERE name =  ?";
     private static final String SQL_FIND_ROLE_BY_ID = "SELECT * FROM role WHERE role_id =  ?";
@@ -37,7 +38,6 @@ public class RoleDao implements com.epam.jwd.Dao.api.RoleDao {
             if (resultSet.next()) {
                 return resultSet.getInt(ROLE_ID);
             }
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ROLE_BY_NAME);
             throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_NAME);
@@ -56,7 +56,6 @@ public class RoleDao implements com.epam.jwd.Dao.api.RoleDao {
             if (resultSet.next()) {
                 return Role.getByName(resultSet.getString(ROLE_NAME));
             }
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ROLE_BY_ID);
             throw new DAOException(ERROR_CANNOT_FIND_ROLE_BY_ID);

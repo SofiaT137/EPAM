@@ -22,7 +22,7 @@ public class AccountDao implements Dao<Account, Integer> {
     private static final Logger LOGGER = LogManager.getLogger(AccountDao.class);
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
-    private final RoleDao roleDAO = new RoleDao();
+    private final RoleDaoImpl roleDAOImpl = new RoleDaoImpl();
 
     private static final String SQL_SAVE_ACCOUNT = "INSERT INTO account (role_id, login, password, is_active) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT * FROM account";
@@ -45,7 +45,7 @@ public class AccountDao implements Dao<Account, Integer> {
     public Integer save(Account account) {
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setObject(1, roleDAO.getIdByRoleName(account.getRole().getName()));
+            preparedStatement.setObject(1, roleDAOImpl.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3,account.getPassword());
             preparedStatement.setInt(4, account.getIsActive());
@@ -67,7 +67,7 @@ public class AccountDao implements Dao<Account, Integer> {
     public Boolean update(Account account) {
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT_BY_ID)) {
-            preparedStatement.setInt(1, roleDAO.getIdByRoleName(account.getRole().getName()));
+            preparedStatement.setInt(1, roleDAOImpl.getIdByRoleName(account.getRole().getName()));
             preparedStatement.setString(2, account.getLogin());
             preparedStatement.setString(3, account.getPassword());
             preparedStatement.setInt(4, account.getIsActive());
@@ -151,7 +151,7 @@ public class AccountDao implements Dao<Account, Integer> {
             while (resultSet.next()) {
                 Account account = new Account();
                 account.setId(resultSet.getInt("account_id"));
-                account.setRole(roleDAO.getRoleById(resultSet.getInt("role_id")));
+                account.setRole(roleDAOImpl.getRoleById(resultSet.getInt("role_id")));
                 account.setLogin(resultSet.getString("login"));
                 account.setPassword(resultSet.getString("password"));
                 account.setIsActive(resultSet.getInt("is_active"));
