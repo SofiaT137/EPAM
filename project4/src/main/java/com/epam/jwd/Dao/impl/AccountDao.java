@@ -2,7 +2,7 @@ package com.epam.jwd.Dao.impl;
 
 import com.epam.jwd.Dao.api.Dao;
 import com.epam.jwd.Dao.connection_pool.impl.ConnectionPollImpl;
-import com.epam.jwd.Dao.connection_pool.api.ConnectionPool;
+import com.epam.jwd.Dao.connection_pool.ConnectionPool;
 import com.epam.jwd.Dao.exception.DAOException;
 import com.epam.jwd.Dao.model.user.Account;
 import org.apache.logging.log4j.LogManager;

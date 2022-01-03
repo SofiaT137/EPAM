@@ -1,4 +1,4 @@
-package com.epam.jwd.Dao.connection_pool.api;
+package com.epam.jwd.Dao.connection_pool;
 
 import java.sql.Connection;
 
