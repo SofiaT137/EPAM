@@ -34,6 +34,7 @@ public class BlockUserCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
 
     private static final String CANNOT_FIND_THIS_USER_IN_GROUP = "I cannot find in this group this person";
+    private static final String CANNOT_FIND_THIS_USER = "I cannot find this user";
     private static final String CHECK_ACCOUNT_FOR_BLOCK = "This account is blocked!";
     private static final String CHECK_ACCOUNT_FOR_UNBLOCK = "This account is unblocked!";
 
@@ -86,41 +87,26 @@ public class BlockUserCommand implements Command {
         String lastName = requestContext.getParameterFromJSP("lblLastName");
         String groupName = requestContext.getParameterFromJSP("Group");
 
-        List<UserDto> allUser= serviceUser.findAll();
+        List<UserDto> allUser = serviceUser.findAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);
 
-        UserDto userDto;
+        List<UserDto> soughtUsers = findAllUsersByFirstNameAndLastName(firstName,lastName);
+        GroupDto soughtGroup = findGroup(groupName);
+        UserDto neededUser = findSoughtUser(soughtUsers,soughtGroup);
 
-        try{
-            userDto = ((UserService)serviceUser).filterUser(firstName,lastName);
-        }catch (ServiceException serviceException){
-            LOGGER.error(serviceException.getMessage());
-            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, serviceException.getMessage());
-            return ERROR_PAGE_CONTEXT;
-        }
-
-        try{
-           ((GroupService) groupService).filterGroup(groupName);
-        }catch (DAOException exception){
-           LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
-            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
-            return ERROR_PAGE_CONTEXT;
-        }
-
-        UserDto currentUser = userDto;
-
-         if (!(currentUser.getGroupName().equals(groupName))){
+        if (neededUser.getFirstName().isEmpty()){
              LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
              requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_THIS_USER_IN_GROUP);
              return ERROR_PAGE_CONTEXT;
         }
-        AccountDto currentAccount = serviceAccount.getById(currentUser.getAccountId());
+
+        AccountDto currentAccount = serviceAccount.getById(neededUser.getAccountId());
 
          if (btnBlockUser != null){
             if (currentAccount.getIsActive() == 0){
                 LOGGER.error(CHECK_ACCOUNT_FOR_BLOCK);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CHECK_ACCOUNT_FOR_BLOCK);
-                return ERROR_PAGE_CONTEXT;
+                return BLOCK_PAGE_CONTEXT;
             }
 
             currentAccount.setIsActive(0);
@@ -153,18 +139,31 @@ public class BlockUserCommand implements Command {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
-            blockedUsers.remove(userDto);
+            blockedUsers.remove(neededUser);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUsers);
             return BLOCK_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    /**
-     * Find all blocked users
-     * @param list of UserDto
-     * @return list of all blocked user
-     */
+    private UserDto findSoughtUser(List<UserDto> allSoughtUsers, GroupDto soughtGroup){
+        UserDto soughtUser = new UserDto();
+        for (UserDto foundedUser : allSoughtUsers) {
+            if (foundedUser.getGroupName().equals(soughtGroup.getName())){
+                soughtUser = foundedUser;
+            }
+        }
+        return soughtUser;
+    }
+
+    private List<UserDto> findAllUsersByFirstNameAndLastName(String firstName, String lastName){
+        return ((UserService)serviceUser).filterUser(firstName,lastName);
+    }
+
+    private GroupDto findGroup(String groupName){
+        return ((GroupService) groupService).filterGroup(groupName);
+    }
+
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto

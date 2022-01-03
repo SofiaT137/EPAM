@@ -115,7 +115,7 @@ public class UserDao implements Dao<User,Integer> {
         }
 
     public List<User> findUserByFirstNameAndLastName(String firstName, String lastName){
-        List<User> userList;
+        List<User> userList = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME)) {
             preparedStatement.setString(1,firstName);
@@ -124,7 +124,6 @@ public class UserDao implements Dao<User,Integer> {
             userList = returnUserList(resultSet);
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
-            throw new DAOException(INFO_CANNOT_FIND_THIS_USER);
         } finally {
             connectionPool.returnConnection(connection);
         }
