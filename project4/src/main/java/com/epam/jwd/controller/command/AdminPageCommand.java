@@ -48,7 +48,7 @@ public class AdminPageCommand implements Command {
     private static final String CANNOT_FIND_ANY_REVIEW = "I cannot find any review at this university";
     private static final String CANNOT_FIND_ANY_GROUP = "I cannot find any group at this university";
     private static final String CANNOT_FIND_ANY_USER = "I cannot find any user at this university";
-    
+
     private static final String ROLE_TEACHER = "Teacher";
 
     private final Service<UserDto, Integer> userService = new UserService();
