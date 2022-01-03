@@ -14,9 +14,11 @@
 <fmt:message bundle="${loc}" key="createGroup" var="createGroup"/>
 <fmt:message bundle="${loc}" key="blockUnblockUser" var="blockUnblockUser"/>
 
-<html>
+<!DOCTYPE HTML>
+<html xml:lang>
 
 <head>
+    <title>Admin page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <style>
         <%@include file="/WEB-INF/css/only_buttons.css"%>

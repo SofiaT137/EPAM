@@ -12,9 +12,11 @@
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
-<html>
+<!DOCTYPE HTML>
+<html xml:lang>
 
 <head>
+    <title>All course page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <%@ include file="header/header.jsp" %>
     <style>
