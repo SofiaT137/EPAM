@@ -1,12 +1,5 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.model.user.Role;
-import com.epam.jwd.service.dto.userdto.AccountDto;
-import com.epam.jwd.service.dto.userdto.UserDto;
-import org.junit.jupiter.api.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserServiceTest {
 
 //    private final String firstName = "Тест";

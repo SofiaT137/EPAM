@@ -1,4 +1,4 @@
-package com.epam.jwd.Dao.model;
+package com.epam.jwd.dao.model;
 
 public abstract class AbstractEntity<T> {
     protected T id;

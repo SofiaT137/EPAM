@@ -1,10 +1,10 @@
-package com.epam.jwd.Dao.impl;
+package com.epam.jwd.dao.impl;
 
-import com.epam.jwd.Dao.Dao;
-import com.epam.jwd.Dao.connection_pool.impl.ConnectionPollImpl;
-import com.epam.jwd.Dao.connection_pool.ConnectionPool;
-import com.epam.jwd.Dao.exception.DAOException;
-import com.epam.jwd.Dao.model.review.Review;
+import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.connection_pool.impl.ConnectionPollImpl;
+import com.epam.jwd.dao.connection_pool.ConnectionPool;
+import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.dao.model.review.Review;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

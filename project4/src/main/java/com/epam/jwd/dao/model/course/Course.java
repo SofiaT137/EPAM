@@ -1,6 +1,6 @@
-package com.epam.jwd.Dao.model.course;
+package com.epam.jwd.dao.model.course;
 
-import com.epam.jwd.Dao.model.AbstractEntity;
+import com.epam.jwd.dao.model.AbstractEntity;
 
 import java.sql.Date;
 import java.util.Objects;

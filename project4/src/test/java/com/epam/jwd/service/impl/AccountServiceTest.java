@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.exception.DAOException;
-import com.epam.jwd.Dao.impl.AccountDao;
-import com.epam.jwd.Dao.model.user.Role;
+import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.dao.impl.AccountDao;
+import com.epam.jwd.dao.model.user.Role;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

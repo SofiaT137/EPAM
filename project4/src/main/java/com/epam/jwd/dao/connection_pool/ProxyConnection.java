@@ -1,6 +1,4 @@
-package com.epam.jwd.Dao.connection_pool;
-
-import com.epam.jwd.Dao.connection_pool.ConnectionPool;
+package com.epam.jwd.dao.connection_pool;
 
 import java.sql.Array;
 import java.sql.Blob;

@@ -1,8 +1,8 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.Dao;
-import com.epam.jwd.Dao.impl.AccountDao;
-import com.epam.jwd.Dao.model.user.Account;
+import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.impl.AccountDao;
+import com.epam.jwd.dao.model.user.Account;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.AccountConverter;

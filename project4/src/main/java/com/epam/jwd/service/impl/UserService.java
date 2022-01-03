@@ -1,10 +1,10 @@
 package com.epam.jwd.service.impl;
 
-import com.epam.jwd.Dao.Dao;
-import com.epam.jwd.Dao.impl.CourseDao;
-import com.epam.jwd.Dao.impl.UserDao;
-import com.epam.jwd.Dao.model.course.Course;
-import com.epam.jwd.Dao.model.user.User;
+import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.impl.CourseDao;
+import com.epam.jwd.dao.impl.UserDao;
+import com.epam.jwd.dao.model.course.Course;
+import com.epam.jwd.dao.model.user.User;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.converter.impl.UserConverter;

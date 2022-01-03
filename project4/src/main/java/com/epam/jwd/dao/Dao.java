@@ -1,6 +1,6 @@
-package com.epam.jwd.Dao;
+package com.epam.jwd.dao;
 
-import com.epam.jwd.Dao.model.AbstractEntity;
+import com.epam.jwd.dao.model.AbstractEntity;
 
 import java.util.List;
 

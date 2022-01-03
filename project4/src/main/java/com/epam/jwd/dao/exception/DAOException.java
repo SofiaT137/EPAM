@@ -1,4 +1,4 @@
-package com.epam.jwd.Dao.exception;
+package com.epam.jwd.dao.exception;
 
 public class DAOException extends RuntimeException{
     public DAOException() {

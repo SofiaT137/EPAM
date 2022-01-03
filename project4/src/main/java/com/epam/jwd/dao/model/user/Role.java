@@ -1,4 +1,4 @@
-package com.epam.jwd.Dao.model.user;
+package com.epam.jwd.dao.model.user;
 
 import java.util.Arrays;
 

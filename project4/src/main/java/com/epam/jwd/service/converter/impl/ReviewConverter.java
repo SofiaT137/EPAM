@@ -1,7 +1,7 @@
 package com.epam.jwd.service.converter.impl;
 
-import com.epam.jwd.Dao.impl.CourseDao;
-import com.epam.jwd.Dao.model.review.Review;
+import com.epam.jwd.dao.impl.CourseDao;
+import com.epam.jwd.dao.model.review.Review;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 

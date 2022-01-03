@@ -1,11 +1,11 @@
-package com.epam.jwd.Dao.impl;
+package com.epam.jwd.dao.impl;
 
-import com.epam.jwd.Dao.Dao;
-import com.epam.jwd.Dao.connection_pool.impl.ConnectionPollImpl;
-import com.epam.jwd.Dao.connection_pool.ConnectionPool;
-import com.epam.jwd.Dao.exception.DAOException;
-import com.epam.jwd.Dao.model.course.Course;
-import com.epam.jwd.Dao.model.user.User;
+import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.connection_pool.impl.ConnectionPollImpl;
+import com.epam.jwd.dao.connection_pool.ConnectionPool;
+import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.dao.model.course.Course;
+import com.epam.jwd.dao.model.user.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

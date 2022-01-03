@@ -1,6 +1,6 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.Dao.exception.DAOException;
+import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;

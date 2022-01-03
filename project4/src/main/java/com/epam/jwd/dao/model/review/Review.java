@@ -1,6 +1,6 @@
-package com.epam.jwd.Dao.model.review;
+package com.epam.jwd.dao.model.review;
 
-import com.epam.jwd.Dao.model.AbstractEntity;
+import com.epam.jwd.dao.model.AbstractEntity;
 
 import java.util.Objects;
 
