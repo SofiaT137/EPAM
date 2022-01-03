@@ -20,6 +20,8 @@ public class UserDao implements Dao<User,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(UserDao.class);
 
+    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
+
     private static final String SQL_SAVE_USER = "INSERT INTO user (account_id, university_group_id, first_name, last_name) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_ALL_USERS = "SELECT * FROM user";
     private static final String SQL_FIND_USER_BY_ID = "SELECT * FROM user WHERE user_id =  ?";
@@ -32,8 +34,6 @@ public class UserDao implements Dao<User,Integer> {
     private static final String ERROR_CANNOT_FIND_ANY_USER = "I cannot find any user!";
     private static final String ERROR_CANNOT_FIND_THIS_USER = "I cannot find this user!";
 
-
-    private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
     @Override
     public Integer save(User user) {
@@ -48,7 +48,6 @@ public class UserDao implements Dao<User,Integer> {
                 resultSet.next();
                 int userId = resultSet.getInt(1);
                 user.setId(userId);
-                resultSet.close();
                 return userId;
             } catch (SQLException exception) {
                 LOGGER.error(exception.getMessage());
@@ -88,7 +87,6 @@ public class UserDao implements Dao<User,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS)){
             ResultSet resultSet = preparedStatement.executeQuery();
             users = returnUserList(resultSet);
-            resultSet.close();
             return users;
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
@@ -106,7 +104,6 @@ public class UserDao implements Dao<User,Integer> {
                 preparedStatement.setInt(1,id);
                 ResultSet resultSet = preparedStatement.executeQuery();
                 user =  returnUserList(resultSet).get(0);
-                resultSet.close();
             } catch (SQLException exception) {
                 LOGGER.error(exception.getMessage());
                 throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
@@ -116,7 +113,7 @@ public class UserDao implements Dao<User,Integer> {
             return user;
         }
 
-    public List<User> filterUser(String firstName,String lastName){
+    public List<User> findUserByFirstNameAndLastName(String firstName, String lastName){
         List<User> userList;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_FULL_NAME)) {
@@ -124,7 +121,6 @@ public class UserDao implements Dao<User,Integer> {
             preparedStatement.setString(2,lastName);
             ResultSet resultSet = preparedStatement.executeQuery();
             userList = returnUserList(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);
@@ -141,7 +137,6 @@ public class UserDao implements Dao<User,Integer> {
             preparedStatement.setInt(1,accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
             user = returnUserList(resultSet).get(0);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_THIS_USER);

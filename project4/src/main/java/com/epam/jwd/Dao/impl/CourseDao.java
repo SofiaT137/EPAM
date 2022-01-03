@@ -76,7 +76,7 @@ public class CourseDao implements Dao<Course,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE)){
             Course course = findCourseByName(courseName).get(0);
             UserDao userDAO = new UserDao();
-            User user = userDAO.filterUser(firstName,lastName).get(0);
+            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
             return preparedStatement.executeUpdate() > 0;
@@ -93,7 +93,7 @@ public class CourseDao implements Dao<Course,Integer> {
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES)){
             UserDao userDAO = new UserDao();
-            User user = userDAO.filterUser(firstName,lastName).get(0);
+            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -132,7 +132,7 @@ public class CourseDao implements Dao<Course,Integer> {
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE)){
             Course course = findCourseByName(courseName).get(0);
             UserDao userDAO = new UserDao();
-            User user = userDAO.filterUser(firstName,lastName).get(0);
+            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
             return preparedStatement.executeUpdate() > 0;

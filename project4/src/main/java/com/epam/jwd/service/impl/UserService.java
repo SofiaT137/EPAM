@@ -89,7 +89,7 @@ public class UserService implements Service<UserDto,Integer> {
      * @return UserDto object
      */
     public UserDto filterUser(String firstName,String lastName){
-        List<User> daoGetAll = ((UserDao) userDao).filterUser(firstName,lastName);
+        List<User> daoGetAll = ((UserDao) userDao).findUserByFirstNameAndLastName(firstName,lastName);
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_USER_EXCEPTION);

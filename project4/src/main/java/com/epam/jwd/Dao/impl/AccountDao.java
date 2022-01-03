@@ -135,7 +135,6 @@ public class AccountDao implements Dao<Account, Integer> {
             preparedStatement.setString(1,login);
             ResultSet resultSet = preparedStatement.executeQuery();
             account = returnAccountFromDataBase(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(exception.getMessage());
             throw new DAOException(ERROR_CANNOT_FIND_ACCOUNT_BY_LOGIN);

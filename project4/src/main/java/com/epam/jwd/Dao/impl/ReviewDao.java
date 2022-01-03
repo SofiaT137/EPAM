@@ -136,7 +136,6 @@ public class ReviewDao implements Dao<Review, Integer> {
             preparedStatement.setInt(1,userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             reviewList = returnReviewList(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID);
             throw new DAOException(ERROR_CANNOT_FIND_ANY_REVIEW_BY_USER_ID);
@@ -153,7 +152,6 @@ public class ReviewDao implements Dao<Review, Integer> {
             preparedStatement.setInt(1,courseId);
             ResultSet resultSet = preparedStatement.executeQuery();
             list = returnReviewList(resultSet);
-            resultSet.close();
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
             throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID);
