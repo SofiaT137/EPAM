@@ -71,7 +71,7 @@ public class UserService implements Service<UserDto,Integer> {
 
 
     @Override
-    public List<UserDto> getAll() throws ServiceException {
+    public List<UserDto> findAll() throws ServiceException {
         List<User> daoGetAll = userDao.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){

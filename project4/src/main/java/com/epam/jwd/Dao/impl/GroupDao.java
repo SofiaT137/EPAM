@@ -90,7 +90,7 @@ public class GroupDao implements Dao<Group,Integer> {
 
     @Override
     public List<Group> findAll() {
-        List<Group> groups;
+        List<Group> groups = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_GROUP)){
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -98,10 +98,10 @@ public class GroupDao implements Dao<Group,Integer> {
             return groups;
         } catch (SQLException exception) {
             LOGGER.error(NO_GROUPS_AT_UNIVERSITY);
-            throw new DAOException(NO_GROUPS_AT_UNIVERSITY);
         } finally {
             connectionPool.returnConnection(connection);
         }
+        return groups;
     }
 
     @Override
@@ -150,8 +150,8 @@ public class GroupDao implements Dao<Group,Integer> {
                 group.setName(resultSet.getString(NAME));
                 groupList.add(group);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         return groupList;
     }

@@ -86,7 +86,7 @@ public class BlockUserCommand implements Command {
         String lastName = requestContext.getParameterFromJSP("lblLastName");
         String groupName = requestContext.getParameterFromJSP("Group");
 
-        List<UserDto> allUser= serviceUser.getAll();
+        List<UserDto> allUser= serviceUser.findAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);
 
         UserDto userDto;

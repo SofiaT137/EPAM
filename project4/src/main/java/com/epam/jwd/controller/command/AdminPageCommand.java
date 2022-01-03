@@ -48,6 +48,7 @@ public class AdminPageCommand implements Command {
 
     private static final String CANNOT_FIND_ANY_COURSES_LOGGER = "I cannot find any courses at this university";
     private static final String CANNOT_FIND_ANY_REVIEWS_LOGGER = "I cannot find any reviews at this university";
+    private static final String CANNOT_FIND_ANY_GROUP_LOGGER = "I cannot find any group at this university";
     private static final String FIND_PEOPLE_WITH_ROLE_TEACHER = "Teacher";
 
     private final Service<UserDto, Integer> userService = new UserService();
@@ -166,21 +167,14 @@ public class AdminPageCommand implements Command {
         String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
         String btnCreateNewGroup = requestContext.getParameterFromJSP("btnCreateNewGroup");
 
-        List<UserDto> allUser = userService.getAll();
-        List<GroupDto> allGroups;
+        List<UserDto> allUser = userService.findAll();
+        List<GroupDto> allUniversityGroups = findAllGroups();
 
-        try {
-            allGroups = groupService.getAll();
-        }catch (ServiceException exception){
-            LOGGER.error(exception.getMessage());
-            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
-            return ERROR_PAGE_CONTEXT;
-        }
         List<CourseDto> courseDtoList = new ArrayList<>();
 
         if (btnShowAllCourses != null){
             try{
-                courseDtoList = courseService.getAll();
+                courseDtoList = courseService.findAll();
             }catch (ServiceException exception){
                 LOGGER.info(CANNOT_FIND_ANY_COURSES_LOGGER);
             }
@@ -195,7 +189,7 @@ public class AdminPageCommand implements Command {
             List<ReviewDto> allReviews = new ArrayList<>();
 
             try {
-                allReviews = reviewService.getAll();
+                allReviews = reviewService.findAll();
             }catch (ServiceException exception){
                 LOGGER.info(CANNOT_FIND_ANY_REVIEWS_LOGGER);
             }
@@ -204,7 +198,7 @@ public class AdminPageCommand implements Command {
             return GET_ALL_REVIEW_CONTEXT;
         }
         else if (btnCreateNewGroup != null){
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroups);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allUniversityGroups);
             return CREATE_GROUP_CONTEXT;
         }else if (btnCreateNewTeacher != null){
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
@@ -212,18 +206,21 @@ public class AdminPageCommand implements Command {
            return CREATE_NEW_TEACHER_CONTEXT;
         }else if (btnBlockUser != null){
             List<UserDto> blockedUser = findBlockedUser(allUser);
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroups);
+            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allUniversityGroups);
             requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUser);
             return BLOCK_USER_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    /**
-     * Find all user with role "Teacher"
-     * @param list of UserDto
-     * @return list of all user with role "Teacher"
-     */
+    private List<GroupDto> findAllGroups(){
+        List<GroupDto> allUniversityGroups = groupService.findAll();
+        if (allUniversityGroups.isEmpty()){
+            LOGGER.info(CANNOT_FIND_ANY_GROUP_LOGGER);
+        }
+        return allUniversityGroups;
+    }
+
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto
@@ -238,11 +235,6 @@ public class AdminPageCommand implements Command {
         return result;
     }
 
-    /**
-     * Find all blocked users
-     * @param list list of UserDto
-     * @return list of all blocked user
-     */
     private List<UserDto> findBlockedUser(List<UserDto> list){
         List<UserDto> blockedUser = new ArrayList<>();
         for (UserDto userDto

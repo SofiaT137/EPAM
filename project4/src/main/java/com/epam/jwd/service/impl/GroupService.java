@@ -66,14 +66,12 @@ public class GroupService implements Service<GroupDto,Integer> {
     }
 
     @Override
-    public List<GroupDto> getAll() throws ServiceException {
+    public List<GroupDto> findAll() throws ServiceException {
         List<Group> groupGetAll = groupDao.findAll();
         List<GroupDto> groupDtoList = new ArrayList<>();
-        if (groupGetAll.isEmpty()){
-            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
-            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
+        if (!(groupGetAll.isEmpty())){
+            groupGetAll.forEach(group -> groupDtoList.add(groupConverter.convert(group)));
         }
-        groupGetAll.forEach(group -> groupDtoList.add(groupConverter.convert(group)));
         return groupDtoList;
     }
 

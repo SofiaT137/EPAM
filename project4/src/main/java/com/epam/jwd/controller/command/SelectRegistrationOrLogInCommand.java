@@ -147,7 +147,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String btnLogIn = requestContext.getParameterFromJSP("btnLogIn");
 
         List<GroupDto> listOfGroups;
-        listOfGroups = groupService.getAll();
+        listOfGroups = groupService.findAll();
         GroupDto adminGroup = ((GroupService)groupService).filterGroup(ROLE_ADMIN);
         GroupDto teacherGroup = ((GroupService)groupService).filterGroup(ROLE_TEACHER);
         listOfGroups.remove(adminGroup);

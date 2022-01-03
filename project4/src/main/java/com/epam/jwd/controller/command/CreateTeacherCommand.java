@@ -131,7 +131,7 @@ public class CreateTeacherCommand implements Command {
 
                 userService.create(userDto);
 
-                List<UserDto> allUser = userService.getAll();
+                List<UserDto> allUser = userService.findAll();
                 List<UserDto> allTeachers = findAlLUserTeachers(allUser);
 
                 requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);

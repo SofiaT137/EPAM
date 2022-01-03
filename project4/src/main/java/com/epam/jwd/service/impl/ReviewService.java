@@ -68,7 +68,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
 
 
     @Override
-    public List<ReviewDto> getAll() throws ServiceException {
+    public List<ReviewDto> findAll() throws ServiceException {
         List<Review> daoGetAll = reviewDao.findAll();
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){

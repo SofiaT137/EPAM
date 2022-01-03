@@ -89,7 +89,7 @@ public class CreateGroupCommand implements Command {
 
             groupService.create(groupDto);
 
-            List<GroupDto> allGroup = groupService.getAll();
+            List<GroupDto> allGroup = groupService.findAll();
 
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
 

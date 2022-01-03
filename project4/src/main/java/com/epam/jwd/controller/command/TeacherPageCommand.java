@@ -101,7 +101,7 @@ public class TeacherPageCommand implements Command {
         String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
 
         if (btnRateStudent != null){
-            List<UserDto> allUser= serviceUser.getAll();
+            List<UserDto> allUser= serviceUser.findAll();
             requestContext.addAttributeToSession(ALL_USER_SESSION_COLLECTION_ATTRIBUTE,allUser);
             List<CourseDto> finishedCourses = findFinishedCourses(userCourse);
             requestContext.addAttributeToSession(FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE,finishedCourses);

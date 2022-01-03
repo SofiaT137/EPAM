@@ -114,7 +114,7 @@ public class CourseService implements Service<CourseDto,Integer> {
     }
 
     @Override
-    public List<CourseDto> getAll() throws ServiceException {
+    public List<CourseDto> findAll() throws ServiceException {
         List<Course> daoGetAll = courseDao.findAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){

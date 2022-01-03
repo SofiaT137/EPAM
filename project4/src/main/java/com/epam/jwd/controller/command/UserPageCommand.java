@@ -97,7 +97,7 @@ public class UserPageCommand implements Command {
 
         List<CourseDto> courseList = new ArrayList<>();
         try {
-            courseList = courseService.getAll();
+            courseList = courseService.findAll();
         }catch (ServiceException exception){
             LOGGER.info(exception.getMessage());
         }

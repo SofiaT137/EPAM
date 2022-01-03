@@ -80,7 +80,7 @@ public class AccountService implements Service<AccountDto,Integer> {
     }
 
     @Override
-    public List<AccountDto> getAll() throws ServiceException {
+    public List<AccountDto> findAll() throws ServiceException {
         List<Account> daoGetAll = accountDao.findAll();
         List<AccountDto> accountDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){

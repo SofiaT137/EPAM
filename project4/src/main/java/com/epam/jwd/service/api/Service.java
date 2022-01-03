@@ -49,5 +49,5 @@ public interface Service<K extends AbstractDto<U>,U> {
      * @return list of Dto Objects
      * @throws ServiceException exception
      */
-    List<K> getAll() throws ServiceException;
+    List<K> findAll() throws ServiceException;
 }

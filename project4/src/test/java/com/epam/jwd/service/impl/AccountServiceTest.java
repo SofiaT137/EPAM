@@ -75,10 +75,10 @@ class AccountServiceTest {
 
     @Test
     void getAll() {
-        List<AccountDto> accountDtoList = accountService.getAll();
+        List<AccountDto> accountDtoList = accountService.findAll();
         int sizeBeforeAdd = accountDtoList.size();
         create();
-        assertEquals(accountService.getAll().size(),sizeBeforeAdd+1);
+        assertEquals(accountService.findAll().size(),sizeBeforeAdd+1);
     }
 
     @Test
