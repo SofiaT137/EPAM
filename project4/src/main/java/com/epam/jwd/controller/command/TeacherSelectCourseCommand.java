@@ -126,12 +126,7 @@ public class TeacherSelectCourseCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    /**
-     * Find all students with review
-     * @param list of students
-     * @param currentCourse
-     * @return list of all students with review
-     */
+
     private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto currentCourse){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto:

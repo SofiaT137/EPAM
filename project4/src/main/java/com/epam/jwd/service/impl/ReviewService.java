@@ -1,7 +1,7 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.Dao;
-import com.epam.jwd.dao.impl.ReviewDao;
+import com.epam.jwd.dao.impl.ReviewDaoImpl;
 import com.epam.jwd.dao.model.review.Review;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
@@ -23,7 +23,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(ReviewService.class);
 
-    private final Dao<Review,Integer> reviewDao = new ReviewDao();
+    private final Dao<Review,Integer> reviewDao = new ReviewDaoImpl();
     private final Validator<ReviewDto> reviewValidator= new ReviewValidator();
     private final Converter<Review, ReviewDto, Integer> reviewConverter = new ReviewConverter();
 
@@ -83,7 +83,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return list of ReviewDto
      */
     public List<ReviewDto> filterReview(int userId) {
-        List<Review> daoGetAll = ((ReviewDao) reviewDao).findReviewByUserId(userId);
+        List<Review> daoGetAll = ((ReviewDaoImpl) reviewDao).findReviewByUserId(userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);
@@ -100,7 +100,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return ReviewDto object
      */
     public ReviewDto findReviewByCourseIdAndUserId(int courseId,int userId) {
-        Review review = ((ReviewDao) reviewDao).findReviewByCourseIdAndUserId(courseId,userId);
+        Review review = ((ReviewDaoImpl) reviewDao).findReviewByCourseIdAndUserId(courseId,userId);
         return reviewConverter.convert(review);
     }
 
@@ -110,7 +110,7 @@ public class ReviewService implements Service<ReviewDto,Integer> {
      * @return list of ReviewDto objects
      */
     public List<ReviewDto> findReviewByCourseId(int courseId) {
-        List<Review> daoGetAll = ((ReviewDao) reviewDao).findReviewByCourseId(courseId);
+        List<Review> daoGetAll = ((ReviewDaoImpl) reviewDao).findReviewByCourseId(courseId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);

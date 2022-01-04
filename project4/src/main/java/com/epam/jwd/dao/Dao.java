@@ -31,7 +31,17 @@ public interface Dao<T extends AbstractEntity<K>,K> {
      * @return true, when deleted
      */
     Boolean delete(T entity);
-    
+
+    /**
+     * Find all objects
+     * @return list of all the objects
+     */
     List<T> findAll();
+
+    /**
+     * Find Object by its id
+     * @param id Object's id
+     * @return Object
+     */
     T findById(K id);
 }

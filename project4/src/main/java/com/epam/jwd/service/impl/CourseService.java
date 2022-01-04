@@ -1,7 +1,7 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.Dao;
-import com.epam.jwd.dao.impl.CourseDao;
+import com.epam.jwd.dao.impl.CourseDaoImpl;
 import com.epam.jwd.dao.model.course.Course;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
@@ -27,7 +27,7 @@ public class CourseService implements Service<CourseDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(CourseService.class);
 
-    private final Dao<Course,Integer> courseDao = new CourseDao();
+    private final Dao<Course,Integer> courseDao = new CourseDaoImpl();
     private final Validator<CourseDto> courseValidator = new CourseValidator();
     private final Validator<UserDto> userDtoValidator = new UserValidator();
     private final Converter<Course, CourseDto, Integer> courseConverter = new CourseConverter();
@@ -54,7 +54,7 @@ public class CourseService implements Service<CourseDto,Integer> {
      * @return list of CourseDto
      */
     public List<CourseDto> getUserAvailableCourses(String firstName,String lastName){
-        List<Course> courseList = ((CourseDao) courseDao).getUserAvailableCourses(firstName,lastName);
+        List<Course> courseList = ((CourseDaoImpl) courseDao).getUserAvailableCourses(firstName,lastName);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (courseList.isEmpty()){
             LOGGER.error(CANNOT_FIND_USER_EXCEPTION);
@@ -73,7 +73,7 @@ public class CourseService implements Service<CourseDto,Integer> {
     public Boolean deleteUserFromCourse(CourseDto courseDto, UserDto userDto){
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
-       return ((CourseDao) courseDao).deleteUserFromCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
+       return ((CourseDaoImpl) courseDao).deleteUserFromCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
     }
 
     /**  Add user into course
@@ -84,7 +84,7 @@ public class CourseService implements Service<CourseDto,Integer> {
     public Boolean addUserIntoCourse(CourseDto courseDto, UserDto userDto) {
         courseValidator.validate(courseDto);
         userDtoValidator.validate(userDto);
-        return ((CourseDao) courseDao).addUserIntoCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
+        return ((CourseDaoImpl) courseDao).addUserIntoCourse(courseDto.getName(),userDto.getFirstName(),userDto.getLastName());
     }
 
     @Override
@@ -132,7 +132,7 @@ public class CourseService implements Service<CourseDto,Integer> {
      * @return list of CourseDto
      */
     public List<CourseDto> filterCourse(String courseName){
-        List<Course> daoGetAll = ((CourseDao) courseDao).findCourseByName(courseName);
+        List<Course> daoGetAll = ((CourseDaoImpl) courseDao).findCourseByName(courseName);
         List<CourseDto> courseDtoList = new ArrayList<>();
         if (daoGetAll.isEmpty()){
             LOGGER.error(CANNOT_FIND_COURSE_EXCEPTION);
@@ -148,7 +148,7 @@ public class CourseService implements Service<CourseDto,Integer> {
      * @return Boolean result
      */
     public Boolean deleteAllCourseInUSERHAsCourse(int courseId){
-        return ((CourseDao) courseDao).deleteAllFieldsUserHasCourseByCourseId(courseId);
+        return ((CourseDaoImpl) courseDao).deleteAllFieldsUserHasCourseByCourseId(courseId);
     }
 
 }

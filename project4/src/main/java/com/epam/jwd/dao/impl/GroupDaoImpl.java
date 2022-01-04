@@ -17,9 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupDao implements Dao<Group,Integer> {
+public class GroupDaoImpl implements Dao<Group,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(GroupDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(GroupDaoImpl.class);
 
     private static final String SQL_SAVE_GROUP = "INSERT INTO university_group (name) VALUES (?)";
     private static final String SQL_FIND_ALL_GROUP = "SELECT * FROM university_group";

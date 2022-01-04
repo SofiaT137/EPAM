@@ -16,9 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReviewDao implements Dao<Review, Integer> {
+public class ReviewDaoImpl implements Dao<Review, Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(ReviewDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(ReviewDaoImpl.class);
 
     private static final String SQL_SAVE_REVIEW = "INSERT INTO review (user_id, course_id, grade, review) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE review SET user_id = ?, course_id = ?, grade = ? review = ? WHERE review_id = ?";

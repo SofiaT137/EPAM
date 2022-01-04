@@ -151,11 +151,7 @@ public class CreateTeacherCommand implements Command {
         return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    /**
-     * Find all users with role "Teacher"
-     * @param list list of UserDto
-     * @return list of all teachers
-     */
+
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto

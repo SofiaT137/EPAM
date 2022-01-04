@@ -18,11 +18,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseDao implements Dao<Course,Integer> {
+public class CourseDaoImpl implements Dao<Course,Integer> {
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
-    private static final Logger LOGGER = LogManager.getLogger(CourseDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(CourseDaoImpl.class);
 
     private static final String SQL_SAVE_COURSE = "INSERT INTO course (name, start_date, end_date) VALUES (?, ?, ?)";
     private static final String SQL_ADD_USER_INTO_COURSE = "INSERT INTO user_has_course (user_id, course_id) VALUES (?, ?)";
@@ -75,8 +75,8 @@ public class CourseDao implements Dao<Course,Integer> {
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_USER_INTO_COURSE)){
             Course course = findCourseByName(courseName).get(0);
-            UserDao userDAO = new UserDao();
-            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
+            UserDaoImpl userDAOImpl = new UserDaoImpl();
+            User user = userDAOImpl.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
             return preparedStatement.executeUpdate() > 0;
@@ -92,8 +92,8 @@ public class CourseDao implements Dao<Course,Integer> {
         List<Course> courses = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_AVAILABLE_USER_COURSES)){
-            UserDao userDAO = new UserDao();
-            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
+            UserDaoImpl userDAOImpl = new UserDaoImpl();
+            User user = userDAOImpl.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
@@ -111,13 +111,13 @@ public class CourseDao implements Dao<Course,Integer> {
         List<User> users = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_USERS_AT_COURSE)){
-            CourseDao courseDAO = new CourseDao();
-            UserDao userDAO = new UserDao();
-            Course course = courseDAO.findCourseByName(courseName).get(0);
+            CourseDaoImpl courseDAOImpl = new CourseDaoImpl();
+            UserDaoImpl userDAOImpl = new UserDaoImpl();
+            Course course = courseDAOImpl.findCourseByName(courseName).get(0);
             preparedStatement.setInt(1,course.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                users.add(userDAO.findById(resultSet.getInt("user_id")));
+                users.add(userDAOImpl.findById(resultSet.getInt("user_id")));
             }
         } catch (SQLException exception) {
             LOGGER.info(ERROR_CANNOT_FIND_PEOPLE_INTO_COURSE);
@@ -131,8 +131,8 @@ public class CourseDao implements Dao<Course,Integer> {
         Connection connection = connectionPool.takeConnection();
         try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER_FROM_COURSE)){
             Course course = findCourseByName(courseName).get(0);
-            UserDao userDAO = new UserDao();
-            User user = userDAO.findUserByFirstNameAndLastName(firstName,lastName).get(0);
+            UserDaoImpl userDAOImpl = new UserDaoImpl();
+            User user = userDAOImpl.findUserByFirstNameAndLastName(firstName,lastName).get(0);
             preparedStatement.setInt(1,user.getId());
             preparedStatement.setInt(2,course.getId());
             return preparedStatement.executeUpdate() > 0;

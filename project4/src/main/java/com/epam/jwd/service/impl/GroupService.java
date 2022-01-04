@@ -1,7 +1,7 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.Dao;
-import com.epam.jwd.dao.impl.GroupDao;
+import com.epam.jwd.dao.impl.GroupDaoImpl;
 import com.epam.jwd.dao.model.group.Group;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
@@ -23,7 +23,7 @@ public class GroupService implements Service<GroupDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(GroupService.class);
 
-    private final Dao<Group,Integer> groupDao = new GroupDao();
+    private final Dao<Group,Integer> groupDao = new GroupDaoImpl();
     private final Validator<GroupDto> groupValidator = new GroupValidator();
     private final Converter<Group, GroupDto, Integer> groupConverter = new GroupConverter();
 
@@ -81,7 +81,7 @@ public class GroupService implements Service<GroupDto,Integer> {
      * @return GroupDto object
      */
     public GroupDto filterGroup(String name){
-        Group group = ((GroupDao) groupDao).findGroupByName(name);
+        Group group = ((GroupDaoImpl) groupDao).findGroupByName(name);
         return groupConverter.convert(group);
     }
 }

@@ -1,6 +1,6 @@
 package com.epam.jwd.dao.impl;
 
-import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.UserDao;
 import com.epam.jwd.dao.connection_pool.impl.ConnectionPollImpl;
 import com.epam.jwd.dao.connection_pool.ConnectionPool;
 import com.epam.jwd.dao.exception.DAOException;
@@ -16,9 +16,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao implements Dao<User,Integer> {
+public class UserDaoImpl implements UserDao<User,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(UserDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserDaoImpl.class);
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
 
@@ -74,11 +74,6 @@ public class UserDao implements Dao<User,Integer> {
         } finally {
             connectionPool.returnConnection(connection);
         }
-    }
-
-    @Override
-    public Boolean delete(User user) {
-      return false;
     }
 
     @Override

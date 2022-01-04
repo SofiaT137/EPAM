@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-public class AccountDao implements Dao<Account, Integer> {
+public class AccountDaoImpl implements Dao<Account, Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(AccountDao.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountDaoImpl.class);
 
     private final ConnectionPool connectionPool = ConnectionPollImpl.getInstance();
     private final RoleDaoImpl roleDAOImpl = new RoleDaoImpl();

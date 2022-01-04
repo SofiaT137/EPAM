@@ -1,7 +1,7 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.Dao;
-import com.epam.jwd.dao.impl.AccountDao;
+import com.epam.jwd.dao.impl.AccountDaoImpl;
 import com.epam.jwd.dao.model.user.Account;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.converter.Converter;
@@ -24,7 +24,7 @@ public class AccountService implements Service<AccountDto,Integer> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountService.class);
 
-    private final Dao<Account,Integer> accountDao = new AccountDao();
+    private final Dao<Account,Integer> accountDao = new AccountDaoImpl();
     private final Validator<AccountDto> accountValidator = new AccountValidator();
     private final Converter<Account, AccountDto, Integer> accountConverter = new AccountConverter();
 
@@ -98,7 +98,7 @@ public class AccountService implements Service<AccountDto,Integer> {
      * @return AccountDto Object
      */
     public AccountDto filterAccount(String login,String password) {
-        Account account = ((AccountDao) accountDao).findAccountByLoginAndPassword(login,password);
+        Account account = ((AccountDaoImpl) accountDao).findAccountByLoginAndPassword(login,password);
         return accountConverter.convert(account);
     }
 
@@ -108,7 +108,7 @@ public class AccountService implements Service<AccountDto,Integer> {
      * @return AccountDto Object
      */
     public AccountDto getAccount(String login) {
-        Account account = ((AccountDao) accountDao).findAccountByLogin(login);
+        Account account = ((AccountDaoImpl) accountDao).findAccountByLogin(login);
         return accountConverter.convert(account);
     }
 }

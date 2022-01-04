@@ -27,11 +27,7 @@ public class ReviewValidator implements Validator<ReviewDto> {
        validateReview(dto.getReview());
     }
 
-    /**
-     * Validate grade method
-     * @param grade student's grade
-     * @throws ServiceException exception
-     */
+
     private void validateGrade(final Integer grade) throws ServiceException  {
         if (grade < MIN_GRADE_VALUE || grade > MAX_GRADE_VALUE){
             LOGGER.error(GRADE_VALUE_EXCEPTION);
@@ -39,11 +35,7 @@ public class ReviewValidator implements Validator<ReviewDto> {
         }
     }
 
-    /**
-     * Validate review method
-     * @param review student's review
-     * @throws ServiceException exception
-     */
+
     private void validateReview(final String review) throws ServiceException  {
         if (review.length() > MAX_REVIEW_LENGTH){
             LOGGER.error(REVIEW_LENGTH_EXCEPTION);

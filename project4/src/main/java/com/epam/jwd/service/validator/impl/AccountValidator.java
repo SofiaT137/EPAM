@@ -33,11 +33,6 @@ public class AccountValidator implements Validator<AccountDto> {
          validateLogin(dto.getLogin());
     }
 
-    /**
-     * Validate password method
-     * @param password account password
-     * @throws ServiceException exception
-     */
     private void validatePassword(final String password) throws ServiceException {
         if (password.length() < MIN_PASSWORD_LENGTH){
             LOGGER.error(PASSWORD_LENGTH_EXCEPTION);
@@ -51,11 +46,7 @@ public class AccountValidator implements Validator<AccountDto> {
         }
     }
 
-    /**
-     * Validate login method
-     * @param login account login
-     * @throws ServiceException exception
-     */
+
     private void validateLogin(final String login) throws ServiceException {
         if (login.length() < MIN_LOGIN_LENGTH){
             LOGGER.error(LOGIN_LENGTH_EXCEPTION);
