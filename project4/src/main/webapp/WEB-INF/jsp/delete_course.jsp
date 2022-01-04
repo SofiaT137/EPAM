@@ -14,6 +14,9 @@
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
+<!DOCTYPE HTML>
+<html xml:lang>
+
 <html>
 
 <head>
@@ -64,11 +67,12 @@
     <form action="/controller?command=DELETE_COURSE_COMMAND" method="post">
         <div class="form-group">
             <label>${courseName}</label>
-            <select name="Course_name">
+            <input name = "Course_name" list = "courses" placeholder = "Select course name" autocomplete="off">
+            <datalist id = "courses">
                 <c:forEach items="${requestScope.user_course}" var="course">
                     <option value="${course.name}">${course.name}</option>
                 </c:forEach>
-            </select>
+            </datalist>
         </div>
         <p></p>
         <button type="submit" name="btnDeleteCourse" <c:if test="${user_course.size() == 0}">
