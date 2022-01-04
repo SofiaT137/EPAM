@@ -5,7 +5,7 @@ import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class CreateCourseCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
 
     public static Command getInstance() {
@@ -83,14 +83,14 @@ public class CreateCourseCommand implements Command {
                 courseDto.setEndCourse(endDate);
 
                 courseService.create(courseDto);
-               ((CourseService) courseService).addUserIntoCourse(courseDto,userDto);
+               ((CourseServiceImpl) courseService).addUserIntoCourse(courseDto,userDto);
 
             }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
                 return ERROR_PAGE_CONTEXT;
             }
-            List<CourseDto> coursesAfterAdding = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+            List<CourseDto> coursesAfterAdding = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
 
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterAdding);
             return REFRESH_PAGE_CONTEXT;

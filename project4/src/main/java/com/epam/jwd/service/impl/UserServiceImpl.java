@@ -22,9 +22,9 @@ import java.util.List;
 /**
  * The user service
  */
-public class UserService implements Service<UserDto,Integer> {
+public class UserServiceImpl implements Service<UserDto,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(UserService.class);
+    private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
 
     private final Dao<Course,Integer> courseDao = new CourseDaoImpl();
     private final UserDao<User,Integer> userDaoImpl = new UserDaoImpl();

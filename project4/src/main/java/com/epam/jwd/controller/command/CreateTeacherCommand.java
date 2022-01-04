@@ -7,8 +7,8 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,8 +34,8 @@ public class CreateTeacherCommand implements Command {
     private static final String ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is original.";
     private static final String TEACHER = "Teacher";
 
-    private final Service<AccountDto, Integer> accountService = new AccountService();
-    private final Service<UserDto, Integer> userService = new UserService();
+    private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
+    private final Service<UserDto, Integer> userService = new UserServiceImpl();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -83,7 +83,7 @@ public class CreateTeacherCommand implements Command {
             String password = requestContext.getParameterFromJSP("lblPassword");
 
             try{
-                ((AccountService)accountService).validate(login,password);
+                ((AccountServiceImpl)accountService).validate(login,password);
             }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
@@ -93,7 +93,7 @@ public class CreateTeacherCommand implements Command {
             AccountDto accountDto = new AccountDto();
 
                 try {
-                    accountDto = ((AccountService) accountService).getAccount(login);
+                    accountDto = ((AccountServiceImpl) accountService).getAccount(login);
                     LOGGER.error(NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                     requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, "( " + login + " ) " + NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                     return ERROR_PAGE_CONTEXT;
@@ -101,7 +101,7 @@ public class CreateTeacherCommand implements Command {
                     LOGGER.error(ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 }
 
-            password = ((AccountService) accountService).encryptPassword(password);
+            password = ((AccountServiceImpl) accountService).encryptPassword(password);
 
             try {
                 accountDto.setRole(TEACHER);

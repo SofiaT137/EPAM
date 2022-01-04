@@ -12,12 +12,12 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AccountServiceTest {
+class AccountServiceImplTest {
 
     private final String login1 = "TestTest";
     private final String password1 = "TestTestTest93";
     private final Role role = Role.STUDENT;
-    private final AccountService accountService = new AccountService();
+    private final AccountServiceImpl accountServiceImpl = new AccountServiceImpl();
     private final AccountDaoImpl accountDAOImpl = new AccountDaoImpl();
     private AccountDto accountDto1;
 
@@ -27,19 +27,19 @@ class AccountServiceTest {
         accountDto1 = new AccountDto();
         accountDto1.setRole(role.getName());
         accountDto1.setLogin(login1);
-        accountDto1.setPassword(accountService.encryptPassword(password1));
+        accountDto1.setPassword(accountServiceImpl.encryptPassword(password1));
         accountDto1.setIsActive(1);
     }
 
     @AfterEach
     void tearDown(){
-        accountService.delete(accountDto1);
+        accountServiceImpl.delete(accountDto1);
     }
 
     @Test
     void create() {
-        accountDto1 = accountService.create(accountDto1);
-        AccountDto accountDto2 = accountService.filterAccount(login1,password1);
+        accountDto1 = accountServiceImpl.create(accountDto1);
+        AccountDto accountDto2 = accountServiceImpl.filterAccount(login1,password1);
         assertEquals(accountDto2.getLogin(),accountDto1.getLogin());
         assertEquals(accountDto2.getPassword(),accountDto1.getPassword());
     }
@@ -48,17 +48,17 @@ class AccountServiceTest {
     void update() {
         create();
         accountDto1.setIsActive(0);
-        accountService.update(accountDto1);
+        accountServiceImpl.update(accountDto1);
         assertEquals(accountDAOImpl.findAccountByLoginAndPassword(login1,password1).getIsActive(),accountDto1.getIsActive());
     }
 
     @Test
     void delete() {
         create();
-        accountService.delete(accountDto1);
+        accountServiceImpl.delete(accountDto1);
         String msg_result;
         try{
-            accountService.filterAccount(login1,password1);
+            accountServiceImpl.filterAccount(login1,password1);
             msg_result = "I've found this account!";
         } catch (DAOException exception){
             msg_result = exception.getMessage();
@@ -69,29 +69,29 @@ class AccountServiceTest {
     @Test
     void getById() {
         create();
-        AccountDto accountDto2 = accountService.getById(accountDto1.getId());
+        AccountDto accountDto2 = accountServiceImpl.getById(accountDto1.getId());
         assertEquals(accountDto2,accountDto1);
     }
 
     @Test
     void getAll() {
-        List<AccountDto> accountDtoList = accountService.findAll();
+        List<AccountDto> accountDtoList = accountServiceImpl.findAll();
         int sizeBeforeAdd = accountDtoList.size();
         create();
-        assertEquals(accountService.findAll().size(),sizeBeforeAdd+1);
+        assertEquals(accountServiceImpl.findAll().size(),sizeBeforeAdd+1);
     }
 
     @Test
     void filterAccount() {
         create();
-        AccountDto accountDto2 = accountService.filterAccount(login1,password1);
+        AccountDto accountDto2 = accountServiceImpl.filterAccount(login1,password1);
         assertEquals(accountDto2,accountDto1);
     }
 
     @Test
     void getAccount() {
         create();
-        AccountDto accountDto2 = accountService.getAccount(login1);
+        AccountDto accountDto2 = accountServiceImpl.getAccount(login1);
         assertEquals(accountDto2,accountDto1);
     }
 }

@@ -8,8 +8,8 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.ReviewService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,8 +29,8 @@ public class UserPageCommand implements Command {
     private static final String GET_COURSE_COMMAND = "/controller?command=SHOW_POSSIBLE_PAGE_COMMAND";
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
 
-    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
     private static final String USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE = "userReview";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
@@ -120,7 +120,7 @@ public class UserPageCommand implements Command {
         for (CourseDto courseDto:
                 listOfCourses ) {
             try{
-                ReviewDto reviewDto = ((ReviewService) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
+                ReviewDto reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
                 reviewDtoList.add(reviewDto);
             }catch (DAOException exception){
                 LOGGER.info(exception.getMessage());

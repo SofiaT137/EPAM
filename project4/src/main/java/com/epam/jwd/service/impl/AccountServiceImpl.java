@@ -20,9 +20,9 @@ import java.util.List;
 /**
  * The account service
  */
-public class AccountService implements Service<AccountDto,Integer> {
+public class AccountServiceImpl implements Service<AccountDto,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(AccountService.class);
+    private static final Logger LOGGER = LogManager.getLogger(AccountServiceImpl.class);
 
     private final Dao<Account,Integer> accountDao = new AccountDaoImpl();
     private final Validator<AccountDto> accountValidator = new AccountValidator();

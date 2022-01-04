@@ -5,7 +5,7 @@ import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.UserServiceImpl;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -27,7 +27,7 @@ public class TeacherPageCommand implements Command {
     private static final String ALL_USER_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "finishedCourse";
 
-    private final Service<UserDto, Integer> serviceUser = new UserService();
+    private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
 
     public static Command getInstance() {
         return INSTANCE;

@@ -8,11 +8,11 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.GroupService;
-import com.epam.jwd.service.impl.ReviewService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.GroupServiceImpl;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,11 +49,11 @@ public class AdminPageCommand implements Command {
 
     private static final String ROLE_TEACHER = "Teacher";
 
-    private final Service<UserDto, Integer> userService = new UserService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
-    private final Service<AccountDto, Integer> accountService = new AccountService();
-    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
-    private final Service<GroupDto, Integer> groupService = new GroupService();
+    private final Service<UserDto, Integer> userService = new UserServiceImpl();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
+    private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
+    private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
 
     public static Command getInstance() {

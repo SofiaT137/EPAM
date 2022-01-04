@@ -9,10 +9,10 @@ import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.GroupService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.GroupServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,10 +28,10 @@ public class RegisterUserCommand implements Command {
 
     private static final Command INSTANCE = new RegisterUserCommand();
 
-    private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
-    private final Service<AccountDto, Integer> accountService = new AccountService();
-    private final Service<GroupDto, Integer> groupService = new GroupService();
+    private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
+    private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
+    private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String USER_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
@@ -88,7 +88,7 @@ public class RegisterUserCommand implements Command {
         AccountDto registerAccount = null;
         UserDto currentUser = null;
 
-        GroupDto groupDto = ((GroupService) groupService).filterGroup(groupName);
+        GroupDto groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
 
         boolean savePoint = false;
 
@@ -123,7 +123,7 @@ public class RegisterUserCommand implements Command {
 
         List<CourseDto> userCourses = new ArrayList<>();
         try {
-            userCourses = ((CourseService) courseService).getUserAvailableCourses(currentUser.getFirstName(), currentUser.getLastName());
+            userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(currentUser.getFirstName(), currentUser.getLastName());
         } catch (ServiceException exception) {
             LOGGER.info(LOGGER_INFO_THE_COURSE_LIST_EMPTY);
         }

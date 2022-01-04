@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * The group service
  */
-public class GroupService implements Service<GroupDto,Integer> {
+public class GroupServiceImpl implements Service<GroupDto,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(GroupService.class);
+    private static final Logger LOGGER = LogManager.getLogger(GroupServiceImpl.class);
 
     private final Dao<Group,Integer> groupDao = new GroupDaoImpl();
     private final Validator<GroupDto> groupValidator = new GroupValidator();

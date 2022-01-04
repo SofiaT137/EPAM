@@ -23,9 +23,9 @@ import java.util.List;
  * The course service
  */
 
-public class CourseService implements Service<CourseDto,Integer> {
+public class CourseServiceImpl implements Service<CourseDto,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(CourseService.class);
+    private static final Logger LOGGER = LogManager.getLogger(CourseServiceImpl.class);
 
     private final Dao<Course,Integer> courseDao = new CourseDaoImpl();
     private final Validator<CourseDto> courseValidator = new CourseValidator();

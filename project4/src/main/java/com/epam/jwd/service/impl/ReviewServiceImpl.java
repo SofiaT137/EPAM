@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * The review service
  */
-public class ReviewService implements Service<ReviewDto,Integer> {
+public class ReviewServiceImpl implements Service<ReviewDto,Integer> {
 
-    private static final Logger LOGGER = LogManager.getLogger(ReviewService.class);
+    private static final Logger LOGGER = LogManager.getLogger(ReviewServiceImpl.class);
 
     private final Dao<Review,Integer> reviewDao = new ReviewDaoImpl();
     private final Validator<ReviewDto> reviewValidator= new ReviewValidator();

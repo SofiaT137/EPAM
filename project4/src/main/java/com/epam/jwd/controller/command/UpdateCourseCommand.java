@@ -7,7 +7,7 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +29,7 @@ public class UpdateCourseCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -80,7 +80,7 @@ public class UpdateCourseCommand implements Command {
             CourseDto courseDto;
 
             try{
-                List<CourseDto> list = ((CourseService) courseService).filterCourse(courseName);
+                List<CourseDto> list = ((CourseServiceImpl) courseService).filterCourse(courseName);
                 courseDto = list.get(0);
             }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
@@ -100,7 +100,7 @@ public class UpdateCourseCommand implements Command {
                 return ERROR_PAGE_CONTEXT;
             }
 
-            List<CourseDto> coursesAfterChanging = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+            List<CourseDto> coursesAfterChanging = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterChanging);
             return REFRESH_PAGE_CONTEXT;
 

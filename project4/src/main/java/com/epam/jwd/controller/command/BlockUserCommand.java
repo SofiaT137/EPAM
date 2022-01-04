@@ -7,9 +7,9 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.GroupService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.GroupServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,9 +36,9 @@ public class BlockUserCommand implements Command {
     private static final String CHECK_ACCOUNT_FOR_BLOCK = "This account is blocked!";
     private static final String CHECK_ACCOUNT_FOR_UNBLOCK = "This account is unblocked!";
 
-    private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<AccountDto, Integer> serviceAccount = new AccountService();
-    private final Service<GroupDto, Integer> groupService = new GroupService();
+    private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
+    private final Service<AccountDto, Integer> serviceAccount = new AccountServiceImpl();
+    private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
 
     public static Command getInstance() {
@@ -155,11 +155,11 @@ public class BlockUserCommand implements Command {
     }
 
     private List<UserDto> findAllUsersByFirstNameAndLastName(String firstName, String lastName){
-        return ((UserService)serviceUser).filterUser(firstName,lastName);
+        return ((UserServiceImpl)serviceUser).filterUser(firstName,lastName);
     }
 
     private GroupDto findGroup(String groupName){
-        return ((GroupService) groupService).filterGroup(groupName);
+        return ((GroupServiceImpl) groupService).filterGroup(groupName);
     }
 
     private List<UserDto> findBlockedUser(List<UserDto> list){

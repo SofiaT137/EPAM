@@ -6,7 +6,7 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
-import com.epam.jwd.service.impl.ReviewService;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,7 +31,7 @@ public class RateStudentCommand implements Command {
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
 
-        private final Service<ReviewDto, Integer> reviewService = new ReviewService();
+        private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
 
     public static Command getInstance() {
         return INSTANCE;

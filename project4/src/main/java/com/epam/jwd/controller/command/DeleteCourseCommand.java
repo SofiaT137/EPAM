@@ -8,8 +8,8 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.ReviewService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,8 +36,8 @@ public class DeleteCourseCommand implements Command {
 
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
-    private final Service<CourseDto, Integer> courseService = new CourseService();
-    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
 
 
     public static Command getInstance() {
@@ -104,7 +104,7 @@ public class DeleteCourseCommand implements Command {
 
             String name = requestContext.getParameterFromJSP("Course_name");
 
-            List<CourseDto> courseList = ((CourseService) courseService).filterCourse(name);
+            List<CourseDto> courseList = ((CourseServiceImpl) courseService).filterCourse(name);
 
             if (courseList.isEmpty()){
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
@@ -116,7 +116,7 @@ public class DeleteCourseCommand implements Command {
 
             List<ReviewDto> listOfThisCourseReview = new ArrayList<>();
             try {
-                listOfThisCourseReview = ((ReviewService)reviewService).findReviewByCourseId(courseDtoForDelete.getId());
+                listOfThisCourseReview = ((ReviewServiceImpl)reviewService).findReviewByCourseId(courseDtoForDelete.getId());
             }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
             }
@@ -130,7 +130,7 @@ public class DeleteCourseCommand implements Command {
                     }
                 }
             }
-            boolean result = ((CourseService)courseService).deleteAllCourseInUSERHAsCourse(courseDtoForDelete.getId());
+            boolean result = ((CourseServiceImpl)courseService).deleteAllCourseInUSERHAsCourse(courseDtoForDelete.getId());
 
             if (!result) {
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
@@ -148,7 +148,7 @@ public class DeleteCourseCommand implements Command {
 
             List<CourseDto> coursesAfterDelete = new ArrayList<>();
                 try{
-                    coursesAfterDelete = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+                    coursesAfterDelete = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
                 }
                 catch (ServiceException exception){
                     LOGGER.info(exception.getMessage());

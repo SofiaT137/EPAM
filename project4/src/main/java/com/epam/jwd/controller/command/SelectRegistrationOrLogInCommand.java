@@ -9,10 +9,10 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountService;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.GroupService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.GroupServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,10 +50,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String ROLE_TEACHER = "Teacher";
     private static final String ROLE_STUDENT = "Student";
 
-    private final Service<AccountDto, Integer> service = new AccountService();
-    private final Service<UserDto, Integer> serviceUser = new UserService();
-    private final Service<CourseDto, Integer> courseService = new CourseService();
-    private final Service<GroupDto, Integer> groupService = new GroupService();
+    private final Service<AccountDto, Integer> service = new AccountServiceImpl();
+    private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
+    private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE = "language";
 
@@ -136,7 +136,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String login = requestContext.getParameterFromJSP("lblLogin");
         String password = requestContext.getParameterFromJSP("lblPassword");
         try{
-            ((AccountService)service).validate(login,password);
+            ((AccountServiceImpl)service).validate(login,password);
         }catch (Exception exception){
             LOGGER.error(exception.getMessage());
             requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,exception.getMessage());
@@ -147,8 +147,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         List<GroupDto> listOfGroups;
         listOfGroups = groupService.findAll();
-        GroupDto adminGroup = ((GroupService)groupService).filterGroup(ROLE_ADMIN);
-        GroupDto teacherGroup = ((GroupService)groupService).filterGroup(ROLE_TEACHER);
+        GroupDto adminGroup = ((GroupServiceImpl)groupService).filterGroup(ROLE_ADMIN);
+        GroupDto teacherGroup = ((GroupServiceImpl)groupService).filterGroup(ROLE_TEACHER);
         listOfGroups.remove(adminGroup);
         listOfGroups.remove(teacherGroup);
         requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,listOfGroups);
@@ -161,7 +161,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
         if (btnRegister != null) {
             try{
-                ((AccountService) service).getAccount(login);
+                ((AccountServiceImpl) service).getAccount(login);
                 LOGGER.error(EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,"( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 return ERROR_PAGE_CONTEXT;
@@ -169,7 +169,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 LOGGER.error(ACCOUNT_IS_ORIGINAL);
             }
 
-            password = ((AccountService) service).encryptPassword(password);
+            password = ((AccountServiceImpl) service).encryptPassword(password);
 
             AccountDto accountDto = new AccountDto();
             accountDto.setRole(ROLE_STUDENT);
@@ -189,7 +189,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         } else if (btnLogIn != null) {
             AccountDto accountDto;
             try{
-                accountDto = ((AccountService) service).filterAccount(login,password);
+                accountDto = ((AccountServiceImpl) service).filterAccount(login,password);
                 requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             }catch (DAOException exception){
                 LOGGER.error(exception.getMessage());
@@ -201,13 +201,13 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,ACCESS_DENIED);
                 return ERROR_PAGE_CONTEXT;
             }
-            UserDto userDto = ((UserService) serviceUser).findUserByAccountId(accountDto.getId());
+            UserDto userDto = ((UserServiceImpl) serviceUser).findUserByAccountId(accountDto.getId());
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             String userRole = accountDto.getRole();
             if (Objects.equals(userRole, ROLE_TEACHER) || Objects.equals(userRole, ROLE_STUDENT)) {
                 List<CourseDto> userCourses = new ArrayList<>();
                 try{
-                    userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
+                    userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
                 }catch (ServiceException exception){
                     LOGGER.info(exception.getMessage());
                 }

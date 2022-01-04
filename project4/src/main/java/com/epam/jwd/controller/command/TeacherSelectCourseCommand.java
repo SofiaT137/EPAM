@@ -8,9 +8,9 @@ import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.CourseService;
-import com.epam.jwd.service.impl.ReviewService;
-import com.epam.jwd.service.impl.UserService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,9 +38,9 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String CANNOT_FIND_COURSE_MESSAGE_BY_NAME = "This course name is wrong! Or this course does not exist!";
 
 
-    private final Service<UserDto, Integer> userService = new UserService();
-    private final Service<ReviewDto, Integer> reviewService = new ReviewService();
-        private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<UserDto, Integer> userService = new UserServiceImpl();
+    private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
+        private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
 
     private static final ResponseContext RATE_STUDENT_CONTEXT = new ResponseContext() {
@@ -100,7 +100,7 @@ public class TeacherSelectCourseCommand implements Command {
             String course = requestContext.getParameterFromJSP("Course_name");
                 List<CourseDto> list = new ArrayList<>();
                 try{
-                    list = ((CourseService) courseService).filterCourse(course);
+                    list = ((CourseServiceImpl) courseService).filterCourse(course);
                 }catch (ServiceException exception){
                     LOGGER.info(exception.getMessage());
                 }
@@ -108,7 +108,7 @@ public class TeacherSelectCourseCommand implements Command {
             if (!(list.isEmpty())){
                 CourseDto selectedCourse = list.get(0);
                 requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE,selectedCourse);
-                List<UserDto> usersOfSelectedCourse = ((UserService) userService).findALLStudentOnThisCourse(selectedCourse.getName());
+                List<UserDto> usersOfSelectedCourse = ((UserServiceImpl) userService).findALLStudentOnThisCourse(selectedCourse.getName());
                  usersOfSelectedCourse.remove(userDto);
                 List<UserDto> list1 = findAllStudentWithReview(usersOfSelectedCourse,selectedCourse);
                 usersOfSelectedCourse.removeAll(list1);
@@ -132,7 +132,7 @@ public class TeacherSelectCourseCommand implements Command {
         for (UserDto userDto:
              list) {
             try{
-                ((ReviewService) reviewService).findReviewByCourseIdAndUserId(currentCourse.getId(), userDto.getId());
+                ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(currentCourse.getId(), userDto.getId());
                 result.add(userDto);
             }catch (DAOException exception){
                 LOGGER.info(exception.getMessage());

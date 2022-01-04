@@ -5,7 +5,7 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
-import com.epam.jwd.service.impl.GroupService;
+import com.epam.jwd.service.impl.GroupServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +22,7 @@ public class CreateGroupCommand implements Command {
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
 
-    private final Service<GroupDto, Integer> groupService = new GroupService();
+    private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
@@ -76,7 +76,7 @@ public class CreateGroupCommand implements Command {
             GroupDto groupDto = new GroupDto();
 
             try{
-                groupDto = ((GroupService) groupService).filterGroup(groupName);
+                groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
                 LOGGER.error(NOT_UNIQUE_GROUP_NAME);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
                 return ERROR_PAGE_CONTEXT;

@@ -6,7 +6,7 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.CourseService;
+import com.epam.jwd.service.impl.CourseServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,7 +27,7 @@ public class DeleteUserCourseCommand implements Command {
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_PAGE_COMMAND";
     private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
 
-    private final Service<CourseDto, Integer> courseService = new CourseService();
+    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
@@ -96,7 +96,7 @@ public class DeleteUserCourseCommand implements Command {
             List<CourseDto> listOfCourses;
 
             try{
-                listOfCourses = ((CourseService) courseService).filterCourse(name);
+                listOfCourses = ((CourseServiceImpl) courseService).filterCourse(name);
             }catch (ServiceException exception){
                 LOGGER.error(exception.getMessage());
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
@@ -105,7 +105,7 @@ public class DeleteUserCourseCommand implements Command {
 
             CourseDto courseDtoForDelete = listOfCourses.get(0);
 
-            boolean result = ((CourseService) courseService).deleteUserFromCourse(courseDtoForDelete,userDto);
+            boolean result = ((CourseServiceImpl) courseService).deleteUserFromCourse(courseDtoForDelete,userDto);
 
             if (!result){
                 LOGGER.error(SOMETHING_WENT_WRONG_EXCEPTION);
@@ -121,7 +121,7 @@ public class DeleteUserCourseCommand implements Command {
 
             List<CourseDto> userCourses = new ArrayList<>();
             try{
-                userCourses = ((CourseService) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+                userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             }catch (ServiceException exception){
                 LOGGER.info(exception.getMessage());
             }
