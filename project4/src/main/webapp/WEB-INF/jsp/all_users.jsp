@@ -70,7 +70,7 @@
             <div class="paggination">
                 <c:if test="${current_page != 1}">
                     <td>
-                        <a href="/controller?command=GET_ALL_USER&page=${current_page - 1}">${previous}</a>
+                        <a href="/controller?command=SHOW_ALL_USER&page=${current_page - 1}">${previous}</a>
                     </td>
                 </c:if>
 
@@ -81,7 +81,7 @@
                         </c:when>
                         <c:otherwise>
                             <td>
-                                <a href="/controller?command=GET_ALL_USER&page=${i}">${i}</a>
+                                <a href="/controller?command=SHOW_ALL_USER&page=${i}">${i}</a>
                             </td>
                         </c:otherwise>
                     </c:choose>
@@ -90,7 +90,7 @@
                 <%--For displaying Next link --%>
                     <c:if test="${current_page lt number_of_pages}">
                         <td>
-                            <a href="/controller?command=GET_ALL_USER&page=${current_page + 1}">${next}</a>
+                            <a href="/controller?command=SHOW_ALL_USER&page=${current_page + 1}">${next}</a>
                         </td>
                     </c:if>
             </div>

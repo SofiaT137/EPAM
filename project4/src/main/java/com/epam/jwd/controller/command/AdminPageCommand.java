@@ -28,9 +28,9 @@ public class AdminPageCommand implements Command {
 
     private static final Command INSTANCE = new AdminPageCommand();
 
-    private static final String GET_ALL_USER_COMMAND = "/controller?command=GET_ALL_USER&page=1";
-    private static final String GET_ALL_REVIEW_COMMAND = "/controller?command=GET_ALL_REVIEW";
-    private static final String GET_ALL_COURSE_COMMAND = "/controller?command=GET_ALL_COURSE";
+    private static final String SHOW_ALL_USER_COMMAND = "/controller?command=SHOW_ALL_USER&page=1";
+    private static final String SHOW_ALL_REVIEW_COMMAND = "/controller?command=SHOW_ALL_REVIEW";
+    private static final String SHOW_ALL_COURSE_COMMAND = "/controller?command=SHOW_ALL_COURSE";
     private static final String CREATE_NEW_TEACHER_COMMAND = "/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND";
     private static final String BLOCK_USER_COMMAND = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
     private static final String CREATE_GROUP_COMMAND = "/controller?command=SHOW_CREATE_GROUP_PAGE_COMMAND";
@@ -64,11 +64,11 @@ public class AdminPageCommand implements Command {
 
     }
 
-    private static final ResponseContext GET_ALL_USER_CONTEXT = new ResponseContext() {
+    private static final ResponseContext SHOW_ALL_USER_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return GET_ALL_USER_COMMAND;
+            return SHOW_ALL_USER_COMMAND;
         }
 
         @Override
@@ -77,11 +77,11 @@ public class AdminPageCommand implements Command {
         }
     };
 
-    private static final ResponseContext GET_ALL_REVIEW_CONTEXT = new ResponseContext() {
+    private static final ResponseContext SHOW_ALL_REVIEW_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return GET_ALL_REVIEW_COMMAND;
+            return SHOW_ALL_REVIEW_COMMAND;
         }
 
         @Override
@@ -90,11 +90,11 @@ public class AdminPageCommand implements Command {
         }
     };
 
-    private static final ResponseContext GET_ALL_COURSE_CONTEXT = new ResponseContext() {
+    private static final ResponseContext SHOW_ALL_COURSE_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return GET_ALL_COURSE_COMMAND;
+            return SHOW_ALL_COURSE_COMMAND;
         }
 
         @Override
@@ -157,13 +157,13 @@ public class AdminPageCommand implements Command {
 
         if (btnShowAllCourses != null){
             requestContext.addAttributeToSession(ALL_COURSES_SESSION_COLLECTION_ATTRIBUTE,findAllUniversityCourses());
-            return GET_ALL_COURSE_CONTEXT;
+            return SHOW_ALL_COURSE_CONTEXT;
         }else if (btnShowAllUsers != null){
             requestContext.addAttributeToSession(ALL_USERS_SESSION_COLLECTION_ATTRIBUTE,allUser);
-            return GET_ALL_USER_CONTEXT;
+            return SHOW_ALL_USER_CONTEXT;
         }else if (btnShowAllReviews != null){
             requestContext.addAttributeToSession(ALL_REVIEWS_SESSION_COLLECTION_ATTRIBUTE,findAllUniversityUserReviews());
-            return GET_ALL_REVIEW_CONTEXT;
+            return SHOW_ALL_REVIEW_CONTEXT;
         }else if (btnCreateNewGroup != null){
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allUniversityGroups);
             return CREATE_GROUP_CONTEXT;

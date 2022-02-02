@@ -11,9 +11,9 @@ import java.util.List;
 /**
  *  The command of getting of all university reviews
  */
-public class GetAllReviewCommand implements Command {
+public class ShowAllReviewCommand implements Command {
 
-    private static final Command INSTANCE = new GetAllReviewCommand();
+    private static final Command INSTANCE = new ShowAllReviewCommand();
 
     private static final String ALL_REVIEW_JSP = "/WEB-INF/jsp/all_review.jsp";
 
@@ -23,7 +23,7 @@ public class GetAllReviewCommand implements Command {
         return INSTANCE;
     }
 
-    private GetAllReviewCommand(){
+    private ShowAllReviewCommand(){
 
     }
 

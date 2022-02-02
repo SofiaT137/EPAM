@@ -11,9 +11,9 @@ import java.util.List;
  *  The command of getting of all university courses
  */
 
-public class GetAllCourseCommand implements Command {
+public class ShowAllCourseCommand implements Command {
 
-    private static final Command INSTANCE = new GetAllCourseCommand();
+    private static final Command INSTANCE = new ShowAllCourseCommand();
 
     private static final String COURSES_JSP = "/WEB-INF/jsp/all_courses.jsp";
 
@@ -24,7 +24,7 @@ public class GetAllCourseCommand implements Command {
         return INSTANCE;
     }
 
-    private GetAllCourseCommand(){
+    private ShowAllCourseCommand(){
 
     }
 

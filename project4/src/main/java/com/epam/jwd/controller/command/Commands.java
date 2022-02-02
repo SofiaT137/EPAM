@@ -9,9 +9,9 @@ import com.epam.jwd.controller.command.show_page_command.*;
  */
 public enum Commands {
     DEFAULT(DefaultCommand.getInstance()),
-    GET_ALL_COURSE(GetAllCourseCommand.getInstance()),
-    GET_ALL_USER(GetAllUserCommand.getInstance()),
-    GET_ALL_REVIEW(GetAllReviewCommand.getInstance()),
+    SHOW_ALL_COURSE(ShowAllCourseCommand.getInstance()),
+    SHOW_ALL_USER(ShowAllUserCommand.getInstance()),
+    SHOW_ALL_REVIEW(ShowAllReviewCommand.getInstance()),
     SELECT_REGISTRATION_OR_LOG_IN(SelectRegistrationOrLogInCommand.getInstance()),
     SHOW_USER_PAGE_COMMAND(ShowUserPageCommand.getInstance()),
     SHOW_POSSIBLE_PAGE_COMMAND(ShowPossibleCoursePageCommand.getInstance()),

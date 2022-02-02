@@ -10,9 +10,9 @@ import java.util.List;
 /**
  *  The command of getting of all university users
  */
-public class GetAllUserCommand implements Command {
+public class ShowAllUserCommand implements Command {
 
-    private static final Command INSTANCE = new GetAllUserCommand();
+    private static final Command INSTANCE = new ShowAllUserCommand();
 
     private static final String USERS_JSP = "/WEB-INF/jsp/all_users.jsp";
 
@@ -24,7 +24,7 @@ public class GetAllUserCommand implements Command {
         return INSTANCE;
     }
 
-    private GetAllUserCommand(){
+    private ShowAllUserCommand(){
 
     }
 
