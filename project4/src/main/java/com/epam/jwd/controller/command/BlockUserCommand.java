@@ -32,7 +32,6 @@ public class BlockUserCommand implements Command {
     private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
 
     private static final String CANNOT_FIND_THIS_USER_IN_GROUP = "I cannot find in this group this person";
-    private static final String CANNOT_FIND_THIS_USER = "I cannot find this user";
     private static final String CHECK_ACCOUNT_FOR_BLOCK = "This account is blocked!";
     private static final String CHECK_ACCOUNT_FOR_UNBLOCK = "This account is unblocked!";
 

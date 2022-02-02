@@ -4,7 +4,6 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.userdto.UserDto;
 
-
 import java.util.List;
 
 /**
@@ -54,6 +53,7 @@ public class GetAllUserCommand implements Command {
             page = 1;
         }
         List<UserDto> usersOnPage = allUsers.subList((page-1)*recordsPerPage, Math.min(page*recordsPerPage,numberOfRecords));
+        requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE, usersOnPage);
         requestContext.addAttributeToJSP(USERS_JSP_USERS_COLLECTION_ATTRIBUTE, usersOnPage);
         requestContext.addAttributeToJSP(NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE, numberOfPages);
         requestContext.addAttributeToJSP(CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE, page);

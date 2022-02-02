@@ -11,6 +11,7 @@
 <fmt:message bundle="${loc}" key="userId" var="userId"/>
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
 <fmt:message bundle="${loc}" key="lastName" var="lastName"/>
+<fmt:message bundle="${loc}" key="groupName" var="groupName"/>
 <fmt:message bundle="${loc}" key="Group" var="Group"/>
 <fmt:message bundle="${loc}" key="btnUnBlockUser" var="btnUnBlockUser"/>
 <fmt:message bundle="${loc}" key="btnBlockUser" var="btnBlockUser"/>
@@ -19,6 +20,8 @@
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 <fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
 
 <html>
 
@@ -44,27 +47,54 @@
             <table border="1" table style="width: 33%" style="text-align: center">
                 <thead>
                     <tr>
-                        <th>${userId}</th>
                         <th>${firstName}</th>
                         <th>${lastName}</th>
+                        <th>${groupName}</th>
                     </tr>
                 </thead>
                 <c:forEach items="${requestScope.blocked_users}" var="user">
                     <tbody>
                         <tr>
                             <td>
-                                <c:out value="${user.id}" />
-                            </td>
-                            <td>
                                 <c:out value="${user.firstName}" />
                             </td>
                             <td>
                                 <c:out value="${user.lastName}" />
                             </td>
+                            <td>
+                                <c:out value="${user.groupName}" />
+                            </td>
                         </tr>
                     </tbody>
                 </c:forEach>
             </table>
+            <div class="paggination">
+                <c:if test="${current_page != 1}">
+                    <td>
+                        <a href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                    </td>
+                </c:if>
+
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                    <c:choose>
+                        <c:when test="${current_page eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <a href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${i}">${i}</a>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%--For displaying Next link --%>
+                    <c:if test="${current_page lt number_of_pages}">
+                        <td>
+                            <a href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                        </td>
+                    </c:if>
+            </div>
         </c:otherwise>
     </c:choose>
     <p></p>
