@@ -90,7 +90,7 @@
         <div class="form-group">
             <label>${groupName}</label>
             <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
-                 <c:if test="${not_unique!=null}">
+                 <c:if test="${not_unique eq 'This group name is not unique!'}">
                         <p>${invalidUniqueness}</p>
                 </c:if>
         </div>

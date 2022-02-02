@@ -53,7 +53,7 @@ public class ShowCreateGroupPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<GroupDto> universityGroups = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
-        String notUnique = (String) requestContext.getAttributeFromSession("notUnique");
+        String notUnique = (String) requestContext.getAttributeFromSession("error");
 
         if (notUnique != null){
             requestContext.addAttributeToJSP(NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE, notUnique);
