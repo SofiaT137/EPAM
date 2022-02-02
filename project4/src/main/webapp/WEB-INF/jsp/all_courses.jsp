@@ -57,9 +57,44 @@
                     </tbody>
                 </c:forEach>
             </table>
-        </c:otherwise>
-    </c:choose>
-    <p></p>
+              <div class="paggination">
+                <c:if test="${current_page != 1}">
+                  <td>
+                    <a
+                      href="/controller?command=SHOW_ALL_COURSE&page=${current_page - 1}"
+                      >${previous}</a
+                    >
+                  </td>
+                </c:if>
+
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                  <c:choose>
+                    <c:when test="${current_page eq i}">
+                      <td>${i}</td>
+                    </c:when>
+                    <c:otherwise>
+                      <td>
+                        <a href="/controller?command=SHOW_ALL_COURSE&page=${i}"
+                          >${i}</a
+                        >
+                      </td>
+                    </c:otherwise>
+                  </c:choose>
+                </c:forEach>
+
+                <%--For displaying Next link --%>
+                <c:if test="${current_page lt number_of_pages}">
+                  <td>
+                    <a
+                      href="/controller?command=SHOW_ALL_COURSE&page=${current_page + 1}"
+                      >${next}</a
+                    >
+                  </td>
+                </c:if>
+              </div>
+            </c:otherwise>
+          </c:choose>
+          <p></p>
     <div class="getBack">
     <a href="/controller?command=SHOW_ADMIN_PAGE_COMMAND">${getBack}</a>
     </div>
