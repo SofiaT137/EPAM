@@ -1,5 +1,6 @@
-package com.epam.jwd.controller.command;
+package com.epam.jwd.controller.command.show_page_command;
 
+import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  *  The command of getting of all university reviews
  */
-public class GetAllReviewCommand implements Command{
+public class GetAllReviewCommand implements Command {
 
     private static final Command INSTANCE = new GetAllReviewCommand();
 

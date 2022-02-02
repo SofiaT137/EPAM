@@ -1,5 +1,6 @@
-package com.epam.jwd.controller.command;
+package com.epam.jwd.controller.command.show_page_command;
 
+import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
