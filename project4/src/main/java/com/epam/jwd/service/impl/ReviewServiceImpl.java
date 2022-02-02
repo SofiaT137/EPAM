@@ -29,7 +29,6 @@ public class ReviewServiceImpl implements Service<ReviewDto,Integer> {
 
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
     private static final String REVIEW_NOT_FOUND_EXCEPTION = "This review is not found!";
-    private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any review.";
     private static final String CANNOT_FIND_REVIEW_EXCEPTION = "I can't find this review by its user_id";
 
     @Override

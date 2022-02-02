@@ -12,6 +12,8 @@
 <fmt:message bundle="${loc}" key="courseName" var="courseName"/>
 <fmt:message bundle="${loc}" key="Grade" var="Grade"/>
 <fmt:message bundle="${loc}" key="Review" var="Review"/>
+<fmt:message bundle="${loc}" key="firstName" var="firstName"/>
+<fmt:message bundle="${loc}" key="lastName" var="lastName"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 
 <html>
@@ -35,8 +37,8 @@
             <table border="1" table style="width: 33%" style="text-align: center">
                 <thead>
                     <tr>
-                        <th>${reviewId}</th>
-                        <th>${userId}</th>
+                        <th>${firstName}</th>
+                        <th>${lastName}</th>
                         <th>${courseName}</th>
                         <th>${Grade}</th>
                         <th>${Review}</th>
@@ -45,11 +47,11 @@
                 <c:forEach items="${requestScope.all_reviews}" var="review">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${review.id}" />
+                         <td>
+                               <c:out value="${review.firstName}" />
                             </td>
                             <td>
-                                <c:out value="${review.userId}" />
+                                <c:out value="${review.lastName}" />
                             </td>
                             <td>
                                 <c:out value="${review.courseName}" />

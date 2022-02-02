@@ -179,7 +179,7 @@ public class AdminPageCommand implements Command {
     }
 
     private List<ReviewDto> findAllUniversityUserReviews(){
-        List<ReviewDto> allUniversityUserReviews = reviewService.findAll();
+        List<ReviewDto> allUniversityUserReviews = ((ReviewServiceImpl) reviewService).findAll();
         if (allUniversityUserReviews.isEmpty()){
             LOGGER.info(CANNOT_FIND_ANY_REVIEW);
         }
