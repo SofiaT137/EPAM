@@ -27,7 +27,7 @@ public class CourseDaoImpl implements Dao<Course,Integer> {
     private static final String SQL_SAVE_COURSE = "INSERT INTO course (name, start_date, end_date) VALUES (?, ?, ?)";
     private static final String SQL_ADD_USER_INTO_COURSE = "INSERT INTO user_has_course (user_id, course_id) VALUES (?, ?)";
     private static final String SQL_UPDATE_COURSE_BY_ID = "UPDATE course SET name = ?, start_date = ?, end_date = ? WHERE course_id = ?";
-    private static final String SQL_FIND_ALL_COURSE = "SELECT * FROM course";
+    private static final String SQL_FIND_ALL_COURSE = "SELECT * FROM course ORDER BY course_id";
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT * FROM course WHERE course_id =  ?";
     private static final String SQL_FIND_COURSE_BY_NAME = "SELECT * FROM course WHERE name = ?;";
     private static final String SQL_FIND_AVAILABLE_USER_COURSES = "SELECT * FROM user_has_course WHERE user_id = ?";

@@ -38,8 +38,6 @@
             <table border="1" cellpadding="5" cellspacing="5" table style="width: 33%" style="text-align: center">
                 <thead>
                     <tr>
-                        <th>${userId}</th>
-                        <th>${accountId}</th>
                         <th>${groupName}</th>
                         <th>${firstName}</th>
                         <th>${lastName}</th>
@@ -48,12 +46,6 @@
                 <c:forEach items="${requestScope.all_users}" var="user">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${user.id}" />
-                            </td>
-                            <td>
-                                <c:out value="${user.accountId}" />
-                            </td>
                             <td>
                                 <c:out value="${user.groupName}" />
                             </td>

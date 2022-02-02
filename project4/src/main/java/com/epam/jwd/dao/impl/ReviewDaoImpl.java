@@ -23,7 +23,7 @@ public class ReviewDaoImpl implements Dao<Review, Integer> {
     private static final String SQL_SAVE_REVIEW = "INSERT INTO review (user_id, course_id, grade, review) VALUES (?, ?, ?, ?)";
     private static final String SQL_UPDATE_REVIEW_BY_ID = "UPDATE review SET user_id = ?, course_id = ?, grade = ? review = ? WHERE review_id = ?";
     private static final String SQL_DELETE_REVIEW_BY_ID = "DELETE FROM review WHERE id = ?";
-    private static final String SQL_FIND_ALL_REVIEW = "SELECT * FROM review";
+    private static final String SQL_FIND_ALL_REVIEW = "SELECT * FROM review ORDER BY course_id";
     private static final String SQL_FIND_REVIEW_BY_ID = "SELECT * FROM review WHERE review_id =  ?";
     private static final String SQL_FIND_ACCOUNTS_BY_USER_ID = "SELECT * FROM review WHERE user_id = ?;";
     private static final String SQL_FIND_COURSE_BY_USER_ID_COURSE_ID = "SELECT * FROM review WHERE user_id = ? AND course_id = ? ;";
