@@ -16,6 +16,7 @@
 <fmt:message bundle="${loc}" key="invalidGroupName" var="invalidGroupName"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="invalidUniqueness" var="invalidUniqueness"/>
 
 <html>
 
@@ -89,6 +90,9 @@
         <div class="form-group">
             <label>${groupName}</label>
             <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
+                 <c:if test="${not_unique!=null}">
+                        <p>${invalidUniqueness}</p>
+                </c:if>
         </div>
         <p></p>
         <button type="submit" name="btnAddGroup">${btnAddGroup}</button>

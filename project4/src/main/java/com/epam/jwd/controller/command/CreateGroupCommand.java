@@ -25,7 +25,7 @@ public class CreateGroupCommand implements Command {
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
+    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "notUnique";
 
     private static final String NOT_UNIQUE_GROUP_NAME = "This group name is not unique!";
     private static final String UNIQUE_GROUP_NAME = "This group name is unique!";
@@ -79,9 +79,12 @@ public class CreateGroupCommand implements Command {
                 groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
                 LOGGER.error(NOT_UNIQUE_GROUP_NAME);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
-                return ERROR_PAGE_CONTEXT;
+                return REFRESH_PAGE_CONTEXT;
             }catch (DAOException daoException){
                 LOGGER.info(UNIQUE_GROUP_NAME);
+                if (requestContext.getAttributeFromSession(ERROR_SESSION_COLLECTION_ATTRIBUTE) != null){
+                    requestContext.deleteAttributeFromSession(ERROR_SESSION_COLLECTION_ATTRIBUTE);
+                }
             }
 
             groupDto.setName(groupName);
@@ -91,6 +94,10 @@ public class CreateGroupCommand implements Command {
             List<GroupDto> allGroup = groupService.findAll();
 
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
+
+            if (requestContext.getAttributeFromSession(ERROR_SESSION_COLLECTION_ATTRIBUTE) != null){
+                requestContext.deleteAttributeFromSession(ERROR_SESSION_COLLECTION_ATTRIBUTE);
+            }
 
             return REFRESH_PAGE_CONTEXT;
         }

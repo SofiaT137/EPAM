@@ -36,4 +36,6 @@ public interface RequestContext {
      * Invalidate current session
      */
     void invalidateCurrentSession();
+
+    void deleteAttributeFromSession(String name);
 }

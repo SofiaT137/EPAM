@@ -39,4 +39,9 @@ public class RequestContextImpl implements RequestContext{
     public void invalidateCurrentSession() {
         request.getSession(false).invalidate();
     }
+
+    @Override
+    public void deleteAttributeFromSession(String name) {
+        this.request.getSession().removeAttribute(name);
+    }
 }

@@ -23,6 +23,7 @@ public class ShowCreateGroupPageCommand implements Command {
     private static final String UNIVERSITY_GROUPS_JSP_COLLECTION_ATTRIBUTE = "university_groups";
     private static final String NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE = "number_of_pages";
     private static final String CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE = "current_page";
+    private static final String NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE = "not_unique";
 
     private static final String FROM = "from";
     private static final String TO = "to";
@@ -52,6 +53,11 @@ public class ShowCreateGroupPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<GroupDto> universityGroups = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
+        String notUnique = (String) requestContext.getAttributeFromSession("notUnique");
+
+        if (notUnique != null){
+            requestContext.addAttributeToJSP(NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE, notUnique);
+        }
 
         Pagination pagination = new PaginationImpl(universityGroups.size());
 
