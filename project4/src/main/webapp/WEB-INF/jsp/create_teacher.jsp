@@ -23,6 +23,8 @@
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
 <fmt:message bundle="${loc}" key="invalidLogin" var="invalidLogin"/>
 <fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
 
 <html>
 
@@ -45,7 +47,6 @@
             <table border="1" table style="width:33%" style="text-align:center">
                 <thead>
                     <tr>
-                        <th>${userId}</th>
                         <th>${firstName}</th>
                         <th>${lastName}</th>
                     </tr>
@@ -53,9 +54,6 @@
                 <c:forEach items="${requestScope.all_teachers}" var="teacher">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${teacher.id}" />
-                            </td>
                             <td>
                                 <c:out value="${teacher.firstName}" />
                             </td>
@@ -66,9 +64,36 @@
                     </tbody>
                 </c:forEach>
             </table>
-        </c:otherwise>
-    </c:choose>
-    <p></p>
+            <div class="paggination">
+                 <c:if test="${current_page != 1}">
+                     <td>
+                         <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                     </td>
+                 </c:if>
+
+                 <c:forEach begin="1" end="${number_of_pages}" var="i">
+                     <c:choose>
+                         <c:when test="${current_page eq i}">
+                             <td>${i}</td>
+                         </c:when>
+                         <c:otherwise>
+                             <td>
+                                 <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${i}">${i}</a>
+                             </td>
+                         </c:otherwise>
+                     </c:choose>
+                 </c:forEach>
+
+                 <%--For displaying Next link --%>
+                     <c:if test="${current_page lt number_of_pages}">
+                         <td>
+                             <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                         </td>
+                     </c:if>
+             </div>
+         </c:otherwise>
+     </c:choose>
+     <p></p>
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
         <div class="form-group">
             <label>${Login}</label>
