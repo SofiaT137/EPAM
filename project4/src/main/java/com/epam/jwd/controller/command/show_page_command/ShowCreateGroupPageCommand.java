@@ -5,6 +5,7 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.pagination.Pagination;
 import com.epam.jwd.service.pagination.impl.PaginationImpl;
 
@@ -17,14 +18,13 @@ import java.util.Map;
 public class ShowCreateGroupPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowCreateGroupPageCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final String CREATE_GROUP_PAGE_JSP = "/WEB-INF/jsp/create_group.jsp";
 
     private static final String UNIVERSITY_GROUPS_JSP_COLLECTION_ATTRIBUTE = "university_groups";
     private static final String NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE = "number_of_pages";
     private static final String CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE = "current_page";
-    private static final String NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE = "errorMsg";
-    private static final String NOT_UNIQUE_GROUP_NAME_SESSION_COLLECTION_ATTRIBUTE = "notUnique";
 
     private static final String FROM = "from";
     private static final String TO = "to";
@@ -54,13 +54,7 @@ public class ShowCreateGroupPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<GroupDto> universityGroups = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
-        String notUnique = (String) requestContext.getAttributeFromSession("errorMsg");
-
-        if (notUnique != null){
-            requestContext.addAttributeToJSP("errorMsg", "not_unique");
-            requestContext.deleteAttributeFromSession("errorMsg");
-        }
-
+        ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(universityGroups.size());
 
         int page = pagination.getPage(requestContext);
