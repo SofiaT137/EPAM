@@ -89,7 +89,7 @@
     <form action="/controller?command=CREATE_GROUP_COMMAND" method="post">
         <div class="form-group">
             <label>${groupName}</label>
-            <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.'-]{3,20}$" />
+            <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.+'-]{3,20}$" />
                  <div class="invalid">
                  <c:if test="${not_unique != null}">
                         <p>${invalidUniqueness}</p>
