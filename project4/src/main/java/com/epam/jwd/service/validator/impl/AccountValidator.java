@@ -16,8 +16,8 @@ public class AccountValidator implements Validator<AccountDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(AccountValidator.class);
 
-    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,}$";
-    private static final String LOGIN_REGEX  = "^[A-Za-z0-9,.'-]+$";
+    private static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d@$!%*#?&]{8,20}$";
+    private static final String LOGIN_REGEX  = "^[A-Za-z0-9,.'-]{4,20}$";
 
     private static final Integer MIN_PASSWORD_LENGTH = 8;
     private static final  Integer MIN_LOGIN_LENGTH = 4;

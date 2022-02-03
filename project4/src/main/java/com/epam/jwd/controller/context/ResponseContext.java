@@ -15,8 +15,4 @@ public interface ResponseContext {
      * @return
      */
     boolean isRedirected();
-
-    default String getErrorMessage(){
-        return "";
-    }
 }

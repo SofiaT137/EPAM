@@ -24,6 +24,7 @@ public class CreateGroupCommand implements Command {
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
+    private static final String NOT_UNIQUE_SESSION_COLLECTION_ATTRIBUTE = "notUnique";
 
     private static final String NOT_UNIQUE_GROUP_NAME = "This group name is not unique!";
     private static final String UNIQUE_GROUP_NAME = "This group name is unique!";
@@ -36,24 +37,6 @@ public class CreateGroupCommand implements Command {
     private CreateGroupCommand() {
 
     }
-
-    private static final ResponseContext REFRESH_PAGE_CONTEXT_WITH_ERROR = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return REFRESH_PAGE_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-
-        @Override
-        public String getErrorMessage(){
-            return NOT_UNIQUE_GROUP_NAME;
-        }
-    };
 
     private static final ResponseContext REFRESH_PAGE_CONTEXT = new ResponseContext() {
 
@@ -81,7 +64,8 @@ public class CreateGroupCommand implements Command {
             try{
                 groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
                 LOGGER.error(NOT_UNIQUE_GROUP_NAME);
-                return REFRESH_PAGE_CONTEXT_WITH_ERROR;
+                requestContext.addAttributeToSession(NOT_UNIQUE_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
+                return REFRESH_PAGE_CONTEXT;
             }catch (DAOException daoException){
                 LOGGER.info(UNIQUE_GROUP_NAME);
             }

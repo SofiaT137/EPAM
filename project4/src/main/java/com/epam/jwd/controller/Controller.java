@@ -22,7 +22,6 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
 
     private static final String COMMAND_PARAM = "command";
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "error";
 
     /**
      * Process request method
@@ -38,13 +37,7 @@ public class Controller extends HttpServlet {
         Command command = Command.of(commandName);
         RequestContext requestContext = new RequestContextImpl(request);
         ResponseContext commandResult = command.execute(requestContext);
-        String errorMessage = commandResult.getErrorMessage();
-        if (!errorMessage.isEmpty()){
-            request.getSession().setAttribute(ERROR_SESSION_COLLECTION_ATTRIBUTE, errorMessage);
-        }else {
-            request.getSession().removeAttribute(ERROR_SESSION_COLLECTION_ATTRIBUTE);
-        }
-        if (commandResult.isRedirected()){
+         if (commandResult.isRedirected()){
             response.sendRedirect(commandResult.getPage());
         }else {
             RequestDispatcher dispatcher =  request.getRequestDispatcher(commandResult.getPage());

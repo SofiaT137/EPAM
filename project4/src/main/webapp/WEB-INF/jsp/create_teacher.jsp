@@ -97,12 +97,12 @@
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
         <div class="form-group">
             <label>${Login}</label>
-            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]{4,}$" />
+            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]{4,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${Password}</label>
-            <input name="lblPassword" type="password" class="input" title="${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,}$" />
+            <input name="lblPassword" type="password" class="input" title="${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,20}$" />
         </div>
         <p></p>
         <div class="form-group">
