@@ -16,7 +16,7 @@ public class GroupValidator implements Validator<GroupDto> {
 
     private static final Logger LOGGER = LogManager.getLogger(GroupValidator.class);
 
-    private static final String GROUP_NAME_REGEX  = "^[A-Za-z0-9,.'-]+$";
+    private static final String GROUP_NAME_REGEX  = "^[A-Za-zА-Яа-я0-9,.'-]{3,20}";
 
     private static final Integer MIN_NAME_LENGTH = 3;
     private static final Integer MAX_NAME_LENGTH = 20;
