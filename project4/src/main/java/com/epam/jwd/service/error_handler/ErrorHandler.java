@@ -25,7 +25,7 @@ public class ErrorHandler {
 
     public void flushError(RequestContext requestContext){
         String errorName = (String) requestContext.getAttributeFromSession(ERROR_MESSAGE_SESSION_COLLECTION_ATTRIBUTE);
-        if (!errorName.isEmpty()){
+        if (errorName != null){
             requestContext.addAttributeToJSP(ERROR_MESSAGE_SESSION_COLLECTION_ATTRIBUTE, errorName);
             requestContext.deleteAttributeFromSession(ERROR_MESSAGE_SESSION_COLLECTION_ATTRIBUTE);
         }

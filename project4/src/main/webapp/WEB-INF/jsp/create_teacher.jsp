@@ -25,6 +25,7 @@
 <fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="invalidUniquenessLogin" var="invalidUniquenessLogin"/>
 
 <html>
 
@@ -115,6 +116,11 @@
             <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
+         <div class="invalid">
+         <c:if test="${errorMsg eq 'notOriginalLogin'}">
+                <p>Error: ${invalidUniquenessLogin}</p>
+        </c:if>
+        </div>
         <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>
         <button type="submit" name="btnGetBack"
             onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>

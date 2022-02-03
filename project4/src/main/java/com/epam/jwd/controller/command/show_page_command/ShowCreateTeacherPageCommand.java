@@ -4,6 +4,7 @@ import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.pagination.Pagination;
 import com.epam.jwd.service.pagination.impl.PaginationImpl;
 
@@ -16,6 +17,7 @@ import java.util.Map;
 public class ShowCreateTeacherPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowCreateTeacherPageCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final String CREATE_TEACHER_PAGE_JSP = "/WEB-INF/jsp/create_teacher.jsp";
 
@@ -52,7 +54,7 @@ public class ShowCreateTeacherPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<UserDto> allTeachers = (List<UserDto>) requestContext.getAttributeFromSession("allTeachers");
-
+        ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(allTeachers.size());
         int page = pagination.getPage(requestContext);
         Map<String,Integer> paginationInfo = pagination.getPagination(page);
