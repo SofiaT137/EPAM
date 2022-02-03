@@ -1,6 +1,7 @@
 package com.epam.jwd.service.impl;
 
 import com.epam.jwd.dao.Dao;
+import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.dao.impl.AccountDaoImpl;
 import com.epam.jwd.dao.model.user.Account;
 import com.epam.jwd.service.Service;
@@ -31,6 +32,8 @@ public class AccountServiceImpl implements Service<AccountDto,Integer> {
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
     private static final String ACCOUNT_NOT_FOUND_EXCEPTION = "This account is not found!";
     private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any account.";
+    private static final String ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is original.";
+    private static final String NOT_ORIGINAL_LOGIN_FOR_REGISTRATION = "This account is not original.";
 
     public void validate(String login, String password){
         AccountDto dummy = new AccountDto();
@@ -110,5 +113,17 @@ public class AccountServiceImpl implements Service<AccountDto,Integer> {
     public AccountDto getAccount(String login) {
         Account account = ((AccountDaoImpl) accountDao).findAccountByLogin(login);
         return accountConverter.convert(account);
+    }
+
+    public Boolean isLoginOriginal(String login){
+        boolean isOriginal = true;
+        try {
+            this.getAccount(login);
+            isOriginal = false;
+            LOGGER.error(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION);
+        } catch (DAOException exception) {
+            LOGGER.info(ORIGINAL_ACCOUNT_FOR_REGISTRATION);
+        }
+        return isOriginal;
     }
 }

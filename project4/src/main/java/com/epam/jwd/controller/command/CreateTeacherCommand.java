@@ -31,7 +31,6 @@ public class CreateTeacherCommand implements Command {
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
 
     private static final String NOT_ORIGINAL_LOGIN_FOR_REGISTRATION = "notOriginalLogin";
-    private static final String ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is original.";
     private static final String TEACHER = "Teacher";
 
     private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
@@ -69,15 +68,24 @@ public class CreateTeacherCommand implements Command {
         String lastName = requestContext.getParameterFromJSP("lblLastName");
 
         if (btnAddTeacher != null) {
-
-            AccountDto newAccount = new AccountDto();
-            if (Boolean.TRUE.equals(checkOriginalAccount(login,requestContext))){
-                newAccount = createAccount(login,password,requestContext);
+            if (!((AccountServiceImpl)accountService).isLoginOriginal(login)){
+                ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
+            }else {
+                AccountDto newAccount = null;
+                boolean isCompleted = false;
+                try {
+                    newAccount = createAccount(login, password);
+                    throw new ServiceException("Test");
+//                    createUser(newAccount, firstName, lastName);
+//                    isCompleted = true;
+                } catch (ServiceException exception) {
+                    LOGGER.error(exception.getMessage());
+                    ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+                }
+                if (!isCompleted && newAccount != null){
+                    deleteAccountIfUserNotCreated(newAccount);
+                }
             }
-            if (newAccount.getLogin() != null){
-                createUser(newAccount,firstName,lastName,requestContext);
-            }
-
             List<UserDto> allUser = userService.findAll();
             List<UserDto> allTeachers = findAlLUserTeachers(allUser);
 
@@ -102,54 +110,33 @@ public class CreateTeacherCommand implements Command {
         return result;
     }
 
-    private Boolean checkOriginalAccount(String login, RequestContext requestContext){
-        try {
-            ((AccountServiceImpl) accountService).getAccount(login);
-            LOGGER.error(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION);
-            ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
-            return false;
-        } catch (DAOException exception) {
-            LOGGER.error(ORIGINAL_ACCOUNT_FOR_REGISTRATION);
-            return true;
-        }
-    }
-
-    private AccountDto createAccount(String login,String password,RequestContext requestContext) {
+    private AccountDto createAccount(String login,String password) {
         AccountDto newAccount = new AccountDto();
-            password = ((AccountServiceImpl) accountService).encryptPassword(password);
-            try {
-                newAccount.setRole(TEACHER);
-                newAccount.setLogin(login);
-                newAccount.setPassword(password);
-                newAccount.setIsActive(1);
-                newAccount = accountService.create(newAccount);
-
-            } catch (ServiceException exception) {
-                LOGGER.error(exception.getMessage());
-                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
-            }
-            return newAccount;
+        password = ((AccountServiceImpl) accountService).encryptPassword(password);
+        newAccount.setRole(TEACHER);
+        newAccount.setLogin(login);
+        newAccount.setPassword(password);
+        newAccount.setIsActive(1);
+        newAccount = accountService.create(newAccount);
+        return newAccount;
     }
 
 
-    private void createUser(AccountDto accountDto, String firstName,String lastName,RequestContext requestContext) {
+    private void createUser(AccountDto accountDto, String firstName,String lastName) {
         UserDto newUserDto = new UserDto();
+        newUserDto.setAccountId(accountDto.getId());
+        newUserDto.setGroupName(TEACHER);
+        newUserDto.setFirstName(firstName);
+        newUserDto.setLastName(lastName);
+        userService.create(newUserDto);
+    }
+
+    private void deleteAccountIfUserNotCreated(AccountDto newAccount){
         try {
-            newUserDto.setAccountId(accountDto.getId());
-            newUserDto.setGroupName(TEACHER);
-            newUserDto.setFirstName(firstName);
-            newUserDto.setLastName(lastName);
-
-            userService.create(newUserDto);
-
-        } catch (ServiceException exception) {
-            try {
-                accountService.delete(accountDto);
-            } catch (Exception exception1) {
-                LOGGER.error(exception1.getMessage());
-                ERROR_HANDLER.setError(exception1.getMessage(),requestContext);
-            }
-                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+            accountService.delete(newAccount);
+            LOGGER.info("Rollback succseeded");
+        } catch (Exception exception) {
+            LOGGER.error(exception.getMessage());
         }
     }
 }

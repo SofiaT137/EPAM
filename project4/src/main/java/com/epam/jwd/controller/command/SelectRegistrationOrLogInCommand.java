@@ -166,7 +166,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,"( " + login + " ) " + EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 return ERROR_PAGE_CONTEXT;
             }catch (DAOException exception) {
-                LOGGER.error(ACCOUNT_IS_ORIGINAL);
+                LOGGER.info(ACCOUNT_IS_ORIGINAL);
             }
 
             password = ((AccountServiceImpl) service).encryptPassword(password);

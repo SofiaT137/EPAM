@@ -117,9 +117,16 @@
         </div>
         <p></p>
          <div class="invalid">
-         <c:if test="${errorMsg eq 'notOriginalLogin'}">
-                <p>Error: ${invalidUniquenessLogin}</p>
-        </c:if>
+            <c:choose>
+                <c:when test="${errorMsg eq 'notOriginalLogin'}">
+                    <p>Error: ${invalidUniquenessLogin}</p>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${errorMsg ne null}">
+                        <p>Exception: ${errorMsg}</p>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
         </div>
         <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>
         <button type="submit" name="btnGetBack"
