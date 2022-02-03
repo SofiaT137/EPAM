@@ -23,7 +23,7 @@ public class ShowCreateGroupPageCommand implements Command {
     private static final String UNIVERSITY_GROUPS_JSP_COLLECTION_ATTRIBUTE = "university_groups";
     private static final String NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE = "number_of_pages";
     private static final String CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE = "current_page";
-    private static final String NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE = "not_unique";
+    private static final String NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE = "errorMsg";
     private static final String NOT_UNIQUE_GROUP_NAME_SESSION_COLLECTION_ATTRIBUTE = "notUnique";
 
     private static final String FROM = "from";
@@ -54,11 +54,11 @@ public class ShowCreateGroupPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<GroupDto> universityGroups = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
-        String notUnique = (String) requestContext.getAttributeFromSession(NOT_UNIQUE_GROUP_NAME_SESSION_COLLECTION_ATTRIBUTE);
+        String notUnique = (String) requestContext.getAttributeFromSession("errorMsg");
 
         if (notUnique != null){
-            requestContext.addAttributeToJSP(NOT_UNIQUE_GROUP_NAME_JSP_COLLECTION_ATTRIBUTE, notUnique);
-            requestContext.deleteAttributeFromSession(NOT_UNIQUE_GROUP_NAME_SESSION_COLLECTION_ATTRIBUTE);
+            requestContext.addAttributeToJSP("errorMsg", "not_unique");
+            requestContext.deleteAttributeFromSession("errorMsg");
         }
 
         Pagination pagination = new PaginationImpl(universityGroups.size());

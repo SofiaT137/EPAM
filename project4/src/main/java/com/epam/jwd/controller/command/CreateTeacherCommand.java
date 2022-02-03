@@ -118,7 +118,6 @@ public class CreateTeacherCommand implements Command {
             }
 
             try {
-
                 String lblFirstName = requestContext.getParameterFromJSP("lblFirstName");
                 String lblLastName = requestContext.getParameterFromJSP("lblLastName");
 

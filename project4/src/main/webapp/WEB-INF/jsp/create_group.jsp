@@ -91,8 +91,8 @@
             <label>${groupName}</label>
             <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.+'-]{3,20}$" />
                  <div class="invalid">
-                 <c:if test="${not_unique != null}">
-                        <p>${invalidUniqueness}</p>
+                 <c:if test="${errorMsg eq 'not_unique'}">
+                        <p>Error: ${invalidUniqueness}</p>
                 </c:if>
                 </div>
         </div>

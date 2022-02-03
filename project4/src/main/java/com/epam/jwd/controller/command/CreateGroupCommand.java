@@ -24,10 +24,10 @@ public class CreateGroupCommand implements Command {
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
-    private static final String NOT_UNIQUE_SESSION_COLLECTION_ATTRIBUTE = "notUnique";
+    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorMsg";
 
-    private static final String NOT_UNIQUE_GROUP_NAME = "This group name is not unique!";
-    private static final String UNIQUE_GROUP_NAME = "This group name is unique!";
+    private static final String NOT_UNIQUE_GROUP_NAME = "notUnique";
+    private static final String UNIQUE_GROUP_NAME = "notUnique";
 
 
     public static Command getInstance() {
@@ -58,28 +58,31 @@ public class CreateGroupCommand implements Command {
         String groupName = requestContext.getParameterFromJSP("lblGroupName");
 
         if (btnAddGroup !=null) {
-
-            GroupDto groupDto = new GroupDto();
-
-            try{
-                groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
-                LOGGER.error(NOT_UNIQUE_GROUP_NAME);
-                requestContext.addAttributeToSession(NOT_UNIQUE_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
-                return REFRESH_PAGE_CONTEXT;
-            }catch (DAOException daoException){
-                LOGGER.info(UNIQUE_GROUP_NAME);
+            if(Boolean.FALSE.equals(ifThisGroupExists(groupName,requestContext))){
+                createGroup(groupName);
             }
-
-            groupDto.setName(groupName);
-
-            groupService.create(groupDto);
-
             List<GroupDto> allGroup = groupService.findAll();
-
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
-
             return REFRESH_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
+    }
+
+    private void createGroup(String groupName){
+        GroupDto newGroup = new GroupDto();
+        newGroup.setName(groupName);
+        groupService.create(newGroup);
+    }
+
+    private Boolean ifThisGroupExists(String groupName,RequestContext requestContext){
+        try{
+            ((GroupServiceImpl) groupService).filterGroup(groupName);
+            LOGGER.error(NOT_UNIQUE_GROUP_NAME);
+            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, NOT_UNIQUE_GROUP_NAME);
+            return true;
+        }catch (DAOException daoException){
+            LOGGER.info(UNIQUE_GROUP_NAME);
+            return false;
+        }
     }
 }
