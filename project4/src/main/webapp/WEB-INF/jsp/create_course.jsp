@@ -18,7 +18,6 @@
 <fmt:message bundle="${loc}" key="error" var="error"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
-<fmt:message bundle="${loc}" key="error" var="error"/>
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
 
 <!DOCTYPE html>

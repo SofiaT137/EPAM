@@ -16,7 +16,8 @@
 <fmt:message bundle="${loc}" key="btnCreateCourse" var="btnCreateCourse"/>
 <fmt:message bundle="${loc}" key="btnUpdateCourse" var="btnUpdateCourse"/>
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
-
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
 
 <html>
 
@@ -30,7 +31,7 @@
 
 <body>
     <div class="custom">
-        <custom:hello userName="${hello}${current_user.firstName} ${current_user.lastName}" />
+        <custom:hello userName="${hello} ${current_user.firstName} ${current_user.lastName}" />
     </div>
     <h3>${youAreMentor}</h3>
         <div class="logout">
@@ -69,9 +70,38 @@
                     </tbody>
                 </c:forEach>
             </table>
-        </c:otherwise>
-    </c:choose>
-    <p></p>
+                <div class="paggination">
+                    <c:if test="${current_page != 1}">
+                        <td>
+                            <a
+                                href="/controller?command=SHOW_TEACHER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                        </td>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${number_of_pages}" var="i">
+                        <c:choose>
+                            <c:when test="${current_page eq i}">
+                                <td>${i}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <a href="/controller?command=SHOW_TEACHER_PAGE_COMMAND&page=${i}">${i}</a>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <%--For displaying Next link --%>
+                        <c:if test="${current_page lt number_of_pages}">
+                            <td>
+                                <a
+                                    href="/controller?command=SHOW_TEACHER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                            </td>
+                        </c:if>
+                </div>
+            </c:otherwise>
+        </c:choose>
+        <p></p>
     <form action="/controller?command=TEACHER_PAGE_COMMAND" method="post">
         <button type="submit" name="btnRateStudent">${btnRateStudent}</button>
         <button type="submit" name="btnCreateCourse">${btnCreateCourse}</button>
