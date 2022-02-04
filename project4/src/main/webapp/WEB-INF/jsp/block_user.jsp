@@ -22,16 +22,21 @@
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="cannotFindUserByFirstAndLastName" var="cannotFindUserByFirstAndLastName"/>
+<fmt:message bundle="${loc}" key="cannotFindThisUserInGroup" var="cannotFindThisUserInGroup"/>
+<fmt:message bundle="${loc}" key="accountBlocked" var="accountBlocked"/>
+<fmt:message bundle="${loc}" key="accountUnblocked" var="accountUnblocked"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
 
-<html>
+
+<!DOCTYPE html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <%@ include file="header/header.jsp" %>
-    <style>
-        <%@include file="/WEB-INF/css/labels_buttons.css"%>
-        <%@include file="/WEB-INF/css/tables.css"%>
-    </style>
+        <style>
+            <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
+        </style>
 </head>
 
 <body>
@@ -39,8 +44,8 @@
     <h3>${allBlockedUser}</h3>
     <c:choose>
         <c:when test="${blocked_users.size() eq 0}">
-            <div class ="exception">
-            <p>${noBlockedUsers}</p>
+            <div class="exception">
+                <p>${noBlockedUsers}</p>
             </div>
         </c:when>
         <c:otherwise>
@@ -71,7 +76,8 @@
             <div class="paggination">
                 <c:if test="${current_page != 1}">
                     <td>
-                        <a href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                        <a
+                            href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
                     </td>
                 </c:if>
 
@@ -91,7 +97,8 @@
                 <%--For displaying Next link --%>
                     <c:if test="${current_page lt number_of_pages}">
                         <td>
-                            <a href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                            <a
+                                href="/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
                         </td>
                     </c:if>
             </div>
@@ -101,12 +108,14 @@
     <form action="/controller?command=BLOCK_USER_COMMAND" method="post">
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required
+                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required
+                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <label>${Group}</label>
@@ -116,11 +125,30 @@
             </c:forEach>
         </select>
         <p></p>
+        <div class="invalid">
+            <c:choose>
+                <c:when test="${errorMsg eq '${cannotFindUserByFirstAndLastName'}}">
+                    <p>${error}:${cannotFindUserByFirstAndLastName}</p>
+                </c:when>
+                <c:when test="${errorMsg eq 'cannotFindThisUserInGroup'}">
+                    <p>${error}:${cannotFindThisUserInGroup}</p>
+                </c:when>
+                <c:when test="${errorMsg eq 'accountBlocked'}">
+                    <p>${error}:${accountBlocked}</p>
+                </c:when>
+                <c:when test="${errorMsg eq 'accountUnblocked'}">
+                    <p>${error}:${accountUnblocked}</p>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${errorMsg ne null}">
+                        <p>${error}:${errorMsg}</p>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </div>
         <button type="submit" name="btnUnBlockUser">${btnUnBlockUser}</button>
         <button type="submit" name="btnBlockUser">${btnBlockUser}</button>
-        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>
-            ${getBack}
-        </button>
+        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>

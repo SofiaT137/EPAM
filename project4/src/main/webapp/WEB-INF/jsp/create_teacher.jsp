@@ -26,15 +26,18 @@
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="invalidUniquenessLogin" var="invalidUniquenessLogin"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
+<fmt:message bundle="${loc}" key="exception" var="exception"/>
 
-<html>
+
+<!DOCTYPE html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%@ include file="header/header.jsp" %>
-    <style>
-        <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
-    </style>
+        <style>
+            <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
+        </style>
 </head>
 
 <body>
@@ -66,71 +69,77 @@
                 </c:forEach>
             </table>
             <div class="paggination">
-                 <c:if test="${current_page != 1}">
-                     <td>
-                         <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
-                     </td>
-                 </c:if>
+                <c:if test="${current_page != 1}">
+                    <td>
+                        <a
+                            href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                    </td>
+                </c:if>
 
-                 <c:forEach begin="1" end="${number_of_pages}" var="i">
-                     <c:choose>
-                         <c:when test="${current_page eq i}">
-                             <td>${i}</td>
-                         </c:when>
-                         <c:otherwise>
-                             <td>
-                                 <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${i}">${i}</a>
-                             </td>
-                         </c:otherwise>
-                     </c:choose>
-                 </c:forEach>
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                    <c:choose>
+                        <c:when test="${current_page eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${i}">${i}</a>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
 
-                 <%--For displaying Next link --%>
-                     <c:if test="${current_page lt number_of_pages}">
-                         <td>
-                             <a href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
-                         </td>
-                     </c:if>
-             </div>
-         </c:otherwise>
-     </c:choose>
-     <p></p>
+                <%--For displaying Next link --%>
+                    <c:if test="${current_page lt number_of_pages}">
+                        <td>
+                            <a
+                                href="/controller?command=SHOW_CREATE_TEACHER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                        </td>
+                    </c:if>
+            </div>
+        </c:otherwise>
+    </c:choose>
+    <p></p>
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
         <div class="form-group">
             <label>${Login}</label>
-            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]{4,20}$" />
+            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}"
+                required pattern="^[A-Za-z0-9,.'-]{4,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${Password}</label>
-            <input name="lblPassword" type="password" class="input" title="${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,20}$" />
+            <input name="lblPassword" type="password" class="input" title="${invalidPassword}"
+                placeholder="${enterYourPassword}" required
+                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required
+                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required
+                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
-         <div class="invalid">
+        <div class="invalid">
             <c:choose>
                 <c:when test="${errorMsg eq 'notOriginalLogin'}">
-                    <p>Error: ${invalidUniquenessLogin}</p>
+                    <p>${error}:${invalidUniquenessLogin}</p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${errorMsg ne null}">
-                        <p>Exception: ${errorMsg}</p>
+                        <p>${exception}: ${errorMsg}</p>
                     </c:if>
                 </c:otherwise>
             </c:choose>
         </div>
         <button type="submit" name="btnAddTeacher">${btnAddTeacher}</button>
-        <button type="submit" name="btnGetBack"
-            onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
+        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>

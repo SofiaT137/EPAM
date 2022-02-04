@@ -68,32 +68,34 @@ public class CreateTeacherCommand implements Command {
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
 
-        if (btnAddTeacher != null) {
-            if (Boolean.FALSE.equals(((AccountServiceImpl)accountService).isLoginOriginal(login))){
-                ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
-            }else {
-                AccountDto newAccount = null;
-                boolean isCompleted = false;
-                try {
-                    newAccount = createAccount(login, password);
-                    createUser(newAccount, firstName, lastName);
-                    isCompleted = true;
-                } catch (ServiceException exception) {
-                    LOGGER.error(exception.getMessage());
-                    ERROR_HANDLER.setError(exception.getMessage(),requestContext);
-                }
-                if (!isCompleted && newAccount != null){
-                    deleteAccountIfUserNotCreated(newAccount);
-                }
-            }
-            List<UserDto> allUser = userService.findAll();
-            List<UserDto> allTeachers = findAlLUserTeachers(allUser);
-
-            requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);
+        if (btnAddTeacher == null) {
+            return DefaultCommand.getInstance().execute(requestContext);
+        }
+        if (Boolean.FALSE.equals(((AccountServiceImpl)accountService).isLoginOriginal(login))){
+            LOGGER.error(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION);
+            ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
             return REFRESH_PAGE_CONTEXT;
         }
-        return DefaultCommand.getInstance().execute(requestContext);
+        AccountDto newAccount = null;
+        boolean isCompleted = false;
+        try {
+            newAccount = createAccount(login, password);
+            createUser(newAccount, firstName, lastName);
+            isCompleted = true;
+        } catch (ServiceException exception) {
+            LOGGER.error(exception.getMessage());
+            ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+        }
+        if (!isCompleted && newAccount != null){
+            deleteAccountIfUserNotCreated(newAccount);
+        }
+        List<UserDto> allUser = userService.findAll();
+        List<UserDto> allTeachers = findAlLUserTeachers(allUser);
+
+        requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);
+        return REFRESH_PAGE_CONTEXT;
     }
+
 
 
     private List<UserDto> findAlLUserTeachers(List<UserDto> list){

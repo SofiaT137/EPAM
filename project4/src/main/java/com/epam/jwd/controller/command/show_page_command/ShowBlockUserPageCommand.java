@@ -5,6 +5,7 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.pagination.Pagination;
 import com.epam.jwd.service.pagination.impl.PaginationImpl;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 public class ShowBlockUserPageCommand implements Command {
 
     private static final Command INSTANCE = new ShowBlockUserPageCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final String BLOCK_USER_JSP = "/WEB-INF/jsp/block_user.jsp";
 
@@ -56,7 +58,7 @@ public class ShowBlockUserPageCommand implements Command {
 
         List<GroupDto> allUniversityGroup = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
         requestContext.addAttributeToJSP(ALL_GROUPS_JSP_COLLECTION_ATTRIBUTE, allUniversityGroup);
-
+        ERROR_HANDLER.flushError(requestContext);
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession("blockedUsers");
 
         Pagination pagination = new PaginationImpl(blockedUsers.size());
