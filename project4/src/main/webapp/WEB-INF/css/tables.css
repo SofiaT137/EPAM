@@ -10,21 +10,21 @@ table {
 	border-top: 5px solid #fff;
 	border-bottom: 3px solid #fff;
 	border-collapse: collapse;
-	outline: 3px solid #ffd300;
+	outline: 3px solid lightgrey;
 	font-size: 15px;
 	background: #fff!important;
-	 margin-left: auto;
-      margin-right: auto;
+	margin-left: auto;
+    margin-right: auto;
 }
 table th {
 	font-weight: bold;
 	padding: 7px;
-	background: #ffd300;
+	background: lightgrey;
 	border: none;
 	text-align: left;
 	font-size: 15px;
 	border-top: 3px solid #fff;
-	border-bottom: 3px solid #ffd300;
+	border-bottom: 3px solid lightgrey;
 }
 table td {
 	padding: 7px;
