@@ -29,6 +29,8 @@ public class CreateGroupCommand implements Command {
 
     private static final String NOT_UNIQUE_GROUP_NAME = "notUnique";
     private static final String UNIQUE_GROUP_NAME = "unique group name";
+    private static final String ADD_GROUP_BUTTON = "btnAddGroup";
+    private static final String GROUP_NAME_LABEL = "lblGroupName";
 
 
     public static Command getInstance() {
@@ -54,9 +56,9 @@ public class CreateGroupCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        String btnAddGroup = requestContext.getParameterFromJSP("btnAddGroup");
+        String btnAddGroup = requestContext.getParameterFromJSP(ADD_GROUP_BUTTON);
 
-        String groupName = requestContext.getParameterFromJSP("lblGroupName");
+        String groupName = requestContext.getParameterFromJSP(GROUP_NAME_LABEL);
 
         if (btnAddGroup !=null) {
             if(Boolean.FALSE.equals(ifThisGroupExists(groupName,requestContext))){
@@ -64,9 +66,8 @@ public class CreateGroupCommand implements Command {
             }
             List<GroupDto> allGroup = groupService.findAll();
             requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
-            return REFRESH_PAGE_CONTEXT;
         }
-        return DefaultCommand.getInstance().execute(requestContext);
+        return REFRESH_PAGE_CONTEXT;
     }
 
     private void createGroup(String groupName){

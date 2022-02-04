@@ -35,7 +35,7 @@ public class CourseServiceImpl implements Service<CourseDto,Integer> {
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
     private static final String COURSE_NOT_FOUND_EXCEPTION = "This course is not found!";
     private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any course.";
-    private static final String CANNOT_FIND_COURSE_EXCEPTION = "I can't find this course by its name";
+//    private static final String CANNOT_FIND_COURSE_EXCEPTION = "I can't find this course by its name";
     private static final String CANNOT_FIND_USER_EXCEPTION = "I can't find any course for this user";
 
 
@@ -134,10 +134,6 @@ public class CourseServiceImpl implements Service<CourseDto,Integer> {
     public List<CourseDto> filterCourse(String courseName){
         List<Course> daoGetAll = ((CourseDaoImpl) courseDao).findCourseByName(courseName);
         List<CourseDto> courseDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(CANNOT_FIND_COURSE_EXCEPTION);
-            throw new ServiceException(CANNOT_FIND_COURSE_EXCEPTION);
-        }
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }

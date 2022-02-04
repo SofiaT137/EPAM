@@ -26,6 +26,11 @@ public class TeacherPageCommand implements Command {
 
     private static final String ALL_USER_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "finishedCourse";
+    private static final String RATE_STUDENT_BUTTON = "btnRateStudent";
+    private static final String CREATE_COURSE_BUTTON = "btnCreateCourse";
+    private static final String UPDATE_COURSE_BUTTON = "btnUpdateCourse";
+    private static final String DELETE_COURSE_BUTTON = "btnDeleteCourse";
+    private static final String USER_COURSE = "userCourse";
 
     private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
 
@@ -92,12 +97,12 @@ public class TeacherPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession(USER_COURSE);
 
-        String btnRateStudent = requestContext.getParameterFromJSP("btnRateStudent");
-        String btnCreateCourse = requestContext.getParameterFromJSP("btnCreateCourse");
-        String btnUpdateCourse = requestContext.getParameterFromJSP("btnUpdateCourse");
-        String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
+        String btnRateStudent = requestContext.getParameterFromJSP(RATE_STUDENT_BUTTON);
+        String btnCreateCourse = requestContext.getParameterFromJSP(CREATE_COURSE_BUTTON);
+        String btnUpdateCourse = requestContext.getParameterFromJSP(UPDATE_COURSE_BUTTON);
+        String btnDeleteCourse = requestContext.getParameterFromJSP(DELETE_COURSE_BUTTON);
 
         if (btnRateStudent != null){
             List<UserDto> allUser= serviceUser.findAll();

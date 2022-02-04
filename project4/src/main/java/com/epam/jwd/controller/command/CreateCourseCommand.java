@@ -5,7 +5,10 @@ import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,12 +23,18 @@ public class CreateCourseCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger(CreateCourseCommand.class);
 
     private static final Command INSTANCE = new CreateCourseCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_CREATE_COURSE_PAGE_COMMAND";
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
 
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+    private static final String ERROR_NOT_UNIQUE_COURSE_NAME = "notUniqueCourseName";
+    private static final String ADD_COURSE_BUTTON = "btnAddCourse";
+    private static final String CURRENT_USER = "currentUser";
+    private static final String COURSE_NAME_LABEL = "lblCourseName";
+    private static final String START_DATE_LABEL = "lblStartDate";
+    private static final String END_DATE_LABEL = "lblEndDate";
+
 
     private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
@@ -51,50 +60,50 @@ public class CreateCourseCommand implements Command {
         }
     };
 
-    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ERROR_COURSE_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
-        String btnAddCourse = requestContext.getParameterFromJSP("btnAddCourse");
+        String btnAddCourse = requestContext.getParameterFromJSP(ADD_COURSE_BUTTON);
 
-        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
+        UserDto userDto = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
 
         if (btnAddCourse !=null) {
-            String courseName = requestContext.getParameterFromJSP("lblCourseName");
-            Date startDate = Date.valueOf(requestContext.getParameterFromJSP("lblStartDate"));
-            Date endDate = Date.valueOf(requestContext.getParameterFromJSP("lblEndDate"));
+
+            String courseName = requestContext.getParameterFromJSP(COURSE_NAME_LABEL);
+            Date startDate = Date.valueOf(requestContext.getParameterFromJSP(START_DATE_LABEL));
+            Date endDate = Date.valueOf(requestContext.getParameterFromJSP(END_DATE_LABEL));
+
+            if (!ifCourseExists(courseName).isEmpty()) {
+                LOGGER.error(ERROR_NOT_UNIQUE_COURSE_NAME);
+                ERROR_HANDLER.setError(ERROR_NOT_UNIQUE_COURSE_NAME,requestContext);
+                return REFRESH_PAGE_CONTEXT;
+            }
 
             try {
-                CourseDto courseDto = new CourseDto();
-                courseDto.setName(courseName);
-                courseDto.setStartCourse(startDate);
-                courseDto.setEndCourse(endDate);
-
-                courseService.create(courseDto);
-               ((CourseServiceImpl) courseService).addUserIntoCourse(courseDto,userDto);
-
+                CourseDto newCourse = createCourse(courseName,startDate,endDate);
+                ((CourseServiceImpl) courseService).addUserIntoCourse(newCourse,userDto);
             }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
-                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
-                return ERROR_PAGE_CONTEXT;
+                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
             }
-            List<CourseDto> coursesAfterAdding = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
 
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterAdding);
+            List<CourseDto> coursesAfterAddingNewCourse = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterAddingNewCourse);
             return REFRESH_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
+    }
+
+    private CourseDto createCourse (String courseName,Date startDate,Date endDate){
+        CourseDto newCourse = new CourseDto();
+        newCourse.setName(courseName);
+        newCourse.setStartCourse(startDate);
+        newCourse.setEndCourse(endDate);
+        courseService.create(newCourse);
+        return newCourse;
+    }
+
+    private List<CourseDto> ifCourseExists(String courseName){
+        return ((CourseServiceImpl)courseService).filterCourse(courseName);
     }
 }
