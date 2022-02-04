@@ -35,6 +35,10 @@ public class BlockUserCommand implements Command {
     private static final String CANNOT_FIND_ANY_USER_BY_NAME_AND_SURNAME = "cannotFindUserByFirstAndLastName";
     private static final String CHECK_ACCOUNT_FOR_BLOCK = "accountBlocked";
     private static final String CHECK_ACCOUNT_FOR_UNBLOCK = "accountUnblocked";
+    private static final String BLOCK_USER_BUTTON = "btnBlockUser";
+    private static final String FIRST_NAME_LABEL = "lblFirstName";
+    private static final String LAST_NAME_LABEL = "lblLastName";
+    private static final String GROUP_LABEL = "lblGroup";
 
     private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
     private final Service<AccountDto, Integer> serviceAccount = new AccountServiceImpl();
@@ -65,10 +69,10 @@ public class BlockUserCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
-        String btnBlockUser = requestContext.getParameterFromJSP("btnBlockUser");
-        String firstName = requestContext.getParameterFromJSP("lblFirstName");
-        String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String groupName = requestContext.getParameterFromJSP("Group");
+        String btnBlockUser = requestContext.getParameterFromJSP(BLOCK_USER_BUTTON);
+        String firstName = requestContext.getParameterFromJSP(FIRST_NAME_LABEL);
+        String lastName = requestContext.getParameterFromJSP(LAST_NAME_LABEL);
+        String groupName = requestContext.getParameterFromJSP(GROUP_LABEL);
 
         List<UserDto> allUser = serviceUser.findAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);

@@ -119,7 +119,7 @@
         </div>
         <p></p>
         <label>${Group}</label>
-        <select name="Group">
+        <select name="lblGroup">
             <c:forEach items="${requestScope.university_groups}" var="group">
                 <option value="${group.name}">${group.name}</option>
             </c:forEach>
