@@ -28,6 +28,7 @@ public class ShowCreateTeacherPageCommand implements Command {
     private static final String FROM = "from";
     private static final String TO = "to";
     private static final String NUMBER_OF_PAGES = "numberOfPages";
+    private static final String ALL_TEACHERS = "allTeachers";
 
 
     public static Command getInstance() {
@@ -53,7 +54,7 @@ public class ShowCreateTeacherPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<UserDto> allTeachers = (List<UserDto>) requestContext.getAttributeFromSession("allTeachers");
+        List<UserDto> allTeachers = (List<UserDto>) requestContext.getAttributeFromSession(ALL_TEACHERS);
         ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(allTeachers.size());
         int page = pagination.getPage(requestContext);

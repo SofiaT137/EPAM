@@ -27,6 +27,8 @@ public class ShowBlockUserPageCommand implements Command {
     private static final String NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE = "number_of_pages";
     private static final String CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE = "current_page";
     private static final String ALL_GROUPS_JSP_COLLECTION_ATTRIBUTE = "university_groups";
+    private static final String UNIVERSITY_GROUPS = "universityGroups";
+    private static final String BLOCKED_USERS = "blockedUsers";
 
     private static final String FROM = "from";
     private static final String TO = "to";
@@ -56,10 +58,10 @@ public class ShowBlockUserPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
-        List<GroupDto> allUniversityGroup = (List<GroupDto>) requestContext.getAttributeFromSession("universityGroups");
+        List<GroupDto> allUniversityGroup = (List<GroupDto>) requestContext.getAttributeFromSession(UNIVERSITY_GROUPS);
         requestContext.addAttributeToJSP(ALL_GROUPS_JSP_COLLECTION_ATTRIBUTE, allUniversityGroup);
         ERROR_HANDLER.flushError(requestContext);
-        List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession("blockedUsers");
+        List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS);
 
         Pagination pagination = new PaginationImpl(blockedUsers.size());
         int page = pagination.getPage(requestContext);

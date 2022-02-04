@@ -33,6 +33,11 @@ public class CreateTeacherCommand implements Command {
     private static final String NOT_ORIGINAL_LOGIN_FOR_REGISTRATION = "notOriginalLogin";
     private static final String ROLLBACK_SUCCEEDED = "Rollback succeeded";
     private static final String TEACHER = "Teacher";
+    private static final String ADD_TEACHER_BUTTON = "btnAddTeacher";
+    private static final String FIRST_NAME_LABEL = "lblFirstName";
+    private static final String LAST_NAME_LABEL = "lblLastName";
+    private static final String LOGIN_LABEL = "lblLogin";
+    private static final String PASSWORD_LABEL = "lblPassword";
 
     private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
     private final Service<UserDto, Integer> userService = new UserServiceImpl();
@@ -61,12 +66,11 @@ public class CreateTeacherCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
-        String btnAddTeacher = requestContext.getParameterFromJSP("btnAddTeacher");
-
-        String login = requestContext.getParameterFromJSP("lblLogin");
-        String password = requestContext.getParameterFromJSP("lblPassword");
-        String firstName = requestContext.getParameterFromJSP("lblFirstName");
-        String lastName = requestContext.getParameterFromJSP("lblLastName");
+        String btnAddTeacher = requestContext.getParameterFromJSP(ADD_TEACHER_BUTTON);
+        String login = requestContext.getParameterFromJSP(LOGIN_LABEL);
+        String password = requestContext.getParameterFromJSP(PASSWORD_LABEL);
+        String firstName = requestContext.getParameterFromJSP(FIRST_NAME_LABEL);
+        String lastName = requestContext.getParameterFromJSP(LAST_NAME_LABEL);
 
         if (btnAddTeacher == null) {
             return DefaultCommand.getInstance().execute(requestContext);
