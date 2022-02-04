@@ -114,7 +114,11 @@ public class AccountServiceImpl implements Service<AccountDto,Integer> {
         Account account = ((AccountDaoImpl) accountDao).findAccountByLogin(login);
         return accountConverter.convert(account);
     }
-
+    /**
+     * Method checks if this login is original
+     * @param login
+     * @return true if it is original login and false for unoriginal login
+     */
     public Boolean isLoginOriginal(String login){
         boolean isOriginal = true;
         try {

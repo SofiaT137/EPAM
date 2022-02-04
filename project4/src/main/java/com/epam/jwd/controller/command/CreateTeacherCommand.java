@@ -31,6 +31,7 @@ public class CreateTeacherCommand implements Command {
     private static final String ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE = "allTeachers";
 
     private static final String NOT_ORIGINAL_LOGIN_FOR_REGISTRATION = "notOriginalLogin";
+    private static final String ROLLBACK_SUCCEEDED = "Rollback succeeded";
     private static final String TEACHER = "Teacher";
 
     private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
@@ -68,16 +69,15 @@ public class CreateTeacherCommand implements Command {
         String lastName = requestContext.getParameterFromJSP("lblLastName");
 
         if (btnAddTeacher != null) {
-            if (!((AccountServiceImpl)accountService).isLoginOriginal(login)){
+            if (Boolean.FALSE.equals(((AccountServiceImpl)accountService).isLoginOriginal(login))){
                 ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
             }else {
                 AccountDto newAccount = null;
                 boolean isCompleted = false;
                 try {
                     newAccount = createAccount(login, password);
-                    throw new ServiceException("Test");
-//                    createUser(newAccount, firstName, lastName);
-//                    isCompleted = true;
+                    createUser(newAccount, firstName, lastName);
+                    isCompleted = true;
                 } catch (ServiceException exception) {
                     LOGGER.error(exception.getMessage());
                     ERROR_HANDLER.setError(exception.getMessage(),requestContext);
@@ -134,7 +134,7 @@ public class CreateTeacherCommand implements Command {
     private void deleteAccountIfUserNotCreated(AccountDto newAccount){
         try {
             accountService.delete(newAccount);
-            LOGGER.info("Rollback succseeded");
+            LOGGER.info(ROLLBACK_SUCCEEDED);
         } catch (Exception exception) {
             LOGGER.error(exception.getMessage());
         }
