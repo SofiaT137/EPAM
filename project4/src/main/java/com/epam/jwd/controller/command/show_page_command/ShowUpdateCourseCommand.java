@@ -5,6 +5,7 @@ import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.pagination.Pagination;
 import com.epam.jwd.service.pagination.impl.PaginationImpl;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 public class ShowUpdateCourseCommand implements Command {
 
     private static final Command INSTANCE = new ShowUpdateCourseCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     public static Command getInstance() {
         return INSTANCE;
@@ -52,7 +54,7 @@ public class ShowUpdateCourseCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
-
+        ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(userCourse.size());
         int page = pagination.getPage(requestContext);
         Map<String,Integer> paginationInfo = pagination.getPagination(page);

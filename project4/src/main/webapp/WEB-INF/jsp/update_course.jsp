@@ -17,9 +17,16 @@
 <fmt:message bundle="${loc}" key="EndDateLabel" var="EndDateLabel"/>
 <fmt:message bundle="${loc}" key="btnUpdate" var="btnUpdate"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="cannotFindCourseByItsName" var="cannotFindCourseByItsName"/>
+<fmt:message bundle="${loc}" key="youNotTheMentorOfCourse" var="youNotTheMentorOfCourse"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
+<fmt:message bundle="${loc}" key="exception" var="exception"/>
 
 
-<html>
+
+<!DOCTYPE html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -40,7 +47,6 @@
             <table border="1" table style="width:33%" style="text-align:center">
                 <thead>
                     <tr>
-                        <th>${courseId}</th>
                         <th>${courseName}</th>
                         <th>${courseStartDate}</th>
                         <th>${CourseEndDate}</th>
@@ -49,9 +55,6 @@
                 <c:forEach items="${requestScope.user_course}" var="course">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${course.id}" />
-                            </td>
                             <td>
                                 <c:out value="${course.name}" />
                             </td>
@@ -103,32 +106,40 @@
             </c:otherwise>
           </c:choose>
           <p></p>
+          <h4>${newCourseData}</h4>
     <form action="/controller?command=UPDATE_COURSE_COMMAND" method="post">
         <div class="form-group">
-            <h3>${newCourseData}</h3>
             <label>${courseName}</label>
-            <select name="Course_name">
-                <c:forEach items="${requestScope.user_course}" var="course">
-                    <option value="${course.name}">${course.name}</option>
-                </c:forEach>
-            </select>
+            <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" title="${invalidCourseName}" required pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${courseStartDate}</label>
-            <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required
-                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+            <input name="lblStartDate" type="date" placeholder="${StartDateLabel}" required pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${CourseEndDate}</label>
-            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required
-                pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
+            <input name="lblEndDate" type="date" placeholder="${EndDateLabel}" required pattern="^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$" />
         </div>
         <p></p>
+        <div class="invalid">
+        <c:choose>
+            <c:when test="${errorMsg eq 'cannotFindCourseByName'}">
+                <p>${error}: ${cannotFindCourseByItsName}</p>
+            </c:when>
+            <c:when test="${errorMsg eq 'youNotTheMentor'}">
+                <p>${error}: ${youNotTheMentorOfCourse}</p>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${errorMsg ne null}">
+                    <p>${error}: ${errorMsg}</p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+      </div>
         <button type="submit" name="btnUpdate">${btnUpdate}</button>
-        <button type="submit" name="btnGetBack"
-            onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
+        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
      <%@ include file="footer/footer.jsp" %>
