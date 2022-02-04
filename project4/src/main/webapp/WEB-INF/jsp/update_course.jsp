@@ -12,6 +12,7 @@
 <fmt:message bundle="${loc}" key="courseName" var="courseName"/>
 <fmt:message bundle="${loc}" key="courseStartDate" var="courseStartDate"/>
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
+<fmt:message bundle="${loc}" key="invalidCourseName" var="invalidCourseName"/>
 <fmt:message bundle="${loc}" key="newCourseData" var="newCourseData"/>
 <fmt:message bundle="${loc}" key="StartDateLabel" var="StartDateLabel"/>
 <fmt:message bundle="${loc}" key="EndDateLabel" var="EndDateLabel"/>
