@@ -37,6 +37,7 @@ public class ShowUpdateCourseCommand implements Command {
     private static final String FROM = "from";
     private static final String TO = "to";
     private static final String NUMBER_OF_PAGES = "numberOfPages";
+    private static final String NOT_FINISHED = "notFinished";
 
     private static final ResponseContext USER_PAGE_CONTEXT = new ResponseContext() {
 
@@ -53,7 +54,7 @@ public class ShowUpdateCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("notFinished");
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession(NOT_FINISHED);
         ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(userCourse.size());
         int page = pagination.getPage(requestContext);
