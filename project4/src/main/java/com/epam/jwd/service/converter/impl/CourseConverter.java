@@ -4,6 +4,9 @@ import com.epam.jwd.dao.model.course.Course;
 import com.epam.jwd.service.converter.Converter;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 /**
  * Class for convert of course
  */
@@ -16,6 +19,8 @@ public class CourseConverter implements Converter<Course, CourseDto,Integer> {
 
     @Override
     public CourseDto convert(Course course) {
-        return new CourseDto(course.getId(),course.getName(),course.getStartCourse(),course.getEndCourse());
+        Date tomorrow = Date.valueOf(LocalDate.now().plusDays(1));
+        String isTerminated = course.getEndCourse().before(tomorrow) ? "Yes":"No";
+        return new CourseDto(course.getId(),course.getName(),course.getStartCourse(),course.getEndCourse(),isTerminated);
     }
 }

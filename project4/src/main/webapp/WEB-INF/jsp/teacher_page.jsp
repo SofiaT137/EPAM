@@ -18,6 +18,7 @@
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="isTerminated" var="isTerminated"/>
 
 <html>
 
@@ -52,9 +53,10 @@
                         <th>${courseName}</th>
                         <th>${courseStartDate}</th>
                         <th>${CourseEndDate}</th>
+                        <th>${isTerminated}</th>
                     </tr>
                 </thead>
-                <c:forEach items="${ requestScope.user_course}" var="course">
+                <c:forEach items="${requestScope.user_course}" var="course">
                     <tbody>
                         <tr>
                             <td>
@@ -65,6 +67,9 @@
                             </td>
                             <td>
                                 <c:out value="${course.endCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.isTerminated}" />
                             </td>
                         </tr>
                     </tbody>

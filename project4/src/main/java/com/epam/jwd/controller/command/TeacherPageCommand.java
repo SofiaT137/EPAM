@@ -114,6 +114,8 @@ public class TeacherPageCommand implements Command {
         }else if (btnCreateCourse != null){
             return CREATE_COURSE_CONTEXT;
         }else if (btnUpdateCourse != null){
+            List<CourseDto> notFinishedCourses = findNotFinishedCourses(userCourse);
+            requestContext.addAttributeToSession(NOT_FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE,notFinishedCourses);
             return UPDATE_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
             List<CourseDto> notFinishedCourses = findNotFinishedCourses(userCourse);

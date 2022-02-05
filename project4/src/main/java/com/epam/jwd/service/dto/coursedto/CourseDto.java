@@ -13,23 +13,33 @@ public class CourseDto extends AbstractDto<Integer> {
     private String name;
     private Date startCourse;
     private Date endCourse;
+    private String isTerminated;
 
-    public CourseDto(String name, Date startCourse, Date endCourse) {
+    public CourseDto(String name, Date startCourse, Date endCourse,String isTerminated) {
         this.name = name;
         this.startCourse = startCourse;
         this.endCourse = endCourse;
+        this.isTerminated = isTerminated;
     }
 
-    public CourseDto(Integer id,String name, Date startCourse, Date endCourse) {
+    public CourseDto(Integer id,String name, Date startCourse, Date endCourse, String isTerminated) {
         this.id = id;
         this.name = name;
         this.startCourse = startCourse;
         this.endCourse = endCourse;
-
+        this.isTerminated = isTerminated;
     }
 
     public CourseDto(){
 
+    }
+
+    public String getIsTerminated() {
+        return isTerminated;
+    }
+
+    public void setIsTerminated(String isTerminated) {
+        this.isTerminated = isTerminated;
     }
 
     public String getName() {
@@ -61,15 +71,12 @@ public class CourseDto extends AbstractDto<Integer> {
         if (this == o) return true;
         if (!(o instanceof CourseDto)) return false;
         CourseDto courseDto = (CourseDto) o;
-        return Objects.equals(name, courseDto.getName())
-                && Objects.equals(startCourse, courseDto.getStartCourse())
-                && Objects.equals(endCourse, courseDto.getEndCourse())
-                && Objects.equals(id,courseDto.getId());
+        return Objects.equals(getName(), courseDto.getName()) && Objects.equals(getStartCourse(), courseDto.getStartCourse()) && Objects.equals(getEndCourse(), courseDto.getEndCourse()) && Objects.equals(getIsTerminated(), courseDto.getIsTerminated());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, startCourse, endCourse,id);
+        return Objects.hash(getName(), getStartCourse(), getEndCourse(), getIsTerminated());
     }
 
     @Override
@@ -79,6 +86,7 @@ public class CourseDto extends AbstractDto<Integer> {
                 ", name='" + name + '\'' +
                 ", startCourse=" + startCourse +
                 ", endCourse=" + endCourse +
+                ", isTerminated='" + isTerminated + '\'' +
                 '}';
     }
 }

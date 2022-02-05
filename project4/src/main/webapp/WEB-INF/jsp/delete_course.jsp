@@ -129,7 +129,7 @@
             </c:otherwise>
         </c:choose>
     </div>
-      <button type="submit" name="btnDeleteCourse">${btnDeleteCourse}</button>
+      <button type="submit" name="btnDeleteCourse" <c:if test="${notFinished.size() == 0}"> <c:out value="disabled='disabled'" /> </c:if>>${btnDeleteCourse}</button>
       <button type="submit" name="btnGetBack">${getBack}</button>
       </form>
       <p></p>
