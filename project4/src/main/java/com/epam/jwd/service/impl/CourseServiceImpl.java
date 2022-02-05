@@ -112,10 +112,6 @@ public class CourseServiceImpl implements Service<CourseDto,Integer> {
     public List<CourseDto> findAll() throws ServiceException {
         List<Course> daoGetAll = courseDao.findAll();
         List<CourseDto> courseDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
-            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
-        }
         daoGetAll.forEach(course -> courseDtoList.add(courseConverter.convert(course)));
         return courseDtoList;
     }
@@ -138,7 +134,7 @@ public class CourseServiceImpl implements Service<CourseDto,Integer> {
      * @param courseId Course ID
      * @return Boolean result
      */
-    public Boolean deleteAllCourseInUSERHAsCourse(int courseId){
+    public Boolean deleteAllCourseInUserHasCourse(int courseId){
         return ((CourseDaoImpl) courseDao).deleteAllFieldsUserHasCourseByCourseId(courseId);
     }
 

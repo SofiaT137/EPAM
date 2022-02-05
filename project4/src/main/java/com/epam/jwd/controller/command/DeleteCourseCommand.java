@@ -1,20 +1,17 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
-import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseServiceImpl;
-import com.epam.jwd.service.impl.ReviewServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,20 +22,22 @@ public class DeleteCourseCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger(DeleteCourseCommand.class);
 
     private static final Command INSTANCE = new DeleteCourseCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
-    private static final String CANNOT_FIND_COURSE_MESSAGE = "I can't find this course";
-    private static final String CANNOT_DELETE_COURSE_MESSAGE = "I can't delete all courses by course_id";
+    private static final String DELETE_COURSE_BUTTON = "btnDeleteCourse";
+    private static final String GET_BACK_BUTTON = "btnGetBack";
+    private static final String CURRENT_USER = "currentUser";
+    private static final String COURSE_NAME = "courseName";
 
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
+    private static final String CANNOT_FIND_COURSE_MESSAGE = "cannotFindThisCourse";
+    private static final String CANNOT_DELETE_ALL_USER_MESSAGE = "cannotDeleteAllUserFromCourse";
+
     private static final String DELETE_COURSE_COMMAND = "/controller?command=SHOW_DELETE_COURSE_PAGE_COMMAND";
     private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
 
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
 
     private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
-    private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
-
 
     public static Command getInstance() {
         return INSTANCE;
@@ -61,20 +60,7 @@ public class DeleteCourseCommand implements Command {
         }
     };
 
-    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ERROR_COURSE_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
-    private static final ResponseContext TEACHER_RESULT_CONTEXT = new ResponseContext() {
+    private static final ResponseContext TEACHER_RESULT_CONTEXT  = new ResponseContext() {
 
         @Override
         public String getPage() {
@@ -91,71 +77,54 @@ public class DeleteCourseCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
-        String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
-        String btnGetBack = requestContext.getParameterFromJSP("btnGetBack");
+        String btnDeleteCourse = requestContext.getParameterFromJSP(DELETE_COURSE_BUTTON);
+        String btnGetBack = requestContext.getParameterFromJSP(GET_BACK_BUTTON);
+        UserDto currentUser = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
+        String courseName = requestContext.getParameterFromJSP(COURSE_NAME);
 
         if(btnGetBack !=null){
             return TEACHER_RESULT_CONTEXT;
         }
-
-        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
-
         if (btnDeleteCourse != null){
-
-            String name = requestContext.getParameterFromJSP("Course_name");
-
-            List<CourseDto> courseList = ((CourseServiceImpl) courseService).filterCourse(name);
+            List<CourseDto> courseList = getCourseListByName(courseName);
 
             if (courseList.isEmpty()){
                 LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
-                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE,CANNOT_FIND_COURSE_MESSAGE);
-                return ERROR_PAGE_CONTEXT;
+                ERROR_HANDLER.setError(CANNOT_FIND_COURSE_MESSAGE,requestContext);
+                return REFRESH_PAGE_CONTEXT;
             }
+            CourseDto courseForDelete = getCourse(courseList);
 
-            CourseDto courseDtoForDelete = courseList.get(0);
-
-            List<ReviewDto> listOfThisCourseReview = new ArrayList<>();
-            try {
-                listOfThisCourseReview = ((ReviewServiceImpl)reviewService).findReviewByCourseId(courseDtoForDelete.getId());
-            }catch (DAOException exception){
+            if (!deleteAllUsersFromCourse(courseForDelete)){
+                ERROR_HANDLER.setError(CANNOT_DELETE_ALL_USER_MESSAGE,requestContext);
+                return REFRESH_PAGE_CONTEXT;
+            }
+            try{
+                deleteCourse(courseForDelete);
+            }catch (ServiceException exception){
                 LOGGER.error(exception.getMessage());
+                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+                return REFRESH_PAGE_CONTEXT;
             }
-            if (!(listOfThisCourseReview.isEmpty())){
-                for (ReviewDto review:
-                        listOfThisCourseReview) {
-                    try {
-                        reviewService.delete(review);
-                    } catch (ServiceException exception) {
-                        LOGGER.error(exception.getMessage());
-                    }
-                }
-            }
-            boolean result = ((CourseServiceImpl)courseService).deleteAllCourseInUSERHAsCourse(courseDtoForDelete.getId());
-
-            if (!result) {
-                LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
-                requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_DELETE_COURSE_MESSAGE);
-                return ERROR_PAGE_CONTEXT;
-            }
-                CourseDto courseForDelete = courseService.getById(courseDtoForDelete.getId());
-                try{
-                    courseService.delete(courseForDelete);
-                }catch (Exception exception){
-                    LOGGER.error(exception.getMessage());
-                    requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
-                    return ERROR_PAGE_CONTEXT;
-                }
-
-            List<CourseDto> coursesAfterDelete = new ArrayList<>();
-                try{
-                    coursesAfterDelete = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
-                }
-                catch (ServiceException exception){
-                    LOGGER.info(exception.getMessage());
-                }
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterDelete);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, getAllCoursesAfterDelete(currentUser));
             return REFRESH_PAGE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
+    }
+
+    private boolean deleteAllUsersFromCourse(CourseDto courseDtoForDelete){
+        return ((CourseServiceImpl)courseService).deleteAllCourseInUserHasCourse(courseDtoForDelete.getId());
+    }
+    private List<CourseDto> getAllCoursesAfterDelete(UserDto currentUser){
+        return ((CourseServiceImpl) courseService).getUserAvailableCourses(currentUser.getFirstName(),currentUser.getLastName());
+    }
+    private List<CourseDto> getCourseListByName(String courseName){
+        return ((CourseServiceImpl)courseService).filterCourse(courseName);
+    }
+    private CourseDto getCourse(List<CourseDto> allCoursesWithName){
+        return allCoursesWithName.get(0);
+    }
+    private void deleteCourse (CourseDto courseForDelete){
+        courseService.delete(courseForDelete);
     }
 }

@@ -26,8 +26,8 @@
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
 
 
-
 <!DOCTYPE html>
+<html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">

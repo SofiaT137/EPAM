@@ -28,8 +28,8 @@
 <fmt:message bundle="${loc}" key="accountUnblocked" var="accountUnblocked"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 
-
 <!DOCTYPE html>
+<html>
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -119,11 +119,13 @@
         </div>
         <p></p>
         <label>${Group}</label>
+        <div class="form-group">
         <select name="lblGroup">
             <c:forEach items="${requestScope.university_groups}" var="group">
                 <option value="${group.name}">${group.name}</option>
             </c:forEach>
         </select>
+        </div>
         <p></p>
         <div class="invalid">
             <c:choose>

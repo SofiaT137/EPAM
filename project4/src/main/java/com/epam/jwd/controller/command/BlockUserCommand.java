@@ -29,6 +29,7 @@ public class BlockUserCommand implements Command {
 
     private static final String BLOCK_PAGE_JSP = "/controller?command=SHOW_BLOCK_USER_PAGE_COMMAND";
 
+
     private static final String BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE = "blockedUsers";
 
     private static final String CANNOT_FIND_THIS_USER_IN_GROUP = "cannotFindThisUserInGroup";
@@ -66,6 +67,8 @@ public class BlockUserCommand implements Command {
         }
     };
 
+
+
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
@@ -73,6 +76,7 @@ public class BlockUserCommand implements Command {
         String firstName = requestContext.getParameterFromJSP(FIRST_NAME_LABEL);
         String lastName = requestContext.getParameterFromJSP(LAST_NAME_LABEL);
         String groupName = requestContext.getParameterFromJSP(GROUP_LABEL);
+
 
         List<UserDto> allUser = serviceUser.findAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);

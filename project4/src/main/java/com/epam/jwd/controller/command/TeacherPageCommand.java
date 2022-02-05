@@ -26,6 +26,7 @@ public class TeacherPageCommand implements Command {
 
     private static final String ALL_USER_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "finishedCourse";
+    private static final String NOT_FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "notFinishedCourse";
     private static final String RATE_STUDENT_BUTTON = "btnRateStudent";
     private static final String CREATE_COURSE_BUTTON = "btnCreateCourse";
     private static final String UPDATE_COURSE_BUTTON = "btnUpdateCourse";
@@ -115,6 +116,8 @@ public class TeacherPageCommand implements Command {
         }else if (btnUpdateCourse != null){
             return UPDATE_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
+            List<CourseDto> notFinishedCourses = findNotFinishedCourses(userCourse);
+            requestContext.addAttributeToSession(NOT_FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE,notFinishedCourses);
             return DELETE_COURSE_CONTEXT;
         }
         return DefaultCommand.getInstance().execute(requestContext);
@@ -129,4 +132,15 @@ public class TeacherPageCommand implements Command {
                 .collect(Collectors.toList());
         return result;
     }
+
+    private List<CourseDto> findNotFinishedCourses(List<CourseDto> list){
+        List<CourseDto> result;
+        LocalDate tomorrow = LocalDate.now().plusDays(1);
+        Date utilDate = Date.valueOf(tomorrow);
+        result = list.stream()
+                .filter(courseDto -> courseDto.getEndCourse().after(utilDate))
+                .collect(Collectors.toList());
+        return result;
+    }
+
 }

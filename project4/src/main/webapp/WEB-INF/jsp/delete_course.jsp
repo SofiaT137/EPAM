@@ -13,10 +13,13 @@
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="cannotFindThisCourseByName" var="cannotFindThisCourseByName"/>
+<fmt:message bundle="${loc}" key="cannotDeleteAllUserFromThisCourse" var="cannotDeleteAllUserFromThisCourse"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
 
-<!DOCTYPE HTML>
-<html xml:lang>
-
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -58,16 +61,44 @@
                                 <c:out value="${course.endCourse}" />
                             </td>
                         </tr>
-                    </tbody>
-                </c:forEach>
-            </table>
-        </c:otherwise>
-    </c:choose>
-    <p></p>
+                        </tbody>
+                    </c:forEach>
+                </table>
+            <div class="paggination">
+                    <c:if test="${current_page != 1}">
+                        <td>
+                            <a
+                                href="/controller?command=SHOW_DELETE_COURSE_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                        </td>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${number_of_pages}" var="i">
+                        <c:choose>
+                            <c:when test="${current_page eq i}">
+                                <td>${i}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>
+                                    <a href="/controller?command=SHOW_DELETE_COURSE_PAGE_COMMAND&page=${i}">${i}</a>
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+                    <%--For displaying Next link --%>
+                        <c:if test="${current_page lt number_of_pages}">
+                            <td>
+                                <a
+                                    href="/controller?command=SHOW_DELETE_COURSE_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                            </td>
+                        </c:if>
+                </div>
+            </c:otherwise>
+        </c:choose>
+        <p></p>
     <form action="/controller?command=DELETE_COURSE_COMMAND" method="post">
         <div class="form-group">
             <label>${courseName}</label>
-            <input name = "Course_name" list = "courses" placeholder = "Select course name" autocomplete="off">
+            <input name = "courseName" list = "courses" placeholder = "Select course name" autocomplete="on" />
             <datalist id = "courses">
                 <c:forEach items="${requestScope.user_course}" var="course">
                     <option value="${course.name}">${course.name}</option>
@@ -75,15 +106,25 @@
             </datalist>
         </div>
         <p></p>
-        <button type="submit" name="btnDeleteCourse" <c:if test="${user_course.size() == 0}">
-            <c:out value="disabled='disabled'" />
-            </c:if> >${btnDeleteCourse}
-        </button>
-        <button type="submit" name="btnGetBack">${getBack}</button>
-        </div>
-    </form>
-    <p></p>
-    <%@ include file="footer/footer.jsp" %>
-</body>
-
-</html>
+    <div class="invalid">
+        <c:choose>
+        <c:when test="${errorMsg eq '${cannotFindThisCourse'}}">
+            <p>${error}:${cannotFindThisCourseByName}</p>
+        </c:when>
+        <c:when test="${errorMsg eq 'cannotDeleteAllUserFromCourse'}">
+            <p>${error}:${cannotDeleteAllUserFromThisCourse}</p>
+        </c:when>
+            <c:otherwise>
+                <c:if test="${errorMsg ne null}">
+                    <p>${error}:${errorMsg}</p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+    </div>
+      <button type="submit" name="btnDeleteCourse">${btnDeleteCourse}</button>
+      <button type="submit" name="btnGetBack">${getBack}</button>
+      </form>
+      <p></p>
+       <%@ include file="footer/footer.jsp" %>
+      </body>
+  </html>
