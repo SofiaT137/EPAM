@@ -37,6 +37,7 @@
     </style>
 </head>
 
+
 <body>
     <h2>${letsUpdateACourse}</h2>
     <h4>${yourCurrentCourses}</h4>

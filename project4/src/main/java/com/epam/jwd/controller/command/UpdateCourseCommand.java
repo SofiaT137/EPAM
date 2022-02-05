@@ -26,11 +26,13 @@ public class UpdateCourseCommand implements Command {
     private static final Command INSTANCE = new UpdateCourseCommand();
 
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_UPDATE_COURSE_COMMAND";
+    private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
 
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String CANNOT_FIND_THIS_COURSE_BY_NAME = "cannotFindCourseByName";
     private static final String YOU_ARE_NOT_THE_MENTOR = "youNotTheMentor";
     private static final String UPDATE_COURSE_BUTTON = "btnUpdate";
+    private static final String GET_BACK_BUTTON = "btnGetBack";
     private static final String CURRENT_USER = "currentUser";
     private static final String COURSE_NAME_LABEL = "lblCourseName";
     private static final String START_DATE_LABEL = "lblStartDate";
@@ -59,12 +61,30 @@ public class UpdateCourseCommand implements Command {
         }
     };
 
+    private static final ResponseContext TEACHER_RESULT_CONTEXT  = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return TEACHER_RESULT_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
+
+
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
         String btnUpdate = requestContext.getParameterFromJSP(UPDATE_COURSE_BUTTON);
+        String btnGetBack = requestContext.getParameterFromJSP(GET_BACK_BUTTON);
         UserDto teacher = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
 
+        if(btnGetBack !=null){
+            return TEACHER_RESULT_CONTEXT;
+        }
         if (btnUpdate != null) {
 
             String courseName = requestContext.getParameterFromJSP(COURSE_NAME_LABEL);
