@@ -110,13 +110,13 @@
         <p></p>
     <div class="invalid">
         <c:choose>
-        <c:when test="${errorMsg eq '${cannotFindThisCourse'}}">
+        <c:when test="${errorMsg eq 'cannotFindThisCourse'}">
             <p>${error}: ${cannotFindThisCourseByName}</p>
         </c:when>
         <c:when test="${errorMsg eq 'cannotDeleteAllUserFromCourse'}">
             <p>${error}: ${cannotDeleteAllUserFromThisCourse}</p>
         </c:when>
-        <c:when test="${errorMsg eq '${youNotTheMentor'}}">
+        <c:when test="${errorMsg eq 'youNotTheMentor'}">
             <p>${error}: ${youNotTheMentorOfCourse}</p>
         </c:when>
         <c:when test="${errorMsg eq 'cannotDeleteFinishedCourse'}">
