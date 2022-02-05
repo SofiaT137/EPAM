@@ -219,7 +219,7 @@ public class CourseDaoImpl implements Dao<Course,Integer> {
     }
 
     public List<Course> findCourseByName(String name){
-        List<Course> courseList = null;
+        List<Course> courseList = new ArrayList<>();
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME)) {
             preparedStatement.setString(1,name);

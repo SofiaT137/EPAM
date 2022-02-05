@@ -19,6 +19,7 @@
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
+<fmt:message bundle="${loc}" key="isTerminated" var="isTerminated"/>
 
 <!DOCTYPE html>
 
@@ -46,6 +47,7 @@
                         <th>${courseName}</th>
                         <th>${courseStartDate}</th>
                         <th>${CourseEndDate}</th>
+                        <th>${isTerminated}</th>
                     </tr>
                 </thead>
                 <c:forEach items="${requestScope.user_course}" var="course">
@@ -59,6 +61,9 @@
                             </td>
                             <td>
                                 <c:out value="${course.endCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.isTerminated}" />
                             </td>
                         </tr>
                     </tbody>
@@ -114,7 +119,7 @@
         <p></p>
         <div class="invalid">
             <c:choose>
-                <c:when test="${errorMsg eq 'notUniqueCourseName'}">
+                <c:when test="${errorMsg eq 'cannotFindThisCourse'}">
                     <p>${error}:${invalidUniquenessCourseName}</p>
                 </c:when>
                 <c:otherwise>
