@@ -120,8 +120,8 @@ public class UserPageCommand implements Command {
         for (CourseDto courseDto:
                 listOfCourses ) {
             try{
-                ReviewDto reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
-                reviewDtoList.add(reviewDto);
+               List<ReviewDto>reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
+                reviewDtoList.add(reviewDto.get(0));
             }catch (DAOException exception){
                 LOGGER.info(exception.getMessage());
             }

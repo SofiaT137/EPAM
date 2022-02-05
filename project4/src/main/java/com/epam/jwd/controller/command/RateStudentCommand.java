@@ -28,7 +28,6 @@ public class RateStudentCommand implements Command {
     private static final String CANNOT_FIND_USER_MESSAGE = "This user does not exist!";
     private static final String INCORRECT_GRADE_USER_MESSAGE = "This grade is incorrect! Correct range of grades: from 0 to 10.";
 
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
     private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_RATE_PAGE_COMMAND";
 
         private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
@@ -54,24 +53,10 @@ public class RateStudentCommand implements Command {
         }
     };
 
-    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
-
-        @Override
-        public String getPage() {
-            return ERROR_COURSE_COMMAND;
-        }
-
-        @Override
-        public boolean isRedirected() {
-            return true;
-        }
-    };
-
     @Override
     public ResponseContext execute(RequestContext requestContext) {
 
         String btnAddReview = requestContext.getParameterFromJSP("btnAddReview");
-
         String firstName = requestContext.getParameterFromJSP("lblFirstName");
         String lastName = requestContext.getParameterFromJSP("lblLastName");
         String groupName = requestContext.getParameterFromJSP("group_name");
@@ -95,7 +80,7 @@ public class RateStudentCommand implements Command {
             if (currentStudent == null) {
                 LOGGER.error(CANNOT_FIND_USER_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, CANNOT_FIND_USER_MESSAGE);
-                return ERROR_PAGE_CONTEXT;
+                return null;
             }
 
             int value = Integer.parseInt(grade);
@@ -103,7 +88,7 @@ public class RateStudentCommand implements Command {
             if (value < 0 || value > 10){
                 LOGGER.error(INCORRECT_GRADE_USER_MESSAGE);
                 requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, INCORRECT_GRADE_USER_MESSAGE);
-                return ERROR_PAGE_CONTEXT;
+                return null;
             }
 
             ReviewDto reviewDto = new ReviewDto();

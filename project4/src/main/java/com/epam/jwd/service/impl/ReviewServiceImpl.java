@@ -92,29 +92,9 @@ public class ReviewServiceImpl implements Service<ReviewDto,Integer> {
         return reviewDtoList;
     }
 
-    /**
-     *  Find review by Course ID and User ID
-     * @param courseId Course ID
-     * @param userId User ID
-     * @return ReviewDto object
-     */
-    public ReviewDto findReviewByCourseIdAndUserId(int courseId,int userId) {
-        Review review = ((ReviewDaoImpl) reviewDao).findReviewByCourseIdAndUserId(courseId,userId);
-        return reviewConverter.convert(review);
-    }
-
-    /**
-     * Find review by Course ID
-     * @param courseId Course ID
-     * @return list of ReviewDto objects
-     */
-    public List<ReviewDto> findReviewByCourseId(int courseId) {
-        List<Review> daoGetAll = ((ReviewDaoImpl) reviewDao).findReviewByCourseId(courseId);
+    public List<ReviewDto> findReviewByCourseIdAndUserId(int courseId,int userId) {
+        List<Review> daoGetAll = ((ReviewDaoImpl) reviewDao).findReviewByCourseIdAndUserId(courseId,userId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);
-            throw new ServiceException(CANNOT_FIND_REVIEW_EXCEPTION);
-        }
         daoGetAll.forEach(review -> reviewDtoList.add(reviewConverter.convert(review)));
         return reviewDtoList;
     }

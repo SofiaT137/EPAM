@@ -164,24 +164,21 @@ public class ReviewDaoImpl implements Dao<Review, Integer> {
         return list;
     }
 
-    public Review findReviewByCourseIdAndUserId(int courseId,int userId){
+    public List<Review> findReviewByCourseIdAndUserId(int courseId,int userId){
         List<Review> list;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_USER_ID_COURSE_ID)) {
             preparedStatement.setInt(1,userId);
             preparedStatement.setInt(2,courseId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            list = (returnReviewList(resultSet));
-            if (!(list.isEmpty())){
-                return list.get(0);
-            }
+            list = returnReviewList(resultSet);
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
             throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
         }  finally {
             connectionPool.returnConnection(connection);
         }
-        throw new DAOException(ERROR_CANNOT_FIND_REVIEW_BY_COURSE_ID_AND_USER_ID);
+        return list;
     }
 
     private List<Review> returnReviewList (ResultSet resultSet){

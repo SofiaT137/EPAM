@@ -144,10 +144,9 @@ public class TeacherSelectCourseCommand implements Command {
             List<UserDto> usersOfSelectedCourse = findAllStudentsOnTheCourse(selectedCourse,teacher);
 
             List<UserDto> studentsWithReview = findAllStudentWithReview(usersOfSelectedCourse, selectedCourse);
-            if (studentsWithReview.isEmpty()){
-                LOGGER.info(NO_REVIEWS);
+            if (!studentsWithReview.isEmpty()){
+                usersOfSelectedCourse.removeAll(studentsWithReview);
             }
-            usersOfSelectedCourse.removeAll(studentsWithReview);
             requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE, usersOfSelectedCourse);
         }
 
@@ -159,8 +158,10 @@ public class TeacherSelectCourseCommand implements Command {
         List<UserDto> result = new ArrayList<>();
         for (UserDto userDto:
              list) {
-                ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(currentCourse.getId(), userDto.getId());
+           List<ReviewDto> reviewDtoList = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(currentCourse.getId(), userDto.getId());
+            if (!reviewDtoList.isEmpty()){
                 result.add(userDto);
+            }
         }
         return result;
     }
