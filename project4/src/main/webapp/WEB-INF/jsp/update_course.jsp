@@ -22,6 +22,7 @@
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="cannotFindCourseByItsName" var="cannotFindCourseByItsName"/>
 <fmt:message bundle="${loc}" key="youNotTheMentorOfCourse" var="youNotTheMentorOfCourse"/>
+<fmt:message bundle="${loc}" key="youCannotUpdateFinishedCourse" var="youCannotUpdateFinishedCourse"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
 
@@ -132,6 +133,9 @@
             </c:when>
             <c:when test="${errorMsg eq 'youNotTheMentor'}">
                 <p>${error}: ${youNotTheMentorOfCourse}</p>
+            </c:when>
+            <c:when test="${errorMsg eq 'cannotUpdateFinishedCourse'}">
+                <p>${error}: ${youCannotUpdateFinishedCourse}</p>
             </c:when>
             <c:otherwise>
                 <c:if test="${errorMsg ne null}">

@@ -53,7 +53,7 @@ public class ShowUpdateCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
+        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("notFinished");
         ERROR_HANDLER.flushError(requestContext);
         Pagination pagination = new PaginationImpl(userCourse.size());
         int page = pagination.getPage(requestContext);
