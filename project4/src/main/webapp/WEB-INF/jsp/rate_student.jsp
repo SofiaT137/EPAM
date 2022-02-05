@@ -24,6 +24,12 @@
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="cannotFindUserByFullName" var="cannotFindUserByFullName"/>
+<fmt:message bundle="${loc}" key="cannotFindStudentInGroup" var="cannotFindStudentInGroup"/>
+<fmt:message bundle="${loc}" key="thisStudentHasReview" var="thisStudentHasReview"/>
+<fmt:message bundle="${loc}" key="incorrectGrade" var="incorrectGrade"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
+
 
 
 <html>
@@ -113,12 +119,13 @@
         </div>
         <p></p>
         <div class="form-group">
-            <label>${Group}</label>
-            <select name="group_name">
+            <label>${groupNumber}</label>
+            <input name = "groupName" list = "groups" placeholder = "Select group name" autocomplete="on" />
+            <datalist id = "groups">
                 <c:forEach items="${requestScope.all_groups}" var="group">
                     <option value="${group.name}">${group.name}</option>
                 </c:forEach>
-            </select>
+            </datalist>
         </div>
         <p></p>
         <div class="form-group">
@@ -131,12 +138,29 @@
             <input name="lblReview" type="text" placeholder="${ReviewLabel}" />
         </div>
         <p></p>
+    <div class="invalid">
+        <c:choose>
+            <c:when test="${errorMsg eq 'cannotFindUserByFullName'}">
+                <p>${error}:${cannotFindUserByFullName}</p>
+            </c:when>
+            <c:when test="${errorMsg eq 'cannotFindStudentInGroup'}">
+                <p>${error}:${cannotFindStudentInGroup}</p>
+            </c:when>
+            <c:when test="${errorMsg eq 'incorrectGrade'}">
+                <p>${error}:${incorrectGrade}</p>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${errorMsg ne null}">
+                    <p>${error}:${errorMsg}</p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+    </div>
         <button type="submit" name="btnAddReview" <c:if test="${students_course.size() == 0}">
             <c:out value="disabled='disabled'" />
             </c:if>>${btnAddReview}
         </button>
-        <button type="submit" name="btnGetBack"
-            onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
+        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>

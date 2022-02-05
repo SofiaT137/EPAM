@@ -38,7 +38,6 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "selectedCourse";
     private static final String USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE = "studentsCourse";
 
-    private static final String NO_REVIEWS = "No reviews!";
     private static final String CANNOT_FIND_COURSE_MESSAGE = "cannotFindThisCourse";
     private static final String YOU_ARE_NOT_THE_MENTOR = "youNotTheMentor";
     private static final String THIS_COURSE_IS_UNFINISHED = "thisCourseIsUnfinished";
@@ -46,8 +45,6 @@ public class TeacherSelectCourseCommand implements Command {
     private static final String FILL_REVIEW_BUTTON = "btnFillReview";
     private static final String GET_BACK_BUTTON = "btnGetBack";
     private static final String COURSE_NAME = "courseName";
-
-
 
     private final Service<UserDto, Integer> userService = new UserServiceImpl();
     private final Service<ReviewDto, Integer> reviewService = new ReviewServiceImpl();
