@@ -26,7 +26,7 @@ public class TeacherPageCommand implements Command {
 
     private static final String ALL_USER_SESSION_COLLECTION_ATTRIBUTE = "allUsers";
     private static final String FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "finishedCourse";
-    private static final String NOT_FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "notFinishedCourse";
+    private static final String NOT_FINISHED_COURSES_SESSION_COLLECTION_ATTRIBUTE = "notFinished";
     private static final String RATE_STUDENT_BUTTON = "btnRateStudent";
     private static final String CREATE_COURSE_BUTTON = "btnCreateCourse";
     private static final String UPDATE_COURSE_BUTTON = "btnUpdateCourse";

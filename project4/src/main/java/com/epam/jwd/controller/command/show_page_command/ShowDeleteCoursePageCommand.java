@@ -30,7 +30,7 @@ public class ShowDeleteCoursePageCommand implements Command {
     private static final String FROM = "from";
     private static final String TO = "to";
     private static final String NUMBER_OF_PAGES = "numberOfPages";
-    private static final String NOT_FINISHED_USER_COURSE = "notFinishedCourse";
+    private static final String NOT_FINISHED_USER_COURSE = "notFinished";
     private static final String CURRENT_USER = "currentUser";
 
     public static Command getInstance() {
@@ -62,9 +62,9 @@ public class ShowDeleteCoursePageCommand implements Command {
         int page = pagination.getPage(requestContext);
         Map<String,Integer> paginationInfo = pagination.getPagination(page);
 
-        List<CourseDto> blockedUsersOnPage = userCourse.subList(paginationInfo.get(FROM),paginationInfo.get(TO));
+        List<CourseDto> usersCourseOnPage = userCourse.subList(paginationInfo.get(FROM),paginationInfo.get(TO));
         requestContext.addAttributeToJSP(CURRENT_USER_JSP_COLLECTION_ATTRIBUTE, userDto);
-        requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, blockedUsersOnPage);
+        requestContext.addAttributeToJSP(USER_COURSE_JSP_COLLECTION_ATTRIBUTE, usersCourseOnPage);
         requestContext.addAttributeToJSP(NUMBER_OF_PAGE_JSP_COLLECTION_ATTRIBUTE, paginationInfo.get(NUMBER_OF_PAGES));
         requestContext.addAttributeToJSP(CURRENT_PAGE_JSP_COLLECTION_ATTRIBUTE, page);
 

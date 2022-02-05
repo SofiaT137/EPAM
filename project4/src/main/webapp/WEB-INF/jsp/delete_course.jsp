@@ -17,6 +17,8 @@
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="cannotFindThisCourseByName" var="cannotFindThisCourseByName"/>
 <fmt:message bundle="${loc}" key="cannotDeleteAllUserFromThisCourse" var="cannotDeleteAllUserFromThisCourse"/>
+<fmt:message bundle="${loc}" key="youNotTheMentorOfCourse" var="youNotTheMentorOfCourse"/>
+<fmt:message bundle="${loc}" key="cannotDeleteThisFinishedCourse" var="cannotDeleteThisFinishedCourse"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 
 <!DOCTYPE html>
@@ -109,10 +111,16 @@
     <div class="invalid">
         <c:choose>
         <c:when test="${errorMsg eq '${cannotFindThisCourse'}}">
-            <p>${error}:${cannotFindThisCourseByName}</p>
+            <p>${error}: ${cannotFindThisCourseByName}</p>
         </c:when>
         <c:when test="${errorMsg eq 'cannotDeleteAllUserFromCourse'}">
-            <p>${error}:${cannotDeleteAllUserFromThisCourse}</p>
+            <p>${error}: ${cannotDeleteAllUserFromThisCourse}</p>
+        </c:when>
+        <c:when test="${errorMsg eq '${youNotTheMentor'}}">
+            <p>${error}: ${youNotTheMentorOfCourse}</p>
+        </c:when>
+        <c:when test="${errorMsg eq 'cannotDeleteFinishedCourse'}">
+            <p>${error}: ${cannotDeleteThisFinishedCourse}</p>
         </c:when>
             <c:otherwise>
                 <c:if test="${errorMsg ne null}">
