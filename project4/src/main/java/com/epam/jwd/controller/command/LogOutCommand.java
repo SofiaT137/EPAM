@@ -43,6 +43,7 @@ public class LogOutCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
+
         if (userDto != null) {
             String msg = MessageFormat.format("{0},{1} is logged out.",userDto.getFirstName(),userDto.getLastName());
             LOGGER.info(msg);

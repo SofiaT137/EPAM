@@ -31,7 +31,6 @@ public class AccountServiceImpl implements Service<AccountDto,Integer> {
 
     private static final String ID_IS_NULL_EXCEPTION = "This id is null";
     private static final String ACCOUNT_NOT_FOUND_EXCEPTION = "This account is not found!";
-    private static final String REPOSITORY_IS_EMPTY_EXCEPTION = "Repository is empty. I can't find any account.";
     private static final String ORIGINAL_ACCOUNT_FOR_REGISTRATION = "This account is original.";
     private static final String NOT_ORIGINAL_LOGIN_FOR_REGISTRATION = "This account is not original.";
 

@@ -113,10 +113,10 @@
                 <p>${error}:${cannotFindCourse}</p>
             </c:when>
             <c:when test= "${errorMsg eq 'youNotTheMentor'}">
-                <p>${error}:${youNotTheMentorOfCourse}</p>
+                <p>${error}: ${youNotTheMentorOfCourse}</p>
             </c:when>
             <c:when test= "${errorMsg eq 'thisCourseIsUnfinished'}">
-                <p>${error}:${unfinishedCourse}</p>
+                <p>${error}: ${unfinishedCourse}</p>
             </c:when>
             <c:otherwise>
                 <c:if test="${errorMsg ne null}">

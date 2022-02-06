@@ -120,8 +120,6 @@ public class DeleteUserCourseCommand implements Command {
                 ERROR_HANDLER.setError(exception.getMessage(),requestContext);
                 return REFRESH_PAGE_CONTEXT;
             }
-
-            List<CourseDto> userCourses;
             try{
                 removeCourseFromList(userCourse,courseDtoForDelete);
             }catch (DAOException exception){
@@ -155,10 +153,4 @@ public class DeleteUserCourseCommand implements Command {
     private void removeCourseFromList(List<CourseDto> possibleCourses, CourseDto courseDto){
         possibleCourses.remove(courseDto);
     }
-
-    private List<CourseDto> getUserAvailableCourses(UserDto currentUser){
-        return ((CourseServiceImpl) courseService).getUserAvailableCourses(currentUser.getFirstName(), currentUser.getLastName());
-    }
-
-
 }

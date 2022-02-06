@@ -57,6 +57,24 @@
                 <div class="line"></div>
             </div>
         </label>
+        <div class="invalid">
+            <c:choose>
+                <c:when test="${errorMsg eq 'notOriginalAccount'}">
+                    <p>${error}: ${notOriginalAccount}</p>
+                </c:when>
+                <c:when test="${errorMsg eq 'cannotFindThisAccount'}">
+                    <p>${error}: ${cannotFindThisAccount}</p>
+                </c:when>
+                <c:when test="${errorMsg eq 'accessDenied'}">
+                    <p>${error}: ${accessDenied}</p>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${errorMsg ne null}">
+                        <p>${error}: ${errorMsg}</p>
+                    </c:if>
+                </c:otherwise>
+            </c:choose>
+        </div>
         <button type="submit" name="btnRegister">${btnRegister}</button>
         <button type="submit" name="btnLogIn">${btnLogIn}</button>
     </form>
