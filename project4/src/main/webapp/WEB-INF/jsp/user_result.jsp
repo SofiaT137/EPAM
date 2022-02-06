@@ -11,6 +11,8 @@
 <fmt:message bundle="${loc}" key="Grade" var="Grade"/>
 <fmt:message bundle="${loc}" key="Review" var="Review"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
 
 <html>
 
@@ -55,6 +57,35 @@
                     </tbody>
                 </c:forEach>
             </table>
+        <div class="paggination">
+        <c:if test="${current_page != 1}">
+            <td>
+                <a
+                    href="/controller?command=SHOW_REVIEW_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+            </td>
+        </c:if>
+
+        <c:forEach begin="1" end="${number_of_pages}" var="i">
+            <c:choose>
+                <c:when test="${current_page eq i}">
+                    <td>${i}</td>
+                </c:when>
+                <c:otherwise>
+                    <td>
+                        <a href="/controller?command=SHOW_REVIEW_PAGE_COMMAND&page=${i}">${i}</a>
+                    </td>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <%--For displaying Next link --%>
+            <c:if test="${current_page lt number_of_pages}">
+                <td>
+                    <a
+                        href="/controller?command=SHOW_REVIEW_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                </td>
+            </c:if>
+            </div>
         </c:otherwise>
     </c:choose>
     <p></p>

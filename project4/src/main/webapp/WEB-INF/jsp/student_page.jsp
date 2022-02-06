@@ -99,9 +99,9 @@
                                 href="/controller?command=SHOW_USER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
                         </td>
                     </c:if>
-            </div>
-        </c:otherwise>
-    </c:choose>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         <div class="invalid">
     <c:if test="${errorMsg ne null}">
         <p>${error}:${errorMsg}</p>
