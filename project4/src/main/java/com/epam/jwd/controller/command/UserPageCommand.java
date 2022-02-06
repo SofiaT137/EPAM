@@ -133,7 +133,9 @@ public class UserPageCommand implements Command {
         for (CourseDto courseDto :
                 listOfCourses) {
             List<ReviewDto> reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(), userId);
-            reviewDtoList.add(reviewDto.get(0));
+            if (!reviewDto.isEmpty()) {
+                reviewDtoList.add(reviewDto.get(0));
+            }
         }
         return reviewDtoList;
     }
