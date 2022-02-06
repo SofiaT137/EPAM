@@ -15,8 +15,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The main command of student logic
@@ -37,6 +39,7 @@ public class UserPageCommand implements Command {
     private static final String USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE = "userReview";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+    private static final String ALL_NOT_FINISHED_COURSES = "notFinishedCourses";
     private static final String SEE_RESULT_BUTTON = "btnSeeResults";
     private static final String CURRENT_USER = "currentUser";
     private static final String GET_COURSE_BUTTON = "btnGetCourse";
@@ -122,7 +125,8 @@ public class UserPageCommand implements Command {
         }else if(btnDeleteCourse != null){
             List<CourseDto> finishedUserCourses = findAllFinishedUserCourses(userCourse);
             userCourse.removeAll(finishedUserCourses);
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE,userCourse);
+            requestContext.addAttributeToSession(ALL_NOT_FINISHED_COURSES,userCourse);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE,getAllUserCourse(userDto));
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);
@@ -159,18 +163,15 @@ public class UserPageCommand implements Command {
     }
 
     private List<CourseDto> findAllFinishedUserCourses(List<CourseDto> userCourses){
-        List<CourseDto> result = new ArrayList<>();
-        long millis=System.currentTimeMillis();
-        Date dateForCheck = new Date(millis);
-
-        if (!(userCourses.isEmpty())){
-            for (CourseDto course:
-                    userCourses) {
-                if (course.getEndCourse().before(dateForCheck)){
-                    result.add(course);
-                }
-            }
-        }
+        List<CourseDto> result;
+        Date tomorrow = Date.valueOf(LocalDate.now().plusDays(1));
+        result = userCourses.stream()
+                .filter(courseDto -> courseDto.getEndCourse().before(tomorrow))
+                .collect(Collectors.toList());
         return result;
+    }
+
+    private List<CourseDto> getAllUserCourse(UserDto teacher){
+        return ((CourseServiceImpl) courseService).getUserAvailableCourses(teacher.getFirstName(),teacher.getLastName());
     }
 }

@@ -4,7 +4,6 @@ import com.epam.jwd.controller.command.Command;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
-import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.pagination.Pagination;
 import com.epam.jwd.service.pagination.impl.PaginationImpl;

@@ -64,7 +64,7 @@
                         </tr>
                     </tbody>
                 </c:forEach>
-                        </table>
+               </table>
             <div class="paggination">
                 <c:if test="${current_page != 1}">
                     <td>

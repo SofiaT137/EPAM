@@ -75,11 +75,10 @@ public class SignUpToCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-
+        List<CourseDto> possibleCoursesList = (List<CourseDto>) requestContext.getAttributeFromSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE);
         String btnGetCourse = requestContext.getParameterFromJSP(GET_COURSE_BUTTON);
         String btnGetBack = requestContext.getParameterFromJSP(GET_BACK_BUTTON);
         UserDto userDto = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
-        List<CourseDto> possibleCoursesList = (List<CourseDto>) requestContext.getAttributeFromSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE);
         String courseName = requestContext.getParameterFromJSP(COURSE_NAME);
 
         if (btnGetBack != null) {
