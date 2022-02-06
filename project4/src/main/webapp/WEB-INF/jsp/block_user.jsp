@@ -138,7 +138,7 @@
                 <c:when test="${errorMsg eq 'accountBlocked'}">
                     <p>${error}:${accountBlocked}</p>
                 </c:when>
-                <c:when test="${errorMsg eq 'accountUnblocked'">
+                <c:when test="${errorMsg eq 'accountUnblocked'}">
                     <p>${error}:${accountUnblocked}</p>
                 </c:when>
                 <c:otherwise>

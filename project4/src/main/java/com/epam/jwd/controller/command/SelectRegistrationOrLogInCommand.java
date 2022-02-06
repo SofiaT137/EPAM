@@ -189,11 +189,14 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             return REGISTER_USER_CONTEXT;
 
-        } else if (btnLogIn != null) {
+        }
+        if (btnLogIn != null) {
 
             AccountDto accountDto;
+
             try{
                 accountDto = filterAccount(login,password);
+                requestContext.addAttributeToSession(REGISTER_ACCOUNT_SESSION_COLLECTION_ATTRIBUTE, accountDto);
             }catch (DAOException exception) {
                 LOGGER.error(CANNOT_FIND_THIS_ACCOUNT);
                 ERROR_HANDLER.setError(CANNOT_FIND_THIS_ACCOUNT,requestContext);
@@ -248,7 +251,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
     }
 
     private Boolean isAccessAllowed(AccountDto accountDto){
-       return accountDto.getIsActive() == 0;
+       return accountDto.getIsActive() == 1;
     }
 
     private UserDto findUserByAccountId(AccountDto accountDto){
