@@ -1,18 +1,17 @@
 package com.epam.jwd.service.pagination.impl;
 
-import com.epam.jwd.controller.context.RequestContext;
+
 import com.epam.jwd.service.pagination.Pagination;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaginationImplTest {
 
-    RequestContext requestContext = Mockito.mock(RequestContext.class);
     Pagination pagination;
 
     private final Integer numberOfRecords = 18;
@@ -22,16 +21,23 @@ class PaginationImplTest {
         pagination = new PaginationImpl(numberOfRecords);
     }
 
-    @Test
-    void getPage() {
-        requestContext.addAttributeToJSP("current_page",2);
-       Integer result = pagination.getPage(requestContext);
-       assertEquals(2,result);
-    }
 
     @Test
     void getPagination() {
+        Map<String,Integer> checkMap = pagination.getPagination(1);
+        assertEquals(4,checkMap.get("numberOfPages"));
+        assertEquals(0,checkMap.get("from"));
+        assertEquals(5,checkMap.get("to"));
 
+        checkMap = pagination.getPagination(3);
+        assertEquals(4,checkMap.get("numberOfPages"));
+        assertEquals(10,checkMap.get("from"));
+        assertEquals(15,checkMap.get("to"));
+
+        checkMap = pagination.getPagination(4);
+        assertEquals(4,checkMap.get("numberOfPages"));
+        assertEquals(15,checkMap.get("from"));
+        assertEquals(18,checkMap.get("to"));
     }
 
     @AfterEach

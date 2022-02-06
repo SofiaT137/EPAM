@@ -10,6 +10,7 @@ public class PaginationImpl implements Pagination {
 
     private static final Integer RECORDS_ON_PAGE = 5;
     private final Integer numberOfRecords;
+    private final Integer numberOfPages;
 
     private static final String TO = "to";
     private static final String FROM = "from";
@@ -17,13 +18,13 @@ public class PaginationImpl implements Pagination {
     private static final String NUMBER_OF_PAGES = "numberOfPages";
 
     public PaginationImpl(Integer numberOfRecords) {
+
         this.numberOfRecords = numberOfRecords;
+        this.numberOfPages = (int) Math.ceil(numberOfRecords * 1.0 / RECORDS_ON_PAGE);
     }
 
     @Override
     public int getPage(RequestContext requestContext) {
-        int numberOfPages  = (int) Math.ceil(numberOfRecords * 1.0 / RECORDS_ON_PAGE);
-
         int page = 1;
 
         if(requestContext.getParameterFromJSP(PAGE) != null){
@@ -38,7 +39,7 @@ public class PaginationImpl implements Pagination {
     @Override
     public Map<String, Integer> getPagination(int page) {
         Map<String,Integer> pagination = new HashMap<>();
-        pagination.put(NUMBER_OF_PAGES ,(int) Math.ceil(numberOfRecords * 1.0 / RECORDS_ON_PAGE));
+        pagination.put(NUMBER_OF_PAGES ,numberOfPages);
         pagination.put(FROM,(page-1) * RECORDS_ON_PAGE);
         pagination.put(TO,Math.min(page * RECORDS_ON_PAGE,numberOfRecords));
         return pagination;
