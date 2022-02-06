@@ -14,6 +14,11 @@
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
 <fmt:message bundle="${loc}" key="btnGetCourse" var="btnGetCourse"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="cannotFindThisCourseIntoPossible" var="cannotFindThisCourseIntoPossible"/>
+<fmt:message bundle="${loc}" key="somethingWentWrong" var="somethingWentWrong"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
 
 
 <html>
@@ -39,7 +44,6 @@
             <table border="1" table style="width:33%" style="text-align:center">
                 <thead>
                     <tr>
-                        <th>${courseId}</th>
                         <th>${courseName}</th>
                         <th>${courseStartDate}</th>
                         <th>${CourseEndDate}</th>
@@ -48,9 +52,6 @@
                 <c:forEach items="${requestScope.possible_courses}" var="course">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${course.id}" />
-                            </td>
                             <td>
                                 <c:out value="${course.name}" />
                             </td>
@@ -63,26 +64,69 @@
                         </tr>
                     </tbody>
                 </c:forEach>
-            </table>
+                        </table>
+            <div class="paggination">
+                <c:if test="${current_page != 1}">
+                    <td>
+                        <a
+                            href="/controller?command=SHOW_POSSIBLE_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                    </td>
+                </c:if>
+
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                    <c:choose>
+                        <c:when test="${current_page eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <a href="/controller?command=SHOW_POSSIBLE_PAGE_COMMAND&page=${i}">${i}</a>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%--For displaying Next link --%>
+                    <c:if test="${current_page lt number_of_pages}">
+                        <td>
+                            <a
+                                href="/controller?command=SHOW_POSSIBLE_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                        </td>
+                    </c:if>
+            </div>
         </c:otherwise>
     </c:choose>
     <p></p>
     <form action="/controller?command=SIGN_UP_TO_COURSE_COMMAND" method="post">
         <div class="form-group">
             <label>${courseName}</label>
-            <select name="Course_name">
-                <c:forEach items="${requestScope.possible_courses}" var="course">
+            <input name = "courseName" list = "courses" placeholder = "Select course name" autocomplete="on" />
+            <datalist id = "courses">
+                <c:forEach items="${requestScope.possible_course}" var="course">
                     <option value="${course.name}">${course.name}</option>
                 </c:forEach>
-            </select>
+            </datalist>
         </div>
         <p></p>
+    <div class="invalid">
+        <c:choose>
+            <c:when test="${errorMsg eq 'cannotFindThisCourseIntoPossible'}">
+                <p>${error}: ${cannotFindThisCourseIntoPossible}</p>
+            </c:when>
+            <c:when test="${errorMsg eq 'somethingWentWrong'}">
+                <p>${error}: ${somethingWentWrong}</p>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${errorMsg ne null}">
+                    <p>${error}: ${errorMsg}</p>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+    </div>
         <button type="submit" name="btnGetCourse" <c:if test="${possible_courses.size() == 0}">
             <c:out value="disabled='disabled'" />
-            </c:if> >${btnGetCourse}
-        </button>
+            </c:if> >${btnGetCourse} </button>
         <button type="submit" name="btnGetBack">${getBack}</button>
-        </div>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>

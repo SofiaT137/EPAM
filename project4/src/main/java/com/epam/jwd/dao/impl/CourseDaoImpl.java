@@ -99,8 +99,9 @@ public class CourseDaoImpl implements Dao<Course,Integer> {
             while (resultSet.next()){
                 courses.add(findById(resultSet.getInt("course_id")));
             }
-        } catch (SQLException  exception) {
+        } catch (SQLException exception) {
             LOGGER.info(ERROR_CANNOT_FIND_ANY_AVAILABLE_COURSES);
+            throw new DAOException(exception.getMessage());
         } finally {
             connectionPool.returnConnection(connection);
         }
@@ -219,7 +220,7 @@ public class CourseDaoImpl implements Dao<Course,Integer> {
     }
 
     public List<Course> findCourseByName(String name){
-        List<Course> courseList = new ArrayList<>();
+        List<Course> courseList;
         Connection connection = connectionPool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_NAME)) {
             preparedStatement.setString(1,name);
@@ -227,6 +228,7 @@ public class CourseDaoImpl implements Dao<Course,Integer> {
             courseList = returnCourseList(resultSet);
         } catch (SQLException exception) {
             LOGGER.error(ERROR_CANNOT_FIND_ANY_COURSE_BY_NAME);
+            throw new DAOException(exception.getMessage());
         } finally {
             connectionPool.returnConnection(connection);
         }
