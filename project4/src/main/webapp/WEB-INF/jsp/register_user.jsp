@@ -15,6 +15,7 @@
 <fmt:message bundle="${loc}" key="btnRegister" var="btnRegister"/>
 <fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
 
 
 <html>
@@ -42,13 +43,19 @@
         <p></p>
         <div class="form-group">
             <label>${Group}</label>
-            <select name="group_name">
+            <input name = "groupName" list = "groups" placeholder = "Select group name" autocomplete="on" />
+            <datalist id = "groups">
                 <c:forEach items="${requestScope.all_groups}" var="group">
                     <option value="${group.name}">${group.name}</option>
                 </c:forEach>
-            </select>
+            </datalist>
         </div>
         <p></p>
+        <div class="invalid">
+            <c:if test="${errorMsg ne null}">
+                <p>${error}: ${errorMsg}</p>
+            </c:if>
+        </div>
         <button type="submit" name="btnRegister">${btnRegister}</button>
     </form>
     <p></p>

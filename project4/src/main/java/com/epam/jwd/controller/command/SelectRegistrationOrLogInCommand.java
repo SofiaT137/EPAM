@@ -54,6 +54,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String LABEL_PASSWORD = "lblPassword";
     private static final String LOG_IN_BUTTON = "btnLogIn";
     private static final String REGISTER_BUTTON = "btnRegister";
+    private static final String ENGLISH = "en";
 
     private final Service<AccountDto, Integer> serviceAccount = new AccountServiceImpl();
     private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
@@ -153,7 +154,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         String language = (String) requestContext.getAttributeFromSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE);
 
         if (language == null){
-            requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE, "en");
+            requestContext.addAttributeToSession(CURRENT_LANGUAGE_SESSION_COLLECTION_ATTRIBUTE,ENGLISH);
         }
 
         if (btnRegister != null) {
@@ -242,7 +243,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         accountDto.setLogin(login);
         accountDto.setPassword(password);
         accountDto.setIsActive(1);
-        serviceAccount.create(accountDto);
+        accountDto = serviceAccount.create(accountDto);
         return accountDto;
     }
 

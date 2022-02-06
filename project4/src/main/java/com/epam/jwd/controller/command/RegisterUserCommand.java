@@ -2,12 +2,15 @@ package com.epam.jwd.controller.command;
 
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
+import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.dao.model.user.User;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
@@ -25,6 +28,7 @@ import java.util.List;
 public class RegisterUserCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(RegisterUserCommand.class);
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final Command INSTANCE = new RegisterUserCommand();
 
@@ -34,14 +38,17 @@ public class RegisterUserCommand implements Command {
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
     private static final String USER_PAGE_COMMAND = "/controller?command=SHOW_USER_PAGE_COMMAND";
-    private static final String ERROR_COURSE_COMMAND = "/controller?command=SHOW_ERROR_PAGE_COMMAND";
+    private static final String REFRESH_PAGE_COMMAND = "/controller?command=SHOW_REGISTER_PAGE_COMMAND";
+    private static final String DEFAULT_COMMAND = "/controller?command=DEFAULT";
 
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
     private static final String USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE = "userReview";
     private static final String CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE = "currentUser";
-    private static final String ERROR_SESSION_COLLECTION_ATTRIBUTE = "errorName";
-
-    private static final String LOGGER_INFO_THE_COURSE_LIST_EMPTY = "The course list is empty";
+    private static final String FIRST_NAME_LABEL = "lblFirstName";
+    private static final String LAST_NAME_LABEL = "lblLastName";
+    private static final String GROUP_NAME = "groupName";
+    private static final String BUTTON_REGISTER = "btnRegister";
+    private static final String REGISTER_ACCOUNT = "registerAccount";
 
     private static final ResponseContext USER_PAGE_CONTEXT = new ResponseContext() {
 
@@ -56,11 +63,11 @@ public class RegisterUserCommand implements Command {
         }
     };
 
-    private static final ResponseContext ERROR_PAGE_CONTEXT = new ResponseContext() {
+    private static final ResponseContext REFRESH_PAGE_CONTEXT = new ResponseContext() {
 
         @Override
         public String getPage() {
-            return ERROR_COURSE_COMMAND;
+            return REFRESH_PAGE_COMMAND;
         }
 
         @Override
@@ -69,6 +76,18 @@ public class RegisterUserCommand implements Command {
         }
     };
 
+    private static final ResponseContext DEFAULT_PAGE_CONTEXT = new ResponseContext() {
+
+        @Override
+        public String getPage() {
+            return DEFAULT_COMMAND;
+        }
+
+        @Override
+        public boolean isRedirected() {
+            return true;
+        }
+    };
 
     public static Command getInstance() {
         return INSTANCE;
@@ -80,56 +99,72 @@ public class RegisterUserCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        String firstName = requestContext.getParameterFromJSP("lblFirstName");
-        String lastName = requestContext.getParameterFromJSP("lblLastName");
-        String groupName = requestContext.getParameterFromJSP("group_name");
-        String btnRegister = requestContext.getParameterFromJSP("btnRegister");
 
-        AccountDto registerAccount = null;
-        UserDto currentUser = null;
+        String firstName = requestContext.getParameterFromJSP(FIRST_NAME_LABEL);
+        String lastName = requestContext.getParameterFromJSP(LAST_NAME_LABEL);
+        String groupName = requestContext.getParameterFromJSP(GROUP_NAME);
+        String btnRegister = requestContext.getParameterFromJSP(BUTTON_REGISTER);
 
-        GroupDto groupDto = ((GroupServiceImpl) groupService).filterGroup(groupName);
+        AccountDto registerAccount = (AccountDto) requestContext.getAttributeFromSession(REGISTER_ACCOUNT);
 
         boolean savePoint = false;
 
-        try {
             if (btnRegister != null) {
-                registerAccount = (AccountDto) requestContext.getAttributeFromSession("registerAccount");
 
-                UserDto userDto = new UserDto();
-                userDto.setAccountId(registerAccount.getId());
-                userDto.setGroupName(groupDto.getName());
-                userDto.setFirstName(firstName);
-                userDto.setLastName(lastName);
+                GroupDto groupDto;
 
-                currentUser = serviceUser.create(userDto);
-                savePoint = true;
+                try{
+                    groupDto = findGroupByName(groupName);
+                }catch (DAOException exception){
+                    ERROR_HANDLER.setError(exception.getMessage(), requestContext);
+                    return REFRESH_PAGE_CONTEXT;
+                }
+
+                UserDto currentUser;
+                try{
+                    currentUser = createUser(registerAccount,groupDto,firstName,lastName);
+                    savePoint = true;
+                }catch (Exception exception){
+                    LOGGER.error(exception.getMessage());
+                    ERROR_HANDLER.setError(exception.getMessage(), requestContext);
+                    return REFRESH_PAGE_CONTEXT;
+                }
+
                 requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, currentUser);
             }
-        } catch (Exception exception) {
             if (!savePoint) {
                 try {
                     accountService.delete(registerAccount);
-                } catch (ServiceException exception1) {
-                    LOGGER.error(exception1.getMessage());
-                    requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception1.getMessage());
-                    return ERROR_PAGE_CONTEXT;
+                } catch (Exception exception) {
+                    LOGGER.error(exception.getMessage());
+                    ERROR_HANDLER.setError(exception.getMessage(), requestContext);
                 }
+                return DEFAULT_PAGE_CONTEXT;
             }
-            LOGGER.error(exception.getMessage());
-            requestContext.addAttributeToSession(ERROR_SESSION_COLLECTION_ATTRIBUTE, exception.getMessage());
-            return ERROR_PAGE_CONTEXT;
-        }
 
         List<CourseDto> userCourses = new ArrayList<>();
-        try {
-            userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(currentUser.getFirstName(), currentUser.getLastName());
-        } catch (ServiceException exception) {
-            LOGGER.info(LOGGER_INFO_THE_COURSE_LIST_EMPTY);
-        }
+
         requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
+
         List<ReviewDto> reviewDtoList = new ArrayList<>();
+
         requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, reviewDtoList);
         return USER_PAGE_CONTEXT;
     }
+
+    private UserDto createUser(AccountDto registerAccount, GroupDto groupDto, String firstName, String lastName){
+        UserDto currentUser = new UserDto();
+        currentUser.setAccountId(registerAccount.getId());
+        currentUser.setGroupName(groupDto.getName());
+        currentUser.setFirstName(firstName);
+        currentUser.setLastName(lastName);
+        currentUser = serviceUser.create(currentUser);
+        return currentUser;
+    }
+
+    private GroupDto findGroupByName (String groupName){
+        return ((GroupServiceImpl) groupService).filterGroup(groupName);
+    }
+
+
 }
