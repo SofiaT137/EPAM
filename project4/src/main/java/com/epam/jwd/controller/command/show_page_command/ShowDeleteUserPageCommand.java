@@ -42,7 +42,7 @@ public class ShowDeleteUserPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession("userCourse");
-        requestContext.addAttributeToJSP(POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE, userCourse);
-        return DELETE_COURSE_CONTEXT;
+       requestContext.addAttributeToJSP(POSSIBLE_COURSES_JSP_COLLECTION_ATTRIBUTE, userCourse);
+       return DELETE_COURSE_CONTEXT;
     }
 }

@@ -109,7 +109,8 @@ public class UserPageCommand implements Command {
             return GET_COURSE_CONTEXT;
         }else if(btnDeleteCourse != null){
             List<CourseDto> finishedUserCourses = findAllFinishedUserCourses(userCourse);
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE,userCourse.removeAll(finishedUserCourses));
+            userCourse.removeAll(finishedUserCourses);
+            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE,userCourse);
             return DELETE_COURSE_CONTEXT;
         }
            return DefaultCommand.getInstance().execute(requestContext);

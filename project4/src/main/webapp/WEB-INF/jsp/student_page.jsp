@@ -16,6 +16,7 @@
 <fmt:message bundle="${loc}" key="btnSeeResults" var="btnSeeResults"/>
 <fmt:message bundle="${loc}" key="btnGetCourse" var="btnGetCourse"/>
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
+<fmt:message bundle="${loc}" key="isTerminated" var="isTerminated"/>
 
 <html>
 
@@ -29,7 +30,7 @@
 
 <body>
     <div class="custom">
-        <custom:hello userName="${hello}${current_user.firstName} ${current_user.lastName}" />
+        <custom:hello userName="${hello} ${current_user.firstName} ${current_user.lastName}" />
     </div>
     <h3>${yourCourses}</h3>
     <c:choose>
@@ -42,18 +43,15 @@
             <table border="1" table style="width:33%" style="text-align:center">
                 <thead>
                     <tr>
-                        <th>${courseId}</th>
                         <th>${courseName}</th>
                         <th>${courseStartDate}</th>
                         <th>${CourseEndDate}</th>
+                        <th>${isTerminated}</th>
                     </tr>
                 </thead>
                 <c:forEach items="${ requestScope.user_course}" var="course">
                     <tbody>
                         <tr>
-                            <td>
-                                <c:out value="${course.id}" />
-                            </td>
                             <td>
                                 <c:out value="${course.name}" />
                             </td>
@@ -62,6 +60,9 @@
                             </td>
                             <td>
                                 <c:out value="${course.endCourse}" />
+                            </td>
+                            <td>
+                                <c:out value="${course.isTerminated}" />
                             </td>
                         </tr>
                     </tbody>

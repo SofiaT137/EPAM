@@ -205,13 +205,11 @@ public class SelectRegistrationOrLogInCommand implements Command {
             requestContext.addAttributeToSession(CURRENT_USER_SESSION_COLLECTION_ATTRIBUTE, userDto);
             String userRole = accountDto.getRole();
             if (Objects.equals(userRole, ROLE_TEACHER) || Objects.equals(userRole, ROLE_STUDENT)) {
-                List<CourseDto> userCourses = new ArrayList<>();
-                try{
-                    userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
-                }catch (ServiceException exception){
-                    LOGGER.info(exception.getMessage());
-                }
-                requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
+                List<CourseDto> userCourses;
+
+             userCourses = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
+
+             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
             }
             if (userRole.equals(ROLE_ADMIN)){
                 return ADMIN_PAGE_CONTEXT;
