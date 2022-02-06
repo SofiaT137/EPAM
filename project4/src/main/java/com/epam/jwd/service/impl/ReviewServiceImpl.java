@@ -67,28 +67,12 @@ public class ReviewServiceImpl implements Service<ReviewDto,Integer> {
 
 
     @Override
-    public List<ReviewDto> findAll() throws ServiceException {
+    public List<ReviewDto> findAll(){
         List<Review> daoGetAll = reviewDao.findAll();
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         if (!(daoGetAll.isEmpty())){
             daoGetAll.forEach(review -> reviewDtoList.add(reviewConverter.convert(review)));
         }
-        return reviewDtoList;
-    }
-
-    /**
-     * Find review by User ID
-     * @param userId User ID
-     * @return list of ReviewDto
-     */
-    public List<ReviewDto> filterReview(int userId) {
-        List<Review> daoGetAll = ((ReviewDaoImpl) reviewDao).findReviewByUserId(userId);
-        List<ReviewDto> reviewDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(CANNOT_FIND_REVIEW_EXCEPTION);
-            throw new ServiceException(CANNOT_FIND_REVIEW_EXCEPTION);
-        }
-        daoGetAll.forEach(review -> reviewDtoList.add(reviewConverter.convert(review)));
         return reviewDtoList;
     }
 

@@ -7,6 +7,7 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.reviewdto.ReviewDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.CourseServiceImpl;
 import com.epam.jwd.service.impl.ReviewServiceImpl;
@@ -23,6 +24,7 @@ import java.util.List;
 public class UserPageCommand implements Command {
 
     private static final Logger LOGGER = LogManager.getLogger(UserPageCommand.class);
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
 
     private static final Command INSTANCE = new UserPageCommand();
     private static final String GET_REVIEW_COMMAND = "/controller?command=SHOW_REVIEW_PAGE_COMMAND";
@@ -35,6 +37,10 @@ public class UserPageCommand implements Command {
     private static final String USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE = "userReview";
     private static final String POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE = "possibleCourses";
     private static final String USER_COURSE_SESSION_COLLECTION_ATTRIBUTE = "userCourse";
+    private static final String SEE_RESULT_BUTTON = "btnSeeResults";
+    private static final String CURRENT_USER = "currentUser";
+    private static final String GET_COURSE_BUTTON = "btnGetCourse";
+    private static final String DELETE_COURSE_BUTTON = "btnDeleteCourse";
 
 
     public static Command getInstance() {
@@ -87,12 +93,12 @@ public class UserPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext requestContext) {
-        UserDto userDto = (UserDto) requestContext.getAttributeFromSession("currentUser");
+        UserDto userDto = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
         List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE);
 
-        String btnSeeResults = requestContext.getParameterFromJSP("btnSeeResults");
-        String btnGetCourse = requestContext.getParameterFromJSP("btnGetCourse");
-        String btnDeleteCourse = requestContext.getParameterFromJSP("btnDeleteCourse");
+        String btnSeeResults = requestContext.getParameterFromJSP(SEE_RESULT_BUTTON);
+        String btnGetCourse = requestContext.getParameterFromJSP(GET_COURSE_BUTTON);
+        String btnDeleteCourse = requestContext.getParameterFromJSP(DELETE_COURSE_BUTTON);
 
         List<CourseDto> courseList = new ArrayList<>();
         try {
@@ -100,9 +106,15 @@ public class UserPageCommand implements Command {
         }catch (ServiceException exception){
             LOGGER.info(exception.getMessage());
         }
-
         if (btnSeeResults != null){
-            requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE, getAllUserReview(userDto.getId(),userCourse));
+            List<ReviewDto> userReview = new ArrayList<>();
+            try {
+                userReview = getAllUserReview(userDto.getId(),userCourse);
+            }catch (DAOException exception){
+                LOGGER.error(exception.getMessage());
+                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+            }
+            requestContext.addAttributeToSession(USER_REVIEW_SESSION_COLLECTION_ATTRIBUTE,userReview);
             return SEE_USER_RESULT_CONTEXT;
         }else if(btnGetCourse != null){
             requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, findUserPossibleToSignInCourses(courseList,userCourse));
@@ -116,16 +128,12 @@ public class UserPageCommand implements Command {
            return DefaultCommand.getInstance().execute(requestContext);
     }
 
-    private List<ReviewDto> getAllUserReview(int userId, List<CourseDto> listOfCourses){
+    private List<ReviewDto> getAllUserReview(int userId, List<CourseDto> listOfCourses) {
         List<ReviewDto> reviewDtoList = new ArrayList<>();
-        for (CourseDto courseDto:
-                listOfCourses ) {
-            try{
-               List<ReviewDto>reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(),userId);
-                reviewDtoList.add(reviewDto.get(0));
-            }catch (DAOException exception){
-                LOGGER.info(exception.getMessage());
-            }
+        for (CourseDto courseDto :
+                listOfCourses) {
+            List<ReviewDto> reviewDto = ((ReviewServiceImpl) reviewService).findReviewByCourseIdAndUserId(courseDto.getId(), userId);
+            reviewDtoList.add(reviewDto.get(0));
         }
         return reviewDtoList;
     }

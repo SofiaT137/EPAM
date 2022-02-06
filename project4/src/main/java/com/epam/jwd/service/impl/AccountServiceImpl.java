@@ -83,13 +83,9 @@ public class AccountServiceImpl implements Service<AccountDto,Integer> {
     }
 
     @Override
-    public List<AccountDto> findAll() throws ServiceException {
+    public List<AccountDto> findAll(){
         List<Account> daoGetAll = accountDao.findAll();
         List<AccountDto> accountDtoList = new ArrayList<>();
-        if (daoGetAll.isEmpty()){
-            LOGGER.error(REPOSITORY_IS_EMPTY_EXCEPTION);
-            throw new ServiceException(REPOSITORY_IS_EMPTY_EXCEPTION);
-        }
         daoGetAll.forEach(account -> accountDtoList.add(accountConverter.convert(account)));
         return accountDtoList;
     }

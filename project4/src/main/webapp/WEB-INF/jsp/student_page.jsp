@@ -17,6 +17,9 @@
 <fmt:message bundle="${loc}" key="btnGetCourse" var="btnGetCourse"/>
 <fmt:message bundle="${loc}" key="btnDeleteCourse" var="btnDeleteCourse"/>
 <fmt:message bundle="${loc}" key="isTerminated" var="isTerminated"/>
+<fmt:message bundle="${loc}" key="next" var="next"/>
+<fmt:message bundle="${loc}" key="previous" var="previous"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
 
 <html>
 
@@ -68,8 +71,42 @@
                     </tbody>
                 </c:forEach>
             </table>
+            <div class="paggination">
+                <c:if test="${current_page != 1}">
+                    <td>
+                        <a
+                            href="/controller?command=SHOW_USER_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+                    </td>
+                </c:if>
+
+                <c:forEach begin="1" end="${number_of_pages}" var="i">
+                    <c:choose>
+                        <c:when test="${current_page eq i}">
+                            <td>${i}</td>
+                        </c:when>
+                        <c:otherwise>
+                            <td>
+                                <a href="/controller?command=SHOW_USER_PAGE_COMMAND&page=${i}">${i}</a>
+                            </td>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%--For displaying Next link --%>
+                    <c:if test="${current_page lt number_of_pages}">
+                        <td>
+                            <a
+                                href="/controller?command=SHOW_USER_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+                        </td>
+                    </c:if>
+            </div>
         </c:otherwise>
     </c:choose>
+        <div class="invalid">
+    <c:if test="${errorMsg ne null}">
+        <p>${error}:${errorMsg}</p>
+    </c:if>
+    </div>
     <p></p>
     <form action="/controller?command=USER_PAGE_COMMAND" method="post">
         <button type="submit" name="btnSeeResults">${btnSeeResults}</button>

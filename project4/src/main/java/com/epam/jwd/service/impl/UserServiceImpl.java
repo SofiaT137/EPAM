@@ -70,7 +70,7 @@ public class UserServiceImpl implements Service<UserDto,Integer> {
 
 
     @Override
-    public List<UserDto> findAll() throws ServiceException {
+    public List<UserDto> findAll(){
         List<User> daoGetAll = userDaoImpl.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         if (!(daoGetAll.isEmpty())){
