@@ -18,6 +18,10 @@
 <fmt:message bundle="${loc}" key="btnLogIn" var="btnLogIn"/>
 <fmt:message bundle="${loc}" key="invalidLogin" var="invalidLogin"/>
 <fmt:message bundle="${loc}" key="invalidPassword" var="invalidPassword"/>
+<fmt:message bundle="${loc}" key="error" var="error"/>
+<fmt:message bundle="${loc}" key="notOriginalAccount" var="notOriginalAccount"/>
+<fmt:message bundle="${loc}" key="cannotFindThisAccount" var="cannotFindThisAccount"/>
+<fmt:message bundle="${loc}" key="accessDenied" var="accessDenied"/>
 
 <!DOCTYPE html>
 <html>

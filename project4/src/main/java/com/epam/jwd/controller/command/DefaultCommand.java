@@ -2,6 +2,7 @@ package com.epam.jwd.controller.command;
 
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
+import com.epam.jwd.service.error_handler.ErrorHandler;
 
 
 /**
@@ -10,6 +11,7 @@ import com.epam.jwd.controller.context.ResponseContext;
 public class DefaultCommand implements Command {
 
     private static final Command INSTANCE = new DefaultCommand();
+    private static final ErrorHandler ERROR_HANDLER = ErrorHandler.getInstance();
     private static final String MAIN_JSP = "/WEB-INF/jsp/main.jsp";
 
     public static Command getInstance(){
@@ -37,6 +39,7 @@ public class DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        ERROR_HANDLER.flushError(context);
         return DEFAULT_PAGE_CONTEXT;
     }
 }

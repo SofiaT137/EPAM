@@ -9,7 +9,6 @@ import com.epam.jwd.service.dto.groupdto.GroupDto;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.error_handler.ErrorHandler;
-import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
 import com.epam.jwd.service.impl.GroupServiceImpl;
@@ -17,7 +16,6 @@ import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +55,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
     private static final String LOG_IN_BUTTON = "btnLogIn";
     private static final String REGISTER_BUTTON = "btnRegister";
 
-    private final Service<AccountDto, Integer> service = new AccountServiceImpl();
+    private final Service<AccountDto, Integer> serviceAccount = new AccountServiceImpl();
     private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
     private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
@@ -169,7 +167,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
             }
 
             try{
-                filterAccount(login,password);
+                findAccountByLogin(login);
                 LOGGER.error(EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION);
                 ERROR_HANDLER.setError(EXCEPTION_NOT_ORIGINAL_ACCOUNT_FOR_REGISTRATION,requestContext);
                 return REFRESH_PAGE_CONTEXT;
@@ -227,15 +225,15 @@ public class SelectRegistrationOrLogInCommand implements Command {
     }
 
     private void validateAccount(String login,String password){
-       ((AccountServiceImpl)service).validate(login,password);
+       ((AccountServiceImpl) serviceAccount).validate(login,password);
     }
 
     private AccountDto filterAccount(String login,String password){
-        return ((AccountServiceImpl) service).filterAccount(login,password);
+        return ((AccountServiceImpl) serviceAccount).filterAccount(login,password);
     }
 
     private String getEncryptedPassword(String password){
-        return ((AccountServiceImpl) service).encryptPassword(password);
+        return ((AccountServiceImpl) serviceAccount).encryptPassword(password);
     }
 
     private AccountDto createAccount(String login,String password){
@@ -244,7 +242,7 @@ public class SelectRegistrationOrLogInCommand implements Command {
         accountDto.setLogin(login);
         accountDto.setPassword(password);
         accountDto.setIsActive(1);
-        service.create(accountDto);
+        serviceAccount.create(accountDto);
         return accountDto;
     }
 
@@ -258,6 +256,10 @@ public class SelectRegistrationOrLogInCommand implements Command {
 
     private List<CourseDto> getUserAvailableCourses(UserDto userDto){
        return  ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
+    }
+
+    private AccountDto findAccountByLogin(String login){
+        return ((AccountServiceImpl) serviceAccount).getAccount(login);
     }
 
 }
