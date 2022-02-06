@@ -258,8 +258,8 @@ public class SelectRegistrationOrLogInCommand implements Command {
        return  ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(), userDto.getLastName());
     }
 
-    private AccountDto findAccountByLogin(String login){
-        return ((AccountServiceImpl) serviceAccount).getAccount(login);
+    private void findAccountByLogin(String login){
+        ((AccountServiceImpl) serviceAccount).getAccount(login);
     }
 
 }
