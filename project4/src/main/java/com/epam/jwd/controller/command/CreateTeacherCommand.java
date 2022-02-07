@@ -1,6 +1,6 @@
 package com.epam.jwd.controller.command;
 
-import com.epam.jwd.dao.exception.DAOException;
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
@@ -75,28 +75,31 @@ public class CreateTeacherCommand implements Command {
         if (btnAddTeacher == null) {
             return DefaultCommand.getInstance().execute(requestContext);
         }
-        if (Boolean.FALSE.equals(((AccountServiceImpl)accountService).isLoginOriginal(login))){
-            LOGGER.error(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION);
-            ERROR_HANDLER.setError(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION,requestContext);
-            return REFRESH_PAGE_CONTEXT;
-        }
+
         AccountDto newAccount = null;
         boolean isCompleted = false;
         try {
+            if (Boolean.FALSE.equals(((AccountServiceImpl)accountService).isLoginOriginal(login))){
+                throw new CommandException(NOT_ORIGINAL_LOGIN_FOR_REGISTRATION);
+            }
             newAccount = createAccount(login, password);
             createUser(newAccount, firstName, lastName);
             isCompleted = true;
-        } catch (ServiceException exception) {
+        } catch (Exception exception) {
             LOGGER.error(exception.getMessage());
             ERROR_HANDLER.setError(exception.getMessage(),requestContext);
         }
-        if (!isCompleted && newAccount != null){
-            deleteAccountIfUserNotCreated(newAccount);
+        try {
+            if (!isCompleted && newAccount != null) {
+                deleteAccountIfUserNotCreated(newAccount);
+            }
+            List<UserDto> allUser = userService.findAll();
+            List<UserDto> allTeachers = findAlLUserTeachers(allUser);
+            requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);
+        } catch (Exception exception) {
+            LOGGER.error(exception.getMessage());
+            ERROR_HANDLER.setError(exception.getMessage(),requestContext);
         }
-        List<UserDto> allUser = userService.findAll();
-        List<UserDto> allTeachers = findAlLUserTeachers(allUser);
-
-        requestContext.addAttributeToSession(ALL_TEACHERS_SESSION_COLLECTION_ATTRIBUTE, allTeachers);
         return REFRESH_PAGE_CONTEXT;
     }
 
@@ -138,11 +141,7 @@ public class CreateTeacherCommand implements Command {
     }
 
     private void deleteAccountIfUserNotCreated(AccountDto newAccount){
-        try {
-            accountService.delete(newAccount);
-            LOGGER.info(ROLLBACK_SUCCEEDED);
-        } catch (Exception exception) {
-            LOGGER.error(exception.getMessage());
-        }
+        accountService.delete(newAccount);
+        LOGGER.info(ROLLBACK_SUCCEEDED);
     }
 }
