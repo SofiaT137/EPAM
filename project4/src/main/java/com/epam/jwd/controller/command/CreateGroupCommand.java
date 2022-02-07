@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
@@ -10,6 +11,7 @@ import com.epam.jwd.service.impl.GroupServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +30,6 @@ public class CreateGroupCommand implements Command {
     private static final String ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE = "universityGroups";
 
     private static final String NOT_UNIQUE_GROUP_NAME = "notUnique";
-    private static final String UNIQUE_GROUP_NAME = "unique group name";
     private static final String ADD_GROUP_BUTTON = "btnAddGroup";
     private static final String GROUP_NAME_LABEL = "lblGroupName";
 
@@ -57,15 +58,20 @@ public class CreateGroupCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext requestContext) {
         String btnAddGroup = requestContext.getParameterFromJSP(ADD_GROUP_BUTTON);
-
         String groupName = requestContext.getParameterFromJSP(GROUP_NAME_LABEL);
 
         if (btnAddGroup !=null) {
-            if(Boolean.FALSE.equals(ifThisGroupExists(groupName,requestContext))){
+            try{
+                if (isGroupExists(groupName)){
+                    throw new CommandException(NOT_UNIQUE_GROUP_NAME);
+                }
                 createGroup(groupName);
+                List<GroupDto> allGroup = groupService.findAll();
+                requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
+            }catch (Exception exception){
+                LOGGER.error(exception.getMessage());
+                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
             }
-            List<GroupDto> allGroup = groupService.findAll();
-            requestContext.addAttributeToSession(ALL_GROUPS_SESSION_COLLECTION_ATTRIBUTE,allGroup);
         }
         return REFRESH_PAGE_CONTEXT;
     }
@@ -76,15 +82,13 @@ public class CreateGroupCommand implements Command {
         groupService.create(newGroup);
     }
 
-    private Boolean ifThisGroupExists(String groupName,RequestContext requestContext){
-        try{
+    private boolean isGroupExists(String groupName) {
+        boolean isGroup= true;
+        try {
             ((GroupServiceImpl) groupService).filterGroup(groupName);
-            LOGGER.error(NOT_UNIQUE_GROUP_NAME);
-            ERROR_HANDLER.setError(NOT_UNIQUE_GROUP_NAME,requestContext);
-            return true;
-        }catch (DAOException daoException){
-            LOGGER.info(UNIQUE_GROUP_NAME);
-            return false;
+        }catch (DAOException exception){
+            isGroup= false;
         }
+        return isGroup;
     }
 }
