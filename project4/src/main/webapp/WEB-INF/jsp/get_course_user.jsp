@@ -32,6 +32,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${courseRegistrationPage}</h2>
     <c:choose>
         <c:when test="${possible_courses.size() eq 0}">
@@ -130,6 +131,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

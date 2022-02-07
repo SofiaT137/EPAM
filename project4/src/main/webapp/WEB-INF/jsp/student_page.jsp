@@ -35,6 +35,7 @@
     <div class="custom">
         <custom:hello userName="${hello} ${current_user.firstName} ${current_user.lastName}" />
     </div>
+    <div class="wrapper">
     <h3>${yourCourses}</h3>
     <c:choose>
         <c:when test="${user_course.size() eq 0}">
@@ -115,6 +116,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

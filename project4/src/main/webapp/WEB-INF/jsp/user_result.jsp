@@ -25,6 +25,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h3>${yourResults}</h3>
     <c:choose>
         <c:when test="${user_review.size() eq 0}">
@@ -94,5 +95,6 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 </html>
