@@ -127,16 +127,16 @@
             <div class="invalid">
               <c:choose>
                 <c:when test="${errorMsg eq 'cannotFindUserByFirstAndLastName'}">
-                  <p>${error}:${cannotFindUserByFirstAndLastName}</p>
+                  <p>${error}: ${cannotFindUserByFirstAndLastName}</p>
                 </c:when>
                 <c:when test="${errorMsg eq 'cannotFindThisUserInGroup'}">
-                  <p>${error}:${cannotFindThisUserInGroup}</p>
+                  <p>${error}: ${cannotFindThisUserInGroup}</p>
                 </c:when>
                 <c:when test="${errorMsg eq 'accountBlocked'}">
-                  <p>${error}:${accountBlocked}</p>
+                  <p>${error}: ${accountBlocked}</p>
                 </c:when>
                 <c:when test="${errorMsg eq 'accountUnblocked'}">
-                  <p>${error}:${accountUnblocked}</p>
+                  <p>${error}: ${accountUnblocked}</p>
                 </c:when>
                 <c:otherwise>
                   <c:if test="${errorMsg ne null}">

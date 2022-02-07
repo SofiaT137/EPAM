@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
@@ -77,50 +78,46 @@ public class BlockUserCommand implements Command {
         String lastName = requestContext.getParameterFromJSP(LAST_NAME_LABEL);
         String groupName = requestContext.getParameterFromJSP(GROUP_LABEL);
 
-
         List<UserDto> allUser = serviceUser.findAll();
         List<UserDto> blockedUsers = (List<UserDto>) requestContext.getAttributeFromSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE);
 
-        List<UserDto> soughtUsers = findAllUsersByFirstNameAndLastName(firstName,lastName);
-        if (soughtUsers.isEmpty()){
-            LOGGER.error(CANNOT_FIND_ANY_USER_BY_NAME_AND_SURNAME);
-            ERROR_HANDLER.setError(CANNOT_FIND_ANY_USER_BY_NAME_AND_SURNAME,requestContext);
-            return BLOCK_PAGE_CONTEXT;
-        }
+        try {
+            List<UserDto> soughtUsers = findAllUsersByFirstNameAndLastName(firstName, lastName);
 
-        GroupDto soughtGroup = findGroup(groupName);
-        UserDto neededUser = findSoughtUser(soughtUsers,soughtGroup);
-        if (neededUser.getFirstName() == null){
-             LOGGER.error(CANNOT_FIND_THIS_USER_IN_GROUP);
-             ERROR_HANDLER.setError(CANNOT_FIND_THIS_USER_IN_GROUP,requestContext);
-            return BLOCK_PAGE_CONTEXT;
-        }
+            if (soughtUsers.isEmpty()) {
+                throw new CommandException(CANNOT_FIND_ANY_USER_BY_NAME_AND_SURNAME);
+            }
+            GroupDto soughtGroup = findGroup(groupName);
+            UserDto neededUser = findSoughtUser(soughtUsers, soughtGroup);
 
-        AccountDto currentAccount = serviceAccount.getById(neededUser.getAccountId());
-        boolean needToBlock = (btnBlockUser != null);
-        boolean isAccountBlocked = checkIfThisAccountBlocked(currentAccount);
+            if (neededUser.getFirstName() == null) {
+                throw new CommandException(CANNOT_FIND_THIS_USER_IN_GROUP);
+            }
 
-        if (needToBlock && isAccountBlocked){
-            LOGGER.info(CHECK_ACCOUNT_FOR_BLOCK);
-            ERROR_HANDLER.setError(CHECK_ACCOUNT_FOR_BLOCK, requestContext);
-            return BLOCK_PAGE_CONTEXT;
-        }
-        if(!needToBlock && !isAccountBlocked){
-            LOGGER.info(CHECK_ACCOUNT_FOR_UNBLOCK);
-            ERROR_HANDLER.setError(CHECK_ACCOUNT_FOR_UNBLOCK, requestContext);
-            return BLOCK_PAGE_CONTEXT;
-        }
-        try{
+            AccountDto currentAccount = serviceAccount.getById(neededUser.getAccountId());
+
+            boolean needToBlock = (btnBlockUser != null);
+            boolean isAccountBlocked = checkIfThisAccountBlocked(currentAccount);
+
+            if (needToBlock && isAccountBlocked) {
+                throw new CommandException(CHECK_ACCOUNT_FOR_BLOCK);
+            }
+            if (!needToBlock && !isAccountBlocked) {
+                throw new CommandException(CHECK_ACCOUNT_FOR_UNBLOCK);
+            }
+
             updateAccount(needToBlock ? 0 : 1, currentAccount);
-            if (needToBlock){
+            if (needToBlock) {
                 blockedUsers = findBlockedUser(allUser);
             } else {
                 blockedUsers.remove(neededUser);
             }
-            requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE,blockedUsers);
-        }catch (ServiceException exception){
+            requestContext.addAttributeToSession(BLOCKED_USERS_SESSION_COLLECTION_ATTRIBUTE, blockedUsers);
+
+        }catch (Exception exception){
             LOGGER.error(exception.getMessage());
             ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+            return BLOCK_PAGE_CONTEXT;
         }
         return BLOCK_PAGE_CONTEXT;
     }
