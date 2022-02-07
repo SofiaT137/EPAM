@@ -2,6 +2,7 @@ package com.epam.jwd.controller.command;
 
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
+import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
@@ -92,25 +93,24 @@ public class CreateCourseCommand implements Command {
             Date startDate = Date.valueOf(requestContext.getParameterFromJSP(START_DATE_LABEL));
             Date endDate = Date.valueOf(requestContext.getParameterFromJSP(END_DATE_LABEL));
 
-            if (!ifCourseExists(courseName).isEmpty()) {
-                LOGGER.error(ERROR_NOT_UNIQUE_COURSE_NAME);
-                ERROR_HANDLER.setError(ERROR_NOT_UNIQUE_COURSE_NAME,requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
             try {
+                if (Boolean.FALSE.equals(ifCourseExists(courseName))) {
+                    LOGGER.error(ERROR_NOT_UNIQUE_COURSE_NAME);
+                    ERROR_HANDLER.setError(ERROR_NOT_UNIQUE_COURSE_NAME,requestContext);
+                    return REFRESH_PAGE_CONTEXT;
+                }
                 CourseDto newCourse = createCourse(courseName,startDate,endDate);
                 ((CourseServiceImpl) courseService).addUserIntoCourse(newCourse,userDto);
             }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
                 ERROR_HANDLER.setError(exception.getMessage(),requestContext);
+                return REFRESH_PAGE_CONTEXT;
             }
 
             List<CourseDto> coursesAfterAddingNewCourse = ((CourseServiceImpl) courseService).getUserAvailableCourses(userDto.getFirstName(),userDto.getLastName());
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, coursesAfterAddingNewCourse);
-            return REFRESH_PAGE_CONTEXT;
         }
-        return DefaultCommand.getInstance().execute(requestContext);
+        return REFRESH_PAGE_CONTEXT;
     }
 
     private CourseDto createCourse (String courseName,Date startDate,Date endDate){
@@ -122,7 +122,7 @@ public class CreateCourseCommand implements Command {
         return newCourse;
     }
 
-    private List<CourseDto> ifCourseExists(String courseName){
-        return ((CourseServiceImpl)courseService).filterCourse(courseName);
+    private Boolean ifCourseExists(String courseName){
+        return ((CourseServiceImpl)courseService).filterCourse(courseName).isEmpty();
     }
 }

@@ -11,12 +11,12 @@
       <fmt:message bundle="${loc}" key="userId" var="userId" />
       <fmt:message bundle="${loc}" key="firstName" var="firstName" />
       <fmt:message bundle="${loc}" key="lastName" var="lastName" />
+      <fmt:message bundle="${loc}" key="firstNameLbl" var="firstNameLbl" />
+      <fmt:message bundle="${loc}" key="lastNameLbl" var="lastNameLbl" />
       <fmt:message bundle="${loc}" key="groupName" var="groupName" />
       <fmt:message bundle="${loc}" key="Group" var="Group" />
       <fmt:message bundle="${loc}" key="btnUnBlockUser" var="btnUnBlockUser" />
       <fmt:message bundle="${loc}" key="btnBlockUser" var="btnBlockUser" />
-      <fmt:message bundle="${loc}" key="FirstLabel" var="FirstLabel" />
-      <fmt:message bundle="${loc}" key="LastLabel" var="LastLabel" />
       <fmt:message bundle="${loc}" key="getBack" var="getBack" />
       <fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName" />
       <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName" />
@@ -107,16 +107,16 @@
           <form action="/controller?command=BLOCK_USER_COMMAND" method="post">
             <div class="form-group">
               <label>${firstName}</label>
-              <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder = "${firstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+              <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${firstNameLbl}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
             </div>
             <p></p>
             <div class="form-group">
               <label>${lastName}</label>
-              <input name="lblLastName" type="text" title = "${invalidLastName}" placeholder= "${lastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+              <input name="lblLastName" type="text" title = "${invalidLastName}" placeholder= "${lastNameLbl}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
             </div>
             <p></p>
-            <label>${Group}</label>
             <div class="form-group">
+            <label>${Group}</label>
               <select name="lblGroup">
                 <c:forEach items="${requestScope.university_groups}" var="group">
                   <option value="${group.name}">${group.name}</option>

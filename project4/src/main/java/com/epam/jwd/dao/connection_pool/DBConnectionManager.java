@@ -14,6 +14,13 @@ public class DBConnectionManager {
 
     private static final Logger LOGGER = LogManager.getLogger(DBConnectionManager.class);
 
+    private static final String DB_URL = "DB_URL";
+    private static final String USER = "USER";
+    private static final String PASSWORD = "PASSWORD";
+    private static final String CHARACTER_ENCODING = "CHARACTER_ENCODING";
+    private static final String DATABASE_PROPERTIES = "database.properties";
+
+
     private static MysqlDataSource mySqlDataSource = null;
 
     private DBConnectionManager() {
@@ -27,13 +34,13 @@ public class DBConnectionManager {
 
     private static void initDataSource() {
         Properties properties = new Properties();
-        try (InputStream inputStream = DBConnectionManager.class.getClassLoader().getResourceAsStream("database.properties")) {
+        try (InputStream inputStream = DBConnectionManager.class.getClassLoader().getResourceAsStream(DATABASE_PROPERTIES)) {
             properties.load(inputStream);
             mySqlDataSource = new MysqlDataSource();
-            mySqlDataSource.setURL(properties.getProperty("DB_URL"));
-            mySqlDataSource.setUser(properties.getProperty("USER"));
-            mySqlDataSource.setPassword(properties.getProperty("PASSWORD"));
-            mySqlDataSource.setCharacterEncoding(properties.getProperty("CHARACTER_ENCODING"));
+            mySqlDataSource.setURL(properties.getProperty(DB_URL));
+            mySqlDataSource.setUser(properties.getProperty(USER));
+            mySqlDataSource.setPassword(properties.getProperty(PASSWORD));
+            mySqlDataSource.setCharacterEncoding(properties.getProperty(CHARACTER_ENCODING));
         } catch (IOException | SQLException e) {
             LOGGER.error(e.getMessage());
         }
