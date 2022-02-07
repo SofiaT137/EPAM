@@ -8,6 +8,7 @@
 <fmt:message bundle="${loc}" key="createCourse" var="createCourse"/>
 <fmt:message bundle="${loc}" key="yourCourses" var="yourCourses"/>
 <fmt:message bundle="${loc}" key="noCourses" var="noCourses"/>
+<fmt:message bundle="${loc}" key="courseNameLabel" var="courseNameLabel"/>
 <fmt:message bundle="${loc}" key="courseName" var="courseName"/>
 <fmt:message bundle="${loc}" key="courseStartDate" var="courseStartDate"/>
 <fmt:message bundle="${loc}" key="CourseEndDate" var="CourseEndDate"/>
@@ -32,6 +33,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${createCourse}</h2>
     <h4>${yourCourses}</h4>
     <c:choose>
@@ -136,6 +138,6 @@
 </body>
 <p></p>
 <%@ include file="footer/footer.jsp" %>
+    </div>
     </body>
-
     </html>

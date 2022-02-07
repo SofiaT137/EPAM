@@ -33,6 +33,7 @@
 </head>
 
 <body>
+     <div class="wrapper">
     <h2>${deleteCoursePage}</h2>
     <h4>${youAreMentor}</h4>
     <c:choose>
@@ -134,5 +135,6 @@
       </form>
       <p></p>
        <%@ include file="footer/footer.jsp" %>
+       </div>
       </body>
   </html>

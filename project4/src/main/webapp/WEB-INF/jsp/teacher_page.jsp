@@ -20,6 +20,7 @@
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="isTerminated" var="isTerminated"/>
 
+<!DOCTYPE HTML>
 <html>
 
 <head>
@@ -34,6 +35,7 @@
     <div class="custom">
         <custom:hello userName="${hello} ${current_user.firstName} ${current_user.lastName}" />
     </div>
+    <div class="wrapper">
     <h3>${youAreMentor}</h3>
         <div class="logout">
             <a href="/controller?command=LOG_OUT_COMMAND">
@@ -115,6 +117,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

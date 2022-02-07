@@ -30,139 +30,142 @@
 <fmt:message bundle="${loc}" key="incorrectGrade" var="incorrectGrade"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 
-
+<!DOCTYPE HTML>
 
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <%@ include file="header/header.jsp" %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <%@ include file="header/header.jsp" %>
     <style>
-        <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
+      <%@include file="/WEB-INF/css/labels_buttons.css"%><%@include file="/WEB-INF/css/tables.css"%>
     </style>
 </head>
 
 <body>
+  <div class="wrapper">
     <h2>${courseStudents}</h2>
     <c:choose>
-        <c:when test="${students_course.size() eq 0}">
-            <div class="exception">
-                <p>${noCourseStudent}</p>
-            </div>
-        </c:when>
-        <c:otherwise>
-            <table border="1" table style="width:33%" style="text-align:center">
-                <thead>
-                    <tr>
-                        <th>${groupNumber}</th>
-                        <th>${firstName}</th>
-                        <th>${lastName}</th>
-                    </tr>
-                </thead>
-                <c:forEach items="${requestScope.students_course}" var="student">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <c:out value="${student.groupName}" />
-                            </td>
-                            <td>
-                                <c:out value="${student.firstName}" />
-                            </td>
-                            <td>
-                                <c:out value="${student.lastName}" />
-                            </td>
-                        </tr>
-                    </tbody>
-                </c:forEach>
-            </table>
-            <div class="paggination">
-                <c:if test="${current_page != 1}">
-                    <td>
-                        <a
-                            href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
-                    </td>
-                </c:if>
+      <c:when test="${students_course.size() eq 0}">
+        <div class="exception">
+          <p>${noCourseStudent}</p>
+        </div>
+      </c:when>
+      <c:otherwise>
+        <table border="1" table style="width:33%" style="text-align:center">
+          <thead>
+            <tr>
+              <th>${groupNumber}</th>
+              <th>${firstName}</th>
+              <th>${lastName}</th>
+            </tr>
+          </thead>
+          <c:forEach items="${requestScope.students_course}" var="student">
+            <tbody>
+              <tr>
+                <td>
+                  <c:out value="${student.groupName}" />
+                </td>
+                <td>
+                  <c:out value="${student.firstName}" />
+                </td>
+                <td>
+                  <c:out value="${student.lastName}" />
+                </td>
+              </tr>
+            </tbody>
+          </c:forEach>
+        </table>
+        <div class="paggination">
+          <c:if test="${current_page != 1}">
+            <td>
+              <a href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${current_page - 1}">${previous}</a>
+            </td>
+          </c:if>
 
-                <c:forEach begin="1" end="${number_of_pages}" var="i">
-                    <c:choose>
-                        <c:when test="${current_page eq i}">
-                            <td>${i}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>
-                                <a href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${i}">${i}</a>
-                            </td>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
+          <c:forEach begin="1" end="${number_of_pages}" var="i">
+            <c:choose>
+              <c:when test="${current_page eq i}">
+                <td>${i}</td>
+              </c:when>
+              <c:otherwise>
+                <td>
+                  <a href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${i}">${i}</a>
+                </td>
+              </c:otherwise>
+            </c:choose>
+          </c:forEach>
 
-                <%--For displaying Next link --%>
-                    <c:if test="${current_page lt number_of_pages}">
-                        <td>
-                            <a
-                                href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
-                        </td>
-                    </c:if>
-            </div>
-        </c:otherwise>
+          <%--For displaying Next link --%>
+            <c:if test="${current_page lt number_of_pages}">
+              <td>
+                <a href="/controller?command=SHOW_RATE_PAGE_COMMAND&page=${current_page + 1}">${next}</a>
+              </td>
+            </c:if>
+        </div>
+      </c:otherwise>
     </c:choose>
     <p></p>
     <form action="/controller?command=RATE_STUDENT_COMMAND" method="post">
-        <div class="form-group">
-            <label>${firstName}</label>
-            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
-        </div>
-        <p></p>
-        <div class="form-group">
-            <label>${lastName}</label>
-            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
-        </div>
-        <p></p>
-        <div class="form-group">
-            <label>${groupNumber}</label>
-            <input name = "groupName" list = "groups" placeholder = "Select group name" autocomplete="on" />
-            <datalist id = "groups">
-                <c:forEach items="${requestScope.all_groups}" var="group">
-                    <option value="${group.name}">${group.name}</option>
-                </c:forEach>
-            </datalist>
-        </div>
-        <p></p>
-        <div class="form-group">
-            <label>${Grade}</label>
-            <input name="lblGrade" type="number" placeholder="${GradeLabel}" required pattern="^[0-9]{1,2}$" />
-        </div>
-        <p></p>
-        <div class="form-group">
-            <label>${Review}</label>
-            <input name="lblReview" type="text" placeholder="${ReviewLabel}" />
-        </div>
-        <p></p>
-    <div class="invalid">
+      <div class="form-group">
+        <label>${firstName}</label>
+        <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required
+          pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+      </div>
+      <p></p>
+      <div class="form-group">
+        <label>${lastName}</label>
+        <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required
+          pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+      </div>
+      <p></p>
+      <div class="form-group">
+        <label>${groupNumber}</label>
+        <input name="groupName" list="groups" placeholder="Select group name" autocomplete="on" />
+        <datalist id="groups">
+          <c:forEach items="${requestScope.all_groups}" var="group">
+            <option value="${group.name}">${group.name}</option>
+          </c:forEach>
+        </datalist>
+      </div>
+      <p></p>
+      <div class="form-group">
+        <label>${Grade}</label>
+        <input name="lblGrade" type="number" placeholder="${GradeLabel}" required pattern="^[0-9]{1,2}$" />
+      </div>
+      <p></p>
+      <div class="form-group">
+        <label>${Review}</label>
+        <input name="lblReview" type="text" placeholder="${ReviewLabel}" />
+      </div>
+      <p></p>
+      <div class="invalid">
         <c:choose>
-            <c:when test="${errorMsg eq 'cannotFindUserByFullName'}">
-                <p>${error}:${cannotFindUserByFullName}</p>
-            </c:when>
-            <c:when test="${errorMsg eq 'cannotFindStudentInGroup'}">
-                <p>${error}:${cannotFindStudentInGroup}</p>
-            </c:when>
-            <c:when test="${errorMsg eq 'incorrectGrade'}">
-                <p>${error}:${incorrectGrade}</p>
-            </c:when>
-            <c:otherwise>
-                <c:if test="${errorMsg ne null}">
-                    <p>${error}:${errorMsg}</p>
-                </c:if>
-            </c:otherwise>
+          <c:when test="${errorMsg eq 'cannotFindUserByFullName'}">
+            <p>${error}:${cannotFindUserByFullName}</p>
+          </c:when>
+          <c:when test="${errorMsg eq 'cannotFindStudentInGroup'}">
+            <p>${error}:${cannotFindStudentInGroup}</p>
+          </c:when>
+          <c:when test="${errorMsg eq 'incorrectGrade'}">
+            <p>${error}:${incorrectGrade}</p>
+          </c:when>
+          <c:otherwise>
+            <c:if test="${errorMsg ne null}">
+              <p>${error}:${errorMsg}</p>
+            </c:if>
+          </c:otherwise>
         </c:choose>
-    </div>
-        <button type="submit" name="btnAddReview" <c:if test="${students_course.size() == 0}">
-            <c:out value="disabled='disabled'" />
-            </c:if>>${btnAddReview}
-        </button>
-        <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
+      </div>
+      <button type="submit" name="btnAddReview" <c:if test="${students_course.size() == 0}">
+        <c:out value="disabled='disabled'" />
+        </c:if>>${btnAddReview}
+      </button>
+      <button type="submit" name="btnGetBack"
+        onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
+    </div>
     <%@ include file="footer/footer.jsp" %>
 </body>
 

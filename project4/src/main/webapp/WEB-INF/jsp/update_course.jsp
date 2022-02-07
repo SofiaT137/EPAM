@@ -23,6 +23,7 @@
 <fmt:message bundle="${loc}" key="cannotFindCourseByItsName" var="cannotFindCourseByItsName"/>
 <fmt:message bundle="${loc}" key="youNotTheMentorOfCourse" var="youNotTheMentorOfCourse"/>
 <fmt:message bundle="${loc}" key="youCannotUpdateFinishedCourse" var="youCannotUpdateFinishedCourse"/>
+<fmt:message bundle="${loc}" key="courseNameLabel" var="courseNameLabel"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
 
@@ -38,8 +39,8 @@
     </style>
 </head>
 
-
 <body>
+    <div class="wrapper">
     <h2>${letsUpdateACourse}</h2>
     <h4>${yourCurrentCourses}</h4>
     <c:choose>
@@ -113,7 +114,7 @@
     <form action="/controller?command=UPDATE_COURSE_COMMAND" method="post">
         <div class="form-group">
             <label>${courseName}</label>
-            <input name="lblCourseName" type="text" placeholder="${CourseNameLabel}" title="${invalidCourseName}" required pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$" />
+            <input name="lblCourseName" type="text" placeholder="${courseNameLabel}" title="${invalidCourseName}" required pattern="^[a-zA-Zа-яА-я '+.-]{2,30}$" />
         </div>
         <p></p>
         <div class="form-group">
@@ -149,5 +150,6 @@
     </form>
     <p></p>
      <%@ include file="footer/footer.jsp" %>
+     </div>
     </body>
 </html>
