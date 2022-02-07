@@ -29,7 +29,9 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${letsFinishRegistration}</h2>
+    <p></p>
     <form action="/controller?command=REGISTER_USER_COMMAND" method="post">
         <div class="form-group">
             <label>${firstName}</label>
@@ -60,5 +62,6 @@
     </form>
     <p></p>
         <%@ include file="footer/footer.jsp" %>
+        </div>
     </body>
 </html>

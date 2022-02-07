@@ -121,8 +121,8 @@
         <p></p>
         <div class="invalid">
             <c:choose>
-                <c:when test="${errorMsg eq 'cannotFindThisCourse'}">
-                    <p>${error}:${invalidUniquenessCourseName}</p>
+                <c:when test="${errorMsg eq 'notUniqueCourseName'}">
+                    <p>${error}: ${invalidUniquenessCourseName}</p>
                 </c:when>
                 <c:otherwise>
                     <c:if test="${errorMsg ne null}">

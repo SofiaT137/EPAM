@@ -31,6 +31,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${selectCourseForReview}</h2>
     <c:choose>
         <c:when test="${finished_course.size() eq 0}">
@@ -133,6 +134,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>
