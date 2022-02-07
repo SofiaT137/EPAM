@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
@@ -87,42 +88,41 @@ public class RateStudentCommand implements Command {
         int grade = Integer.parseInt(requestContext.getParameterFromJSP(GRADE_LABEL));
         String review = requestContext.getParameterFromJSP(REVIEW_LABEL);
 
+
         List<UserDto> allUsersOnCourse = (List<UserDto>) requestContext.getAttributeFromSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE);
+        List<UserDto> listOfStudents = (List<UserDto>) requestContext.getAttributeFromSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE);
         CourseDto courseDto = (CourseDto) requestContext.getAttributeFromSession(SELECTED_COURSE);
 
+        UserDto currentStudent;
+
         if (btnAddReview !=null) {
+
+            try{
 
             List<UserDto> foundedUsers = getAllUserByFullName(allUsersOnCourse,firstName,lastName);
 
             if (foundedUsers.isEmpty()){
-                LOGGER.error(CANNOT_FIND_USER_MESSAGE);
-                ERROR_HANDLER.setError(CANNOT_FIND_USER_MESSAGE, requestContext);
-                return REFRESH_PAGE_CONTEXT;
+                throw new CommandException(CANNOT_FIND_USER_MESSAGE);
             }
 
-            UserDto currentStudent = findStudentInGroup(foundedUsers,groupName);
+             currentStudent = findStudentInGroup(foundedUsers,groupName);
 
             if (currentStudent == null) {
-                LOGGER.error(CANNOT_FIND_USER_INTO_GROUP);
-                ERROR_HANDLER.setError(CANNOT_FIND_USER_INTO_GROUP, requestContext);
-                return REFRESH_PAGE_CONTEXT;
+                throw new CommandException(CANNOT_FIND_USER_INTO_GROUP);
             }
 
             if (grade < 0 || grade > 10){
-                LOGGER.error(INCORRECT_GRADE);
-                ERROR_HANDLER.setError(INCORRECT_GRADE, requestContext);
-                return REFRESH_PAGE_CONTEXT;
+                throw new CommandException(INCORRECT_GRADE);
             }
-            try {
-                createReview(currentStudent,courseDto,grade,review);
+
+            createReview(currentStudent,courseDto,grade,review);
+            listOfStudents.remove(currentStudent);
+
             }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
                 ERROR_HANDLER.setError(exception.getMessage(), requestContext);
                 return REFRESH_PAGE_CONTEXT;
             }
-
-            List<UserDto> listOfStudents = (List<UserDto>) requestContext.getAttributeFromSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE);
-            listOfStudents.remove(currentStudent);
             requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE,listOfStudents);
         }
         return REFRESH_PAGE_CONTEXT;

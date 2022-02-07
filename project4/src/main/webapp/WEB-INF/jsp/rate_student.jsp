@@ -143,7 +143,7 @@
             <p>${error}:${cannotFindUserByFullName}</p>
           </c:when>
           <c:when test="${errorMsg eq 'cannotFindStudentInGroup'}">
-            <p>${error}:${cannotFindStudentInGroup}</p>
+            <p>${error}: ${cannotFindStudentInGroup}</p>
           </c:when>
           <c:when test="${errorMsg eq 'incorrectGrade'}">
             <p>${error}: ${incorrectGrade}</p>
