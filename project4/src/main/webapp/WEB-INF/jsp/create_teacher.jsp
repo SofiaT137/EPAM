@@ -41,6 +41,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${createTeacher}</h2>
     <h4>${allTeachers}</h4>
     <c:choose>
@@ -143,6 +144,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

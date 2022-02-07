@@ -51,8 +51,7 @@ public class AuthenticationFilter implements Filter {
             AccountDto accountDto = (AccountDto)session.getAttribute("registerAccount");
             if (accountDto == null && (commandName == null
                                             || !(commandName.equals("SELECT_REGISTRATION_OR_LOG_IN")
-                                                || commandName.equals("SHOW_ERROR_PAGE_COMMAND")
-                                                || commandName.equals("CHANGE_LANGUAGE_COMMAND")))){
+                                            || commandName.equals("CHANGE_LANGUAGE_COMMAND")))){
                 res.sendRedirect(INDEX_JSP);
                 return;
             }
