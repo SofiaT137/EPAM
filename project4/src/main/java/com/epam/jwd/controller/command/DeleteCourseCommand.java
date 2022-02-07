@@ -1,7 +1,9 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
+import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.coursedto.CourseDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
@@ -42,7 +44,6 @@ public class DeleteCourseCommand implements Command {
     private static final String TEACHER_RESULT_COMMAND = "/controller?command=SHOW_TEACHER_PAGE_COMMAND";
 
     private static final String NOT_FINISHED_SESSION_COLLECTION_ATTRIBUTE = "notFinished";
-    private static final String USER_COURSE = "userCourse";
 
     private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
 
@@ -88,46 +89,38 @@ public class DeleteCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP(GET_BACK_BUTTON);
         UserDto teacher = (UserDto) requestContext.getAttributeFromSession(CURRENT_USER);
         String courseName = requestContext.getParameterFromJSP(COURSE_NAME);
-        List<CourseDto> userCourse = (List<CourseDto>) requestContext.getAttributeFromSession(USER_COURSE);
 
         if(btnGetBack !=null){
             return TEACHER_RESULT_CONTEXT;
         }
         if (btnDeleteCourse != null) {
-            List<CourseDto> courseList = getCourseListByName(courseName);
 
-            if (courseList.isEmpty()) {
-                LOGGER.error(CANNOT_FIND_COURSE_MESSAGE);
-                ERROR_HANDLER.setError(CANNOT_FIND_COURSE_MESSAGE, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
+            List<CourseDto> allUserCourse;
 
-            CourseDto courseForDelete = getCourse(courseList);
-
-            if (!isTeacherMentor(teacher, courseForDelete)) {
-                ERROR_HANDLER.setError(YOU_ARE_NOT_THE_MENTOR, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
-            if (!isCourseFinished(courseForDelete)) {
-                ERROR_HANDLER.setError(YOU_CANNOT_DELETE_FINISHED_COURSE, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
-            if (!deleteAllUsersFromCourse(courseForDelete)) {
-                ERROR_HANDLER.setError(CANNOT_DELETE_ALL_USER_MESSAGE, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
             try {
+                CourseDto courseForDelete = getCourse(courseName);
+
+                if (!isTeacherMentor(teacher, courseForDelete)) {
+                    throw new CommandException(YOU_ARE_NOT_THE_MENTOR);
+                }
+
+                if (!isCourseFinished(courseForDelete)) {
+                    throw new CommandException(YOU_CANNOT_DELETE_FINISHED_COURSE);
+                }
+
+                if (!deleteAllUsersFromCourse(courseForDelete)) {
+                    throw new CommandException(CANNOT_DELETE_ALL_USER_MESSAGE);
+                }
+
                 deleteCourse(courseForDelete);
-            } catch (ServiceException exception) {
+                allUserCourse = getAllUserCourse(teacher);
+
+            }catch (Exception exception){
                 LOGGER.error(exception.getMessage());
                 ERROR_HANDLER.setError(exception.getMessage(), requestContext);
                 return REFRESH_PAGE_CONTEXT;
             }
-            List<CourseDto> notFinishedCourse = getNotUserFinishedCourses(teacher);
-            requestContext.addAttributeToSession(NOT_FINISHED_SESSION_COLLECTION_ATTRIBUTE, findNotFinishedCourses(notFinishedCourse));
-            List<CourseDto> allUserCourse  = getAllUserCourse(teacher);
+            requestContext.addAttributeToSession(NOT_FINISHED_SESSION_COLLECTION_ATTRIBUTE, findNotFinishedCourses(allUserCourse));
             requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, allUserCourse);
         }
         return REFRESH_PAGE_CONTEXT;
@@ -135,10 +128,6 @@ public class DeleteCourseCommand implements Command {
 
     private boolean deleteAllUsersFromCourse(CourseDto courseDtoForDelete){
         return ((CourseServiceImpl)courseService).deleteAllCourseInUserHasCourse(courseDtoForDelete.getId());
-    }
-
-    private List<CourseDto> getCourseListByName(String courseName){
-        return ((CourseServiceImpl)courseService).filterCourse(courseName);
     }
 
     private boolean isTeacherMentor(UserDto teacher, CourseDto courseDto){
@@ -157,9 +146,16 @@ public class DeleteCourseCommand implements Command {
         Date utilDate = Date.valueOf(tomorrow);
         return courseDto.getEndCourse().after(utilDate);
     }
-    private CourseDto getCourse(List<CourseDto> allCoursesWithName){
-        return allCoursesWithName.get(0);
+
+    private CourseDto getCourse(String courseName) throws CommandException {
+        List<CourseDto> courseList = ((CourseServiceImpl)courseService).filterCourse(courseName);
+
+        if (courseList.isEmpty()) {
+           throw new CommandException(CANNOT_FIND_COURSE_MESSAGE);
+        }
+        return courseList.get(0);
     }
+
     private void deleteCourse (CourseDto courseForDelete){
         courseService.delete(courseForDelete);
     }
@@ -174,9 +170,6 @@ public class DeleteCourseCommand implements Command {
         return result;
     }
 
-    private List<CourseDto> getNotUserFinishedCourses(UserDto teacher){
-        return ((CourseServiceImpl) courseService).getUserAvailableCourses(teacher.getFirstName(),teacher.getLastName());
-    }
     private List<CourseDto> getAllUserCourse(UserDto teacher){
         return ((CourseServiceImpl) courseService).getUserAvailableCourses(teacher.getFirstName(),teacher.getLastName());
     }

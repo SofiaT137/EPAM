@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.service.Service;
@@ -102,18 +103,15 @@ public class UpdateCourseCommand implements Command {
                 List<CourseDto> list = ((CourseServiceImpl) courseService).filterCourse(courseName);
 
                 if (list.isEmpty()) {
-                    ERROR_HANDLER.setError(CANNOT_FIND_THIS_COURSE_BY_NAME, requestContext);
-                    return REFRESH_PAGE_CONTEXT;
+                    throw new CommandException(CANNOT_FIND_THIS_COURSE_BY_NAME);
                 }
                 CourseDto courseForUpdate = list.get(0);
 
                 if (!isThisTeacherMentor(teacher, courseForUpdate)) {
-                    ERROR_HANDLER.setError(YOU_ARE_NOT_THE_MENTOR, requestContext);
-                    return REFRESH_PAGE_CONTEXT;
+                    throw new CommandException(YOU_ARE_NOT_THE_MENTOR);
                 }
                 if (isCourseFinished(courseForUpdate)) {
-                    ERROR_HANDLER.setError(CANNOT_UPDATE_FINISHED_COURSE, requestContext);
-                    return REFRESH_PAGE_CONTEXT;
+                    throw new CommandException(CANNOT_UPDATE_FINISHED_COURSE);
                 }
 
                 updateCourse(courseName, startDate, endDate, courseForUpdate);

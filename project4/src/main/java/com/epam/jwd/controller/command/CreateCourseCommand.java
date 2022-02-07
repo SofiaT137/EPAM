@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
@@ -95,9 +96,7 @@ public class CreateCourseCommand implements Command {
 
             try {
                 if (Boolean.FALSE.equals(ifCourseExists(courseName))) {
-                    LOGGER.error(ERROR_NOT_UNIQUE_COURSE_NAME);
-                    ERROR_HANDLER.setError(ERROR_NOT_UNIQUE_COURSE_NAME,requestContext);
-                    return REFRESH_PAGE_CONTEXT;
+                    throw new CommandException(ERROR_NOT_UNIQUE_COURSE_NAME);
                 }
                 CourseDto newCourse = createCourse(courseName,startDate,endDate);
                 ((CourseServiceImpl) courseService).addUserIntoCourse(newCourse,userDto);
