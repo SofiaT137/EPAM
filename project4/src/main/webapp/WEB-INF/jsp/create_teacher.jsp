@@ -16,8 +16,8 @@
 <fmt:message bundle="${loc}" key="btnAddTeacher" var="btnAddTeacher"/>
 <fmt:message bundle="${loc}" key="LoginLabel" var="LoginLabel"/>
 <fmt:message bundle="${loc}" key="PasswordLabel" var="PasswordLabel"/>
-<fmt:message bundle="${loc}" key="FirstNameLabel" var="FirstNameLabel"/>
-<fmt:message bundle="${loc}" key="LastNameLabel" var="LastNameLabel"/>
+<fmt:message bundle="${loc}" key="firstNameLabel" var="firstNameLabel"/>
+<fmt:message bundle="${loc}" key="lastNameLabel" var="lastNameLabel"/>
 <fmt:message bundle="${loc}" key="getBack" var="getBack"/>
 <fmt:message bundle="${loc}" key="invalidFirstName" var="invalidFirstName"/>
 <fmt:message bundle="${loc}" key="invalidLastName" var="invalidLastName"/>
@@ -116,14 +116,12 @@
         <p></p>
         <div class="form-group">
             <label>${firstName}</label>
-            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${FirstNameLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${firstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${lastName}</label>
-            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${LastNameLabel}" required
-                pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+            <input name="lblLastName" type="text" title="${invalidLastName}" placeholder="${lastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
         </div>
         <p></p>
         <div class="invalid">
