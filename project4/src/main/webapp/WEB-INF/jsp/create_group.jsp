@@ -18,6 +18,7 @@
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="invalidUniqueness" var="invalidUniqueness"/>
 
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -29,6 +30,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${createGroup}</h2>
     <h4>${allGroups}</h4>
     <c:choose>
@@ -87,20 +89,21 @@
            </c:choose>
            <p></p>
     <form action="/controller?command=CREATE_GROUP_COMMAND" method="post">
-        <div class="form-group">
-            <label>${groupName}</label>
-            <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.+'-]{3,20}$" />
-                 <div class="invalid">
-                 <c:if test="${errorMsg eq 'notUnique'}">
-                        <p>Error: ${invalidUniqueness}</p>
-                </c:if>
-                </div>
-        </div>
-        <p></p>
+    <div class="form-group">
+        <label>${groupName}</label>
+        <input name="lblGroupName" type="text" placeholder="${GroupNameLabel}" title="${invalidGroupName}" required pattern="^[A-Za-zа-яА-Я0-9 ,.+'-]{3,20}$" />
+    </div>
+     <div class="invalid">
+         <c:if test="${errorMsg eq 'notUnique'}">
+                <p>Error: ${invalidUniqueness}</p>
+        </c:if>
+    </div>
+    <p></p>
         <button type="submit" name="btnAddGroup">${btnAddGroup}</button>
         <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_ADMIN_PAGE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+     </div>
 </body>
 </html>

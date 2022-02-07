@@ -28,7 +28,7 @@
 
 <body>
     <div class="custom">
-        <custom:hello userName="${hello}${current_user.firstName}" />
+        <custom:hello userName="${hello} ${current_user.firstName}" />
     </div>
     <div class="wrapper">
         <div class="center">

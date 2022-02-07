@@ -40,6 +40,7 @@
 </head>
 
 <body>
+    <div class="wrapper">
     <h2>${blockUser}</h2>
     <h3>${allBlockedUser}</h3>
     <c:choose>
@@ -154,6 +155,7 @@
     </form>
     <p></p>
     <%@ include file="footer/footer.jsp" %>
+    </div>
 </body>
 
 </html>

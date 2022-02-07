@@ -26,6 +26,8 @@
 <fmt:message bundle="${loc}" key="next" var="next"/>
 <fmt:message bundle="${loc}" key="previous" var="previous"/>
 <fmt:message bundle="${loc}" key="invalidUniquenessLogin" var="invalidUniquenessLogin"/>
+<fmt:message bundle="${loc}" key="enterYourLogin" var="enterYourLogin"/>
+<fmt:message bundle="${loc}" key="enterYourPassword" var="enterYourPassword"/>
 <fmt:message bundle="${loc}" key="error" var="error"/>
 <fmt:message bundle="${loc}" key="exception" var="exception"/>
 
@@ -104,15 +106,12 @@
     <form action="/controller?command=CREATE_TEACHER_COMMAND" method="post">
         <div class="form-group">
             <label>${Login}</label>
-            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}"
-                required pattern="^[A-Za-z0-9,.'-]{4,20}$" />
+            <input name="lblLogin" type="text" class="input" title="${invalidLogin}" placeholder="${enterYourLogin}" required pattern="^[A-Za-z0-9,.'-]{4,20}$" />
         </div>
         <p></p>
         <div class="form-group">
             <label>${Password}</label>
-            <input name="lblPassword" type="password" class="input" title="${invalidPassword}"
-                placeholder="${enterYourPassword}" required
-                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,20}$" />
+            <input name="lblPassword" type="password" class="input" title="${invalidPassword}" placeholder="${enterYourPassword}" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&-]{8,20}$" />
         </div>
         <p></p>
         <div class="form-group">
