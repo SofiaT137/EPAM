@@ -111,7 +111,7 @@
     <div class="invalid">
         <c:choose>
             <c:when test= "${errorMsg eq 'cannotFindThisCourse'}">
-                <p>${error}:${cannotFindCourse}</p>
+                <p>${error}: ${cannotFindCourse}</p>
             </c:when>
             <c:when test= "${errorMsg eq 'youNotTheMentor'}">
                 <p>${error}: ${youNotTheMentorOfCourse}</p>

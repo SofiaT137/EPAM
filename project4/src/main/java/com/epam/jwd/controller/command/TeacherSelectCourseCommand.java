@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.dao.exception.DAOException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
@@ -104,52 +105,52 @@ public class TeacherSelectCourseCommand implements Command {
         String btnGetBack = requestContext.getParameterFromJSP(GET_BACK_BUTTON);
         String courseName = requestContext.getParameterFromJSP(COURSE_NAME);
 
+        List<UserDto> usersOfSelectedCourse;
+        CourseDto selectedCourse;
+
         if(btnGetBack !=null){
             return TEACHER_RESULT_CONTEXT;
         }
 
         if (btnFillReview != null) {
+            try {
+                selectedCourse = getCourse(courseName);
 
-            List<CourseDto> courses = findCoursesWithName(courseName);
+                if (!isTeacherMentor(teacher, selectedCourse)) {
+                    throw new CommandException(YOU_ARE_NOT_THE_MENTOR);
+                }
 
-            if (courses.isEmpty()){
-                ERROR_HANDLER.setError(CANNOT_FIND_COURSE_MESSAGE, requestContext);
+                if (!isCourseFinished(selectedCourse)) {
+                    throw new CommandException(THIS_COURSE_IS_UNFINISHED);
+                }
+
+                usersOfSelectedCourse = findAllStudentsOnTheCourse(selectedCourse, teacher);
+
+                List<UserDto> studentsWithReview = findAllStudentWithReview(usersOfSelectedCourse, selectedCourse);
+
+                if (!studentsWithReview.isEmpty()) {
+                    usersOfSelectedCourse.removeAll(studentsWithReview);
+                }
+            }catch (Exception exception){
+                LOGGER.error(exception.getMessage());
+                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
                 return REFRESH_PAGE_CONTEXT;
             }
-
-            CourseDto selectedCourse;
-
-            try{
-                selectedCourse = getSelectedCourse(courses);
-            }catch (IndexOutOfBoundsException exception){
-                ERROR_HANDLER.setError(exception.getMessage(), requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
-            if (!isTeacherMentor(teacher, selectedCourse)) {
-                ERROR_HANDLER.setError(YOU_ARE_NOT_THE_MENTOR, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
-            if (!isCourseFinished(selectedCourse)) {
-                ERROR_HANDLER.setError(THIS_COURSE_IS_UNFINISHED, requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-
             requestContext.addAttributeToSession(SELECTED_COURSES_SESSION_COLLECTION_ATTRIBUTE, selectedCourse);
-
-            List<UserDto> usersOfSelectedCourse = findAllStudentsOnTheCourse(selectedCourse,teacher);
-
-            List<UserDto> studentsWithReview = findAllStudentWithReview(usersOfSelectedCourse, selectedCourse);
-            if (!studentsWithReview.isEmpty()){
-                usersOfSelectedCourse.removeAll(studentsWithReview);
-            }
             requestContext.addAttributeToSession(USERS_ON_COURSE_SESSION_COLLECTION_ATTRIBUTE, usersOfSelectedCourse);
         }
 
         return RATE_STUDENT_CONTEXT;
     }
 
+    private CourseDto getCourse(String courseName) throws CommandException {
+        List<CourseDto> courseList = ((CourseServiceImpl)courseService).filterCourse(courseName);
+
+        if (courseList.isEmpty()) {
+            throw new CommandException(CANNOT_FIND_COURSE_MESSAGE);
+        }
+        return courseList.get(0);
+    }
 
     private List<UserDto> findAllStudentWithReview(List<UserDto> list, CourseDto currentCourse){
         List<UserDto> result = new ArrayList<>();
@@ -161,14 +162,6 @@ public class TeacherSelectCourseCommand implements Command {
             }
         }
         return result;
-    }
-
-    private List<CourseDto> findCoursesWithName(String courseName){
-        return ((CourseServiceImpl) courseService).filterCourse(courseName);
-    }
-
-    private CourseDto getSelectedCourse(List<CourseDto> allCourses){
-        return allCourses.get(0);
     }
 
     private List<UserDto> findAllStudentsOnTheCourse(CourseDto selectedCourse,UserDto teacher){

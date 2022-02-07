@@ -146,11 +146,11 @@
             <p>${error}:${cannotFindStudentInGroup}</p>
           </c:when>
           <c:when test="${errorMsg eq 'incorrectGrade'}">
-            <p>${error}:${incorrectGrade}</p>
+            <p>${error}: ${incorrectGrade}</p>
           </c:when>
           <c:otherwise>
             <c:if test="${errorMsg ne null}">
-              <p>${error}:${errorMsg}</p>
+              <p>${error}: ${errorMsg}</p>
             </c:if>
           </c:otherwise>
         </c:choose>
@@ -159,8 +159,7 @@
         <c:out value="disabled='disabled'" />
         </c:if>>${btnAddReview}
       </button>
-      <button type="submit" name="btnGetBack"
-        onClick='location.href="/controller?command=SHOW_TEACHER_PAGE_COMMAND"'>${getBack}</button>
+      <button type="submit" name="btnGetBack" onClick='location.href="/controller?command=SHOW_TEACHER_COURSE_COMMAND"'>${getBack}</button>
     </form>
     <p></p>
     </div>
