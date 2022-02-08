@@ -7,7 +7,6 @@ import com.epam.jwd.service.Service;
 import com.epam.jwd.service.dto.userdto.AccountDto;
 import com.epam.jwd.service.dto.userdto.UserDto;
 import com.epam.jwd.service.error_handler.ErrorHandler;
-import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;

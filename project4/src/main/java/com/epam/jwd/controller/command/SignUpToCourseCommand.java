@@ -1,5 +1,6 @@
 package com.epam.jwd.controller.command;
 
+import com.epam.jwd.controller.command.exception.CommandException;
 import com.epam.jwd.controller.context.RequestContext;
 import com.epam.jwd.controller.context.ResponseContext;
 import com.epam.jwd.dao.exception.DAOException;
@@ -88,43 +89,29 @@ public class SignUpToCourseCommand implements Command {
 
             List<CourseDto> listOfCourses = getCourseByName(courseName,possibleCoursesList);
 
-            if (listOfCourses.isEmpty()){
-                LOGGER.info(CANNOT_FIND_COURSE_BY_NAME_INTO_POSSIBLE_COURSES);
-                ERROR_HANDLER.setError(CANNOT_FIND_COURSE_BY_NAME_INTO_POSSIBLE_COURSES,requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
+            try {
 
-            CourseDto findCourse;
+                if (listOfCourses.isEmpty()) {
+                    throw new CommandException(CANNOT_FIND_COURSE_BY_NAME_INTO_POSSIBLE_COURSES);
+                }
 
-            try{
-                findCourse = getCourse(listOfCourses);
-            }catch (IndexOutOfBoundsException exception){
-                LOGGER.error(exception.getMessage());
-                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
+                CourseDto findCourse = getCourse(listOfCourses);
 
-            if (!addUserIntoCourse(findCourse,userDto)) {
-                LOGGER.error(SOMETHING_WENT_WRONG_EXCEPTION);
-                ERROR_HANDLER.setError(SOMETHING_WENT_WRONG_EXCEPTION,requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-            try{
-                removeCourseFromList(possibleCoursesList,findCourse);
+                if (!addUserIntoCourse(findCourse, userDto)) {
+                    throw new CommandException(SOMETHING_WENT_WRONG_EXCEPTION);
+                }
+
+                removeCourseFromList(possibleCoursesList, findCourse);
+
+                List<CourseDto> userCourses = getUserAvailableCourses(userDto);
+                
+                requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
+                requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCoursesList);
+
             }catch (Exception exception){
                 ERROR_HANDLER.setError(exception.getMessage(),requestContext);
                 return REFRESH_PAGE_CONTEXT;
             }
-
-            List<CourseDto> userCourses;
-            try{
-                userCourses = getUserAvailableCourses(userDto);
-            }catch (DAOException exception){
-                ERROR_HANDLER.setError(exception.getMessage(),requestContext);
-                return REFRESH_PAGE_CONTEXT;
-            }
-            requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
-            requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCoursesList);
         }
         return REFRESH_PAGE_CONTEXT;
     }

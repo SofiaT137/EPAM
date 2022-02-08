@@ -33,7 +33,6 @@ public class RegisterUserCommand implements Command {
     private static final Command INSTANCE = new RegisterUserCommand();
 
     private final Service<UserDto, Integer> serviceUser = new UserServiceImpl();
-    private final Service<CourseDto, Integer> courseService = new CourseServiceImpl();
     private final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
     private final Service<GroupDto, Integer> groupService = new GroupServiceImpl();
 
