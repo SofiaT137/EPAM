@@ -104,7 +104,7 @@ public class SignUpToCourseCommand implements Command {
                 removeCourseFromList(possibleCoursesList, findCourse);
 
                 List<CourseDto> userCourses = getUserAvailableCourses(userDto);
-                
+
                 requestContext.addAttributeToSession(USER_COURSE_SESSION_COLLECTION_ATTRIBUTE, userCourses);
                 requestContext.addAttributeToSession(POSSIBLE_COURSES_SESSION_COLLECTION_ATTRIBUTE, possibleCoursesList);
 
