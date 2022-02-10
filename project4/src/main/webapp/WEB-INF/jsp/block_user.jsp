@@ -11,8 +11,8 @@
       <fmt:message bundle="${loc}" key="userId" var="userId" />
       <fmt:message bundle="${loc}" key="firstName" var="firstName" />
       <fmt:message bundle="${loc}" key="lastName" var="lastName" />
-      <fmt:message bundle="${loc}" key="firstNameLbl" var="firstNameLbl" />
-      <fmt:message bundle="${loc}" key="lastNameLbl" var="lastNameLbl" />
+      <fmt:message bundle="${loc}" key="firstNameLabel" var="firstNameLabel" />
+      <fmt:message bundle="${loc}" key="lastNameLabel" var="lastNameLabel" />
       <fmt:message bundle="${loc}" key="groupName" var="groupName" />
       <fmt:message bundle="${loc}" key="Group" var="Group" />
       <fmt:message bundle="${loc}" key="btnUnBlockUser" var="btnUnBlockUser" />
@@ -107,12 +107,12 @@
           <form action="/controller?command=BLOCK_USER_COMMAND" method="post">
             <div class="form-group">
               <label>${firstName}</label>
-              <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${firstNameLbl}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+              <input name="lblFirstName" type="text" title="${invalidFirstName}" placeholder="${firstNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
             </div>
             <p></p>
             <div class="form-group">
               <label>${lastName}</label>
-              <input name="lblLastName" type="text" title = "${invalidLastName}" placeholder= "${lastNameLbl}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
+              <input name="lblLastName" type="text" title = "${invalidLastName}" placeholder= "${lastNameLabel}" required pattern="^[a-zA-Zа-яА-Я '.-]{2,20}$" />
             </div>
             <p></p>
             <div class="form-group">
